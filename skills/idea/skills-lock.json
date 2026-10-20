@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "brainstorm-diverge-converge": {
+      "source": "lyndonkl/claude",
+      "sourceType": "github",
+      "skillPath": "skills/brainstorm-diverge-converge/SKILL.md",
+      "computedHash": "7d398b583cb80598a275128c396bcad13a9a164d4ac38516d9bbc0c5759f9d7f"
+    },
+    "ideate": {
+      "source": "athola/claude-night-market",
+      "sourceType": "github",
+      "skillPath": "plugins/tome/skills/ideate/SKILL.md",
+      "computedHash": "f68b53a3249d1934b10e30892b7f06302ced4f1751205ca44d139d4205b8aae5"
+    },
+    "remix": {
+      "source": "Onsraa/remix",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "5935c7347eae7d0c8e46cce3189b26c3764cd9a7487bfe903ceb357ee99792cd"
+    }
+  }
+}

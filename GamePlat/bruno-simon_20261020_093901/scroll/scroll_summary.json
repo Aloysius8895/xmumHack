@@ -1,0 +1,241 @@
+{
+  "enabled": true,
+  "scroll_step": 700,
+  "scroll_delay": 1.2,
+  "max_scrolls": 6,
+  "stop_after_no_change": 3,
+  "min_dom_growth": 3,
+  "min_height_growth": 20,
+  "wait_after_scroll_ms": 300,
+  "total_scrolls": 4,
+  "stop_reason": "bottom_no_change",
+  "final_reached_bottom": true,
+  "initial_metrics": {
+    "scroll_y": 0,
+    "viewport_height": 1000,
+    "scroll_height": 1000,
+    "dom_node_count": 970,
+    "body_text_length": 5,
+    "image_count": 44,
+    "script_count": 3,
+    "link_count": 19,
+    "current_url": "https://bruno-simon.com/",
+    "title": "Bruno's"
+  },
+  "final_metrics": {
+    "scroll_y": 0,
+    "viewport_height": 1000,
+    "scroll_height": 1000,
+    "dom_node_count": 970,
+    "body_text_length": 5,
+    "image_count": 44,
+    "script_count": 3,
+    "link_count": 19,
+    "current_url": "https://bruno-simon.com/",
+    "title": "Bruno's"
+  },
+  "total_height_growth": 0,
+  "total_dom_growth": 0,
+  "total_text_growth": 0,
+  "total_request_growth_during_scroll": 1,
+  "total_response_growth_during_scroll": 1,
+  "total_failed_request_growth_during_scroll": 0,
+  "logs": [
+    {
+      "index": 0,
+      "timestamp": "2026-10-20T09:39:57.888064+00:00",
+      "before": {
+        "scroll_y": 0,
+        "viewport_height": 1000,
+        "scroll_height": 1000,
+        "dom_node_count": 970,
+        "body_text_length": 5,
+        "image_count": 44,
+        "script_count": 3,
+        "link_count": 19,
+        "current_url": "https://bruno-simon.com/",
+        "title": "Bruno's"
+      },
+      "after": {
+        "scroll_y": 0,
+        "viewport_height": 1000,
+        "scroll_height": 1000,
+        "dom_node_count": 970,
+        "body_text_length": 5,
+        "image_count": 44,
+        "script_count": 3,
+        "link_count": 19,
+        "current_url": "https://bruno-simon.com/",
+        "title": "Bruno's"
+      },
+      "deltas": {
+        "height_delta": 0,
+        "dom_delta": 0,
+        "text_delta": 0,
+        "request_delta": 1,
+        "response_delta": 1,
+        "failed_request_delta": 0
+      },
+      "change_flags": {
+        "height_changed": false,
+        "dom_changed": false,
+        "text_changed": false,
+        "network_changed": true,
+        "overall_has_change": true
+      },
+      "state": {
+        "reached_bottom": true,
+        "no_change_count": 0,
+        "stop_reason": null
+      },
+      "snapshot_path": "html/snapshots/snapshot_000.html"
+    },
+    {
+      "index": 1,
+      "timestamp": "2026-10-20T09:40:04.524271+00:00",
+      "before": {
+        "scroll_y": 0,
+        "viewport_height": 1000,
+        "scroll_height": 1000,
+        "dom_node_count": 970,
+        "body_text_length": 5,
+        "image_count": 44,
+        "script_count": 3,
+        "link_count": 19,
+        "current_url": "https://bruno-simon.com/",
+        "title": "Bruno's"
+      },
+      "after": {
+        "scroll_y": 0,
+        "viewport_height": 1000,
+        "scroll_height": 1000,
+        "dom_node_count": 970,
+        "body_text_length": 5,
+        "image_count": 44,
+        "script_count": 3,
+        "link_count": 19,
+        "current_url": "https://bruno-simon.com/",
+        "title": "Bruno's"
+      },
+      "deltas": {
+        "height_delta": 0,
+        "dom_delta": 0,
+        "text_delta": 0,
+        "request_delta": 0,
+        "response_delta": 0,
+        "failed_request_delta": 0
+      },
+      "change_flags": {
+        "height_changed": false,
+        "dom_changed": false,
+        "text_changed": false,
+        "network_changed": false,
+        "overall_has_change": false
+      },
+      "state": {
+        "reached_bottom": true,
+        "no_change_count": 1,
+        "stop_reason": null
+      },
+      "snapshot_path": "html/snapshots/snapshot_001.html"
+    },
+    {
+      "index": 2,
+      "timestamp": "2026-10-20T09:40:11.062837+00:00",
+      "before": {
+        "scroll_y": 0,
+        "viewport_height": 1000,
+        "scroll_height": 1000,
+        "dom_node_count": 970,
+        "body_text_length": 5,
+        "image_count": 44,
+        "script_count": 3,
+        "link_count": 19,
+        "current_url": "https://bruno-simon.com/",
+        "title": "Bruno's"
+      },
+      "after": {
+        "scroll_y": 0,
+        "viewport_height": 1000,
+        "scroll_height": 1000,
+        "dom_node_count": 970,
+        "body_text_length": 5,
+        "image_count": 44,
+        "script_count": 3,
+        "link_count": 19,
+        "current_url": "https://bruno-simon.com/",
+        "title": "Bruno's"
+      },
+      "deltas": {
+        "height_delta": 0,
+        "dom_delta": 0,
+        "text_delta": 0,
+        "request_delta": 0,
+        "response_delta": 0,
+        "failed_request_delta": 0
+      },
+      "change_flags": {
+        "height_changed": false,
+        "dom_changed": false,
+        "text_changed": false,
+        "network_changed": false,
+        "overall_has_change": false
+      },
+      "state": {
+        "reached_bottom": true,
+        "no_change_count": 2,
+        "stop_reason": null
+      },
+      "snapshot_path": "html/snapshots/snapshot_002.html"
+    },
+    {
+      "index": 3,
+      "timestamp": "2026-10-20T09:40:17.861867+00:00",
+      "before": {
+        "scroll_y": 0,
+        "viewport_height": 1000,
+        "scroll_height": 1000,
+        "dom_node_count": 970,
+        "body_text_length": 5,
+        "image_count": 44,
+        "script_count": 3,
+        "link_count": 19,
+        "current_url": "https://bruno-simon.com/",
+        "title": "Bruno's"
+      },
+      "after": {
+        "scroll_y": 0,
+        "viewport_height": 1000,
+        "scroll_height": 1000,
+        "dom_node_count": 970,
+        "body_text_length": 5,
+        "image_count": 44,
+        "script_count": 3,
+        "link_count": 19,
+        "current_url": "https://bruno-simon.com/",
+        "title": "Bruno's"
+      },
+      "deltas": {
+        "height_delta": 0,
+        "dom_delta": 0,
+        "text_delta": 0,
+        "request_delta": 0,
+        "response_delta": 0,
+        "failed_request_delta": 0
+      },
+      "change_flags": {
+        "height_changed": false,
+        "dom_changed": false,
+        "text_changed": false,
+        "network_changed": false,
+        "overall_has_change": false
+      },
+      "state": {
+        "reached_bottom": true,
+        "no_change_count": 3,
+        "stop_reason": "bottom_no_change"
+      },
+      "snapshot_path": "html/snapshots/snapshot_003.html"
+    }
+  ]
+}

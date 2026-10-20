@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>墨石公寓 · 3D 模型</title>
+<meta name="description" content="墨石公寓的交互式 3D 模型：3 室 2 卫，深色木饰面、白色大理石电视框、隐藏暖光灯带、落地纱帘。太阳位置、日光系数和分层灯光由求解器实时计算。Built with the Machine Skill.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<style>
+  /* Chinese glyphs fall back to Noto; the kit's Latin faces stay first */
+  :root { --serif:'Instrument Serif','Noto Serif SC','Songti SC',Georgia,serif !important; --sans:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif !important }
+  .lab-night { --paper:#0e0f11 !important }
+  html { transition: none }
+  /* page controls in the side column: scene, sheer and finish as rows of small pills */
+  .apt-rows { margin-top: clamp(10px, 2.2vh, 26px); display: grid; gap: .55em; font-size: clamp(11px, .9vw, 16px) }
+  .apt-row { display: grid; grid-template-columns: 3.6em minmax(0, 1fr); align-items: center; gap: .6em; color: var(--mute) }
+  .apt-pills { display: flex; flex-wrap: wrap; gap: .35em }
+  .apt-pills button, .apt-views button { font: inherit; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: .38em .85em; cursor: pointer; transition: background .2s, color .2s, border-color .2s }
+  .apt-pills button:hover, .apt-views button:hover { border-color: var(--faint) }
+  .apt-pills button.act, .apt-views button.act { background: var(--ink); color: var(--paper); border-color: var(--ink) }
+  .apt-pills button:focus-visible, .apt-views button:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px }
+  .apt-views { position: absolute; left: 4.2vw; top: calc(4.2vh + 3.6em); display: flex; gap: .45em; font-size: clamp(11px, .9vw, 16px) }
+  .apt-views span { color: var(--mute); align-self: center; margin-right: .2em }
+  .lab-sub .warm { color: #c98a3a } .lab-night .lab-sub .warm { color: #f0b062 }
+  .lab-sub small { color: var(--mute); font-size: .92em }
+  .apt-tags { position: absolute; inset: 0; pointer-events: none; opacity: 0 }
+  .apt-tags div { position: absolute; left: 0; top: 0; text-align: center; font-size: clamp(11px, .82vw, 15px); color: var(--ink); line-height: 1.3; white-space: nowrap; text-shadow: 0 0 3px var(--paper), 0 0 8px var(--paper), 0 0 14px var(--paper) }
+  .apt-tags b { display: block; font-weight: 600; letter-spacing: .12em }
+  .apt-tags span { color: var(--mute); font-size: .86em; font-variant-numeric: tabular-nums }
+  /* inside the living room the scene runs behind the text: give the column and the pills a frosted ground */
+  .apt-inside .lab-side { background: rgba(243,242,238,.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); padding: 22px 26px 18px; margin-right: -26px; border-radius: 4px; box-shadow: 0 1px 24px rgba(0,0,0,.08) }
+  .apt-inside.lab-night .lab-side { background: rgba(14,15,17,.72) }
+  .apt-inside .apt-views, .apt-inside .lab-modes { background: rgba(243,242,238,.78); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); padding: .4em .5em; border-radius: 999px }
+  .apt-inside.lab-night .apt-views, .apt-inside.lab-night .lab-modes { background: rgba(14,15,17,.62) }
+  .apt-inside .lab-prompt { display: none }
+  .apt-inside .apt-views { top: 4.2vh }
+  @media (max-width: 760px) {
+    .lab-prompt, .lab-no, .lab-title i, .lab-how { display: none !important }
+    .lab-title { font-size: 28px !important }
+    .lab-side { bottom: 108px !important; padding-top: 26px; background: linear-gradient(rgba(243,242,238,0), rgba(243,242,238,.9) 24px) }
+    .lab-night .lab-side { background: linear-gradient(rgba(14,15,17,0), rgba(14,15,17,.9) 24px) }
+    .lab-metric { margin-top: 4px !important }
+    .lab-big { font-size: 42px !important }
+    .lab-sub { font-size: 12px !important }
+    .lab-ctl { margin-top: 2px !important }
+    .lab-ctl input[type=range] { height: 2.1em }
+    .apt-rows { gap: .35em; font-size: 12px }
+    .apt-views { left: 16px; top: 16px; font-size: 12px }
+    .apt-row:nth-child(n+2), .lab-sub small, .lab-ctl .ends { display: none }
+    .lab-title { font-size: 24px !important }
+    .lab-big { font-size: 36px !important }
+    .lab-side { bottom: 96px !important }
+  }
+</style>
+</head>

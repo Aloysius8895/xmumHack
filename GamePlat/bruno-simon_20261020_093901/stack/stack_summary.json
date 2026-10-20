@@ -1,0 +1,24 @@
+{
+  "enabled": true,
+  "detected_frameworks": [],
+  "detected_bundlers": [
+    "Vite"
+  ],
+  "detected_styling": [],
+  "detected_api_styles": [
+    "REST"
+  ],
+  "detected_rendering": [
+    "SSR",
+    "CSR",
+    "SPA"
+  ],
+  "top_confidence": {
+    "framework": null,
+    "confidence": 0.0
+  },
+  "notes": [
+    "Detection is heuristic and may be incomplete.",
+    "No new URLs or sourcemaps were actively requested."
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "report_path": "report/report.md",
+  "generated_at": "2026-10-20T09:40:45.962061+00:00",
+  "sections": [
+    "Target Overview",
+    "Screenshots and HTML",
+    "Auto Interaction",
+    "Network Summary",
+    "Response Body Capture",
+    "Scroll Analysis",
+    "Asset Summary",
+    "API Summary",
+    "Frontend Stack Detection",
+    "Saved Files",
+    "Limitations and Notes"
+  ],
+  "source_files_found": {
+    "summary": true,
+    "network_summary": true,
+    "requests": true,
+    "responses": true,
+    "failed_requests": true,
+    "scroll_summary": true,
+    "interaction_summary": true,
+    "interaction_candidates": true,
+    "asset_summary": true,
+    "scripts": true,
+    "stylesheets": true,
+    "images": true,
+    "fonts": true,
+    "media": true,
+    "documents": true,
+    "sourcemaps": true,
+    "api_summary": true,
+    "api_calls": true,
+    "rest_candidates": true,
+    "graphql_candidates": true,
+    "json_responses": true,
+    "stack_summary": true,
+    "stack_detection": true
+  },
+  "warnings": []
+}

@@ -1,0 +1,69 @@
+{
+  "enabled": true,
+  "total_assets": 86,
+  "scripts": 13,
+  "stylesheets": 2,
+  "images": 25,
+  "fonts": 3,
+  "media": 42,
+  "documents": 1,
+  "sourcemaps": 0,
+  "others": 63,
+  "saved_bodies": {
+    "scripts": 13,
+    "stylesheets": 2,
+    "documents": 1
+  },
+  "largest_assets": [
+    {
+      "url": "https://bruno-simon.com/assets/index-ORr3L4no.js",
+      "body_size_bytes": 4858337,
+      "type": "script"
+    },
+    {
+      "url": "https://www.googletagmanager.com/gtag/js?id=G-JMSN30BQ5J",
+      "body_size_bytes": 474708,
+      "type": "script"
+    },
+    {
+      "url": "https://bruno-simon.com/assets/rapier-BmPn8Tpt.js",
+      "body_size_bytes": 229923,
+      "type": "script"
+    },
+    {
+      "url": "https://bruno-simon.com/sounds/magic/Mountain%20Audio%20-%20Small%20Chimes%20-%20Loop.mp3",
+      "body_size_bytes": 155057,
+      "type": "media"
+    },
+    {
+      "url": "https://bruno-simon.com/sounds/magic/Ghostly%20Whisper%20Background%20Loop%209.mp3",
+      "body_size_bytes": 149337,
+      "type": "media"
+    },
+    {
+      "url": "https://bruno-simon.com/sounds/vehicle/floor/wheels-on-pebbles-road.mp3",
+      "body_size_bytes": 147735,
+      "type": "media"
+    },
+    {
+      "url": "https://bruno-simon.com/sounds/mecanism/05947%20light%20wooden%20cart%20riding%20on%20cobblestone%20-%20looping.mp3",
+      "body_size_bytes": 124549,
+      "type": "media"
+    },
+    {
+      "url": "https://bruno-simon.com/sounds/circuit/applause/huge%20win.mp3",
+      "body_size_bytes": 118132,
+      "type": "media"
+    },
+    {
+      "url": "https://bruno-simon.com/sounds/thunder/distant/Thunder32GentleCr%20SIG014001.mp3",
+      "body_size_bytes": 117271,
+      "type": "media"
+    },
+    {
+      "url": "https://bruno-simon.com/sounds/vehicle/energy/Energy_-_force_field_8_loop.mp3",
+      "body_size_bytes": 112724,
+      "type": "media"
+    }
+  ]
+}

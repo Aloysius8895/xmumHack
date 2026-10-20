@@ -1,0 +1,67 @@
+[
+  {
+    "attempt_index": 0,
+    "order": 1,
+    "tag": "button",
+    "type": "",
+    "role": "",
+    "text": "",
+    "aria_label": "",
+    "id": "",
+    "class_name": "js-map-trigger map-trigger",
+    "href": "",
+    "target": "",
+    "score": 10,
+    "actionable": false,
+    "reasons": [
+      "overlay_context"
+    ],
+    "reject_reasons": [
+      "pointer_events_none"
+    ],
+    "has_overlay_ancestor": true,
+    "has_fixed_ancestor": true,
+    "visible": true,
+    "opacity": 1,
+    "pointer_events": "none",
+    "rect": {
+      "x": 1396,
+      "y": 70,
+      "width": 44,
+      "height": 44
+    }
+  },
+  {
+    "attempt_index": 0,
+    "order": 0,
+    "tag": "button",
+    "type": "",
+    "role": "",
+    "text": "",
+    "aria_label": "",
+    "id": "",
+    "class_name": "js-menu-trigger menu-trigger",
+    "href": "",
+    "target": "",
+    "score": -25,
+    "actionable": false,
+    "reasons": [
+      "low_value_keyword:menu",
+      "overlay_context"
+    ],
+    "reject_reasons": [
+      "pointer_events_none"
+    ],
+    "has_overlay_ancestor": true,
+    "has_fixed_ancestor": true,
+    "visible": true,
+    "opacity": 1,
+    "pointer_events": "none",
+    "rect": {
+      "x": 1396,
+      "y": 20,
+      "width": 44,
+      "height": 44
+    }
+  }
+]

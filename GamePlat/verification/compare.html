@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>原站 / 本地 对比</title>
+<style>
+  body { margin: 0; padding: 16px; font: 14px/1.5 system-ui, sans-serif; background: #161016; color: #eee; }
+  h1 { font-size: 18px; margin: 0 0 16px; }
+  h2 { font-size: 15px; margin: 24px 0 8px; color: #e9b3ff; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  figure { margin: 0; }
+  figcaption { color: #aaa; margin-bottom: 4px; }
+  img { width: 100%; display: block; border: 1px solid #3a2a3a; background: #000; }
+  .mobile img { max-width: 390px; }
+</style>
+</head>
+<body>
+<h1>bruno-simon.com：原站（左）与本地离线镜像（右）</h1>
+<div id="list"></div>
+<h2>手机 390×844（本地）</h2>
+<div class="row mobile">
+  <figure><figcaption>intro</figcaption><img src="local-mobile-01-intro.png" alt=""></figure>
+  <figure><figcaption>tap to start</figcaption><img src="local-mobile-02-started.png" alt=""></figure>
+</div>
+<script>
+  const steps = ['01-intro', '02-started', '03-driving', '04-menu', '05-map']
+  document.getElementById('list').innerHTML = steps.map(s => `
+    <h2>${s}</h2>
+    <div class="row">
+      <figure><figcaption>原站</figcaption><img src="original-desktop-${s}.png" alt=""></figure>
+      <figure><figcaption>本地</figcaption><img src="local-desktop-${s}.png" alt=""></figure>
+    </div>`).join('')
+</script>
+</body>
+</html>

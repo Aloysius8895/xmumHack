@@ -1,0 +1,165 @@
+{
+  "frameworks": {
+    "nextjs": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "nuxt": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "react": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "vue": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "angular": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "svelte": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "astro": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "remix": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    }
+  },
+  "bundlers": {
+    "webpack": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "vite": {
+      "detected": true,
+      "confidence": 0.7,
+      "evidence": [
+        "Script URL contains /assets/index-",
+        "Module script uses /assets/ path"
+      ]
+    },
+    "rollup": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "parcel": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    }
+  },
+  "styling": {
+    "tailwind": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "bootstrap": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "ant_design": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "material_ui": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "chakra_ui": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "emotion": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "styled_components": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    }
+  },
+  "api_style": {
+    "rest": {
+      "detected": true,
+      "confidence": 0.9,
+      "evidence": [
+        "Phase 5 found 127 REST candidates",
+        "API calls use common REST methods"
+      ]
+    },
+    "graphql": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "json_api": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "trpc_candidate": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    }
+  },
+  "rendering": {
+    "ssr": {
+      "detected": true,
+      "confidence": 0.4,
+      "evidence": [
+        "Initial HTML has meaningful body text"
+      ]
+    },
+    "csr": {
+      "detected": true,
+      "confidence": 0.5,
+      "evidence": [
+        "Final HTML has significantly more text than initial HTML",
+        "Page loads many JavaScript assets"
+      ]
+    },
+    "ssg": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "hydration": {
+      "detected": false,
+      "confidence": 0.0,
+      "evidence": []
+    },
+    "spa": {
+      "detected": true,
+      "confidence": 0.2,
+      "evidence": [
+        "Page loads many JavaScript assets"
+      ]
+    }
+  }
+}

@@ -1,0 +1,2781 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>墨石公寓 · 3D 模型</title>
+<meta name="description" content="墨石公寓的交互式 3D 模型：3 室 2 卫，深色木饰面、白色大理石电视框、隐藏暖光灯带、落地纱帘。太阳位置、日光系数和分层灯光由求解器实时计算。Built with the Machine Skill.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<style>
+  /* Chinese glyphs fall back to Noto; the kit's Latin faces stay first */
+  :root { --serif:'Instrument Serif','Noto Serif SC','Songti SC',Georgia,serif !important; --sans:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif !important }
+  .lab-night { --paper:#0e0f11 !important }
+  html { transition: none }
+  /* page controls in the side column: scene, sheer and finish as rows of small pills */
+  .apt-rows { margin-top: clamp(10px, 2.2vh, 26px); display: grid; gap: .55em; font-size: clamp(11px, .9vw, 16px) }
+  .apt-row { display: grid; grid-template-columns: 3.6em minmax(0, 1fr); align-items: center; gap: .6em; color: var(--mute) }
+  .apt-pills { display: flex; flex-wrap: wrap; gap: .35em }
+  .apt-pills button, .apt-views button { font: inherit; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: .38em .85em; cursor: pointer; transition: background .2s, color .2s, border-color .2s }
+  .apt-pills button:hover, .apt-views button:hover { border-color: var(--faint) }
+  .apt-pills button.act, .apt-views button.act { background: var(--ink); color: var(--paper); border-color: var(--ink) }
+  .apt-pills button:focus-visible, .apt-views button:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px }
+  .apt-views { position: absolute; left: 4.2vw; top: calc(4.2vh + 3.6em); display: flex; gap: .45em; font-size: clamp(11px, .9vw, 16px) }
+  .apt-views span { color: var(--mute); align-self: center; margin-right: .2em }
+  .lab-sub .warm { color: #c98a3a } .lab-night .lab-sub .warm { color: #f0b062 }
+  .lab-sub small { color: var(--mute); font-size: .92em }
+  .apt-tags { position: absolute; inset: 0; pointer-events: none; opacity: 0 }
+  .apt-tags div { position: absolute; left: 0; top: 0; text-align: center; font-size: clamp(11px, .82vw, 15px); color: var(--ink); line-height: 1.3; white-space: nowrap; text-shadow: 0 0 3px var(--paper), 0 0 8px var(--paper), 0 0 14px var(--paper) }
+  .apt-tags b { display: block; font-weight: 600; letter-spacing: .12em }
+  .apt-tags span { color: var(--mute); font-size: .86em; font-variant-numeric: tabular-nums }
+  /* inside the living room the scene runs behind the text: give the column and the pills a frosted ground */
+  .apt-inside .lab-side { background: rgba(243,242,238,.82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); padding: 22px 26px 18px; margin-right: -26px; border-radius: 4px; box-shadow: 0 1px 24px rgba(0,0,0,.08) }
+  .apt-inside.lab-night .lab-side { background: rgba(14,15,17,.72) }
+  .apt-inside .apt-views, .apt-inside .lab-modes { background: rgba(243,242,238,.78); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); padding: .4em .5em; border-radius: 999px }
+  .apt-inside.lab-night .apt-views, .apt-inside.lab-night .lab-modes { background: rgba(14,15,17,.62) }
+  .apt-inside .lab-prompt { display: none }
+  .apt-inside .apt-views { top: 4.2vh }
+  @media (max-width: 760px) {
+    .lab-prompt, .lab-no, .lab-title i, .lab-how { display: none !important }
+    .lab-title { font-size: 28px !important }
+    .lab-side { bottom: 108px !important; padding-top: 26px; background: linear-gradient(rgba(243,242,238,0), rgba(243,242,238,.9) 24px) }
+    .lab-night .lab-side { background: linear-gradient(rgba(14,15,17,0), rgba(14,15,17,.9) 24px) }
+    .lab-metric { margin-top: 4px !important }
+    .lab-big { font-size: 42px !important }
+    .lab-sub { font-size: 12px !important }
+    .lab-ctl { margin-top: 2px !important }
+    .lab-ctl input[type=range] { height: 2.1em }
+    .apt-rows { gap: .35em; font-size: 12px }
+    .apt-views { left: 16px; top: 16px; font-size: 12px }
+    .apt-row:nth-child(n+2), .lab-sub small, .lab-ctl .ends { display: none }
+    .lab-title { font-size: 24px !important }
+    .lab-big { font-size: 36px !important }
+    .lab-side { bottom: 96px !important }
+  }
+</style>
+</head>
+<body>
+<!-- lab-kit:start -->
+<script type="module">
+// Machine Skill kit: the runtime every machine page is built on.
+// One ES module. Paste it verbatim into the first <script type="module"> of a page
+// (scripts/inline.mjs does that), or import it. It needs the import map from
+// kit/template.html (three@0.170.0 from jsDelivr). MIT licence, see LICENSE.
+//
+// What it gives a machine page, so every output has the same polish:
+//   studio      paper or night seamless, softbox environment, soft key shadow, contact shadow, GTAO, bloom, grade
+//   materials   physically based metals, paints, polymers, glass, all with section caps and wear
+//   geometry    lathe solids, shells, gears, blade rings, pipes, bolt circles, springs, rounded boxes
+//   modes       explode, cutaway (half or quarter, real caps), x-ray, slow motion, labels, break it
+//   editorial   prompt bar, serif title, one huge live number with a thin bar, readouts, controls, beat captions
+//   effects     sparks, debris, flow particles along paths, exhaust plumes with shock diamonds, heat glow
+//   film        ?film=1&shot=name : deterministic clock, camera timeline, cursor, captions, window.__film
+
+import * as THREE from 'three'
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js'
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js'
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js'
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
+import { HorizontalBlurShader } from 'three/addons/shaders/HorizontalBlurShader.js'
+import { VerticalBlurShader } from 'three/addons/shaders/VerticalBlurShader.js'
+import * as BGU from 'three/addons/utils/BufferGeometryUtils.js'
+
+export { THREE }
+export const LAYER_FX = 1 // transparent effects: kept out of the AO and contact shadow passes
+
+// ---------------------------------------------------------------- math
+
+export const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x))
+export const lerp = (a, b, t) => a + (b - a) * t
+export const smoothstep = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t) }
+export const ease = {
+  lin: (t) => t,
+  io: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+  in: (t) => t * t * t,
+  out: (t) => 1 - Math.pow(1 - t, 3),
+  expo: (t) => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t),
+  back: (t) => { const c = 1.4; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2) },
+}
+/** first order lag toward target with time constant tau (s): spool-up, thermal mass, filters */
+export const approach = (v, target, tau, dt) => target + (v - target) * Math.exp(-dt / Math.max(1e-6, tau))
+/** piecewise linear table lookup: xs ascending */
+export function table(xs, ys, x) {
+  if (x <= xs[0]) return ys[0]
+  for (let i = 1; i < xs.length; i++) if (x <= xs[i]) return lerp(ys[i - 1], ys[i], (x - xs[i - 1]) / (xs[i] - xs[i - 1]))
+  return ys[ys.length - 1]
+}
+/** one RK4 step of dy/dt = f(t, y) for an array state */
+export function rk4(f, t, y, h) {
+  const add = (a, b, k) => a.map((v, i) => v + b[i] * k)
+  const k1 = f(t, y), k2 = f(t + h / 2, add(y, k1, h / 2)), k3 = f(t + h / 2, add(y, k2, h / 2)), k4 = f(t + h, add(y, k3, h))
+  return y.map((v, i) => v + (h / 6) * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]))
+}
+/** number formatting with thin grouping: fmt(144712) = "144,712", fmt(3.14159, 2) = "3.14" */
+export function fmt(v, digits = 0) {
+  if (!isFinite(v)) return '--'
+  return v.toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits })
+}
+/** seeded random, so films are deterministic */
+export function rng(seed = 1) { let s = seed >>> 0 || 1; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296 } }
+/** blackbody colour (approximate, linear rgb) for a temperature in kelvin */
+export function blackbody(T) {
+  const t = clamp(T, 800, 12000) / 100
+  let r, g, b
+  if (t <= 66) { r = 255; g = 99.47 * Math.log(t) - 161.12; b = t <= 19 ? 0 : 138.52 * Math.log(t - 10) - 305.04 }
+  else { r = 329.7 * Math.pow(t - 60, -0.1332); g = 288.12 * Math.pow(t - 60, -0.0755); b = 255 }
+  return new THREE.Color(clamp(r / 255), clamp(g / 255), clamp(b / 255)).convertSRGBToLinear()
+}
+
+// ---------------------------------------------------------------- procedural textures
+
+function canvasTex(size, draw, { repeat = [1, 1], color = false } = {}) {
+  const c = document.createElement('canvas'); c.width = c.height = size
+  const g = c.getContext('2d'); draw(g, size)
+  const t = new THREE.CanvasTexture(c)
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(repeat[0], repeat[1]); t.anisotropy = 8
+  t.colorSpace = color ? THREE.SRGBColorSpace : THREE.NoColorSpace
+  return t
+}
+const TEX = {}
+function tex(kind) {
+  if (TEX[kind]) return TEX[kind]
+  const R = rng(kind.length * 977)
+  const S = 512
+  const make = {
+    // turning marks: fine rings along v (lathe u wraps around the axis, so rings run circumferentially)
+    turned: (g) => { g.fillStyle = '#808080'; g.fillRect(0, 0, S, S); for (let y = 0; y < S; y++) { const v = 112 + R() * 40 + Math.sin(y * 0.9) * 10; g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(0, y, S, 1) } },
+    // brushed: long streaks along u
+    brushed: (g) => { g.fillStyle = '#7a7a7a'; g.fillRect(0, 0, S, S); for (let i = 0; i < 2600; i++) { const v = 90 + R() * 80; g.fillStyle = `rgba(${v},${v},${v},0.35)`; g.fillRect(R() * S, R() * S, 30 + R() * 220, 1) } },
+    // cast / bead blasted: soft blotches plus grain
+    cast: (g) => { g.fillStyle = '#808080'; g.fillRect(0, 0, S, S); for (let i = 0; i < 380; i++) { const v = 100 + R() * 60, r = 6 + R() * 40; const gr = g.createRadialGradient(0, 0, 0, 0, 0, r); gr.addColorStop(0, `rgba(${v},${v},${v},0.25)`); gr.addColorStop(1, 'rgba(128,128,128,0)'); g.save(); g.translate(R() * S, R() * S); g.fillStyle = gr; g.fillRect(-r, -r, 2 * r, 2 * r); g.restore() } const d = g.getImageData(0, 0, S, S); for (let i = 0; i < d.data.length; i += 4) { const n = (R() - 0.5) * 26; d.data[i] += n; d.data[i + 1] += n; d.data[i + 2] += n } g.putImageData(d, 0, 0) },
+    // carbon twill weave (colour)
+    carbon: (g) => { const n = 16, w = S / n; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { const on = ((i + j) >> 1) % 2 === 0; const gr = on ? g.createLinearGradient(i * w, 0, i * w + w, 0) : g.createLinearGradient(0, j * w, 0, j * w + w); gr.addColorStop(0, '#0d0e10'); gr.addColorStop(0.5, on ? '#3a3d42' : '#2a2c30'); gr.addColorStop(1, '#0d0e10'); g.fillStyle = gr; g.fillRect(i * w, j * w, w, w) } },
+    // knurl diamonds (bump)
+    knurl: (g) => { g.fillStyle = '#000'; g.fillRect(0, 0, S, S); g.strokeStyle = '#fff'; g.lineWidth = 6; for (let i = -S; i < 2 * S; i += 24) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i + S, S); g.stroke(); g.beginPath(); g.moveTo(i, S); g.lineTo(i + S, 0); g.stroke() } },
+    // smudges and dust for glossy parts
+    smudge: (g) => { g.fillStyle = '#4a4a4a'; g.fillRect(0, 0, S, S); for (let i = 0; i < 90; i++) { const r = 10 + R() * 60, v = 70 + R() * 50; const gr = g.createRadialGradient(0, 0, 0, 0, 0, r); gr.addColorStop(0, `rgba(${v},${v},${v},0.3)`); gr.addColorStop(1, 'rgba(74,74,74,0)'); g.save(); g.translate(R() * S, R() * S); g.scale(1, 0.4 + R()); g.fillStyle = gr; g.fillRect(-r, -r, 2 * r, 2 * r); g.restore() } },
+  }[kind]
+  TEX[kind] = canvasTex(S, make, { color: kind === 'carbon' })
+  return TEX[kind]
+}
+
+// ---------------------------------------------------------------- materials with section caps
+
+const CUT = {
+  a: { value: new THREE.Vector4(0, 0, -1, 1e5) }, // removed where dot(n,p)+w < 0 for both planes
+  b: { value: new THREE.Vector4(0, 0, -1, 1e5) },
+  proj: { value: new THREE.Matrix4() },
+  hatch: { value: 0.012 },
+}
+const ALL_MATS = new Set()
+/** section face style: 'red' (museum cutaway paint, the default) or 'metal' (the freshly machined material). Set before creating materials: setCaps('metal') */
+const CAPS = { style: 'red', red: new THREE.Color(0.56, 0.085, 0.045) }
+export function setCaps(style, color) { CAPS.style = style; if (color) CAPS.red = col(color) }
+
+/**
+ * Patch a standard or physical material so that, while a section cut is open, the back faces
+ * seen through the opening are drawn as a flat machined cap on the cut plane: plane normal,
+ * plane depth, the cap colour and a faint hatch. Every solid stays closed, no cap geometry.
+ */
+function capPatch(m, capColor, capRough = 0.38, capMetal = null) {
+  m.userData.capColor = new THREE.Color(capColor)
+  const uCap = { value: m.userData.capColor }
+  const uCapR = { value: capRough }
+  const uCapM = { value: capMetal ?? m.metalness }
+  m.onBeforeCompile = (sh) => {
+    sh.uniforms.uCutA = CUT.a; sh.uniforms.uCutB = CUT.b; sh.uniforms.uCutProj = CUT.proj; sh.uniforms.uHatch = CUT.hatch
+    sh.uniforms.uCapColor = uCap; sh.uniforms.uCapRough = uCapR; sh.uniforms.uCapMetal = uCapM
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vLabW;')
+      .replace('#include <project_vertex>', `#include <project_vertex>
+      { vec4 lw = vec4(transformed, 1.0);
+        #ifdef USE_INSTANCING
+        lw = instanceMatrix * lw;
+        #endif
+        vLabW = (modelMatrix * lw).xyz; }`)
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', `#include <common>
+      varying vec3 vLabW;
+      uniform vec4 uCutA; uniform vec4 uCutB; uniform mat4 uCutProj; uniform float uHatch;
+      uniform vec3 uCapColor; uniform float uCapRough; uniform float uCapMetal;
+      void labClip(vec4 P, vec3 ro, vec3 rd, inout float t0, inout float t1, inout int id, int k) {
+        float dn = dot(P.xyz, rd), d0 = dot(P.xyz, ro) + P.w;
+        if (abs(dn) < 1e-8) { if (d0 >= 0.0) { t0 = 1.0; t1 = 0.0; } return; }
+        float th = -d0 / dn;
+        if (dn > 0.0) { if (th < t1) { t1 = th; id = k; } } else t0 = max(t0, th);
+      }`)
+      .replace('#include <clipping_planes_fragment>', `#include <clipping_planes_fragment>
+      // a back face of a closed solid is only ever seen through the opening the cut made: shade it as the
+      // section face (plane normal, cap colour) at its own depth, so ordinary depth testing keeps it honest
+      bool labCap = false; vec3 labHit = vLabW; vec3 labN = uCutA.xyz;
+      if (!gl_FrontFacing && uCutA.w < 1e4) {
+        labCap = true;
+        vec3 ro = cameraPosition, toF = vLabW - ro; float tf = length(toF); vec3 rd = toF / max(tf, 1e-6);
+        float t0 = 0.0, t1 = 1e9; int id = -1;
+        labClip(uCutA, ro, rd, t0, t1, id, 0); labClip(uCutB, ro, rd, t0, t1, id, 1);
+        if (id == 1) labN = uCutB.xyz;
+        else if (id < 0) labN = abs(dot(uCutA.xyz, vLabW) + uCutA.w) < abs(dot(uCutB.xyz, vLabW) + uCutB.w) ? uCutA.xyz : uCutB.xyz;
+        labHit = vLabW - labN * (dot(labN, vLabW) + (id == 1 ? uCutB.w : uCutA.w));
+      }`)
+      .replace('#include <color_fragment>', `#include <color_fragment>
+      if (labCap) {
+        float hs = dot(labHit, vec3(0.7071, 0.7071, 0.0)) / uHatch;
+        float hl = smoothstep(0.0, 0.08, abs(fract(hs) - 0.5) - 0.42);
+        diffuseColor.rgb = uCapColor * (0.94 + 0.06 * hl);
+      }`)
+      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nif (labCap) roughnessFactor = uCapRough;')
+      .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>\nif (labCap) metalnessFactor = uCapMetal;')
+      .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+      if (labCap) { vec3 nw = normalize(-labN); normal = normalize((viewMatrix * vec4(nw, 0.0)).xyz); if (dot(normal, normalize(vViewPosition)) > 0.0) normal = -normal; }`)
+    if (m.userData.extraShader) m.userData.extraShader(sh)
+  }
+  m.customProgramCacheKey = () => 'labcap' + (m.userData.extraKey || '')
+  m.side = THREE.DoubleSide
+  m.shadowSide = THREE.FrontSide
+  m.clippingPlanes = LAB_PLANES
+  m.clipIntersection = true
+  m.clipShadows = true
+  ALL_MATS.add(m)
+  return m
+}
+const LAB_PLANES = [new THREE.Plane(new THREE.Vector3(0, 0, -1), 1e5), new THREE.Plane(new THREE.Vector3(0, 0, -1), 1e5)]
+
+/**
+ * Material library. Base colours are measured linear reflectances for metals (F0) and
+ * albedos for dielectrics, so steel looks like steel next to titanium next to copper.
+ * Every preset takes overrides: any MeshPhysicalMaterial field plus
+ *   finish: 'turned' | 'brushed' | 'cast' | 'smudge' | 'knurl' | null   (micro roughness texture)
+ *   rep: [u, v] texture repeat     cap: cap colour     noCap: true for open shells and glass
+ */
+export const MAT = {
+  steel: (o) => mat({ color: [0.56, 0.57, 0.58], metalness: 1, roughness: 0.3, finish: 'turned', ...o }),
+  steelDark: (o) => mat({ color: [0.24, 0.245, 0.25], metalness: 1, roughness: 0.42, finish: 'cast', ...o }),
+  stainless: (o) => mat({ color: [0.67, 0.66, 0.64], metalness: 1, roughness: 0.2, finish: 'brushed', ...o }),
+  chrome: (o) => mat({ color: [0.78, 0.79, 0.8], metalness: 1, roughness: 0.06, finish: null, ...o }),
+  aluminium: (o) => mat({ color: [0.88, 0.89, 0.9], metalness: 1, roughness: 0.38, finish: 'cast', ...o }),
+  aluminiumMachined: (o) => mat({ color: [0.9, 0.9, 0.91], metalness: 1, roughness: 0.22, finish: 'turned', ...o }),
+  anodised: (o) => mat({ color: o?.color ?? [0.08, 0.09, 0.1], metalness: 0.85, roughness: 0.34, finish: 'cast', clearcoat: 0.2, ...o }),
+  titanium: (o) => mat({ color: [0.54, 0.5, 0.45], metalness: 1, roughness: 0.32, finish: 'brushed', ...o }),
+  inconel: (o) => mat({ color: [0.47, 0.44, 0.41], metalness: 1, roughness: 0.42, finish: 'cast', ...o }),
+  copper: (o) => mat({ color: [0.95, 0.64, 0.54], metalness: 1, roughness: 0.28, finish: 'turned', ...o }),
+  brass: (o) => mat({ color: [0.91, 0.78, 0.42], metalness: 1, roughness: 0.24, finish: 'turned', ...o }),
+  gold: (o) => mat({ color: [1.0, 0.77, 0.34], metalness: 1, roughness: 0.18, finish: 'brushed', ...o }),
+  bluedSteel: (o) => mat({ color: [0.08, 0.16, 0.5], metalness: 1, roughness: 0.16, finish: null, ...o }),
+  castIron: (o) => mat({ color: [0.3, 0.3, 0.3], metalness: 0.9, roughness: 0.62, finish: 'cast', ...o }),
+  paint: (o) => mat({ color: o?.color ?? [0.8, 0.8, 0.8], metalness: 0, roughness: 0.32, clearcoat: 0.6, clearcoatRoughness: 0.2, finish: 'smudge', ...o }),
+  satin: (o) => mat({ color: o?.color ?? [0.04, 0.04, 0.045], metalness: 0, roughness: 0.55, finish: 'cast', ...o }),
+  plastic: (o) => mat({ color: o?.color ?? [0.05, 0.05, 0.055], metalness: 0, roughness: 0.42, finish: 'cast', ...o }),
+  rubber: (o) => mat({ color: [0.025, 0.025, 0.027], metalness: 0, roughness: 0.82, finish: 'cast', ...o }),
+  ceramic: (o) => mat({ color: [0.82, 0.8, 0.76], metalness: 0, roughness: 0.5, finish: 'cast', ...o }),
+  carbon: (o) => mat({ color: [1, 1, 1], map: tex('carbon'), metalness: 0.2, roughness: 0.36, clearcoat: 1, clearcoatRoughness: 0.05, finish: null, rep: [6, 6], ...o }),
+  glass: (o) => mat({ color: [1, 1, 1], metalness: 0, roughness: 0.03, transmission: 1, thickness: 0.004, ior: 1.5, transparent: true, finish: null, noCap: true, ...o }),
+  sapphire: (o) => mat({ color: [0.96, 0.97, 1], metalness: 0, roughness: 0.0, transmission: 1, thickness: 0.002, ior: 1.77, transparent: true, finish: null, noCap: true, ...o }),
+  ruby: (o) => mat({ color: [0.9, 0.08, 0.15], metalness: 0, roughness: 0.05, transmission: 0.6, thickness: 0.001, ior: 1.77, finish: null, ...o }),
+  enamel: (o) => mat({ color: [0.93, 0.92, 0.88], metalness: 0, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.03, finish: null, ...o }),
+  fluid: (o) => mat({ color: o?.color ?? [0.3, 0.12, 0.05], metalness: 0, roughness: 0.08, clearcoat: 1, finish: null, ...o }),
+  glow: (o) => mat({ color: [0, 0, 0], emissive: o?.emissive ?? [1, 0.5, 0.15], emissiveIntensity: o?.emissiveIntensity ?? 4, metalness: 0, roughness: 1, finish: null, ...o }),
+}
+
+function col(c) { return Array.isArray(c) ? new THREE.Color(c[0], c[1], c[2]) : new THREE.Color(c) }
+
+/** build a material from a preset description (see MAT) */
+export function mat(o) {
+  const { finish, rep, cap, noCap, capRough, color, emissive, ...rest } = o
+  const m = new THREE.MeshPhysicalMaterial({ ...rest })
+  m.color = col(color ?? [0.8, 0.8, 0.8])
+  if (emissive !== undefined) m.emissive = col(emissive)
+  if (finish) {
+    const t = tex(finish).clone(); t.needsUpdate = true
+    t.repeat.set(...(rep ?? (finish === 'turned' ? [1, 24] : finish === 'brushed' ? [2, 6] : [3, 3])))
+    m.roughnessMap = t
+    if (finish === 'knurl') { m.bumpMap = t; m.bumpScale = 0.6 }
+  }
+  m.envMapIntensity = rest.envMapIntensity ?? 1
+  if (noCap) {
+    m.side = THREE.FrontSide
+    m.clippingPlanes = LAB_PLANES; m.clipIntersection = true; m.clipShadows = true
+    ALL_MATS.add(m)
+    return m
+  }
+  // cap colour: freshly machined face of the same material, a touch brighter and smoother
+  const metalCap = m.metalness > 0.5 ? m.color.clone().lerp(new THREE.Color(0.8, 0.8, 0.8), 0.35) : m.color.clone().multiplyScalar(0.9)
+  const capC = cap !== undefined ? col(cap) : CAPS.style === 'metal' ? metalCap : CAPS.red.clone()
+  return capPatch(m, capC, capRough ?? (CAPS.style === 'metal' ? 0.36 : 0.55), CAPS.style === 'metal' && m.metalness > 0.5 ? 1 : 0)
+}
+
+/**
+ * Heat tint: emissive glow from a temperature attribute or a uniform, blackbody coloured.
+ * Use for nozzles, turbine blades, brake discs: m.userData.heat.value = kelvin
+ */
+export function heatGlow(m, T0 = 900) {
+  const uT = { value: T0 }
+  m.userData.heat = uT
+  m.userData.extraKey = 'heat'
+  m.userData.extraShader = (sh) => {
+    sh.uniforms.uHeatT = uT
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nuniform float uHeatT;')
+      .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+      { float T = uHeatT; float k = smoothstep(750.0, 1600.0, T);
+        float t = clamp(T, 800.0, 6000.0) / 100.0;
+        vec3 bb = vec3(1.0, clamp((99.47 * log(t) - 161.12) / 255.0, 0.0, 1.0), t <= 19.0 ? 0.0 : clamp((138.52 * log(t - 10.0) - 305.04) / 255.0, 0.0, 1.0));
+        bb = pow(bb, vec3(2.2));
+        if (!labCap) totalEmissiveRadiance += bb * k * k * 6.0; }`)
+  }
+  m.needsUpdate = true
+  return m
+}
+
+// ---------------------------------------------------------------- geometry
+
+export const GEO = {
+  /**
+   * closed solid of revolution around +Y from [r, y] points (a closed profile; the last point joins the first).
+   * Any winding works (it is made counter clockwise so faces point out), and corners sharper than
+   * `crease` degrees stay crisp while gentle curves shade smooth.
+   */
+  lathe(pts, seg = 96, { crease = 32, phi0 = 0, phiLen = Math.PI * 2 } = {}) {
+    let p = pts.map(([r, y]) => new THREE.Vector2(Math.max(0, r), y))
+    if (p[0].distanceTo(p[p.length - 1]) < 1e-9) p.pop()
+    let area = 0; for (let i = 0; i < p.length; i++) { const a = p[i], b = p[(i + 1) % p.length]; area += a.x * b.y - b.x * a.y }
+    if (area < 0) p.reverse()
+    // start at a crease (the open start and end of the profile then shade separately, as they should),
+    // and duplicate every other crease point so each side gets its own normal (zero length segments add no area)
+    const cosT = Math.cos(THREE.MathUtils.degToRad(crease)), n0 = p.length
+    const isCrease = (i) => { const a = p[(i - 1 + n0) % n0], b = p[i], c = p[(i + 1) % n0]; return b.clone().sub(a).normalize().dot(c.clone().sub(b).normalize()) < cosT }
+    let s0 = 0; for (let i = 0; i < n0; i++) if (isCrease(i)) { s0 = i; break }
+    p = [...p.slice(s0), ...p.slice(0, s0)]
+    const out = [p[0].clone()]
+    for (let i = 1; i < n0; i++) { out.push(p[i].clone()); if (isCrease(i)) out.push(p[i].clone()) }
+    out.push(p[0].clone())
+    const g = new THREE.LatheGeometry(out, seg, phi0, phiLen)
+    g.computeVertexNormals()
+    if (phiLen >= Math.PI * 2 - 1e-6) {
+      // weld the seam normals
+      const n = g.attributes.normal, P = out.length
+      for (let j = 0; j < P; j++) { const a = j, b = seg * P + j; const v = new THREE.Vector3(n.getX(a) + n.getX(b), n.getY(a) + n.getY(b), n.getZ(a) + n.getZ(b)).normalize(); n.setXYZ(a, v.x, v.y, v.z); n.setXYZ(b, v.x, v.y, v.z) }
+    }
+    return g
+  },
+  /**
+   * a wall of thickness t following an open profile [[r, y], ...] (a nozzle, a casing, a cowl):
+   * the outer line, then the same line offset inward, closed at both ends. Real solids cut cleanly.
+   */
+  shell(pts, t, seg = 96, inward = true) {
+    const out = pts.map((p) => new THREE.Vector2(p[0], p[1]))
+    const inn = out.map((p, i) => {
+      const a = out[Math.max(0, i - 1)], b = out[Math.min(out.length - 1, i + 1)]
+      const tx = b.x - a.x, ty = b.y - a.y, l = Math.hypot(tx, ty) || 1
+      const nx = ty / l, ny = -tx / l // outward normal for a profile running in +y
+      const s = inward ? -1 : 1
+      return new THREE.Vector2(Math.max(0, p.x + s * nx * t), p.y + s * ny * t)
+    })
+    return GEO.lathe([...out.map((v) => [v.x, v.y]), ...inn.reverse().map((v) => [v.x, v.y])], seg)
+  },
+  /** hollow cylinder along +Y */
+  tube(rOut, rIn, h, seg = 96, y0 = -h / 2) {
+    return GEO.lathe([[rIn, y0], [rOut, y0], [rOut, y0 + h], [rIn, y0 + h]], seg)
+  },
+  /** cylinder with chamfered edges along +Y */
+  disc(r, h, ch = Math.min(r, h) * 0.08, seg = 96, rIn = 0) {
+    return GEO.lathe([[rIn, -h / 2], [r - ch, -h / 2], [r, -h / 2 + ch], [r, h / 2 - ch], [r - ch, h / 2], [rIn, h / 2]], seg)
+  },
+  rbox(w, h, d, r = Math.min(w, h, d) * 0.08, s = 4) { return new RoundedBoxGeometry(w, h, d, s, r) },
+  /** spur or helical gear around +Z, with an involute-like tooth (enough for a convincing mesh), centred on z */
+  gear({ teeth = 24, module = 0.002, width = 0.008, bore = 0, helix = 0, rim = 0, spokes = 0 } = {}) {
+    const rp = (teeth * module) / 2, ra = rp + module, rf = rp - 1.25 * module
+    const da = (Math.PI * 2) / teeth, steps = 6
+    // half tooth width (as a fraction of the angular pitch) from root to tip: convex, involute-like flank
+    const hw = (r) => da * lerp(0.31, 0.13, Math.pow(clamp((r - rf) / (ra - rf)), 0.85))
+    const pts = []
+    for (let i = 0; i < teeth; i++) {
+      const c = (i + 0.5) * da
+      pts.push([rf, i * da])
+      for (let k = 0; k <= steps; k++) { const r = lerp(rf, ra, k / steps); pts.push([r, c - hw(r)]) }
+      for (let k = 1; k < 3; k++) pts.push([ra, c - hw(ra) + (2 * hw(ra) * k) / 3])
+      for (let k = steps; k >= 0; k--) { const r = lerp(rf, ra, k / steps); pts.push([r, c + hw(r)]) }
+    }
+    const sh = new THREE.Shape()
+    pts.forEach(([r, a], k) => { const x = r * Math.cos(a), y = r * Math.sin(a); k ? sh.lineTo(x, y) : sh.moveTo(x, y) })
+    sh.closePath()
+    if (bore > 0) { const h = new THREE.Path(); h.absarc(0, 0, bore, 0, Math.PI * 2, true); sh.holes.push(h) }
+    if (spokes > 0 && rim > 0) {
+      const ri = rf - rim, rh = Math.max(bore * 1.9, rp * 0.28)
+      for (let s = 0; s < spokes; s++) {
+        const w = 0.22 * (rp / Math.max(ri, 1e-6))
+        const a0 = (s / spokes) * Math.PI * 2 + w, a1 = ((s + 1) / spokes) * Math.PI * 2 - w
+        const h = new THREE.Path(); h.absarc(0, 0, ri, a0, a1, false); h.absarc(0, 0, rh, a1 - w * 0.4, a0 + w * 0.4, true); h.closePath(); sh.holes.push(h)
+      }
+    }
+    const g = new THREE.ExtrudeGeometry(sh, { depth: width, bevelEnabled: true, bevelThickness: module * 0.15, bevelSize: module * 0.12, bevelSegments: 2, curveSegments: 24, steps: helix ? 6 : 1 })
+    g.translate(0, 0, -width / 2)
+    if (helix) {
+      const p = g.attributes.position
+      for (let i = 0; i < p.count; i++) { const z = p.getZ(i), a = (z / width) * helix, x = p.getX(i), y = p.getY(i); p.setXY(i, x * Math.cos(a) - y * Math.sin(a), x * Math.sin(a) + y * Math.cos(a)) }
+      g.computeVertexNormals()
+    }
+    g.userData.pitchRadius = rp
+    return g
+  },
+  /**
+   * one blade as a closed cambered, twisted airfoil solid, spanning radius r0..r1 along +Y,
+   * chord along the axis (Z) by default. twist in rad root to tip, chord can be [root, tip].
+   */
+  blade({ r0 = 0.1, r1 = 0.5, chord = 0.08, thick = 0.08, camber = 0.06, twist = 0.6, pitch = 0.4, sweep = 0, nS = 14, nC = 16, lean = 0 } = {}) {
+    const c0 = Array.isArray(chord) ? chord[0] : chord, c1 = Array.isArray(chord) ? chord[1] : chord
+    const pos = [], idx = []
+    const ring = nC * 2
+    for (let s = 0; s <= nS; s++) {
+      const u = s / nS, r = lerp(r0, r1, u), c = lerp(c0, c1, u), ang = pitch + twist * (u - 0.5) * -1
+      const tk = Array.isArray(thick) ? lerp(thick[0], thick[1], u) : thick, cb = Array.isArray(camber) ? lerp(camber[0], camber[1], u) : camber
+      for (let k = 0; k < ring; k++) {
+        const top = k < nC, j = top ? k : ring - 1 - k, x = j / (nC - 1) // 0 leading .. 1 trailing
+        const th = 5 * tk * (0.2969 * Math.sqrt(x) - 0.126 * x - 0.3516 * x * x + 0.2843 * x ** 3 - 0.1036 * x ** 4)
+        const yc = 4 * cb * x * (1 - x)
+        const yy = (yc + (top ? th : -th)) * c, xx = (x - 0.35) * c
+        // rotate the section by the blade angle in the chord plane (z = axial, x = tangential)
+        const z = xx * Math.cos(ang) - yy * Math.sin(ang) + sweep * u * u
+        const tx = xx * Math.sin(ang) + yy * Math.cos(ang) + lean * u * u
+        pos.push(tx, r, z)
+      }
+    }
+    for (let s = 0; s < nS; s++) for (let k = 0; k < ring; k++) {
+      const a = s * ring + k, b = s * ring + ((k + 1) % ring), c = a + ring, d = b + ring
+      idx.push(a, c, b, b, c, d)
+    }
+    // end caps
+    const cap = (s, flip) => { const base = s * ring, cIdx = pos.length / 3; let cx = 0, cy = 0, cz = 0; for (let k = 0; k < ring; k++) { cx += pos[(base + k) * 3]; cy += pos[(base + k) * 3 + 1]; cz += pos[(base + k) * 3 + 2] } pos.push(cx / ring, cy / ring, cz / ring); for (let k = 0; k < ring; k++) { const a = base + k, b = base + ((k + 1) % ring); flip ? idx.push(cIdx, b, a) : idx.push(cIdx, a, b) } }
+    cap(0, false); cap(nS, true)
+    const g = new THREE.BufferGeometry()
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx)
+    g.computeVertexNormals()
+    // uv: span along v, chord along u
+    const uv = []; for (let i = 0; i < pos.length / 3; i++) uv.push((i % ring) / ring, Math.floor(i / ring) / nS)
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2))
+    return g
+  },
+  /**
+   * a bladed row: n blades around an axis. axis 'z' = blades radial in XY, chord along Z.
+   * axis 'y' = blades radial in XZ, chord along Y (an engine built along Y). Same options as blade().
+   */
+  rotor({ count = 24, axis = 'y', phase = 0, ...b } = {}) {
+    const one = GEO.blade(b)
+    if (axis === 'y') one.applyMatrix4(new THREE.Matrix4().set(0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1))
+    if (axis === 'x') one.applyMatrix4(new THREE.Matrix4().set(0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1))
+    return count === 1 ? one : GEO.ring(one, count, axis, phase)
+  },
+  /** volume (m3) and centroid of a closed mesh: for real masses (m = rho V) and inertias */
+  volume(geo) {
+    const p = geo.attributes.position, idx = geo.index ? geo.index.array : null, n = idx ? idx.length : p.count
+    let V = 0; const c = new THREE.Vector3(), a = new THREE.Vector3(), b = new THREE.Vector3(), d = new THREE.Vector3()
+    for (let i = 0; i < n; i += 3) {
+      const i0 = idx ? idx[i] : i, i1 = idx ? idx[i + 1] : i + 1, i2 = idx ? idx[i + 2] : i + 2
+      a.fromBufferAttribute(p, i0); b.fromBufferAttribute(p, i1); d.fromBufferAttribute(p, i2)
+      const v = a.dot(b.clone().cross(d)) / 6; V += v
+      c.addScaledVector(a.clone().add(b).add(d), v / 4)
+    }
+    return { V: Math.abs(V), centroid: c.divideScalar(V || 1) }
+  },
+  /** n copies of a geometry rotated around an axis ('y' or 'z'), merged */
+  ring(geo, n, axis = 'z', phase = 0) {
+    const out = []
+    for (let i = 0; i < n; i++) { const g = geo.clone(); const m = new THREE.Matrix4(); const a = phase + (i / n) * Math.PI * 2; axis === 'y' ? m.makeRotationY(a) : axis === 'x' ? m.makeRotationX(a) : m.makeRotationZ(a); g.applyMatrix4(m); out.push(g) }
+    return BGU.mergeGeometries(out)
+  },
+  merge(list) { return BGU.mergeGeometries(list.map((g) => g.index ? g.toNonIndexed() : g)) },
+  /** a pipe through points (closed solid wall, ends capped) */
+  pipe(points, r, { seg = 64, radial = 16, tension = 0.5 } = {}) {
+    const curve = new THREE.CatmullRomCurve3(points.map((p) => new THREE.Vector3(...p)), false, 'catmullrom', tension)
+    const g = new THREE.TubeGeometry(curve, seg, r, radial, false)
+    // cap both ends so the pipe is a closed solid
+    const caps = []
+    for (const [t, s] of [[0, -1], [1, 1]]) {
+      const c = new THREE.CircleGeometry(r, radial)
+      const tan = curve.getTangentAt(t).multiplyScalar(s)
+      c.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), tan))
+      c.translate(...curve.getPointAt(t).toArray())
+      caps.push(c)
+    }
+    const m = GEO.merge([g, ...caps]); m.userData.curve = curve
+    return m
+  },
+  /** hex bolt heads (or socket caps) on a circle around +Y at height y, merged */
+  bolts(n, R, size, h, { y = 0, socket = false, phase = 0 } = {}) {
+    const one = socket ? GEO.lathe([[0, 0], [size, 0], [size, h * 0.9], [size * 0.92, h], [size * 0.45, h], [size * 0.45, h * 0.55], [0, h * 0.55]], 24) : new THREE.CylinderGeometry(size, size, h, 6).translate(0, h / 2, 0)
+    const out = []
+    for (let i = 0; i < n; i++) { const a = phase + (i / n) * Math.PI * 2; out.push(one.clone().translate(R * Math.cos(a), y, R * Math.sin(a))) }
+    return GEO.merge(out)
+  },
+  /** coil spring along +Y */
+  spring(R, wire, turns, len, seg = 400) {
+    const pts = []
+    for (let i = 0; i <= seg; i++) { const t = i / seg, a = t * turns * Math.PI * 2; pts.push(new THREE.Vector3(R * Math.cos(a), t * len, R * Math.sin(a))) }
+    return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), seg, wire, 10, false)
+  },
+  /** extruded 2D outline (THREE.Shape) along +Z, with a small bevel */
+  extrude(shape, depth, bevel = depth * 0.06) {
+    const g = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: bevel > 0, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 2, curveSegments: 32 })
+    g.translate(0, 0, -depth / 2); g.computeVertexNormals(); return g
+  },
+}
+
+// ---------------------------------------------------------------- studio
+
+/** Khronos PBR Neutral tone mapping (what three's NeutralToneMapping does), and its inverse per channel */
+function neutral(c) {
+  const s0 = 0.8 - 0.04, d = 0.15
+  const x = Math.min(c[0], c[1], c[2]), off = x < 0.08 ? x - 6.25 * x * x : 0.04
+  let r = c.map((v) => v - off)
+  const peak = Math.max(...r)
+  if (peak < s0) return r
+  const d1 = 1 - s0, np = 1 - (d1 * d1) / (peak + d1 - s0)
+  r = r.map((v) => v * (np / peak))
+  const g = 1 - 1 / (d * (peak - np) + 1)
+  return r.map((v) => v * (1 - g) + np * g)
+}
+function untonemap(target, exposure = 1) {
+  // find the linear colour that comes out of the tone mapper as the target (so canvas paper == CSS paper)
+  let x = [target.r, target.g, target.b]
+  for (let it = 0; it < 60; it++) { const y = neutral(x.map((v) => v * exposure)); x = x.map((v, i) => Math.max(0, v + (target.toArray()[i] - y[i]) * 0.9)) }
+  return new THREE.Color(x[0], x[1], x[2])
+}
+
+function studioEnvironment(renderer, theme) {
+  // a softbox studio: big top light, a key strip, two rim strips, and black flags so metals keep contrast
+  const paper = theme === 'paper'
+  const s = new THREE.Scene()
+  const room = new THREE.Mesh(new THREE.SphereGeometry(30, 32, 16), new THREE.MeshBasicMaterial({ color: paper ? 0x9c9a95 : 0x0a0b0d, side: THREE.BackSide }))
+  s.add(room)
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(30, 32), new THREE.MeshBasicMaterial({ color: paper ? 0xd8d6d0 : 0x141517 }))
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -2; s.add(floor)
+  const box = (w, h, x, y, z, k, tint = [1, 1, 1]) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(...tint).multiplyScalar(k), side: THREE.DoubleSide }))
+    m.position.set(x, y, z); m.lookAt(0, 0, 0); s.add(m)
+  }
+  box(14, 10, 0, 14, 2, paper ? 2.6 : 3.2)                  // overhead soft box
+  box(4, 14, -12, 4, 8, paper ? 4.5 : 6, [1, 0.96, 0.9])    // warm key strip, front left
+  box(2.2, 14, 13, 5, -6, paper ? 6 : 9, [0.88, 0.94, 1])   // cool rim, back right
+  box(2.2, 14, -11, 5, -9, paper ? 3.5 : 5)                 // second rim, back left
+  box(8, 3, 6, 1.5, 12, paper ? 1.4 : 1.6)                  // low front fill
+  // black flags: long dark reflections give metal its shape on a white set
+  box(5, 16, 12, 4, 7, 0.02); box(4, 16, -13, 4, -2, 0.02); box(16, 3, 0, -1, -14, 0.03)
+  const pm = new THREE.PMREMGenerator(renderer)
+  const rt = pm.fromScene(s, 0.02)
+  pm.dispose()
+  return rt.texture
+}
+
+const CSS = `
+:root { --paper:#f3f2ee; --ink:#141414; --mute:#8c8b87; --faint:#c9c7c1; --line:#e4e2dc; --accent:#e4572e; --panel:rgba(255,255,255,0.0);
+  --serif:'Instrument Serif','EB Garamond',Georgia,serif; --sans:'Inter',system-ui,-apple-system,sans-serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace }
+.lab-night { --paper:#0d0e10; --ink:#f1efe9; --mute:#8e8c86; --faint:#4a4945; --line:#2a2a2a }
+html,body { margin:0; height:100%; background:var(--paper); color:var(--ink); font-family:var(--sans); overflow:hidden; -webkit-font-smoothing:antialiased }
+#lab-gl { position:fixed; inset:0; width:100%; height:100%; display:block; outline:none; touch-action:none }
+.lab-ui { position:fixed; inset:0; pointer-events:none; z-index:2 }
+.lab-ui * { box-sizing:border-box }
+.lab-ui .on { pointer-events:auto }
+.lab-prompt { position:absolute; left:4.2vw; top:4.2vh; max-width:58vw; padding:0.85em 1.2em; background:rgba(0,0,0,0.035); border-radius:3px; font-size:clamp(12px,1.02vw,19px); color:#55534f; line-height:1.35; letter-spacing:-0.005em }
+.lab-night .lab-prompt { background:rgba(255,255,255,0.05); color:#aaa79f }
+.lab-prompt b { color:var(--ink); font-weight:600 }
+.lab-prompt .caret { display:inline-block; width:0.08em; height:1.05em; background:var(--ink); vertical-align:-0.18em; margin-left:1px; animation:labblink 1s steps(1) infinite }
+@keyframes labblink { 50% { opacity:0 } }
+.lab-pills { position:absolute; right:4.2vw; top:5.4vh; display:flex; gap:1.4em; font-size:clamp(11px,0.95vw,18px); color:var(--ink) }
+.lab-pills span::before { content:''; display:inline-block; width:0.5em; height:0.5em; border-radius:50%; background:var(--ink); margin-right:0.45em; vertical-align:0.08em }
+.lab-pills span.off { color:var(--faint) } .lab-pills span.off::before { background:none; box-shadow:inset 0 0 0 1px var(--faint) }
+.lab-side { position:absolute; right:4.2vw; top:50%; transform:translateY(-50%); width:clamp(250px,22.5vw,440px) }
+.lab-no { font-size:clamp(11px,0.95vw,18px); color:var(--mute); margin-bottom:0.3em }
+.lab-title { font-family:var(--serif); font-size:clamp(34px,3.9vw,76px); line-height:0.98; letter-spacing:-0.01em; font-weight:400 }
+.lab-title i { display:block; color:#6d6b66; font-style:italic }
+.lab-night .lab-title i { color:#a4a199 }
+.lab-metric { margin-top:clamp(18px,3.6vh,44px) }
+.lab-metric .lbl { font-size:clamp(12px,1.02vw,19px); color:var(--mute) } .lab-metric .lbl b { color:var(--ink); font-weight:500 }
+.lab-big { font-family:var(--serif); font-size:clamp(64px,7.4vw,142px); line-height:1.02; letter-spacing:-0.02em; font-variant-numeric:lining-nums tabular-nums; white-space:nowrap }
+.lab-big i { font-size:0.4em; color:#7a7873; margin-left:0.12em; letter-spacing:0 }
+.lab-bar { position:relative; height:clamp(4px,0.42vh,7px); background:var(--line); margin:0.2em 0 0.9em }
+.lab-bar > div { position:absolute; left:0; top:0; bottom:0; background:var(--ink); transition:none }
+.lab-bar.bad > div { background:var(--accent) }
+.lab-sub { font-size:clamp(12px,1.02vw,19px); color:#4d4b47; font-variant-numeric:tabular-nums; line-height:1.5 }
+.lab-night .lab-sub { color:#bdbab2 }
+.lab-sub .bad { color:var(--accent) }
+.lab-ctl { margin-top:clamp(16px,3.2vh,40px) }
+.lab-ctl .row { display:flex; justify-content:space-between; font-size:clamp(12px,1.02vw,19px); color:var(--mute); margin-bottom:0.55em } .lab-ctl .row b { color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums }
+.lab-ctl input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:2.6em; background:transparent; margin:0; cursor:pointer }
+.lab-ctl input[type=range]::-webkit-slider-runnable-track { height:0.62em; background:linear-gradient(to right,var(--ink) 0 var(--p,0%),var(--line) var(--p,0%) 100%); border-radius:0.31em }
+.lab-ctl input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:2.3em; height:2.3em; border-radius:50%; background:#fff; margin-top:-0.84em; box-shadow:0 1px 2px rgba(0,0,0,0.18),0 4px 14px rgba(0,0,0,0.12),inset 0 0 0 1px rgba(0,0,0,0.06) }
+.lab-ctl input[type=range]::-moz-range-track { height:0.62em; background:var(--line); border-radius:0.31em } .lab-ctl input[type=range]::-moz-range-progress { height:0.62em; background:var(--ink); border-radius:0.31em }
+.lab-ctl input[type=range]::-moz-range-thumb { width:2.3em; height:2.3em; border-radius:50%; background:#fff; border:none; box-shadow:0 1px 2px rgba(0,0,0,0.18),0 4px 14px rgba(0,0,0,0.12) }
+.lab-ctl .ends { display:flex; justify-content:space-between; font-size:clamp(11px,0.9vw,17px); color:var(--faint); margin-top:0.1em }
+.lab-modes { position:absolute; left:4.2vw; bottom:4.2vh; display:flex; gap:0.5em; flex-wrap:wrap; font-size:clamp(11px,0.88vw,16px) }
+.lab-modes button { font:inherit; color:var(--ink); background:transparent; border:1px solid var(--line); border-radius:999px; padding:0.5em 1.05em; cursor:pointer; transition:background .2s, color .2s, border-color .2s }
+.lab-modes button:hover { border-color:var(--faint) }
+.lab-modes button.act { background:var(--ink); color:var(--paper); border-color:var(--ink) }
+.lab-modes button.brk { color:var(--accent); border-color:rgba(228,87,46,0.35) } .lab-modes button.brk.act { background:var(--accent); color:#fff; border-color:var(--accent) }
+.lab-modes kbd { font:inherit; color:var(--faint); margin-left:0.45em; font-size:0.85em }
+.lab-modes button.act kbd { color:rgba(255,255,255,0.45) }
+.lab-how { position:absolute; right:4.2vw; bottom:4.2vh; width:clamp(250px,22.5vw,440px); font-size:clamp(11px,0.82vw,15px); color:var(--mute); line-height:1.5 }
+.lab-how summary { cursor:pointer; color:var(--ink); list-style:none; font-weight:500 } .lab-how summary::-webkit-details-marker { display:none } .lab-how summary::after { content:' +'; color:var(--faint) }
+.lab-how[open] summary::after { content:' \\2212' }
+.lab-how .eq { font-family:var(--mono); font-size:0.92em; color:#4d4b47; margin:0.5em 0; white-space:pre-wrap }
+.lab-night .lab-how .eq { color:#bdbab2 }
+.lab-scale { position:absolute; left:4.2vw; bottom:calc(4.2vh + 3.4em); font-size:clamp(10px,0.8vw,14px); color:var(--mute); font-variant-numeric:tabular-nums }
+.lab-scale div { height:1px; background:var(--mute); margin-top:0.35em; position:relative } .lab-scale div::before,.lab-scale div::after { content:''; position:absolute; top:-3px; width:1px; height:7px; background:var(--mute) } .lab-scale div::after { right:0 }
+.lab-labels { position:absolute; inset:0 } .lab-labels svg { position:absolute; inset:0; width:100%; height:100% }
+.lab-lab { position:absolute; font-size:clamp(11px,0.86vw,16px); color:var(--ink); white-space:nowrap; transform:translate(0,-50%); transition:opacity .35s; line-height:1.25; text-shadow:0 0 3px var(--paper), 0 0 8px var(--paper), 0 0 14px var(--paper) }
+.lab-lab small { display:block; color:var(--mute); font-size:0.86em; font-variant-numeric:tabular-nums }
+.lab-lab.left { transform:translate(-100%,-50%); text-align:right }
+.lab-beat { position:absolute; left:4.2vw; bottom:4.6vh; display:flex; align-items:center; gap:0.85em; font-size:clamp(16px,1.9vw,36px); letter-spacing:-0.01em; opacity:0; transition:none }
+.lab-beat .n { font-size:0.5em; border:1px solid var(--faint); color:var(--mute); padding:0.42em 0.62em; line-height:1; font-variant-numeric:tabular-nums }
+.lab-beat b { font-weight:500 } .lab-beat span { color:var(--mute) }
+.lab-cursor { position:absolute; left:0; top:0; width:clamp(18px,1.45vw,28px); opacity:0; filter:drop-shadow(0 2px 3px rgba(0,0,0,0.25)); transform-origin:2px 2px }
+.lab-flash { position:absolute; inset:0; background:var(--accent); opacity:0; mix-blend-mode:multiply }
+.lab-brand { position:absolute; right:4.2vw; bottom:4.2vh; font-size:clamp(10px,0.78vw,14px); color:var(--faint) }
+.lab-film .lab-how, .lab-film .lab-scale { display:none }
+.lab-film .lab-modes button:not([data-k=break]) { display:none }
+.lab-film:not(.lab-embed) .lab-modes { left:auto; right:4.2vw }
+.lab-embed .lab-beat { display:none }
+.lab-hidden { opacity:0 !important }
+@media (max-width: 760px) {
+  .lab-side { top:auto; bottom:12vh; transform:none; right:16px; left:16px; width:auto }
+  .lab-prompt { left:16px; right:16px; max-width:none; top:16px }
+  .lab-pills, .lab-how, .lab-scale { display:none }
+  .lab-modes { left:16px; right:16px; bottom:16px }
+  .lab-big { font-size:56px }
+}
+`
+
+const CURSOR_SVG = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 2 L3 19.5 L7.6 15.4 L10.6 22 L13.6 20.7 L10.7 14.3 L16.8 14.1 Z" fill="#111" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/></svg>`
+
+// ---------------------------------------------------------------- the Lab
+
+/**
+ * new Lab({
+ *   prompt: 'a turbofan jet engine',        // the one line the user typed (shown in the prompt bar)
+ *   no: 1, title: 'Turbofan', sub: 'ground run',
+ *   size: 3.4,                              // characteristic length of the real machine in metres
+ *   theme: 'paper' | 'night',
+ *   view: { az: 35, el: 14, dist: 2.2, target: [0, 0, 0], fov: 30 },   // dist in multiples of size
+ *   frame: 'left' | 'center',               // where the subject sits (left leaves room for the side column)
+ *   ground: 0,                              // y (metres, machine frame) of the floor
+ *   pills: ['three.js', 'Physics', 'Film'],
+ * })
+ */
+export class Lab {
+  constructor(o = {}) {
+    this.o = o
+    this.size = o.size ?? 1
+    this.theme = o.theme ?? 'paper'
+    this.q = new URLSearchParams(location.search)
+    this.filmMode = this.q.has('film')
+    this.embed = this.q.has('embed')
+    this.time = 0
+    this.timeScale = 1
+    this.parts = []
+    this.labels = []
+    this.tickers = []
+    this.ghosts = []
+    this.state = { explode: 0, cut: 0, xray: 0, slow: 0, labels: 0, broken: 0 }
+    this.target = { explode: 0, cut: 0, xray: 0, slow: 0, labels: 0 }
+    this.broken = false
+    this.brokenAt = -1
+    this.metrics = {}
+    this.controls = {}
+    this.loading = 0
+    // display scale: the machine is shown about 2.4 units across, whatever its real size
+    this.k = 2.4 / this.size
+    this._initDOM()
+    this._initGL()
+    this._initStudio()
+    this.sparks = new Sparks(this)
+    this.debris = []
+    window.__lab = this
+  }
+
+  // ---------- DOM
+  _initDOM() {
+    const st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st)
+    if (this.theme === 'night') document.documentElement.classList.add('lab-night')
+    if (this.filmMode) document.documentElement.classList.add('lab-film')
+    if (this.q.has('embed')) document.documentElement.classList.add('lab-embed')
+    const o = this.o
+    const ui = document.createElement('div'); ui.className = 'lab-ui'
+    ui.innerHTML = `
+      <div class="lab-labels"><svg></svg></div>
+      <div class="lab-prompt"><b>/machine</b> <span class="txt"></span><span class="caret" style="display:none"></span></div>
+      <div class="lab-pills">${(o.pills ?? ['three.js', 'Physics', 'Film']).map((p) => `<span>${p}</span>`).join('')}</div>
+      <div class="lab-side">
+        <div class="lab-no">No. ${String(o.no ?? 1).padStart(2, '0')}</div>
+        <div class="lab-title">${o.title ?? 'Machine'}<i>${o.sub ?? ''}</i></div>
+        <div class="lab-metric"></div>
+        <div class="lab-ctls"></div>
+      </div>
+      <div class="lab-scale"><span></span><div></div></div>
+      <div class="lab-modes on"></div>
+      <details class="lab-how on"><summary>How it is computed</summary><div class="body"></div></details>
+      <div class="lab-beat"><span class="n"></span><div><b></b> <span></span></div></div>
+      <div class="lab-flash"></div>
+      <div class="lab-cursor">${CURSOR_SVG}</div>`
+    document.body.appendChild(ui)
+    this.ui = ui
+    this.$ = (s) => ui.querySelector(s)
+    this.$('.lab-prompt .txt').textContent = o.prompt ?? ''
+    if (this.embed && !this.filmMode) for (const s of ['.lab-modes', '.lab-how', '.lab-scale']) this.$(s).style.display = 'none'
+    if (o.frame === 'center') this.$('.lab-side').style.display = 'none'
+    // the primary metric block
+    this.metricEl = this.$('.lab-metric')
+  }
+
+  /**
+   * The hero number: lab.hero({ label: 'Thrust', unit: 'kN', max: 350, digits: 0 })
+   * then lab.setHero(value, { state: 'spooling up', sub: 'N1 94.9 % · TGT 959 °C', bad: false })
+   */
+  hero(o) {
+    this.heroO = { digits: 0, ...o }
+    this.metricEl.innerHTML = `<div class="lbl">${o.label} · <b class="st"></b></div><div class="lab-big"><span class="v">0</span><i>${o.unit ?? ''}</i></div><div class="lab-bar"><div></div></div><div class="lab-sub"></div>`
+    this._hv = this.metricEl.querySelector('.v'); this._hs = this.metricEl.querySelector('.st'); this._hb = this.metricEl.querySelector('.lab-bar'); this._hsub = this.metricEl.querySelector('.lab-sub')
+  }
+  setHero(v, { state, sub, bad = false } = {}) {
+    const h = this.heroO; if (!h) return
+    if (this._building) { this._heroPending = [v, { state, sub, bad }]; return }
+    this.heroValue = v
+    this._hv.textContent = fmt(v, h.digits)
+    if (state !== undefined) this._hs.textContent = state
+    if (sub !== undefined) this._hsub.innerHTML = sub
+    this._hb.firstElementChild.style.width = `${clamp(v / h.max) * 100}%`
+    this._hb.classList.toggle('bad', bad)
+  }
+
+  /** lab.slider({ id:'throttle', label:'Throttle', min:0, max:100, value:20, unit:'%', ends:['Idle','Take-off'], onInput }) */
+  slider(o) {
+    const wrap = document.createElement('div'); wrap.className = 'lab-ctl on'
+    wrap.innerHTML = `<div class="row"><span>${o.label}</span><b></b></div><input type="range" min="${o.min}" max="${o.max}" step="${o.step ?? (o.max - o.min) / 1000}" value="${o.value}"><div class="ends"><span>${o.ends?.[0] ?? ''}</span><span>${o.ends?.[1] ?? ''}</span></div>`
+    this.$('.lab-ctls').appendChild(wrap)
+    const inp = wrap.querySelector('input'), out = wrap.querySelector('b')
+    const c = { el: inp, wrap, value: o.value, o }
+    const show = () => { out.textContent = (o.fmt ? o.fmt(c.value) : fmt(c.value, o.digits ?? 0)) + (o.unit ? ` ${o.unit}` : ''); inp.style.setProperty('--p', `${((c.value - o.min) / (o.max - o.min)) * 100}%`) }
+    c.set = (v) => { c.value = clamp(v, o.min, o.max); inp.value = c.value; show(); o.onInput?.(c.value) }
+    inp.addEventListener('input', () => { c.value = Number(inp.value); show(); o.onInput?.(c.value) })
+    show()
+    this.controls[o.id] = c
+    return c
+  }
+
+  /** the "How it is computed" note: plain words plus the equations the solver uses */
+  how(html, eqs = []) {
+    this.$('.lab-how .body').innerHTML = `<div>${html}</div>${eqs.map((e) => `<div class="eq">${e}</div>`).join('')}`
+  }
+
+  /** mode buttons; the break-it handler comes from lab.breakIt() */
+  _modes() {
+    const m = this.$('.lab-modes')
+    const defs = [['run', 'Pause', 'Space'], ['explode', 'Explode', 'E'], ['cut', 'Cut away', 'C'], ['xray', 'X-ray', 'X'], ['slow', 'Slow', 'S'], ['labels', 'Labels', 'L']]
+    if (this._break) defs.push(['break', this._break.label ?? 'Break it', 'B'])
+    m.innerHTML = defs.map(([k, t, key]) => `<button data-k="${k}" class="${k === 'break' ? 'brk' : ''}">${t}<kbd>${key}</kbd></button>`).join('')
+    m.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) this.toggle(b.dataset.k) })
+    addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' && e.key !== ' ') return
+      const k = { ' ': 'run', e: 'explode', c: 'cut', x: 'xray', s: 'slow', l: 'labels', b: 'break' }[e.key.toLowerCase()]
+      if (k) { e.preventDefault(); this.toggle(k) }
+    })
+  }
+  toggle(k, on) {
+    if (k === 'run') { this.paused = on ?? !this.paused; this._syncButtons(); return }
+    if (k === 'break') { if (on ?? !this.broken) this.breakNow(); else this.resetBreak(); this._syncButtons(); return }
+    this.target[k] = (on ?? this.target[k] < 0.5) ? 1 : 0
+    this._syncButtons()
+  }
+  _syncButtons() {
+    for (const b of this.ui.querySelectorAll('.lab-modes button')) {
+      const k = b.dataset.k
+      b.classList.toggle('act', k === 'run' ? !!this.paused : k === 'break' ? this.broken : this.target[k] > 0.5)
+      if (k === 'run') b.firstChild.textContent = this.paused ? 'Run' : 'Pause'
+    }
+  }
+
+  /** lab.breakIt({ label:'Overspeed', run(lab){...}, reset(lab){...} }): the solver decides what fails */
+  breakIt(o) { this._break = o }
+  breakNow() { if (this.broken) return; this.broken = true; this.brokenAt = this.time; this._break?.run?.(this); this._flash = 1 }
+  resetBreak() { this.broken = false; this.brokenAt = -1; for (const d of this.debris) d.restore(); this.debris = []; this._break?.reset?.(this) }
+
+  // ---------- GL
+  _initGL() {
+    const ss = Number(this.q.get('ss') || 1)
+    const r = new THREE.WebGLRenderer({ antialias: false, alpha: false, powerPreference: 'high-performance', preserveDrawingBuffer: this.filmMode })
+    r.setPixelRatio(this.filmMode ? ss : Math.min(devicePixelRatio, 2))
+    r.setSize(innerWidth, innerHeight)
+    r.toneMapping = THREE.NoToneMapping // OutputPass applies it
+    r.toneMappingExposure = this.o.exposure ?? 1
+    r.shadowMap.enabled = true
+    r.shadowMap.type = THREE.VSMShadowMap
+    r.localClippingEnabled = true
+    r.domElement.id = 'lab-gl'
+    r.domElement.tabIndex = 0
+    document.body.prepend(r.domElement)
+    this.renderer = r
+    this.scene = new THREE.Scene()
+    const v = this.o.view ?? {}
+    this.camera = new THREE.PerspectiveCamera(v.fov ?? 30, innerWidth / innerHeight, 0.02, 400)
+    this.camera.layers.enable(LAYER_FX)
+    this.root = new THREE.Group(); this.root.scale.setScalar(this.k); this.scene.add(this.root)
+    this.machine = new THREE.Group(); this.root.add(this.machine)
+    this.fx = new THREE.Group(); this.root.add(this.fx)
+    this.controlsOrbit = new OrbitControls(this.camera, r.domElement)
+    this.controlsOrbit.enableDamping = true; this.controlsOrbit.dampingFactor = 0.07
+    this.controlsOrbit.minDistance = 0.6; this.controlsOrbit.maxDistance = 30
+    this.controlsOrbit.maxPolarAngle = Math.PI * 0.495
+    this.controlsOrbit.addEventListener('start', () => { this._userAt = performance.now() })
+    this.setView(this.o.view ?? {})
+    // post: MSAA HDR render, GTAO, bloom, tone map, grade
+    const size = r.getDrawingBufferSize(new THREE.Vector2())
+    const rt = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: 4 })
+    const comp = new EffectComposer(r, rt)
+    comp.addPass(new RenderPass(this.scene, this.camera))
+    const ao = new GTAOPass(this.scene, this.camera, size.x, size.y)
+    ao.blendIntensity = this.theme === 'paper' ? 0.85 : 1
+    ao.updateGtaoMaterial({ radius: 0.35, distanceExponent: 1.6, thickness: 1.2, scale: 1, samples: 16 })
+    ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 16 })
+    // effects and see-through parts are not solid: keep them out of the normal/depth pass
+    const aoRender = ao.render.bind(ao)
+    ao.render = (...a) => { this.camera.layers.disable(LAYER_FX); const hidden = []; this.scene.traverse((m) => { if (m.isMesh && m.visible && m.userData.noAO) { m.visible = false; hidden.push(m) } }); aoRender(...a); for (const m of hidden) m.visible = true; this.camera.layers.enable(LAYER_FX) }
+    if (ao.normalMaterial) { ao.normalMaterial.clippingPlanes = LAB_PLANES; ao.normalMaterial.clipIntersection = true; ao.normalMaterial.side = THREE.DoubleSide }
+    comp.addPass(ao)
+    this.ao = ao
+    const bloom = new UnrealBloomPass(new THREE.Vector2(size.x / 2, size.y / 2), this.theme === 'paper' ? 0.22 : 0.42, 0.55, this.theme === 'paper' ? 1.6 : 1.0)
+    comp.addPass(bloom); this.bloom = bloom
+    const out = new OutputPass(); comp.addPass(out)
+    r.toneMapping = THREE.NeutralToneMapping
+    const grade = new ShaderPass({
+      uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uVig: { value: this.theme === 'paper' ? 0.1 : 0.32 }, uGrain: { value: this.theme === 'paper' ? 0.012 : 0.02 }, uSat: { value: this.o.saturation ?? 1.06 }, uRes: { value: new THREE.Vector2(size.x, size.y) } },
+      vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: `uniform sampler2D tDiffuse; uniform float uTime, uVig, uGrain, uSat; uniform vec2 uRes; varying vec2 vUv;
+        float h(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+        void main(){ vec3 c = texture2D(tDiffuse, vUv).rgb;
+          float l = dot(c, vec3(0.2126, 0.7152, 0.0722)); c = mix(vec3(l), c, uSat);
+          vec2 q = vUv - 0.5; q.x *= uRes.x / uRes.y; c *= 1.0 - uVig * smoothstep(0.35, 1.25, length(q));
+          c += (h(vUv * uRes + fract(uTime) * 91.7) - 0.5) * uGrain;
+          gl_FragColor = vec4(c, 1.0); }`,
+    })
+    comp.addPass(grade); this.grade = grade
+    this.composer = comp
+    addEventListener('resize', () => this._resize())
+  }
+  _resize() {
+    const w = innerWidth, h = innerHeight
+    this.camera.aspect = w / h; this.camera.updateProjectionMatrix()
+    this.renderer.setSize(w, h); this.composer.setSize(w, h)
+    const s = this.renderer.getDrawingBufferSize(new THREE.Vector2())
+    this.ao.setSize(s.x, s.y); this.grade.uniforms.uRes.value.set(s.x, s.y)
+  }
+
+  _initStudio() {
+    const paper = this.theme === 'paper'
+    const bg = untonemap(new THREE.Color(this.o.bg ?? (paper ? 0xf3f2ee : 0x0d0e10)).convertSRGBToLinear(), this.o.exposure ?? 1)
+    this.bgColor = bg
+    this.scene.background = bg.clone()
+    this.scene.environment = studioEnvironment(this.renderer, this.theme)
+    this.scene.environmentIntensity = this.o.envIntensity ?? (paper ? 0.82 : 0.9)
+    if (this.o.hdri) {
+      this.loading++
+      new RGBELoader().load(`https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/${this.o.hdri}_1k.hdr`, (t) => {
+        t.mapping = THREE.EquirectangularReflectionMapping
+        const pm = new THREE.PMREMGenerator(this.renderer); this.scene.environment = pm.fromEquirectangular(t).texture; pm.dispose(); t.dispose(); this.loading--
+      }, undefined, () => { this.loading-- })
+    }
+    // seamless floor: same colour as the backdrop far away, takes shadows and contact shadow near the machine
+    const gy = (this.o.ground ?? 0) * this.k
+    this.groundY = gy
+    const fm = new THREE.MeshStandardMaterial({ color: paper ? 0xf0efea : 0x121315, roughness: paper ? 0.92 : 0.55, metalness: 0, envMapIntensity: paper ? 0.25 : 0.6 })
+    fm.onBeforeCompile = (sh) => {
+      sh.uniforms.uBg = { value: bg }
+      sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vFW;').replace('#include <project_vertex>', '#include <project_vertex>\nvFW = (modelMatrix * vec4(transformed, 1.0)).xyz;')
+      sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nuniform vec3 uBg; varying vec3 vFW;')
+        .replace('#include <dithering_fragment>', '#include <dithering_fragment>\nfloat fr = smoothstep(4.5, 16.0, length(vFW.xz)); gl_FragColor.rgb = mix(gl_FragColor.rgb, uBg, fr);')
+    }
+    const floor = new THREE.Mesh(new THREE.CircleGeometry(40, 96), fm)
+    floor.rotation.x = -Math.PI / 2; floor.position.y = gy; floor.receiveShadow = true; floor.userData.studio = true
+    this.scene.add(floor); this.floor = floor
+    // lights: soft key with VSM shadow, cool rim, gentle fill (the environment does most of the work)
+    const key = new THREE.DirectionalLight(0xfff3e6, paper ? 2.4 : 2.6)
+    key.position.set(-3.2, 6.5, 4.2); key.castShadow = true
+    key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 7; key.shadow.blurSamples = 16
+    key.shadow.bias = -0.0004; key.shadow.normalBias = 0.02
+    const sc = key.shadow.camera; sc.left = -3.2; sc.right = 3.2; sc.top = 3.2; sc.bottom = -3.2; sc.near = 0.5; sc.far = 20
+    this.scene.add(key, key.target); this.key = key
+    const rim = new THREE.DirectionalLight(0xdbe8ff, paper ? 0.9 : 1.8); rim.position.set(4, 3, -5); this.scene.add(rim)
+    const fill = new THREE.HemisphereLight(0xffffff, paper ? 0xd9d5cc : 0x202020, paper ? 0.2 : 0.15); this.scene.add(fill)
+    this._contact = new ContactShadow(this, paper ? 0.7 : 0.85)
+  }
+
+  setView(v) {
+    this.view = { az: 35, el: 14, dist: 2.2, target: [0, 0, 0], fov: 30, frameX: this.o.frame === 'center' ? 0 : -0.16, ...this.o.view, ...v }
+    this._applyView(this.view)
+  }
+  _applyView(v) {
+    const t = new THREE.Vector3(...v.target).multiplyScalar(this.k)
+    const d = v.dist * 2.4
+    const az = THREE.MathUtils.degToRad(v.az), el = THREE.MathUtils.degToRad(v.el)
+    this.camera.fov = v.fov ?? 30
+    // shift the frame so the subject sits left of the side column
+    this.camera.setViewOffset(innerWidth, innerHeight, -(v.frameX ?? 0) * innerWidth, 0, innerWidth, innerHeight)
+    this.camera.position.set(t.x + d * Math.cos(el) * Math.sin(az), t.y + d * Math.sin(el), t.z + d * Math.cos(el) * Math.cos(az))
+    this.controlsOrbit.target.copy(t)
+    this.camera.lookAt(t)
+    this.camera.updateProjectionMatrix()
+  }
+
+  // ---------- parts
+  /**
+   * Add a mesh or group to the machine and register it for explode, x-ray and labels.
+   *   lab.add(obj, { name, parent, explode:[dx,dy,dz] (metres), delay:0..1, xray:'shell', label:'Fan', at:[x,y,z], value:()=>'1,240 rpm' })
+   */
+  add(obj, o = {}) {
+    ;(o.parent ?? this.machine).add(obj)
+    obj.traverse((m) => { if (m.isMesh) { m.castShadow = o.shadow !== false; m.receiveShadow = true } })
+    const p = { obj, name: o.name ?? obj.name, base: obj.position.clone(), off: new THREE.Vector3(...(o.explode ?? [0, 0, 0])), delay: o.delay ?? ((this.parts.length * 0.618) % 1) * 0.3, count: o.count, xray: o.xray, intro: o.intro, order: this.parts.length }
+    this.parts.push(p)
+    if (o.label) this.label(obj, o.label, { at: o.at, value: o.value, side: o.side })
+    if (o.xray === 'shell') obj.traverse((m) => { if (m.isMesh) this.ghosts.push(m) })
+    return obj
+  }
+  /** a single mesh from geometry + material, added: lab.mesh(GEO.disc(...), MAT.steel(), { pos, rot, ...addOptions }) */
+  mesh(geo, material, o = {}) {
+    const m = new THREE.Mesh(geo, material)
+    if (o.pos) m.position.set(...o.pos)
+    if (o.rot) m.rotation.set(...o.rot)
+    if (o.scale) Array.isArray(o.scale) ? m.scale.set(...o.scale) : m.scale.setScalar(o.scale)
+    if (o.add === false) return m
+    return this.add(m, o)
+  }
+  /** keep moving parts in sync: set obj.position via lab.place(obj, x, y, z) so explode offsets still apply */
+  place(obj, x, y, z) { const p = this.parts.find((q) => q.obj === obj); if (p) p.base.set(x, y, z); else obj.position.set(x, y, z) }
+
+  /** a pinned label with a leader line: lab.label(obj, 'HP turbine', { at:[x,y,z] in obj frame, value:()=>'1,712 K' }) */
+  label(obj, text, o = {}) {
+    const el = document.createElement('div'); el.className = 'lab-lab'; el.innerHTML = `${text}<small></small>`
+    this.$('.lab-labels').appendChild(el)
+    const L = { obj, at: new THREE.Vector3(...(o.at ?? [0, 0, 0])), el, small: el.querySelector('small'), value: o.value, side: o.side }
+    this.labels.push(L)
+    return L
+  }
+
+  onTick(f) { this.tickers.push(f) }
+
+  // ---------- effects factories
+  flow(o) { const f = new Flow(this, o); return f }
+  plume(o) { return new Plume(this, o) }
+  /** throw a part off as a rigid body: lab.shed(mesh, velocity [m/s], spin [rad/s]) */
+  shed(obj, v = [0, 2, 0], w = [3, 1, 2]) { const d = new Debris(this, obj, v, w); this.debris.push(d); return d }
+
+  // ---------- frame
+  _update(dt) {
+    const s = this.state, tg = this.target
+    const rate = (k, tau) => { s[k] = approach(s[k], tg[k], tau, dt) ; if (Math.abs(s[k] - tg[k]) < 1e-4) s[k] = tg[k] }
+    rate('explode', 0.45); rate('cut', 0.42); rate('xray', 0.3); rate('slow', 0.35); rate('labels', 0.25)
+    this.timeScale = lerp(1, 0.08, s.slow)
+    const sdt = this.paused ? 0 : dt * this.timeScale
+    this.time += sdt
+    this.sdt = sdt
+    for (const f of this.tickers) f(sdt, this, dt)
+    // explode with stagger, then the intro assembly (parts fly in from far)
+    const e = s.explode, A = this._assembly ?? 0
+    for (const p of this.parts) {
+      const ee = ease.io(clamp((e * 1.35) - p.delay * 0.35))
+      const ai = A > 0 ? ease.out(clamp((1 - A) * 1.6 - (p.order / Math.max(1, this.parts.length)) * 0.6)) : 1
+      const far = p.intro ? new THREE.Vector3(...p.intro) : p.off.clone().normalize().multiplyScalar(this.size * 1.6).add(new THREE.Vector3(0, this.size * 0.9, 0))
+      p.obj.position.copy(p.base).addScaledVector(p.off, ee).addScaledVector(far, 1 - ai)
+      p.obj.visible = ai > 0.001 || A === 0
+    }
+    this._buildHUD(A)
+    this._updateCut()
+    this._updateXray(dt)
+    for (const d of this.debris) d.update(sdt)
+    this.sparks.update(sdt)
+    this._flash = Math.max(0, (this._flash ?? 0) - dt * 2.2)
+    this.$('.lab-flash').style.opacity = String(this._flash * 0.18)
+  }
+  /** total physical parts: each registered part counts its meshes, or the count it was given (a blade ring = 24) */
+  partCount() { return this.parts.reduce((n, p) => n + (p.count ?? (() => { let k = 0; p.obj.traverse((m) => { if (m.isMesh && !m.userData.ghost && m.layers.mask & 1) k++ }); return Math.max(1, k) })()), 0) }
+  _buildHUD(A) {
+    if (!this.heroO) return
+    const building = A > 0.0005
+    if (building) {
+      const N = this._pc ?? (this._pc = this.partCount())
+      let n = 0, cur = this.parts[0]?.name ?? ''
+      for (const p of this.parts) { const ai = ease.out(clamp((1 - A) * 1.6 - (p.order / Math.max(1, this.parts.length)) * 0.6)); const c = p.count ?? 1; if (ai > 0.92) { n += p._c ?? (p._c = p.count ?? (() => { let k = 0; p.obj.traverse((m) => { if (m.isMesh && m.layers.mask & 1) k++ }); return Math.max(1, k) })()); cur = p.name || cur } void c }
+      if (!this._building) { this._building = true; this._saveHero = this.metricEl.innerHTML }
+      this._hs.textContent = cur
+      this.metricEl.querySelector('.lbl').firstChild.textContent = 'Building · '
+      this._hv.textContent = fmt(n)
+      this.metricEl.querySelector('.lab-big i').textContent = `of ${fmt(N)} parts`
+      this._hb.firstElementChild.style.width = `${(n / N) * 100}%`
+      this._hb.classList.remove('bad')
+      this._hsub.textContent = `${fmt(this.tris ?? 0)} triangles · ${this.matCount ?? 0} materials`
+    } else if (this._building) {
+      this._building = false
+      this.metricEl.querySelector('.lbl').firstChild.textContent = `${this.heroO.label} · `
+      this.metricEl.querySelector('.lab-big i').textContent = this.heroO.unit ?? ''
+      if (this._heroPending) this.setHero(...this._heroPending)
+    }
+  }
+  _updateCut() {
+    const c = this.o.cut ?? {}
+    const a = new THREE.Vector3(...(c.a ?? [0, 0, 1])).normalize(), b = new THREE.Vector3(...(c.b ?? c.a ?? [0, 0, 1])).normalize()
+    const ctr = new THREE.Vector3(...(c.center ?? [0, 0, 0]))
+    const sweep = this.size * (c.reach ?? 0.8) * (1 - ease.io(this.state.cut)) + (c.offset ?? 0)
+    // planes in machine space -> world
+    this.machine.updateWorldMatrix(true, false)
+    const M = this.machine.matrixWorld, N = new THREE.Matrix3().getNormalMatrix(M)
+    const mk = (dir, plane, U) => {
+      if (this.state.cut <= 0.0005) { plane.set(new THREE.Vector3(0, 0, -1), 1e5); U.value.set(0, 0, -1, 1e5); return }
+      const n = dir.clone().negate(), p0 = ctr.clone().addScaledVector(dir, sweep)
+      const pl = new THREE.Plane().setFromNormalAndCoplanarPoint(n, p0).applyMatrix4(M, N)
+      plane.copy(pl); U.value.set(pl.normal.x, pl.normal.y, pl.normal.z, pl.constant)
+    }
+    mk(a, LAB_PLANES[0], CUT.a); mk(b, LAB_PLANES[1], CUT.b)
+    CUT.hatch.value = 0.006 * this.k * this.size * 0.25
+  }
+  _updateXray() {
+    const x = this.state.xray
+    for (const m of this.ghosts) {
+      if (!m.userData.ghost) {
+        const g = new THREE.Mesh(m.geometry, GHOST.clone()); g.layers.set(LAYER_FX); g.renderOrder = 5
+        g.userData.edges = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, 28), new THREE.LineBasicMaterial({ color: this.theme === 'paper' ? 0x2a3442 : 0xbcd4ff, transparent: true, opacity: 0, depthWrite: false }))
+        g.userData.edges.layers.set(LAYER_FX)
+        m.add(g, g.userData.edges); m.userData.ghost = g
+        const mats = Array.isArray(m.material) ? m.material : [m.material]
+        m.userData.solidMats = mats
+      }
+      const g = m.userData.ghost
+      g.visible = x > 0.002; g.userData.edges.visible = x > 0.002
+      g.material.uniforms.uA.value = x; g.material.uniforms.uPaper.value = this.theme === 'paper' ? 1 : 0
+      g.userData.edges.material.opacity = x * (this.theme === 'paper' ? 0.35 : 0.3)
+      for (const sm of m.userData.solidMats) {
+        const want = x > 0.002
+        if (sm.transparent !== want && !sm.userData.wasTransparent) { sm.transparent = want; sm.depthWrite = !want; sm.needsUpdate = true }
+        if (sm.transmission === 0 || sm.transmission === undefined) sm.opacity = 1 - x
+      }
+      m.userData.noAO = x > 0.5
+      m.castShadow = x < 0.5
+    }
+  }
+  _updateLabels() {
+    const on = this.state.labels
+    const W = innerWidth, H = innerHeight
+    const svg = this.$('.lab-labels svg')
+    let lines = ''
+    const ctr = new THREE.Vector3().setFromMatrixPosition(this.machine.matrixWorld).project(this.camera)
+    const items = []
+    for (const L of this.labels) {
+      const p = L.at.clone(); L.obj.updateWorldMatrix(true, false); p.applyMatrix4(L.obj.matrixWorld)
+      const s = p.project(this.camera)
+      const vis = on > 0.01 && s.z < 1 && L.obj.visible !== false
+      if (!vis) { L.el.style.opacity = '0'; continue }
+      const x = (s.x * 0.5 + 0.5) * W, y = (-s.y * 0.5 + 0.5) * H
+      const side = L.side ?? (s.x < ctr.x ? 'left' : 'right')
+      items.push({ L, x, y, side })
+    }
+    // spread labels vertically per side so they never overlap
+    for (const side of ['left', 'right']) {
+      const list = items.filter((i) => i.side === side).sort((a, b) => a.y - b.y)
+      const gap = Math.max(34, H * 0.045)
+      let last = -1e9
+      for (const it of list) { it.ly = Math.max(it.y, last + gap); last = it.ly }
+      const xs = side === 'left' ? Math.min(...list.map((i) => i.x)) - W * 0.06 : Math.max(...list.map((i) => i.x)) + W * 0.06
+      for (const it of list) it.lx = clamp(xs, W * 0.05, W * 0.7)
+    }
+    for (const it of items) {
+      const { L, x, y, lx, ly, side } = it
+      L.el.className = 'lab-lab' + (side === 'left' ? ' left' : '')
+      L.el.style.left = `${lx + (side === 'left' ? -8 : 8)}px`; L.el.style.top = `${ly}px`; L.el.style.opacity = String(on)
+      if (L.value) L.small.textContent = L.value()
+      const ink = this.theme === 'paper' ? '20,20,20' : '240,238,232'
+      lines += `<path d="M${x.toFixed(1)},${y.toFixed(1)} L${(lx + (side === 'left' ? 12 : -12)).toFixed(1)},${ly.toFixed(1)} L${lx.toFixed(1)},${ly.toFixed(1)}" stroke="rgba(${ink},${(0.55 * on).toFixed(3)})" stroke-width="1" fill="none"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="rgba(${ink},${on.toFixed(3)})" stroke="${this.theme === 'paper' ? '#fff' : '#000'}" stroke-width="1.2"/>`
+    }
+    svg.innerHTML = lines
+  }
+  _updateScale() {
+    const el = this.$('.lab-scale'); if (el.style.display === 'none') return
+    // one real metre (or a nice fraction) on screen at the target distance
+    const d = this.camera.position.distanceTo(this.controlsOrbit.target)
+    const pxPerUnit = innerHeight / (2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2)) * d)
+    const pxPerM = pxPerUnit * this.k
+    const nice = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100]
+    let L = nice[0]; for (const n of nice) if (n * pxPerM <= 140) L = n
+    el.querySelector('div').style.width = `${(L * pxPerM).toFixed(1)}px`
+    el.querySelector('span').textContent = L >= 1 ? `${L} m` : L >= 0.01 ? `${Math.round(L * 100)} cm` : `${Math.round(L * 1000)} mm`
+  }
+
+  render(dt) {
+    this._update(dt)
+    if (!this.filmMode) {
+      const idle = performance.now() - (this._userAt ?? -1e9) > 9000
+      if (idle && this.o.autoOrbit !== false && !this._cam) { this.controlsOrbit.autoRotate = true; this.controlsOrbit.autoRotateSpeed = 0.35 } else this.controlsOrbit.autoRotate = false
+      this.controlsOrbit.update(dt)
+    }
+    this.camera.updateMatrixWorld()
+    CUT.proj.value.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse)
+    this._contact.update()
+    this.grade.uniforms.uTime.value = this.time
+    this.composer.render(dt)
+    this._updateLabels()
+    this._updateScale()
+  }
+
+  /** start the loop (or film mode). Call after building the machine and registering controls. */
+  start() {
+    this._modes()
+    this._syncButtons()
+    // cut and labels reach: frame the shadow camera to the machine
+    const box = new THREE.Box3().setFromObject(this.machine)
+    const sz = box.getSize(new THREE.Vector3()).length() * 0.65
+    const sc = this.key.shadow.camera; sc.left = -sz; sc.right = sz; sc.top = sz; sc.bottom = -sz; sc.updateProjectionMatrix()
+    this.key.target.position.copy(box.getCenter(new THREE.Vector3()))
+    this.key.position.copy(this.key.target.position).add(new THREE.Vector3(-3.2, 6.5, 4.2))
+    this.renderer.compile(this.scene, this.camera)
+    let tris = 0; const mats = new Set()
+    this.machine.traverse((m) => { if (m.isMesh) { const g = m.geometry; tris += (g.index ? g.index.count : g.attributes.position.count) / 3 * (m.isInstancedMesh ? m.count : 1); (Array.isArray(m.material) ? m.material : [m.material]).forEach((x) => mats.add(x)) } })
+    this.tris = Math.round(tris); this.matCount = mats.size
+    if (this.filmMode) { this._initFilm(); return }
+    this._typePrompt(1.1)
+    this._assembly = 1
+    const t0 = performance.now(); let last = t0
+    const loop = (now) => {
+      const dt = clamp((now - last) / 1000, 0, 0.05); last = Math.max(last, now)
+      if (this._assembly > 0) this._assembly = Math.max(0, 1 - (now - t0 - 500) / 2600)
+      this.render(dt)
+      requestAnimationFrame(loop)
+    }
+    requestAnimationFrame(loop)
+  }
+  _typePrompt(sec) {
+    const el = this.$('.lab-prompt .txt'), full = this.o.prompt ?? ''
+    const t0 = performance.now()
+    const step = () => { const k = clamp((performance.now() - t0) / (sec * 1000)); el.textContent = full.slice(0, Math.round(full.length * k)); if (k < 1) requestAnimationFrame(step) }
+    step()
+  }
+
+  // ---------- film
+  /**
+   * Film = shots (camera keys) + events (beats, modes, slider moves, cursor, break it).
+   *   lab.film('main', { len: 28, shots: [{ t:0, az, el, dist, target, fov }...], events: [{ t, beat:['Bold.','grey.'], set:{explode:1}, slider:{id, to, dur}, cursor:{to:'slider:throttle'|[x,y], click:true}, do(lab){} }] })
+   * Without a call, lab.autoFilm() builds the standard 28 s story from the machine.
+   */
+  film(name, f) { (this.films ??= {})[name] = f; return this }
+  autoFilm(o = {}) {
+    const v = this.view, sl = Object.keys(this.controls)[0]
+    const c = sl ? this.controls[sl] : null
+    const T = (dz) => ({ ...v, ...dz })
+    const f = {
+      len: 28,
+      assemble: [0.4, 4.2],
+      shots: [
+        { t: 0, ...T({ az: v.az - 28, el: v.el + 6, dist: v.dist * 1.08 }) },
+        { t: 4.5, ...T({ az: v.az - 8, dist: v.dist * 1.0 }) },
+        { t: 10, ...T({ az: v.az + 6, el: v.el + 2, dist: v.dist * 0.94 }) },
+        { t: 15, ...T({ az: v.az + 18, el: v.el + 8, dist: v.dist * 0.9 }) },
+        { t: 20, ...T({ az: v.az + 30, el: v.el + 12, dist: v.dist * 1.04 }) },
+        { t: 24.5, ...T({ az: v.az + 8, el: v.el + 4, dist: v.dist * 1.0 }) },
+        { t: 28, ...T({ az: v.az - 28, el: v.el + 6, dist: v.dist * 1.08 }) },
+      ],
+      events: [
+        { t: 0, type: [0.2, 1.6], beat: ['01', 'One sentence is the whole brief.', 'Typed into Claude Code.'] },
+        { t: 2.2, beat: ['02', 'Claude builds the machine.', `Part by part, ${this.parts.length} of them.`] },
+        ...(c ? [
+          { t: 6.2, beat: ['03', o.runBeat ?? 'It runs on real physics.', o.runSub ?? 'Every number comes from the solver.'], cursor: { to: `slider:${sl}:${(c.value - c.o.min) / (c.o.max - c.o.min)}`, dur: 0.9 } },
+          { t: 7.4, cursor: { to: `slider:${sl}:${o.sliderTo ?? 1}`, dur: 2.4, drag: true }, slider: { id: sl, to: c.o.min + (c.o.max - c.o.min) * (o.sliderTo ?? 1), dur: 2.4 } },
+          { t: 10.4, cursor: { hide: true } },
+        ] : [{ t: 6.2, beat: ['03', 'It runs on real physics.', 'Every number comes from the solver.'] }]),
+        { t: 11.2, beat: ['04', 'Cut it open.', 'Real section caps, live.'], set: { cut: 1, labels: 1 } },
+        { t: 16.2, set: { cut: 0, labels: 0 } },
+        { t: 16.4, beat: ['05', 'Take it apart.', 'Every part on its own axis.'], set: { explode: 1 } },
+        { t: 20.6, set: { explode: 0 } },
+        ...(this._break ? [
+          { t: 21.4, beat: ['06', o.breakBeat ?? 'Then break it.', o.breakSub ?? 'The solver decides what fails.'], cursor: { to: 'button:break', dur: 0.8 }, set: o.breakCut ? { cut: 1 } : undefined },
+          { t: 22.4, cursor: { click: true }, do: (lab) => lab.breakNow() },
+          { t: 22.9, cursor: { hide: true } },
+          { t: 26.2, do: (lab) => lab.resetBreak(), slider: c ? { id: sl, to: c.o.value, dur: 0.01 } : null, set: o.breakCut ? { cut: 0 } : undefined },
+        ] : []),
+      ],
+    }
+    return this.film('main', { ...f, ...o.override })
+  }
+  _initFilm() {
+    const shot = this.q.get('shot') || 'main'
+    if (!this.films?.[shot]) this.autoFilm()
+    const F = this.films[shot] ?? this.films.main
+    this.F = F
+    this.ft = 0
+    this._fired = new Set()
+    // reset everything the film touches so a take is identical every time
+    const init = { slider: Object.fromEntries(Object.entries(this.controls).map(([k, c]) => [k, c.value])) }
+    this._filmInit = init
+    this.$('.lab-prompt .txt').textContent = this.o.prompt ?? ''
+    window.__film = {
+      ready: true,
+      len: F.len,
+      loaded: () => this.loading <= 0 && document.fonts.status === 'loaded',
+      start: () => { this.ft = 0; this.render(0) },
+      step: (dt) => this._filmStep(dt),
+      seek: (t) => { while (this.ft < t - 1e-6) this._filmStep(Math.min(1 / 30, t - this.ft)) },
+    }
+  }
+  _filmStep(dt) {
+    const F = this.F
+    this.ft += dt
+    const t = this.ft
+    // assembly window
+    if (F.assemble) { const [a0, a1] = F.assemble; this._assembly = t < a0 ? 1 : clamp(1 - (t - a0) / (a1 - a0)) } else this._assembly = 0
+    // events
+    F.events.forEach((e, i) => {
+      if (t >= e.t && !this._fired.has(i)) {
+        this._fired.add(i)
+        if (e.set) for (const [k, v] of Object.entries(e.set)) this.target[k] = v
+        if (e.snap) for (const [k, v] of Object.entries(e.snap)) { this.target[k] = v; this.state[k] = v }
+        if (e.slider) this._sl = { ...e.slider, t0: t, from: this.controls[e.slider.id].value }
+        if (e.beat) this._beat = { n: e.beat[0], a: e.beat[1], b: e.beat[2], t0: t }
+        if (e.type) this._type = { t0: t + e.type[0], dur: e.type[1] }
+        if (e.cursor) this._cursorEv(e.cursor, t)
+        e.do?.(this)
+      }
+    })
+    if (this._sl) { const s = this._sl, k = s.dur > 0 ? ease.io(clamp((t - s.t0) / s.dur)) : 1; this.controls[s.id].set(lerp(s.from, s.to, k)); if (k >= 1) this._sl = null }
+    // camera
+    const S = F.shots
+    let i = 0; while (i < S.length - 2 && t > S[i + 1].t) i++
+    const A = S[i], B = S[Math.min(i + 1, S.length - 1)]
+    const k = B.t > A.t ? (B.ease ? ease[B.ease] : ease.io)(clamp((t - A.t) / (B.t - A.t))) : 1
+    const mix = (x, y) => Array.isArray(x) ? x.map((q, j) => lerp(q, y[j], k)) : lerp(x, y, k)
+    const v = {}; for (const key of ['az', 'el', 'dist', 'fov', 'frameX']) v[key] = mix(A[key] ?? this.view[key], B[key] ?? this.view[key]); v.target = mix(A.target ?? this.view.target, B.target ?? this.view.target)
+    this._applyView(v)
+    this._updateBeat(t)
+    this._updateType(t)
+    this._updateCursor(t)
+    this.render(dt)
+  }
+  _updateBeat(t) {
+    const el = this.$('.lab-beat'), b = this._beat
+    if (!b) { el.style.opacity = '0'; return }
+    el.querySelector('.n').textContent = b.n; el.querySelector('b').textContent = b.a; el.querySelector(':scope > div > span').textContent = b.b
+    const k = clamp((t - b.t0) / 0.45)
+    el.style.opacity = String(ease.out(k)); el.style.transform = `translateY(${(1 - ease.out(k)) * 10}px)`
+  }
+  _updateType(t) {
+    const el = this.$('.lab-prompt .txt'), full = this.o.prompt ?? '', caret = this.$('.lab-prompt .caret')
+    if (!this._type) return
+    const k = clamp((t - this._type.t0) / this._type.dur)
+    el.textContent = full.slice(0, Math.round(full.length * k)); caret.style.display = k < 1 || t - this._type.t0 < this._type.dur + 0.6 ? 'inline-block' : 'none'
+    caret.style.animation = 'none'; caret.style.opacity = (Math.floor(t * 2) % 2 === 0 || k < 1) ? '1' : '0'
+  }
+  _cursorPos(spec) {
+    if (Array.isArray(spec)) return { x: spec[0] * innerWidth, y: spec[1] * innerHeight }
+    const [kind, id, frac] = spec.split(':')
+    if (kind === 'slider') { const r = this.controls[id].el.getBoundingClientRect(); const f = Number(frac ?? 0.5); const th = r.height * 0.88; return { x: r.left + th / 2 + (r.width - th) * f + 2, y: r.top + r.height / 2 + 4 } }
+    if (kind === 'button') { const b = this.ui.querySelector(`.lab-modes button[data-k="${id}"]`); const r = b.getBoundingClientRect(); return { x: r.left + r.width * 0.55, y: r.top + r.height * 0.6 } }
+    if (kind === 'part') { const p = this.parts.find((q) => q.name === id); const w = new THREE.Vector3().setFromMatrixPosition(p.obj.matrixWorld).project(this.camera); return { x: (w.x * 0.5 + 0.5) * innerWidth, y: (-w.y * 0.5 + 0.5) * innerHeight } }
+    return { x: innerWidth / 2, y: innerHeight / 2 }
+  }
+  _cursorEv(c, t) {
+    const cur = this._cur ?? (this._cur = { x: innerWidth * 0.62, y: innerHeight * 0.78, a: 0, click: -1 })
+    if (c.hide) { cur.hideAt = t; return }
+    if (c.click) { cur.click = t; if (c.to) Object.assign(cur, { from: { x: cur.x, y: cur.y }, to: c.to, t0: t, dur: c.dur ?? 0.8 }); return }
+    cur.hideAt = undefined
+    if (cur.a === 0) { const p = this._cursorPos(c.to); cur.x = p.x + innerWidth * 0.06; cur.y = p.y + innerHeight * 0.12 }
+    Object.assign(cur, { from: { x: cur.x, y: cur.y }, to: c.to, t0: t, dur: c.dur ?? 0.8, showAt: cur.a < 0.5 ? t : cur.showAt })
+  }
+  _updateCursor(t) {
+    const el = this.$('.lab-cursor'), c = this._cur
+    if (!c) { el.style.opacity = '0'; return }
+    if (c.to) { const p = this._cursorPos(c.to); const k = ease.io(clamp((t - c.t0) / c.dur)); c.x = lerp(c.from.x, p.x, k); c.y = lerp(c.from.y, p.y, k) }
+    const target = c.hideAt !== undefined && t > c.hideAt ? 0 : 1
+    c.a = target ? Math.min(1, c.a + 0.12) : Math.max(0, c.a - 0.08)
+    const press = c.click >= 0 && t - c.click < 0.25 ? 0.82 : 1
+    el.style.opacity = String(c.a); el.style.transform = `translate(${c.x}px, ${c.y}px) scale(${press})`
+  }
+}
+
+// ---------------------------------------------------------------- x-ray ghost
+
+const GHOST = new THREE.ShaderMaterial({
+  uniforms: { uA: { value: 0 }, uPaper: { value: 1 } },
+  transparent: true, depthWrite: false, side: THREE.DoubleSide,
+  vertexShader: 'varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix * normal); vV = -mv.xyz; gl_Position = projectionMatrix * mv; }',
+  fragmentShader: `uniform float uA, uPaper; varying vec3 vN; varying vec3 vV;
+    void main(){ float f = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.2);
+      vec3 c = mix(vec3(0.55, 0.75, 1.0), vec3(0.16, 0.22, 0.3), uPaper);
+      gl_FragColor = vec4(c, (0.05 + 0.5 * f) * uA * mix(1.0, 0.7, uPaper)); }`,
+})
+
+// ---------------------------------------------------------------- contact shadow
+
+class ContactShadow {
+  // depth seen from below the floor, blurred twice: the soft dark pool under the machine
+  constructor(lab, opacity) {
+    this.lab = lab
+    const S = 512, W = 7
+    this.rt = new THREE.WebGLRenderTarget(S, S); this.rt.texture.generateMipmaps = false
+    this.rtB = new THREE.WebGLRenderTarget(S, S); this.rtB.texture.generateMipmaps = false
+    this.cam = new THREE.OrthographicCamera(-W / 2, W / 2, W / 2, -W / 2, 0, 2.4)
+    this.cam.rotation.x = Math.PI / 2
+    this.cam.position.y = lab.groundY
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(W, W).rotateX(Math.PI / 2), new THREE.MeshBasicMaterial({ map: this.rt.texture, transparent: true, opacity, depthWrite: false, toneMapped: false, color: lab.theme === 'paper' ? 0x3a3530 : 0x000000 }))
+    plane.position.y = lab.groundY + 0.002; plane.scale.y = -1; plane.renderOrder = 1; plane.layers.set(LAYER_FX)
+    plane.material.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <map_fragment>', 'vec4 sampledDiffuseColor = texture2D(map, vMapUv); diffuseColor.a *= sampledDiffuseColor.a;') }
+    lab.scene.add(plane, this.cam)
+    this.plane = plane
+    this.depthMat = new THREE.MeshDepthMaterial()
+    this.depthMat.onBeforeCompile = (sh) => { sh.uniforms.darkness = { value: 2.2 }; sh.fragmentShader = 'uniform float darkness;\n' + sh.fragmentShader.replace('gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );', 'gl_FragColor = vec4( vec3( 0.0 ), ( 1.0 - fragCoordZ ) * darkness );') }
+    this.depthMat.depthTest = false; this.depthMat.depthWrite = false
+    this.depthMat.clippingPlanes = LAB_PLANES; this.depthMat.clipIntersection = true
+    this.hb = new THREE.ShaderMaterial(HorizontalBlurShader); this.hb.depthTest = false
+    this.vb = new THREE.ShaderMaterial(VerticalBlurShader); this.vb.depthTest = false
+    this.quad = new THREE.Mesh(new THREE.PlaneGeometry(W, W).rotateX(Math.PI / 2), this.hb); this.quad.frustumCulled = false; this.quad.position.y = lab.groundY + 0.01
+  }
+  blur(amount) {
+    const r = this.lab.renderer
+    this.quad.material = this.hb; this.hb.uniforms.tDiffuse.value = this.rt.texture; this.hb.uniforms.h.value = amount / 256
+    r.setRenderTarget(this.rtB); r.render(this.quad, this.cam)
+    this.quad.material = this.vb; this.vb.uniforms.tDiffuse.value = this.rtB.texture; this.vb.uniforms.v.value = amount / 256
+    r.setRenderTarget(this.rt); r.render(this.quad, this.cam)
+  }
+  update() {
+    const lab = this.lab, r = lab.renderer, sc = lab.scene
+    const bg = sc.background, ov = sc.overrideMaterial
+    const hide = []; sc.traverse((o) => { if ((o.userData.studio || o === this.plane) && o.visible) { o.visible = false; hide.push(o) } })
+    sc.background = null; sc.overrideMaterial = this.depthMat
+    const cc = r.getClearAlpha(); r.setClearAlpha(0)
+    r.setRenderTarget(this.rt); r.clear(); r.render(sc, this.cam)
+    sc.overrideMaterial = ov
+    this.blur(1.2); this.blur(0.5)
+    r.setRenderTarget(null); r.setClearAlpha(cc)
+    sc.background = bg
+    for (const o of hide) o.visible = true
+  }
+}
+
+// ---------------------------------------------------------------- sparks
+
+class Sparks {
+  constructor(lab, max = 1600) {
+    this.lab = lab; this.max = max; this.n = 0
+    this.p = new Float32Array(max * 3); this.v = new Float32Array(max * 3); this.life = new Float32Array(max); this.age = new Float32Array(max)
+    const g = new THREE.BufferGeometry()
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(max * 3), 3))
+    g.setAttribute('aV', new THREE.BufferAttribute(new Float32Array(max * 3), 3))
+    g.setAttribute('aK', new THREE.BufferAttribute(new Float32Array(max), 1))
+    const m = new THREE.ShaderMaterial({
+      uniforms: { uSize: { value: 0.012 }, uPx: { value: innerHeight } },
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      vertexShader: `attribute vec3 aV; attribute float aK; varying float vK; uniform float uSize, uPx;
+        void main(){ vK = aK; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_Position = projectionMatrix * mv; gl_PointSize = uSize * uPx / -mv.z * (0.4 + aK); }`,
+      fragmentShader: `varying float vK; void main(){ vec2 q = gl_PointCoord - 0.5; float a = smoothstep(0.5, 0.0, length(q)); vec3 c = mix(vec3(1.0, 0.25, 0.04), vec3(1.0, 0.85, 0.5), vK); gl_FragColor = vec4(c * 4.0 * a * vK, 1.0); }`,
+    })
+    this.pts = new THREE.Points(g, m); this.pts.frustumCulled = false; this.pts.layers.set(LAYER_FX)
+    lab.scene.add(this.pts)
+    this.R = rng(7)
+  }
+  /** emit n sparks at a world point (use lab.machine.localToWorld) with speed s (display units/s) */
+  emit(pos, n = 80, s = 3, dir = null) {
+    const R = this.R
+    for (let i = 0; i < n; i++) {
+      const j = this.n++ % this.max
+      this.p.set([pos.x, pos.y, pos.z], j * 3)
+      const d = new THREE.Vector3(R() - 0.5, R() - 0.2, R() - 0.5).normalize()
+      if (dir) d.lerp(dir, 0.6).normalize()
+      const sp = s * (0.3 + R())
+      this.v.set([d.x * sp, d.y * sp, d.z * sp], j * 3)
+      this.life[j] = 0.4 + R() * 1.1; this.age[j] = 0
+    }
+  }
+  update(dt) {
+    const g = this.pts.geometry, P = g.attributes.position.array, K = g.attributes.aK.array
+    const gy = this.lab.groundY
+    for (let j = 0; j < this.max; j++) {
+      if (this.life[j] <= 0) { K[j] = 0; continue }
+      this.age[j] += dt
+      if (this.age[j] > this.life[j]) { this.life[j] = 0; K[j] = 0; continue }
+      this.v[j * 3 + 1] -= 9.8 * 0.5 * dt
+      for (let a = 0; a < 3; a++) this.p[j * 3 + a] += this.v[j * 3 + a] * dt
+      if (this.p[j * 3 + 1] < gy) { this.p[j * 3 + 1] = gy; this.v[j * 3 + 1] *= -0.35; this.v[j * 3] *= 0.6; this.v[j * 3 + 2] *= 0.6 }
+      P[j * 3] = this.p[j * 3]; P[j * 3 + 1] = this.p[j * 3 + 1]; P[j * 3 + 2] = this.p[j * 3 + 2]
+      K[j] = 1 - this.age[j] / this.life[j]
+    }
+    this.pts.material.uniforms.uPx.value = innerHeight * this.lab.renderer.getPixelRatio()
+    g.attributes.position.needsUpdate = true; g.attributes.aK.needsUpdate = true
+  }
+}
+
+// ---------------------------------------------------------------- debris (a part that breaks off)
+
+class Debris {
+  constructor(lab, obj, v, w) {
+    this.lab = lab; this.obj = obj
+    this.parent = obj.parent; this.saved = { p: obj.position.clone(), q: obj.quaternion.clone() }
+    // move to world (scene) space, keep pose
+    obj.updateWorldMatrix(true, false)
+    const M = obj.matrixWorld.clone()
+    lab.scene.attach(obj)
+    obj.matrix.copy(M); obj.matrix.decompose(obj.position, obj.quaternion, obj.scale)
+    const k = lab.k
+    this.v = new THREE.Vector3(...v).multiplyScalar(k); this.w = new THREE.Vector3(...w)
+    this.box = new THREE.Box3()
+  }
+  update(dt) {
+    if (dt <= 0) return
+    const o = this.obj
+    this.v.y -= 9.81 * this.lab.k * dt
+    o.position.addScaledVector(this.v, dt)
+    const q = new THREE.Quaternion().setFromEuler(new THREE.Euler(this.w.x * dt, this.w.y * dt, this.w.z * dt)); o.quaternion.premultiply(q)
+    this.box.setFromObject(o)
+    if (this.box.min.y < this.lab.groundY) { o.position.y += this.lab.groundY - this.box.min.y; if (this.v.y < 0) this.v.y *= -0.25; this.v.x *= 0.7; this.v.z *= 0.7; this.w.multiplyScalar(0.8) }
+  }
+  restore() { this.parent.attach(this.obj); this.obj.position.copy(this.saved.p); this.obj.quaternion.copy(this.saved.q) }
+}
+
+// ---------------------------------------------------------------- flow particles along paths
+
+class Flow {
+  /**
+   * Streamlines that move: each particle is a short streak drawn along its path, bright at the head,
+   * fading at the tail (reads like smoke in a wind tunnel, not dust).
+   * lab.flow({ paths: [[[x,y,z],...], ...] (machine metres), count: 500, length: 0.06 (fraction of a path),
+   *            color: (pathIndex, u) => [r,g,b], speed: 0.3 (path lengths per second), parent })
+   *   f.speed and f.opacity are set each frame from the solver; f.colorFn can change live
+   */
+  constructor(lab, o) {
+    this.lab = lab; this.o = o
+    this.curves = o.paths.map((p) => p.isCurve ? p : new THREE.CatmullRomCurve3(p.map((q) => new THREE.Vector3(...q))))
+    // sample every path once into a lookup table (getPointAt per frame is too slow)
+    const S = 256
+    this.lut = this.curves.map((c) => { const a = new Float32Array((S + 1) * 3); const v = new THREE.Vector3(); for (let i = 0; i <= S; i++) { c.getPointAt(i / S, v); a[i * 3] = v.x; a[i * 3 + 1] = v.y; a[i * 3 + 2] = v.z } return a })
+    this.S = S
+    const lens = this.curves.map((c) => c.getLength())
+    const n = o.count ?? 500; this.n = n
+    this.seg = o.segments ?? 8
+    this.len = o.length ?? 0.07
+    const R = rng(o.seed ?? 3)
+    this.pi = new Uint16Array(n); this.u = new Float32Array(n); this.sp = new Float32Array(n)
+    const tot = lens.reduce((x, y) => x + y, 0)
+    for (let i = 0; i < n; i++) {
+      let r = R() * tot, k = 0; while (r > lens[k] && k < lens.length - 1) { r -= lens[k]; k++ }
+      this.pi[i] = k; this.u[i] = R(); this.sp[i] = 0.85 + R() * 0.3
+    }
+    this.speed = o.speed ?? 0.3
+    this.colorFn = o.color ?? (() => [0.3, 0.55, 1])
+    const V = n * this.seg * 2
+    const g = new THREE.BufferGeometry()
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(V * 3), 3))
+    g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(V * 4), 4))
+    const paper = lab.theme === 'paper'
+    const m = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false, blending: paper ? THREE.NormalBlending : THREE.AdditiveBlending, toneMapped: false })
+    this.lines = new THREE.LineSegments(g, m); this.lines.frustumCulled = false; this.lines.layers.set(LAYER_FX); this.lines.renderOrder = 3
+    ;(o.parent ?? lab.machine).add(this.lines)
+    this.opacity = 1
+    lab.onTick((dt) => this.update(dt))
+  }
+  _at(k, u, out, o) { const L = this.lut[k], f = clamp(u) * this.S, i = Math.min(this.S - 1, Math.floor(f)), t = f - i; for (let a = 0; a < 3; a++) out[o + a] = L[i * 3 + a] + (L[i * 3 + 3 + a] - L[i * 3 + a]) * t }
+  update(dt) {
+    const g = this.lines.geometry, P = g.attributes.position.array, C = g.attributes.color.array
+    const seg = this.seg, op = this.opacity
+    this.lines.visible = op > 0.003
+    if (!this.lines.visible) return
+    let v = 0
+    for (let i = 0; i < this.n; i++) {
+      const k = this.pi[i]
+      this.u[i] = (this.u[i] + dt * this.speed * this.sp[i] * (this.o.perPath ? this.o.perPath[k] ?? 1 : 1)) % 1
+      const head = this.u[i]
+      const c = this.colorFn(k, head)
+      const life = smoothstep(0, 0.08, head) * smoothstep(1, 0.9, head)
+      for (let j = 0; j < seg; j++) {
+        const u0 = head - (this.len * j) / seg, u1 = head - (this.len * (j + 1)) / seg
+        this._at(k, u0, P, v * 3); this._at(k, u1, P, v * 3 + 3)
+        const a0 = (1 - j / seg) * life * op, a1 = (1 - (j + 1) / seg) * life * op
+        C.set([c[0], c[1], c[2], u0 < 0 ? 0 : a0, c[0], c[1], c[2], u1 < 0 ? 0 : a1], v * 4)
+        v += 2
+      }
+    }
+    g.attributes.position.needsUpdate = true; g.attributes.color.needsUpdate = true
+  }
+}
+
+// ---------------------------------------------------------------- exhaust plume with shock diamonds
+
+class Plume {
+  /**
+   * lab.plume({ parent, pos:[x,y,z], dir:'-y'|'+x'..., radius (exit, m), length (m), color:'rocket'|'jet'|'methalox', shocks: 6 })
+   *   p.power = 0..1 (throttle), p.shocks = spacing in exit diameters, p.hot = 0..1
+   */
+  constructor(lab, o) {
+    this.lab = lab
+    const R = o.radius, L = o.length
+    const geo = new THREE.CylinderGeometry(1, 1, 1, 64, 64, true).translate(0, -0.5, 0)
+    this.u = { uT: { value: 0 }, uP: { value: 1 }, uShock: { value: o.shocks ?? 1.4 }, uKind: { value: o.color === 'jet' ? 1 : 0 }, uR: { value: R }, uL: { value: L }, uPaper: { value: lab.theme === 'paper' ? 1 : 0 }, uTint: { value: new THREE.Color(1, 1, 1) }, uSpread: { value: o.spread ?? 1 } }
+    const m = new THREE.ShaderMaterial({
+      uniforms: this.u, transparent: true, depthWrite: false, blending: lab.theme === 'paper' ? THREE.NormalBlending : THREE.AdditiveBlending, side: THREE.DoubleSide,
+      vertexShader: `uniform float uR, uL, uP, uSpread; varying vec3 vP; varying vec3 vN; varying vec3 vV;
+        void main(){ vec3 p = position; float y = -p.y; // 0 at exit, 1 at the tail
+          float r = uR * (1.0 + y * (0.35 + 1.4 * y) * mix(0.6, 1.0, uP) * uSpread) ; p.xz *= r; p.y = -y * uL * mix(0.35, 1.0, uP);
+          vP = vec3(p.x / uR, y, p.z / uR); vec4 mv = modelViewMatrix * vec4(p, 1.0); vN = normalize(normalMatrix * vec3(p.x, 0.0, p.z)); vV = -mv.xyz; gl_Position = projectionMatrix * mv; }`,
+      fragmentShader: `uniform float uT, uP, uShock, uKind, uPaper; uniform vec3 uTint; varying vec3 vP; varying vec3 vN; varying vec3 vV;
+        float h(vec3 p){ return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453); }
+        float n3(vec3 p){ vec3 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+          return mix(mix(mix(h(i), h(i + vec3(1,0,0)), f.x), mix(h(i + vec3(0,1,0)), h(i + vec3(1,1,0)), f.x), f.y), mix(mix(h(i + vec3(0,0,1)), h(i + vec3(1,0,1)), f.x), mix(h(i + vec3(0,1,1)), h(i + vec3(1,1,1)), f.x), f.y), f.z); }
+        void main(){ float y = vP.y; float f = abs(dot(normalize(vN), normalize(vV)));
+          float core = pow(f, 1.6);
+          float turb = n3(vec3(vP.x * 3.0, y * 9.0 - uT * 14.0, vP.z * 3.0)) * 0.6 + n3(vec3(vP.x * 7.0, y * 22.0 - uT * 30.0, vP.z * 7.0)) * 0.4;
+          float diam = 0.5 + 0.5 * cos(y * 6.2831 * uShock * 2.2);
+          float shock = pow(diam, 6.0) * smoothstep(0.75, 0.05, y) * core;
+          float fade = smoothstep(1.0, 0.25, y) * smoothstep(0.0, 0.02, y);
+          vec3 a = uKind > 0.5 ? vec3(0.55, 0.65, 1.0) : vec3(0.35, 0.45, 1.0);
+          vec3 b = uKind > 0.5 ? vec3(1.0, 0.55, 0.25) : vec3(1.0, 0.45, 0.2);
+          vec3 c = mix(a, b, smoothstep(0.05, 0.6, y)) * (0.35 + 0.9 * turb) * core * fade;
+          c += vec3(1.0, 0.85, 0.65) * shock * 2.4 * (uKind > 0.5 ? 0.2 : 1.0);
+          c *= uP * uTint;
+          // on paper: normal blending, alpha from the light the gas emits, an HDR core that tone maps to white hot
+          float al = clamp(max(c.r, max(c.g, c.b)) * 0.9, 0.0, 0.92);
+          gl_FragColor = uPaper > 0.5 ? vec4(c * 1.8 / max(al, 0.12), al) : vec4(c, 1.0); }`,
+    })
+    const mesh = new THREE.Mesh(geo, m); mesh.layers.set(LAYER_FX); mesh.renderOrder = 4; mesh.frustumCulled = false
+    const grp = new THREE.Group(); grp.add(mesh)
+    if (o.pos) grp.position.set(...o.pos)
+    const dir = { '-y': [0, 0, 0], '+y': [Math.PI, 0, 0], '+x': [0, 0, Math.PI / 2], '-x': [0, 0, -Math.PI / 2], '+z': [-Math.PI / 2, 0, 0], '-z': [Math.PI / 2, 0, 0] }[o.dir ?? '-y']
+    grp.rotation.set(...dir)
+    ;(o.parent ?? lab.machine).add(grp)
+    this.group = grp; this.mesh = mesh
+    this.power = 1
+    lab.onTick((dt) => { this.u.uT.value += dt; this.u.uP.value = this.power; mesh.visible = this.power > 0.01 })
+  }
+  set shocks(v) { this.u.uShock.value = v }
+  set tint(c) { this.u.uTint.value.setRGB(c[0], c[1], c[2]) }
+}
+
+// ---------------------------------------------------------------- global handle for pages that paste the kit inline
+const LabKit = { THREE, Lab, MAT, mat, setCaps, GEO, heatGlow, blackbody, clamp, lerp, smoothstep, ease, approach, table, rk4, fmt, rng, LAYER_FX }
+if (typeof window !== 'undefined') window.LabKit = LabKit
+export default LabKit
+
+</script>
+<!-- lab-kit:end -->
+<script type="module">
+// ------------------------------------------------------------------ shared daylight model (../shared/daylight.mjs)
+const DL = (() => {
+// 墨石公寓 · the daylight and lighting model shared by the 3D apartment (machine/) and the
+// daylight-factor figure (anatomy/). Both pages inline this file at build time, so the numbers
+// they show come from one place. Pure functions, no DOM.
+//
+// Sources
+//   sun position      NOAA, "General Solar Position Calculations" (gml.noaa.gov/grad/solcalc/solareqns.PDF)
+//   air mass          Kasten & Young (1989), m = 1 / (cos z + 0.50572 (96.07995 − z)^−1.6364)
+//   daylight          IES Lighting Handbook, daylight availability, partly cloudy sky:
+//                       sky on a horizontal plane  E_sky = 0.3 + 45 sin(α)  klux
+//                       direct normal              E_dn  = 127.5 exp(−0.80 m) klux
+//   daylight factor   BRE average daylight factor (Littlefair), DF = T · A_w · θ / (A · (1 − R²))   [%]
+//   electric light    lumen method, E = Φ · UF · MF / A
+// Demonstration assumptions (marked 假设 in the README): the site, the date, the sky type, the
+// glass and sheer transmittances, the visible-sky angle, the surface reflectances, the fixtures.
+
+const D2R = Math.PI / 180, R2D = 180 / Math.PI
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x))
+
+/** Kuala Lumpur, 2026-10-14 (day 287 of the year), local time UTC+8. */
+const SITE = { name: '吉隆坡', lat: 3.139, lon: 101.687, tz: 8, doy: 287, date: '2026-10-14' }
+
+/** Sun altitude and azimuth (degrees, azimuth clockwise from north) at a local clock hour. NOAA equations. */
+function sunAt(hour, site = SITE) {
+  const g = (2 * Math.PI / 365) * (site.doy - 1 + (hour - 12) / 24)
+  const eqt = 229.18 * (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g))
+  const decl = 0.006918 - 0.399912 * Math.cos(g) + 0.070257 * Math.sin(g) - 0.006758 * Math.cos(2 * g) + 0.000907 * Math.sin(2 * g) - 0.002697 * Math.cos(3 * g) + 0.00148 * Math.sin(3 * g)
+  const tst = hour * 60 + eqt + 4 * site.lon - 60 * site.tz          // true solar time, minutes
+  const ha = (tst / 4 - 180) * D2R                                      // hour angle
+  const phi = site.lat * D2R
+  const zen = Math.acos(clamp(Math.sin(phi) * Math.sin(decl) + Math.cos(phi) * Math.cos(decl) * Math.cos(ha), -1, 1))
+  const a = Math.acos(clamp((Math.sin(decl) - Math.sin(phi) * Math.cos(zen)) / (Math.cos(phi) * Math.sin(zen)), -1, 1)) * R2D
+  return { alt: 90 - zen * R2D, az: ha > 0 ? 360 - a : a, decl: decl * R2D, eqt }
+}
+
+/** Outdoor daylight for a sun altitude: sky illuminance on an unobstructed horizontal plane and direct normal illuminance (lx). */
+function skyAt(alt) {
+  // below the horizon: a twilight decay fitted to 300 lx at sunset and about 3.4 lx at −6° (end of civil twilight)
+  if (alt <= 0) return { Esky: 300 * Math.exp(0.746 * Math.max(alt, -18)), Edn: 0, m: Infinity }
+  const zd = 90 - alt
+  const m = 1 / (Math.cos(zd * D2R) + 0.50572 * Math.pow(96.07995 - zd, -1.6364))
+  return { Esky: (0.3 + 45 * Math.sin(alt * D2R)) * 1000, Edn: 127500 * Math.exp(-0.8 * m), m }
+}
+
+/**
+ * Direct sun on a vertical glazed façade whose outward normal points to azimuth `normalAz`.
+ * A slab edge `overhang` metres deep over glazing `height` tall shades part of it (profile angle).
+ */
+function onFacade(sun, Edn, normalAz, { overhang = 0.6, height = 2.85 } = {}) {
+  const da = (sun.az - normalAz) * D2R
+  const ci = Math.cos(sun.alt * D2R) * Math.cos(da)
+  if (sun.alt <= 0 || ci <= 0) return { Ev: 0, lit: 0, cosI: Math.max(0, ci) }
+  const tanProfile = Math.tan(sun.alt * D2R) / Math.cos(da)
+  const shade = clamp((overhang * tanProfile) / height)
+  return { Ev: Edn * ci * (1 - shade), lit: 1 - shade, cosI: ci }
+}
+
+/** The swappable finish on the living room's dark surfaces (TV wall veneer and the fluted return), with its reflectance. */
+const FINISHES = {
+  walnut: { name: '胡桃木饰面', short: '胡桃木', rho: 0.12 },
+  white: { name: '白色乳胶漆', short: '白漆', rho: 0.80 },
+  marble: { name: '白色大理石', short: '大理石', rho: 0.70 },
+}
+
+/**
+ * The living room as the daylight formula sees it. Sizes come from the 3D model (metres):
+ * x −6 … −0.6, z −0.4 … 5.0, floor to ceiling 3.0. Each surface is [name, area m², reflectance];
+ * `feature` marks the area that takes the swappable finish.
+ */
+const ROOM = {
+  w: 5.4, d: 5.4, h: 3.0,
+  glazing: [
+    { name: '西窗', w: 5.0, h: 2.85, az: 270 },
+    { name: '南窗', w: 4.8, h: 2.85, az: 180 },
+  ],
+  frameFactor: 0.85,   // glass share of each opening (假设: slim aluminium frames)
+  Tglass: 0.62,        // low-E double glazing, light transmittance with dirt (假设)
+  tSheer: 0.55,        // sheer voile, light transmittance (假设; typical 0.5–0.7)
+  theta: 75,           // visible-sky angle at the window, degrees (假设: high floor, open view)
+  surfaces: [
+    ['地面 · 抛光灰砖', 29.16, 0.45],
+    ['天花 · 白漆', 29.16, 0.85],
+    ['西窗玻璃', 14.25, 0.10],
+    ['西墙其余', 1.95, 0.80],
+    ['南窗玻璃', 13.68, 0.10],
+    ['南墙其余', 2.52, 0.80],
+    ['电视框 · 大理石', 4.05, 0.70],
+    ['电视墙饰面', 6.15, 'feature'],
+    ['走廊门洞', 3.78, 0.30],
+    ['北墙其余', 2.22, 0.80],
+    ['竖纹墙饰面', 3.60, 'feature'],
+    ['通往餐厅的开口', 11.34, 0.35],
+    ['开口上方', 1.26, 0.80],
+  ],
+}
+
+/** Average daylight factor (%) of the living room for a finish and a sheer cover (0 open … 1 drawn). */
+function daylightFactor(finish = 'walnut', sheer = 0, room = ROOM) {
+  const rhoF = (FINISHES[finish] ?? FINISHES.walnut).rho
+  let A = 0, RA = 0
+  for (const [, area, rho] of room.surfaces) { A += area; RA += area * (rho === 'feature' ? rhoF : rho) }
+  const R = RA / A
+  const Aw = room.glazing.reduce((s, g) => s + g.w * g.h, 0) * room.frameFactor
+  const s = clamp(sheer)
+  const T = room.Tglass * (1 - s + s * room.tSheer)
+  return { DF: (T * Aw * room.theta) / (A * (1 - R * R)), T, Aw, A, R, rhoF }
+}
+
+/**
+ * Electric light in the living room, lumen method. Each layer: power (W), flux (lm), utilisation factor.
+ * Fixtures are typical catalogue values (假设); UF reflects a room with one dark wall.
+ */
+const MF = 0.8
+const LAYERS = [
+  { id: 'cove', name: '天花灯槽', note: '9 m · 10 W/m · 2700 K', W: 90, lm: 9000, UF: 0.30, K: 2700 },
+  { id: 'track', name: '磁吸轨道灯', note: '6 × 10 W · 36°', W: 60, lm: 5100, UF: 0.55, K: 3000 },
+  { id: 'strip', name: '电视墙灯带', note: '6.4 m · 10 W/m · 2400 K', W: 64, lm: 5760, UF: 0.12, K: 2400 },
+  { id: 'lamp', name: '落地灯', note: '8 W · 806 lm', W: 8, lm: 806, UF: 0.45, K: 2700 },
+]
+const layerLux = (L, dim = 1, floor = ROOM.w * ROOM.d) => (L.lm * dim * L.UF * MF) / floor
+
+/** Lighting scenes: a target the controller holds against daylight, or a fixed recipe (dims 0–1). */
+const SCENES = {
+  daily: { name: '日常', target: 140, recipe: { cove: 1, track: 0.7, strip: 0.6, lamp: 0.3 }, accent: 0.35 },
+  host: { name: '会客', target: 175, recipe: { cove: 1, track: 1, strip: 1, lamp: 1 }, accent: 0.5 },
+  movie: { name: '观影', fixed: { cove: 0, track: 0, strip: 0.7, lamp: 0.4 }, sheer: 1 },
+  night: { name: '夜间', fixed: { cove: 0.08, track: 0, strip: 0.2, lamp: 0 }, sheer: 1 },
+}
+
+/** Dimmer levels for a scene given the daylight already on the floor (lx). */
+function dimsFor(sceneId, Eday) {
+  const sc = SCENES[sceneId] ?? SCENES.daily
+  if (sc.fixed) return { ...sc.fixed }
+  const full = LAYERS.reduce((s, L) => s + layerLux(L, sc.recipe[L.id] ?? 0), 0)
+  const k = clamp(Math.max(0, sc.target - Eday) / full)
+  const d = Object.fromEntries(LAYERS.map((L) => [L.id, (sc.recipe[L.id] ?? 0) * k]))
+  // after dusk the TV-wall strip stays on as an accent, even when the target is met
+  if (Eday < 80) d.strip = Math.max(d.strip, sc.accent * clamp((80 - Eday) / 60))
+  return d
+}
+
+/** TV picture contrast with room light reflected off the screen (movie scene). */
+const TV = { white: 450, black: 0.09, rho: 0.015 }   // cd/m², cd/m², screen diffuse reflectance (假设)
+function tvContrast(Eavg) {
+  const Lr = (TV.rho * 0.5 * Eavg) / Math.PI                // vertical illuminance on the screen ≈ half the room average
+  return (TV.white + Lr) / (TV.black + Lr)
+}
+
+const hhmm = (h) => { const m = Math.round(h * 60); return `${String(Math.floor(m / 60) % 24).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}` }
+
+return { SITE, sunAt, skyAt, onFacade, FINISHES, ROOM, daylightFactor, MF, LAYERS, layerLux, SCENES, dimsFor, TV, tvContrast, hhmm }
+})()
+// ------------------------------------------------------------------ the apartment (src/apartment.js)
+// 墨石公寓 · the apartment on the Machine kit. build.mjs inlines this file after the kit and the shared
+// daylight model (DL, from ../shared/daylight.mjs) into apartment.html.
+//
+// Research (step 1 of the skill). Metres, Y up, floor at y = 0, +x east, +z south.
+//   footprint 12.0 × 10.0 m (120 m² to wall centre lines), floor to ceiling 3.0 m, exterior walls 0.20 m, partitions 0.12 m
+//   rooms (centre lines):  living   x −6.0 … −0.6  z −0.4 … 5.0   29.2 m²   (the reference image)
+//                          dining   x −0.6 …  2.8  z −0.4 … 5.0   18.4 m²
+//                          kitchen  x  2.8 …  6.0  z −0.4 … 2.8   10.2 m²
+//                          foyer    x  2.8 …  6.0  z  2.8 … 5.0    7.0 m²
+//                          corridor x −6.0 …  6.0  z −1.6 … −0.4  14.4 m²  (with storage behind the TV wall)
+//                          master bedroom −6.0 … −1.2, master bath −1.2 … 1.0, bedroom 2 1.0 … 4.2, bath 2 4.2 … 6.0 (z −5.0 … −1.6)
+//   living room after the reference image (style and finish taken, layout invented for this plan):
+//     TV wall of walnut veneer panels 0.53 m wide on a black backing; a marble frame 3.00 × 1.38 m standing 0.15 m off it,
+//     bottom at 0.62 m, a 2400 K strip hidden under its bottom return; a niche with two black steel shelves; a 65-inch TV
+//     (1.45 × 0.83 m); a floating marble plinth 0.34 m high and 0.43 m deep; a black steel framed opening 1.4 × 2.7 m to the
+//     corridor; a fluted dark return wall with the intercom; floor-to-ceiling glazing on two sides (5.0 m and 4.8 m × 2.85 m)
+//     with sheers on ceiling tracks; a 1.52 m six-blade black ceiling fan; two magnetic tracks with six spots; a cove light
+//     along the east drop ceiling; two fabric sofas, a marble cube table, two black turned stools, a black floor lamp.
+//   materials: walnut veneer ρ 0.12, white marble ρ 0.70 (bookmatched on the TV panel), light grey polished porcelain
+//     1200 × 600 ρ 0.45, warm grey fabric, black satin steel, white paint ρ 0.80.
+//   physics (shared/daylight.mjs): NOAA sun position for Kuala Lumpur on 2026-10-14, IES partly cloudy daylight, BRE
+//     average daylight factor of the living room, the lumen method for four light layers, a scene controller that tops
+//     daylight up to a target. Check: noon sky about 44 klx, DF 11.3 % open / 6.2 % behind sheers → about 5,000 / 2,750 lx.
+//   the hero: average illuminance in the living room (lx); the input: the clock. No break-it: a room has no failure mode
+//     worth inventing (3D_model/README.md asks not to force one). The movie scene computes TV contrast instead.
+
+import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js'
+const { THREE, Lab, MAT, mat, setCaps, GEO, clamp, lerp, smoothstep, approach, fmt, ease, rng } = window.LabKit
+const { SITE, sunAt, skyAt, onFacade, FINISHES, daylightFactor, LAYERS, layerLux, SCENES, dimsFor, tvContrast, hhmm } = DL
+
+RectAreaLightUniformsLib.init()
+setCaps('metal')
+
+const H = 3.0, TE = 0.2, TI = 0.12
+const X0 = -6, X1 = 6, Z0 = -5, Z1 = 5
+const ROOMS = {
+  liv: { name: '客厅', x: [-6, -0.6], z: [-0.4, 5] },
+  din: { name: '餐厅', x: [-0.6, 2.8], z: [-0.4, 5] },
+  kit: { name: '厨房', x: [2.8, 6], z: [-0.4, 2.8] },
+  foy: { name: '玄关', x: [2.8, 6], z: [2.8, 5] },
+  cor: { name: '走廊', x: [-6, 6], z: [-1.6, -0.4] },
+  mbr: { name: '主卧', x: [-6, -1.2], z: [-5, -1.6] },
+  mba: { name: '主卫', x: [-1.2, 1.0], z: [-5, -1.6] },
+  br2: { name: '次卧', x: [1.0, 4.2], z: [-5, -1.6] },
+  ba2: { name: '次卫', x: [4.2, 6], z: [-5, -1.6] },
+}
+for (const r of Object.values(ROOMS)) r.area = (r.x[1] - r.x[0] - 0.16) * (r.z[1] - r.z[0] - 0.16)
+
+const narrow = () => innerWidth <= 760
+const VIEWS = {
+  overview: { az: -32, el: 38, dist: 2.3, target: [0.3, -0.2, 0.2], fov: 30 },
+  living: { az: 4, el: -3.2, dist: 0.4, target: [-4.12, 1.52, -0.3], fov: 54 },
+  plan: { az: 0, el: 89.4, dist: 2.3, target: [0.35, 0, 0.1], fov: 30 },
+  apart: { az: -32, el: 27, dist: 3.25, target: [0.3, 3.0, 0.2], fov: 30 },
+}
+
+// ------------------------------------------------------------------ the lab
+const lab = new Lab({
+  prompt: '帮我用 3D_model 里的 skill，按这张室内设计参考图，设计一个公寓的 3D 模型',
+  no: 1, title: '墨石公寓', sub: '三室两卫',
+  size: 12,
+  ground: -0.25, // Keep the studio floor at the structural slab bottom, below the floor finishes.
+  view: VIEWS.overview,
+  cut: { a: [0, 1, 0], b: [0, 1, 0], center: [0, 1.25, 0], reach: 0.32 },
+  pills: ['three.js', '日光求解', '分层照明'],
+})
+const K = lab.k
+lab.ao.updateGtaoMaterial({ samples: 8 })
+lab.ao.updatePdMaterial({ samples: 8 })
+
+// ------------------------------------------------------------------ procedural textures
+function canvasTex(w, h, draw, { color = true, mirror = false } = {}) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h
+  draw(c.getContext('2d'), w, h)
+  const t = new THREE.CanvasTexture(c)
+  t.wrapS = t.wrapT = mirror ? THREE.MirroredRepeatWrapping : THREE.RepeatWrapping
+  t.anisotropy = 8
+  t.colorSpace = color ? THREE.SRGBColorSpace : THREE.NoColorSpace
+  return t
+}
+/** call f at the nine wrap offsets, so what it draws tiles without a seam */
+const wrap9 = (w, h, f) => { for (const dx of [-w, 0, w]) for (const dy of [-h, 0, h]) f(dx, dy) }
+function stroke(g, pts, w, col, blur, W, Hh) {
+  g.filter = blur ? `blur(${blur}px)` : 'none'
+  g.strokeStyle = col; g.lineWidth = w; g.lineJoin = g.lineCap = 'round'
+  wrap9(W, Hh, (dx, dy) => { g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(x + dx, y + dy) : g.moveTo(x + dx, y + dy))); g.stroke() })
+  g.filter = 'none'
+}
+function blobs(g, R, W, Hh, n, r0, r1, rgb, a) {
+  for (let i = 0; i < n; i++) {
+    const x = R() * W, y = R() * Hh, r = r0 + R() * (r1 - r0), v = rgb.map((c) => Math.round(c + (R() - 0.5) * 16))
+    wrap9(W, Hh, (dx, dy) => { const gr = g.createRadialGradient(x + dx, y + dy, 0, x + dx, y + dy, r); gr.addColorStop(0, `rgba(${v[0]},${v[1]},${v[2]},${a})`); gr.addColorStop(1, `rgba(${v[0]},${v[1]},${v[2]},0)`); g.fillStyle = gr; g.fillRect(x + dx - r, y + dy - r, 2 * r, 2 * r) })
+  }
+}
+/** white marble: a cloudy ground, soft grey veins with crisp cores and branches, all along one drift direction */
+function marbleTex(seed, { veins = 6, bold = 1, drift = 0.75, mirror = false } = {}) {
+  return canvasTex(1024, 1024, (g, W) => {
+    const R = rng(seed)
+    g.fillStyle = '#e9e7e2'; g.fillRect(0, 0, W, W)
+    blobs(g, R, W, W, 120, 60, 260, [204, 202, 197], 0.18)
+    blobs(g, R, W, W, 60, 30, 120, [246, 245, 241], 0.35)
+    const walk = (x, y, a, n, step) => { const p = [[x, y]]; for (let i = 0; i < n; i++) { a += (R() - 0.5) * 0.55; a = lerp(a, drift, 0.06); x += Math.cos(a) * step; y += Math.sin(a) * step; p.push([x, y]) } return p }
+    for (let v = 0; v < veins; v++) {
+      const p = walk(R() * W, R() * W, drift + (R() - 0.5) * 0.8, 150 + R() * 120, 7)
+      const w = (0.6 + R() * 1.6) * bold
+      stroke(g, p, 16 * w, 'rgba(150,150,154,0.10)', 9, W, W)
+      stroke(g, p, 3.4 * w, 'rgba(138,139,144,0.30)', 1.8, W, W)
+      stroke(g, p, 0.9 * w, 'rgba(108,109,114,0.55)', 0.3, W, W)
+      for (let b = 0; b < 3; b++) {
+        const s = p[Math.floor(R() * p.length)]
+        const q = walk(s[0], s[1], drift + (R() < 0.5 ? 1 : -1) * (0.5 + R() * 0.6), 30 + R() * 50, 5)
+        stroke(g, q, 1.2 * w, 'rgba(132,133,138,0.32)', 0.9, W, W)
+      }
+    }
+    for (let i = 0; i < 40; i++) { const p = walk(R() * W, R() * W, R() * 6.3, 14 + R() * 30, 4); stroke(g, p, 0.7, 'rgba(120,120,124,0.35)', 0.4, W, W) }
+  }, { mirror })
+}
+/** quarter-cut walnut: straight grain streaks, periodic along v so it tiles */
+function veneerTex(seed, base = [44, 35, 29]) {
+  return canvasTex(512, 1024, (g, W, Hh) => {
+    const R = rng(seed)
+    g.fillStyle = `rgb(${base})`; g.fillRect(0, 0, W, Hh)
+    for (let i = 0; i < 640; i++) {
+      const x0 = R() * W, k = 1 + Math.floor(R() * 3), ph = R() * 6.28, amp = 1 + R() * 5, lw = 0.5 + R() * 2.6
+      const d = R() < 0.55 ? -1 : 1, s = 10 + R() * 22
+      g.strokeStyle = `rgba(${base.map((c) => c + d * s).join(',')},${0.25 + R() * 0.35})`; g.lineWidth = lw
+      for (const dx of [-W, 0, W]) { g.beginPath(); for (let y = 0; y <= Hh; y += 16) { const x = x0 + dx + Math.sin((y / Hh) * 6.283 * k + ph) * amp; y ? g.lineTo(x, y) : g.moveTo(x, y) } g.stroke() }
+    }
+    for (let i = 0; i < 900; i++) { g.fillStyle = `rgba(16,12,10,${0.2 + R() * 0.3})`; g.fillRect(R() * W, R() * Hh, 1, 3 + R() * 9) }
+  })
+}
+/** fluting: rounded ribs across u, for a bump map */
+const flutesTex = canvasTex(256, 16, (g, W, Hh) => { const n = 8; for (let x = 0; x < W; x++) { const t = (x / W) * n % 1; const v = Math.round(255 * Math.pow(Math.sin(Math.PI * t), 0.6)); g.fillStyle = `rgb(${v},${v},${v})`; g.fillRect(x, 0, 1, Hh) } }, { color: false })
+/** large-format porcelain 1200 × 600, stacked: 2.4 × 2.4 m per tile of texture (colour and roughness) */
+function tileTex(rough) {
+  return canvasTex(1024, 1024, (g, W) => {
+    const R = rng(rough ? 41 : 40), u = W / 2.4
+    g.fillStyle = rough ? '#2a2a2a' : '#d1cfca'; g.fillRect(0, 0, W, W)
+    for (let i = 0; i < 2; i++) for (let j = 0; j < 4; j++) {
+      const x = i * 1.2 * u, y = j * 0.6 * u
+      if (!rough) { g.save(); g.beginPath(); g.rect(x, y, 1.2 * u, 0.6 * u); g.clip(); const t = 200 + R() * 10; g.fillStyle = `rgb(${t + 8},${t + 6},${t + 2})`; g.fillRect(x, y, 1.2 * u, 0.6 * u); blobs(g, R, W, W, 18, 30, 140, [222, 221, 217], 0.35); blobs(g, R, W, W, 10, 20, 90, [186, 184, 179], 0.18); g.restore() }
+      g.strokeStyle = rough ? '#a8a8a8' : 'rgba(150,147,141,0.95)'; g.lineWidth = 2.2; g.strokeRect(x + 1, y + 1, 1.2 * u - 2, 0.6 * u - 2)
+    }
+  }, { color: !rough })
+}
+/** wide oak boards, warm grey */
+const oakTex = canvasTex(1024, 1024, (g, W) => {
+  const R = rng(9), n = 12, bw = W / n
+  for (let i = 0; i < n; i++) {
+    const t = 150 + R() * 22
+    for (const y0 of [-R() * W, 0]) { g.fillStyle = `rgb(${t},${t - 14},${t - 30})`; g.fillRect(i * bw, y0, bw, W) }
+    for (let k = 0; k < 40; k++) { const x = i * bw + R() * bw; g.strokeStyle = `rgba(${t - 40},${t - 52},${t - 66},${0.15 + R() * 0.25})`; g.lineWidth = 0.6 + R() * 1.4; g.beginPath(); g.moveTo(x, 0); g.bezierCurveTo(x + (R() - 0.5) * 8, W / 3, x + (R() - 0.5) * 8, (2 * W) / 3, x, W); g.stroke() }
+    g.fillStyle = 'rgba(60,48,38,0.55)'; g.fillRect(i * bw, 0, 1.5, W)
+    const j = R() * W; g.fillRect(i * bw, j, bw, 1.5)
+  }
+})
+/** the rug: grey and white strokes, like the one in the reference */
+const rugTex = canvasTex(1024, 1024, (g, W) => {
+  const R = rng(17)
+  g.fillStyle = '#c7c4be'; g.fillRect(0, 0, W, W)
+  const cols = ['#8b8781', '#ebe9e4', '#a9a59f', '#6c6863', '#d8d6d0']
+  for (let i = 0; i < 4200; i++) { const x = R() * W, y = R() * W, l = 8 + R() * 70; g.strokeStyle = cols[Math.floor(R() * cols.length)]; g.globalAlpha = 0.25 + R() * 0.35; g.lineWidth = 1 + R() * 3; g.beginPath(); g.moveTo(x, y); g.lineTo(x + l, y + (R() - 0.5) * 6); g.stroke() }
+  g.globalAlpha = 1
+})
+/** a dark abstract canvas for the dining wall */
+const artTex = canvasTex(768, 576, (g, W, Hh) => {
+  const R = rng(5)
+  g.fillStyle = '#1e1c1a'; g.fillRect(0, 0, W, Hh)
+  for (let i = 0; i < 14; i++) { g.strokeStyle = `rgba(${170 + R() * 60},${150 + R() * 50},${120 + R() * 40},${0.25 + R() * 0.4})`; g.lineWidth = 6 + R() * 40; g.beginPath(); const x = R() * W, y = R() * Hh; g.arc(x, y, 80 + R() * 260, R() * 6, R() * 6 + 1.2 + R()); g.stroke() }
+  blobs(g, R, W, Hh, 12, 40, 160, [200, 120, 60], 0.12)
+})
+/** the cove's wash on the ceiling: bright at the band edge, fading out */
+const coveTex = canvasTex(256, 8, (g, W, Hh) => { const gr = g.createLinearGradient(0, 0, W, 0); gr.addColorStop(0, 'rgba(255,255,255,0)'); gr.addColorStop(0.7, 'rgba(255,255,255,0.35)'); gr.addColorStop(1, 'rgba(255,255,255,1)'); g.fillStyle = gr; g.fillRect(0, 0, W, Hh) })
+
+const TX = {
+  marble: marbleTex(3, { veins: 7, bold: 1 }),
+  marbleBook: marbleTex(11, { veins: 3, bold: 1.7, drift: 1.05, mirror: true }),
+  marbleTable: marbleTex(23, { veins: 8, bold: 1.15, drift: 0.4 }),
+  veneer: veneerTex(5),
+  veneerDark: veneerTex(7, [30, 25, 22]),
+  tile: tileTex(false),
+  tileRough: tileTex(true),
+}
+TX.marbleBook.repeat.set(2, 1)
+
+// ------------------------------------------------------------------ materials
+const M = {
+  wall: MAT.paint({ color: [0.76, 0.75, 0.72], roughness: 0.9, clearcoat: 0, finish: null, cap: [0.028, 0.028, 0.03], capRough: 1, envMapIntensity: 0.9 }),
+  ceil: MAT.paint({ color: [0.8, 0.79, 0.77], roughness: 0.92, clearcoat: 0, finish: null }),
+  slab: mat({ color: [0.3, 0.3, 0.29], roughness: 0.9, finish: 'cast', cap: [0.06, 0.06, 0.06], capRough: 1 }),
+  tile: mat({ color: [1, 1, 1], map: TX.tile, roughnessMap: TX.tileRough, roughness: 0.55, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.14, finish: null }),
+  oak: mat({ color: [1, 1, 1], map: oakTex, roughness: 0.52, clearcoat: 0.12, finish: null }),
+  stone: mat({ color: [0.055, 0.055, 0.058], roughness: 0.32, clearcoat: 0.3, finish: 'cast' }),
+  marble: mat({ color: [1, 1, 1], map: TX.marble, roughness: 0.16, clearcoat: 0.45, clearcoatRoughness: 0.08, finish: null }),
+  marbleBook: mat({ color: [1, 1, 1], map: TX.marbleBook, roughness: 0.15, clearcoat: 0.5, clearcoatRoughness: 0.08, finish: null }),
+  marbleTable: mat({ color: [1, 1, 1], map: TX.marbleTable, roughness: 0.2, clearcoat: 0.35, clearcoatRoughness: 0.1, finish: null }),
+  veneer: mat({ color: [1, 1, 1], map: TX.veneer, roughness: 0.5, clearcoat: 0.18, clearcoatRoughness: 0.4, finish: null }),
+  veneerDark: mat({ color: [1, 1, 1], map: TX.veneerDark, roughness: 0.55, clearcoat: 0.1, finish: null }),
+  // the living room's feature surfaces get their own instances, so the finish can be swapped there alone
+  feature: mat({ color: [1, 1, 1], map: TX.veneer, roughness: 0.5, clearcoat: 0.18, clearcoatRoughness: 0.4, finish: null }),
+  featureFluted: mat({ color: [1, 1, 1], map: TX.veneerDark, bumpMap: flutesTex, bumpScale: 3, roughness: 0.6, finish: null }),
+  fluted: mat({ color: [1, 1, 1], map: TX.veneerDark, bumpMap: flutesTex, bumpScale: 3, roughness: 0.6, finish: null }),
+  steel: MAT.satin({ color: [0.016, 0.016, 0.018], roughness: 0.42 }),
+  steelMatte: MAT.satin({ color: [0.02, 0.02, 0.022], roughness: 0.7 }),
+  alu: MAT.anodised({ color: [0.03, 0.03, 0.032], roughness: 0.38 }),
+  fabric: mat({ color: [0.15, 0.143, 0.132], roughness: 0.97, sheen: 0.45, sheenRoughness: 0.7, finish: 'cast', rep: [8, 8] }),
+  fabricDark: mat({ color: [0.05, 0.05, 0.05], roughness: 0.95, sheen: 0.8, sheenRoughness: 0.6, finish: 'cast', rep: [8, 8] }),
+  linen: mat({ color: [0.74, 0.72, 0.68], roughness: 0.98, sheen: 0.6, sheenRoughness: 0.7, finish: 'cast', rep: [6, 6] }),
+  woodBlack: mat({ color: [0.022, 0.02, 0.018], roughness: 0.62, finish: 'cast', rep: [4, 4] }),
+  lacquer: MAT.paint({ color: [0.8, 0.79, 0.76], roughness: 0.32, clearcoat: 0.4, finish: null }),
+  door: MAT.paint({ color: [0.8, 0.79, 0.76], roughness: 0.45, clearcoat: 0.2, finish: null }),
+  quartz: mat({ color: [0.85, 0.85, 0.83], roughness: 0.22, clearcoat: 0.3, finish: null }),
+  ceramic: MAT.ceramic({ color: [0.92, 0.92, 0.9], roughness: 0.14, finish: null }),
+  mirror: MAT.chrome({ roughness: 0.02 }),
+  brass: MAT.brass({ roughness: 0.28 }),
+  tv: mat({ color: [0.004, 0.004, 0.005], roughness: 0.06, clearcoat: 1, clearcoatRoughness: 0.02, finish: null }),
+  glassBlack: mat({ color: [0.01, 0.01, 0.012], roughness: 0.08, clearcoat: 1, finish: null }),
+  rug: mat({ color: [1, 1, 1], map: rugTex, roughness: 1, sheen: 0.5, sheenRoughness: 0.8, finish: null }),
+  art: mat({ color: [1, 1, 1], map: artTex, roughness: 0.92, finish: null }),
+  plant: mat({ color: [0.07, 0.13, 0.05], roughness: 0.7, finish: null }),
+  pink: mat({ color: [0.6, 0.34, 0.36], roughness: 0.7, finish: null }),
+  bookDark: mat({ color: [0.06, 0.055, 0.05], roughness: 0.7, finish: null }),
+  bookLight: mat({ color: [0.58, 0.54, 0.48], roughness: 0.75, finish: null }),
+  glass: mat({ color: [1, 1, 1], transparent: true, opacity: 0.13, roughness: 0.03, metalness: 0, noCap: true, envMapIntensity: 1.3, depthWrite: false }),
+  shower: mat({ color: [0.9, 0.95, 0.95], transparent: true, opacity: 0.18, roughness: 0.05, metalness: 0, noCap: true, depthWrite: false }),
+  sheer: mat({ color: [0.94, 0.92, 0.88], transparent: true, opacity: 0.4, roughness: 1, noCap: true, emissive: [1, 0.97, 0.92], emissiveIntensity: 0, depthWrite: false }),
+  drape: mat({ color: [0.11, 0.105, 0.1], roughness: 1, sheen: 0.6, noCap: true, finish: null }),
+  ledAmber: MAT.glow({ emissive: [1.0, 0.5, 0.18], emissiveIntensity: 0 }),
+  ledCove: MAT.glow({ emissive: [1.0, 0.72, 0.45], emissiveIntensity: 0 }),
+  ledSpot: MAT.glow({ emissive: [1.0, 0.8, 0.6], emissiveIntensity: 0 }),
+  ledLamp: MAT.glow({ emissive: [1.0, 0.66, 0.36], emissiveIntensity: 0 }),
+  // the x-rayed wall layer fades its own materials, so it gets materials nobody else uses
+  winFrame: MAT.anodised({ color: [0.03, 0.03, 0.032], roughness: 0.38 }),
+  lever: MAT.satin({ color: [0.016, 0.016, 0.018], roughness: 0.42 }),
+  entry: mat({ color: [1, 1, 1], roughness: 0.55, clearcoat: 0.1, finish: null }),
+  sill: mat({ color: [1, 1, 1], roughness: 0.18, clearcoat: 0.4, finish: null }),
+  ledHouse: MAT.glow({ emissive: [1.0, 0.8, 0.6], emissiveIntensity: 0 }),
+  orb: mat({ color: [0.85, 0.8, 0.7], emissive: [1, 0.66, 0.36], emissiveIntensity: 0, roughness: 0.55, finish: null }),
+}
+for (const m of [M.fabric, M.linen, M.fabricDark, M.rug]) m.sheenColor = m.color.clone().lerp(new THREE.Color(1, 1, 1), 0.2)
+M.sheer.side = THREE.DoubleSide
+M.drape.side = THREE.DoubleSide
+M.entry.map = TX.veneerDark; M.sill.map = TX.marble
+const SHADOWLESS = new Set([M.glass, M.shower, M.ledAmber, M.ledCove, M.ledSpot, M.ledLamp, M.ledHouse])
+const NOAO = new Set([M.glass, M.shower, M.sheer])
+
+// ------------------------------------------------------------------ geometry helpers
+/** world-space UVs: every face takes the two world axes across it, in units of `s` metres */
+function worldUV(g, s) {
+  const p = g.attributes.position, n = g.attributes.normal, uv = new Float32Array(p.count * 2)
+  for (let i = 0; i < p.count; i++) {
+    const ax = Math.abs(n.getX(i)), ay = Math.abs(n.getY(i)), az = Math.abs(n.getZ(i))
+    const [u, v] = ay >= ax && ay >= az ? [p.getX(i), p.getZ(i)] : ax >= az ? [p.getZ(i), p.getY(i)] : [p.getX(i), p.getY(i)]
+    uv[i * 2] = u / s; uv[i * 2 + 1] = v / s
+  }
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2))
+}
+const UVS = new Map([[M.entry, 1.2], [M.sill, 1.6], [M.tile, 2.4], [M.oak, 2.4], [M.marble, 1.6], [M.marbleTable, 1.4], [M.veneer, 1.2], [M.veneerDark, 1.2], [M.feature, 1.2], [M.featureFluted, 0.24], [M.fluted, 0.24], [M.rug, 3.0], [M.stone, 1.5]])
+
+let FRAME = null
+/** build children in a local frame: origin at (x, z) on the floor, turned by rotY */
+function inFrame(x, z, rotY, fn) { const prev = FRAME; const m = new THREE.Matrix4().makeRotationY(rotY).setPosition(x, 0, z); FRAME = prev ? prev.clone().multiply(m) : m; fn(); FRAME = prev }
+
+/** an explode layer: geometry is collected per material and merged into one mesh per material */
+class Layer {
+  constructor(name) { this.name = name; this.byMat = new Map(); this.count = 0 }
+  put(geo, m, { pos, rot, uv } = {}) {
+    const g = geo.index ? geo.toNonIndexed() : geo.clone()
+    if (rot) g.applyMatrix4(new THREE.Matrix4().makeRotationFromEuler(new THREE.Euler(...rot)))
+    if (pos) g.translate(pos[0], pos[1], pos[2])
+    if (FRAME) g.applyMatrix4(FRAME)
+    for (const k of Object.keys(g.attributes)) if (!['position', 'normal', 'uv'].includes(k)) g.deleteAttribute(k)
+    if (!g.attributes.normal) g.computeVertexNormals()
+    const s = uv ?? UVS.get(m)
+    if (s) worldUV(g, s)
+    if (!g.attributes.uv) g.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(g.attributes.position.count * 2), 2))
+    if (!this.byMat.has(m)) this.byMat.set(m, [])
+    this.byMat.get(m).push(g); this.count++
+    return g
+  }
+  build() {
+    const grp = new THREE.Group(); grp.name = this.name
+    for (const [m, list] of this.byMat) { const mesh = new THREE.Mesh(GEO.merge(list), m); mesh.userData.mat = m; grp.add(mesh) }
+    return grp
+  }
+}
+/** a box between two corners (metres); `r` rounds it */
+function bx(L, m, x0, y0, z0, x1, y1, z1, o = {}) {
+  const w = x1 - x0, h = y1 - y0, d = z1 - z0
+  const g = o.r ? GEO.rbox(w, h, d, Math.min(o.r, w / 2.05, h / 2.05, d / 2.05), o.seg ?? 3) : new THREE.BoxGeometry(w, h, d)
+  return L.put(g, m, { pos: [(x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2], rot: o.rot, uv: o.uv })
+}
+const cyl = (L, m, x, y0, z, r, h, seg = 32, r2 = r) => L.put(new THREE.CylinderGeometry(r2, r, h, seg), m, { pos: [x, y0 + h / 2, z] })
+const lathe = (L, m, prof, x, y, z, seg = 48) => L.put(GEO.lathe(prof, seg), m, { pos: [x, y, z] })
+
+// layers (assembly order = fly-in order)
+const floorL = new Layer('楼板与地面')
+const wallL = new Layer('墙体与门')
+const glazL = new Layer('玻璃与纱帘')
+const tvL = new Layer('电视墙')
+const livF = new Layer('客厅与餐厅家具')
+const kitF = new Layer('厨房与玄关')
+const bedF = new Layer('卧室')
+const bathF = new Layer('卫生间')
+const ceilL = new Layer('天花与灯具')
+
+// ------------------------------------------------------------------ floor: structural slab and finishes (finish tops at y = 0)
+bx(floorL, M.slab, X0 - 0.1, -0.25, Z0 - 0.1, X1 + 0.1, -0.02, Z1 + 0.1)
+const fin = (m, r) => bx(floorL, m, r.x[0], -0.02, r.z[0], r.x[1], 0, r.z[1])
+for (const id of ['liv', 'din', 'kit', 'foy', 'cor']) fin(M.tile, ROOMS[id])
+for (const id of ['mbr', 'br2']) fin(M.oak, ROOMS[id])
+for (const id of ['mba', 'ba2']) fin(M.stone, ROOMS[id])
+
+// ------------------------------------------------------------------ walls, windows and doors
+const doors = []
+/**
+ * A straight wall along x (at z = c) or along z (at x = c) from a0 to a1, thickness t, with holes
+ * { a0, a1, y0, y1, win: 'full' | 'std', inSign, door: { hinge: 'a0' | 'a1', swing: ±1, ang }, frame: 'black' }.
+ */
+function wall(L, m, axis, c, a0, a1, t, holes = []) {
+  const seg = (s0, s1, h0, h1) => {
+    if (s1 - s0 < 1e-4 || h1 - h0 < 1e-4) return
+    if (axis === 'x') bx(L, m, s0, h0, c - t / 2, s1, h1, c + t / 2); else bx(L, m, c - t / 2, h0, s0, c + t / 2, h1, s1)
+  }
+  let cur = a0
+  for (const h of [...holes].sort((p, q) => p.a0 - q.a0)) {
+    seg(cur, h.a0, 0, H); seg(h.a0, h.a1, 0, h.y0 ?? 0); seg(h.a0, h.a1, h.y1, H); cur = h.a1
+    if (h.win) windowIn(axis, c, t, h)
+    if (h.door) doorIn(axis, c, t, h)
+  }
+  seg(cur, a1, 0, H)
+}
+/** place a box given along-wall (a), height (y) and across-wall (n) extents */
+const wbx = (L, m, axis, a0, a1, y0, y1, n0, n1, o) => (axis === 'x' ? bx(L, m, a0, y0, n0, a1, y1, n1, o) : bx(L, m, n0, y0, a0, n1, y1, a1, o))
+function windowIn(axis, c, t, h) {
+  const f = 0.05, d = 0.08, n0 = c - d / 2, n1 = c + d / 2
+  const y0 = h.y0 ?? 0, y1 = h.y1
+  wbx(wallL, M.winFrame, axis, h.a0, h.a1, y0, y0 + f, n0, n1)
+  wbx(wallL, M.winFrame, axis, h.a0, h.a1, y1 - f, y1, n0, n1)
+  wbx(wallL, M.winFrame, axis, h.a0, h.a0 + f, y0 + f, y1 - f, n0, n1)
+  wbx(wallL, M.winFrame, axis, h.a1 - f, h.a1, y0 + f, y1 - f, n0, n1)
+  const n = Math.max(1, Math.round((h.a1 - h.a0) / (h.win === 'full' ? 1.25 : 1.0)))
+  const pw = (h.a1 - h.a0 - 2 * f) / n
+  for (let i = 1; i < n; i++) { const a = h.a0 + f + i * pw; wbx(wallL, M.winFrame, axis, a - 0.022, a + 0.022, y0 + f, y1 - f, n0, n1) }
+  wbx(glazL, M.glass, axis, h.a0 + f, h.a1 - f, y0 + f, y1 - f, c - 0.006, c + 0.006)
+  if (h.win === 'std' && h.inSign) { const s = h.inSign; const e0 = c + (s * t) / 2, e1 = e0 + s * 0.05; wbx(wallL, M.sill, axis, h.a0 - 0.04, h.a1 + 0.04, y0 - 0.03, y0, Math.min(c, e1), Math.max(c, e1)) }
+}
+function doorIn(axis, c, t, h) {
+  const D = h.door, y1 = h.y1, th = 0.04, lin = 0.02
+  // jamb linings and the head, flush with both wall faces
+  const fm = D.dark ? M.lever : M.door
+  wbx(wallL, fm, axis, h.a0, h.a0 + lin, 0, y1, c - t / 2, c + t / 2)
+  wbx(wallL, fm, axis, h.a1 - lin, h.a1, 0, y1, c - t / 2, c + t / 2)
+  wbx(wallL, fm, axis, h.a0, h.a1, y1 - lin, y1, c - t / 2, c + t / 2)
+  if (D.ang === undefined) return
+  const w = h.a1 - h.a0 - 2 * lin - 0.006, hingeA = D.hinge === 'a0' ? h.a0 + lin + 0.003 : h.a1 - lin - 0.003
+  const dir = D.hinge === 'a0' ? 1 : -1, th0 = THREE.MathUtils.degToRad(D.ang)
+  const phi = axis === 'x' ? th0 * -D.swing * dir : th0 * D.swing * dir
+  const leaf = new THREE.Group(); leaf.rotation.y = phi
+  if (axis === 'x') leaf.position.set(hingeA, 0, c); else leaf.position.set(c, 0, hingeA)
+  const lm = D.dark ? M.entry : M.door
+  const geo = axis === 'x' ? GEO.rbox(w, y1 - lin - 0.01, th, 0.004, 2).translate((dir * w) / 2, (y1 - lin) / 2, 0) : GEO.rbox(th, y1 - lin - 0.01, w, 0.004, 2).translate(0, (y1 - lin) / 2, (dir * w) / 2)
+  leaf.add(new THREE.Mesh(geo, lm))
+  // a black lever on both faces near the free edge, or a long pull on the entry door
+  const hx = dir * (w - 0.07)
+  for (const s of [-1, 1]) {
+    const g = D.dark ? GEO.rbox(0.025, 0.9, 0.025, 0.008, 2) : GEO.rbox(0.13, 0.018, 0.018, 0.006, 2)
+    const at = axis === 'x' ? [hx - (D.dark ? 0 : dir * 0.05), D.dark ? 1.15 : 1.02, s * (th / 2 + 0.03)] : [s * (th / 2 + 0.03), D.dark ? 1.15 : 1.02, hx - (D.dark ? 0 : dir * 0.05)]
+    const lever = new THREE.Mesh(axis === 'x' ? g : g.clone().rotateY(Math.PI / 2), M.lever); lever.position.set(...at); leaf.add(lever)
+    const rose = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 0.03, 20).rotateX(Math.PI / 2), M.lever)
+    rose.position.set(at[0], at[1], at[2]); if (axis === 'x') rose.position.z = s * (th / 2 + 0.015); else { rose.rotation.y = Math.PI / 2; rose.position.x = s * (th / 2 + 0.015) }
+    if (!D.dark) leaf.add(rose)
+  }
+  doors.push(leaf)
+}
+
+// exterior walls (the x-runs take the corners)
+const ext = [
+  ['x', Z0, X0 - TE / 2, X1 + TE / 2, [
+    { a0: -0.55, a1: 0.35, y0: 1.6, y1: 2.4, win: 'std', inSign: 1 },
+    { a0: 1.6, a1: 3.6, y0: 0.6, y1: 2.6, win: 'std', inSign: 1 },
+    { a0: 4.7, a1: 5.5, y0: 1.6, y1: 2.4, win: 'std', inSign: 1 },
+  ]],
+  ['x', Z1, X0 - TE / 2, X1 + TE / 2, [
+    { a0: -5.8, a1: -1.0, y0: 0, y1: 2.85, win: 'full' },
+    { a0: -0.2, a1: 2.4, y0: 0, y1: 2.85, win: 'full' },
+    { a0: 4.45, a1: 5.65, y0: 0.9, y1: 2.4, win: 'std', inSign: -1 },
+  ]],
+  ['z', X0, Z0 + TE / 2, Z1 - TE / 2, [
+    { a0: -4.4, a1: -2.2, y0: 0.45, y1: 2.6, win: 'std', inSign: 1 },
+    { a0: -1.4, a1: -0.6, y0: 0.6, y1: 2.6, win: 'std', inSign: 1 },
+    { a0: -0.2, a1: 4.8, y0: 0, y1: 2.85, win: 'full' },
+  ]],
+  ['z', X1, Z0 + TE / 2, Z1 - TE / 2, [
+    { a0: -1.4, a1: -0.6, y0: 0.6, y1: 2.6, win: 'std', inSign: -1 },
+    { a0: 3.5, a1: 4.5, y0: 0, y1: 2.4, door: { hinge: 'a0', swing: -1, ang: 0, dark: true } },
+  ]],
+]
+for (const [axis, c, a0, a1, holes] of ext) wall(wallL, M.wall, axis, c, a0, a1, TE, holes)
+// partitions: they stop on the inner faces of what they meet, so no two faces overlap
+const IN = { x0: X0 + TE / 2, x1: X1 - TE / 2, z0: Z0 + TE / 2 }
+wall(wallL, M.wall, 'x', -1.6, IN.x0, IN.x1, TI, [
+  { a0: -2.6, a1: -1.8, y1: 2.4, door: { hinge: 'a0', swing: -1, ang: 72 } },
+  { a0: 1.3, a1: 2.1, y1: 2.4, door: { hinge: 'a0', swing: -1, ang: 70 } },
+  { a0: 4.5, a1: 5.3, y1: 2.4, door: { hinge: 'a1', swing: -1, ang: 64 } },
+])
+wall(wallL, M.wall, 'x', -0.4, IN.x0, IN.x1, TI, [
+  { a0: -2.6, a1: -1.2, y1: 2.7 },
+  { a0: 0.0, a1: 1.2, y1: 2.4 },
+])
+wall(wallL, M.wall, 'z', -1.2, IN.z0, -1.6 - TI / 2, TI, [{ a0: -2.6, a1: -1.8, y1: 2.4, door: { hinge: 'a1', swing: 1, ang: 68 } }])
+wall(wallL, M.wall, 'z', 1.0, IN.z0, -1.6 - TI / 2, TI)
+wall(wallL, M.wall, 'z', 4.2, IN.z0, -1.6 - TI / 2, TI)
+wall(wallL, M.wall, 'z', -0.6, -0.4 + TI / 2, 0.8, TI)                       // the fluted return between living and dining
+// the black steel lining of the corridor opening, proud of both faces, with a face flange on the living side
+{ const zA = -0.4 - TI / 2 - 0.035, zB = -0.4 + TI / 2 + 0.035
+  bx(tvL, M.steel, -2.6, 0, zA, -2.54, 2.7, zB); bx(tvL, M.steel, -1.26, 0, zA, -1.2, 2.7, zB); bx(tvL, M.steel, -2.6, 2.64, zA, -1.2, 2.7, zB)
+  const zf = -0.4 + TI / 2
+  bx(tvL, M.steel, -2.72, 0, zf, -2.6, 2.76, zf + 0.03); bx(tvL, M.steel, -1.2, 0, zf, -1.08, 2.76, zf + 0.03); bx(tvL, M.steel, -2.72, 2.7, zf, -1.08, 2.76, zf + 0.03) }
+
+// ------------------------------------------------------------------ the TV wall (after the reference)
+const TVW = { x0: IN.x0, x1: -2.72, z: -0.4 + TI / 2 }        // the wall face the cladding sits on
+const FR = { x0: -5.81, x1: -2.81, y0: 0.62, y1: 2.0, b: 0.08, z0: TVW.z + 0.03, z1: TVW.z + 0.18 }
+{
+  const z0 = TVW.z, n = 6, pw = (TVW.x1 - TVW.x0) / n
+  bx(tvL, M.steelMatte, TVW.x0, 0, z0, TVW.x1, H, z0 + 0.006)
+  for (let i = 0; i < n; i++) bx(tvL, M.feature, TVW.x0 + i * pw + 0.002, 0, z0 + 0.006, TVW.x0 + (i + 1) * pw - 0.002, H, z0 + 0.03)
+  // the marble frame: four bars, a bookmatched back panel, the niche divider and two black shelves
+  const { x0, x1, y0, y1, b } = FR
+  bx(tvL, M.marble, x0, y1 - b, FR.z0, x1, y1, FR.z1)
+  bx(tvL, M.marble, x0, y0, FR.z0, x1, y0 + b, FR.z1)
+  bx(tvL, M.marble, x0, y0 + b, FR.z0, x0 + b, y1 - b, FR.z1)
+  bx(tvL, M.marble, x1 - b, y0 + b, FR.z0, x1, y1 - b, FR.z1)
+  tvL.put(new THREE.BoxGeometry(x1 - x0 - 2 * b, y1 - y0 - 2 * b, 0.03), M.marbleBook, { pos: [(x0 + x1) / 2, (y0 + y1) / 2, FR.z0 + 0.015], uv: 0 })
+  const nx = x0 + b + 0.5
+  bx(tvL, M.marble, nx, y0 + b, FR.z0 + 0.03, nx + 0.03, y1 - b, FR.z1 - 0.005)
+  for (const y of [1.06, 1.44]) bx(tvL, M.steel, x0 + b, y, FR.z0 + 0.03, nx, y + 0.008, FR.z1 - 0.01)
+  // the TV, 65 inch, on a slim mount
+  bx(tvL, M.steel, -4.25, 1.15, FR.z0 + 0.03, -3.85, 1.45, FR.z0 + 0.05)
+  bx(tvL, M.tv, -4.79, 0.9, FR.z0 + 0.05, -3.34, 1.73, FR.z0 + 0.075, { r: 0.004, seg: 2 })
+  // the hidden strip under the bottom return, and the dark AV slot under the frame
+  bx(tvL, M.alu, x0 + 0.1, y0 - 0.014, FR.z0 + 0.02, x1 - 0.1, y0, FR.z0 + 0.06)
+  bx(tvL, M.steelMatte, -4.9, 0.4, z0 + 0.03, -3.7, 0.52, z0 + 0.034)
+  // the floating plinth: a marble block on a black toe recess
+  bx(tvL, M.steelMatte, TVW.x0 + 0.06, 0, z0 + 0.03, -2.82, 0.08, z0 + 0.39)
+  bx(tvL, M.marble, TVW.x0 + 0.02, 0.08, z0 + 0.03, -2.78, 0.34, z0 + 0.46, { r: 0.006, seg: 2 })
+  // on the plinth: two turned risers, a stacked black sculpture; in the niche: a vase, a bird, a stone
+  for (const [x, s] of [[-5.55, 1], [-5.18, 0.8]]) lathe(tvL, M.woodBlack, [[0, 0], [0.09 * s, 0], [0.09 * s, 0.012], [0.025, 0.02], [0.022, 0.09 * s], [0.12 * s, 0.1 * s], [0.12 * s, 0.115 * s], [0, 0.115 * s]], x, 0.34, z0 + 0.22)
+  bx(tvL, M.steel, -3.25, 0.34, z0 + 0.12, -3.05, 0.52, z0 + 0.26, { r: 0.01 })
+  bx(tvL, M.steel, -3.2, 0.52, z0 + 0.15, -3.0, 0.62, z0 + 0.24, { r: 0.01, rot: [0, 0.4, 0] })
+  lathe(tvL, M.steel, [[0, 0], [0.035, 0], [0.05, 0.05], [0.04, 0.12], [0.018, 0.16], [0.02, 0.19], [0, 0.19]], x0 + b + 0.24, 1.448, z0 + 0.12)
+  bx(tvL, M.steel, x0 + b + 0.12, 1.068, z0 + 0.09, x0 + b + 0.22, 1.13, z0 + 0.14, { r: 0.01 })
+  bx(tvL, M.steel, x0 + b + 0.28, 1.068, z0 + 0.1, x0 + b + 0.31, 1.16, z0 + 0.13, { r: 0.006 })
+  tvL.put(new THREE.SphereGeometry(0.075, 24, 16).scale(1, 0.8, 1), M.steel, { pos: [x0 + b + 0.22, y0 + b + 0.06, z0 + 0.12] })
+}
+// the fluted return wall with the intercom (white handset on a coiled cord) and a black switch plate
+{
+  const xf = -0.6 - TI / 2
+  bx(tvL, M.featureFluted, xf - 0.03, 0, -0.4 + TI / 2, xf, H, 0.8)
+  bx(tvL, M.featureFluted, xf - 0.03, 0, 0.8, -0.6 + TI / 2, H, 0.83)
+  bx(tvL, M.lacquer, xf - 0.045, 1.3, 0.24, xf - 0.03, 1.62, 0.33, { r: 0.004 })
+  bx(tvL, M.lacquer, xf - 0.075, 1.34, 0.255, xf - 0.045, 1.58, 0.295, { r: 0.012 })
+  tvL.put(GEO.spring(0.009, 0.0022, 26, 0.26), M.lacquer, { pos: [xf - 0.06, 1.08, 0.275] })
+  bx(tvL, M.steel, xf - 0.04, 1.08, 0.5, xf - 0.03, 1.165, 0.68, { r: 0.004 })
+}
+
+// ------------------------------------------------------------------ living room furniture
+function sofa(L, x0, x1, zF, zB, { arms = [1, 1], cushions = 2 } = {}) {
+  bx(L, M.steelMatte, x0 + 0.06, 0, zF + 0.06, x1 - 0.06, 0.09, zB - 0.06)
+  bx(L, M.fabric, x0, 0.09, zF, x1, 0.3, zB, { r: 0.045 })
+  const a0 = x0 + (arms[0] ? 0.2 : 0), a1 = x1 - (arms[1] ? 0.2 : 0), w = (a1 - a0) / cushions
+  for (let i = 0; i < cushions; i++) {
+    bx(L, M.fabric, a0 + i * w + 0.006, 0.29, zF + 0.015, a0 + (i + 1) * w - 0.006, 0.45, zB - 0.2, { r: 0.07, seg: 4 })
+    bx(L, M.fabric, a0 + i * w + 0.012, 0.42, zB - 0.44, a0 + (i + 1) * w - 0.012, 0.84, zB - 0.17, { r: 0.1, seg: 4, rot: [0.13, 0, 0] })
+  }
+  bx(L, M.fabric, x0, 0.3, zB - 0.2, x1, 0.64, zB, { r: 0.06 })
+  if (arms[0]) bx(L, M.fabric, x0, 0.3, zF, x0 + 0.21, 0.6, zB - 0.04, { r: 0.09, seg: 4 })
+  if (arms[1]) bx(L, M.fabric, x1 - 0.21, 0.3, zF, x1, 0.6, zB - 0.04, { r: 0.09, seg: 4 })
+}
+const pillow = (L, m, x, y, z, ry, s = 1) => L.put(GEO.rbox(0.44 * s, 0.42 * s, 0.13, 0.06, 4), m, { pos: [x, y, z], rot: [-0.25, ry, 0] })
+{
+  const L = livF
+  // rug, after the grey and white one in the reference
+  bx(L, M.rug, -5.45, 0, 0.3, -2.45, 0.012, 2.95)
+  // sofas: their backs toward the south glazing, a small black table between them
+  sofa(L, -5.64, -4.3, 2.5, 3.55, { cushions: 2 })
+  bx(L, M.fabric, -5.64, 0.09, 1.7, -4.86, 0.3, 2.52, { r: 0.045 })
+  bx(L, M.fabric, -5.63, 0.29, 1.72, -4.87, 0.45, 2.5, { r: 0.07, seg: 4 })
+  bx(L, M.steelMatte, -5.58, 0, 1.76, -4.92, 0.09, 2.5)
+  sofa(L, -3.88, -2.0, 2.5, 3.55, { cushions: 2 })
+  pillow(L, M.linen, -5.3, 0.6, 3.17, 0.15)
+  pillow(L, M.fabricDark, -2.32, 0.6, 3.17, -0.18)
+  pillow(L, M.linen, -2.6, 0.58, 3.12, -0.05, 0.9)
+  bx(L, M.woodBlack, -4.28, 0, 3.08, -3.92, 0.5, 3.5, { r: 0.012 })
+  L.put(new THREE.SphereGeometry(0.075, 32, 20).scale(1, 1.22, 1), M.orb, { pos: [-4.17, 0.59, 3.27] })
+  lathe(L, M.glassBlack, [[0, 0], [0.035, 0], [0.04, 0.03], [0.04, 0.09], [0.014, 0.11], [0.012, 0.14], [0, 0.14]], -4.0, 0.5, 3.38)
+  for (let i = 0; i < 7; i++) { const a = i * 0.9, l = 0.24 + (i % 3) * 0.03; L.put(new THREE.CylinderGeometry(0.0022, 0.0022, l, 5), M.woodBlack, { pos: [-4.0 + Math.cos(a) * 0.03, 0.63 + l / 2 - 0.02, 3.38 + Math.sin(a) * 0.03], rot: [Math.sin(a) * 0.14, 0, Math.cos(a) * 0.14] }) }
+  cyl(L, M.steel, -4.12, 0.5, 3.4, 0.03, 0.07)
+  // the marble cube table and its lower slab
+  bx(L, M.marbleTable, -4.45, 0, 1.05, -3.55, 0.36, 1.95, { r: 0.008, seg: 2 })
+  bx(L, M.marbleTable, -3.55, 0, 1.18, -3.06, 0.21, 1.88, { r: 0.008, seg: 2 })
+  // on the table: books, a bowl of pink lotus, a succulent, a black stone
+  bx(L, M.bookDark, -3.9, 0.36, 1.28, -3.62, 0.39, 1.5, { r: 0.004, seg: 2, rot: [0, 0.08, 0] })
+  bx(L, M.bookLight, -3.88, 0.39, 1.29, -3.64, 0.415, 1.48, { r: 0.004, seg: 2, rot: [0, -0.05, 0] })
+  bx(L, M.steel, -3.8, 0.415, 1.35, -3.72, 0.44, 1.42, { r: 0.004, seg: 2 })
+  lathe(L, M.brass, [[0, 0], [0.11, 0], [0.16, 0.04], [0.165, 0.05], [0.155, 0.05], [0.105, 0.012], [0, 0.012]], -4.12, 0.36, 1.48)
+  for (let i = 0; i < 9; i++) { const a = (i / 9) * Math.PI * 2, r = i % 2 ? 0.05 : 0.08; L.put(new THREE.SphereGeometry(0.05, 14, 10).scale(0.55, 0.32, 1), M.pink, { pos: [-4.12 + Math.cos(a) * r, 0.43 + (i % 2) * 0.02, 1.48 + Math.sin(a) * r], rot: [0.5, -a, 0] }) }
+  cyl(L, M.ceramic, -4.33, 0.36, 1.2, 0.05, 0.07, 24)
+  for (let i = 0; i < 7; i++) { const a = i * 0.9; L.put(new THREE.ConeGeometry(0.018, 0.06, 6), M.plant, { pos: [-4.33 + Math.cos(a) * 0.02, 0.45, 1.2 + Math.sin(a) * 0.02], rot: [Math.sin(a) * 0.5, 0, Math.cos(a) * 0.5] }) }
+  L.put(new THREE.SphereGeometry(0.055, 20, 14).scale(1.2, 0.7, 1), M.steel, { pos: [-3.7, 0.4, 1.78] })
+  // two black stools: a split pebble and a turned hourglass
+  for (const dx of [-0.1, 0.1]) cyl(L, M.woodBlack, -5.05 + dx, 0, 1.22, 0.14, 0.43, 40)
+  bx(L, M.steelMatte, -5.065, 0.18, 1.075, -5.035, 0.431, 1.365)
+  lathe(L, M.woodBlack, [[0, 0], [0.15, 0], [0.15, 0.025], [0.08, 0.2], [0.055, 0.26], [0.07, 0.3], [0.17, 0.47], [0.17, 0.5], [0, 0.5]], -2.62, 0, 1.42, 56)
+  // the floor lamp: weighted disc, a thin arc, a cone shade with a warm inside
+  cyl(L, M.steel, -5.52, 0, 0.72, 0.15, 0.025, 40)
+  L.put(GEO.pipe([[-5.52, 0.02, 0.72], [-5.52, 0.8, 0.72], [-5.52, 1.38, 0.73], [-5.47, 1.58, 0.78], [-5.34, 1.66, 0.86], [-5.24, 1.64, 0.92]], 0.009, { seg: 48, radial: 10 }), M.steel)
+}
+const lampAt = new THREE.Vector3(-5.2, 1.57, 0.95)
+const lampShade = new THREE.Group()
+{
+  lampShade.position.copy(lampAt); lampShade.rotation.set(0.45, 0, -0.5)
+  const shell = new THREE.Mesh(GEO.shell([[0.035, 0.07], [0.15, -0.07]], 0.004, 48, true), M.steel)
+  const glow = new THREE.Mesh(GEO.lathe([[0.03, 0.064], [0.142, -0.066], [0.14, -0.068], [0, 0.06]], 48), M.ledLamp)
+  lampShade.add(shell, glow)
+}
+// dining: a marble table on two dark pedestals, six chairs, a linear pendant (in the ceiling layer), an artwork, an olive tree
+function chair(L, x, z, ry) {
+  inFrame(x, z, ry, () => {
+    for (const [a, b] of [[-0.19, -0.19], [0.19, -0.19], [-0.19, 0.19], [0.19, 0.19]]) bx(L, M.steel, a - 0.012, 0, b - 0.012, a + 0.012, 0.43, b + 0.012)
+    bx(L, M.fabric, -0.23, 0.42, -0.23, 0.23, 0.5, 0.23, { r: 0.03 })
+    bx(L, M.fabric, -0.23, 0.5, 0.18, 0.23, 0.88, 0.25, { r: 0.03, rot: [0.08, 0, 0] })
+  })
+}
+{
+  const L = livF
+  bx(L, M.marbleTable, 0.6, 0.72, 1.3, 1.6, 0.76, 3.5, { r: 0.006, seg: 2 })
+  for (const z of [1.62, 2.98]) { bx(L, M.veneerDark, 0.92, 0, z, 1.28, 0.72, z + 0.18, { r: 0.01 }); bx(L, M.steel, 0.86, 0, z - 0.06, 1.34, 0.02, z + 0.24) }
+  for (const z of [1.75, 2.4, 3.05]) { chair(L, 0.28, z, -Math.PI / 2); chair(L, 1.92, z, Math.PI / 2) }
+  bx(L, M.steel, 1.4, 1.15, -0.4 + TI / 2, 2.62, 2.05, -0.4 + TI / 2 + 0.03)
+  bx(L, M.art, 1.43, 1.18, -0.4 + TI / 2 + 0.03, 2.59, 2.02, -0.4 + TI / 2 + 0.035)
+  lathe(L, M.steelMatte, [[0, 0], [0.2, 0], [0.24, 0.1], [0.24, 0.5], [0.22, 0.52], [0, 0.52]], -0.2, 0, 4.55)
+  L.put(GEO.pipe([[-0.2, 0.5, 4.55], [-0.18, 1.0, 4.55], [-0.24, 1.45, 4.5]], 0.025, { seg: 16, radial: 8 }), M.woodBlack)
+  const R = rng(31)
+  for (let i = 0; i < 26; i++) { const a = R() * 6.28, r = R() * 0.42, y = 1.35 + R() * 0.7; L.put(new THREE.IcosahedronGeometry(0.1 + R() * 0.09, 0), M.plant, { pos: [-0.22 + Math.cos(a) * r, y, 4.48 + Math.sin(a) * r * 0.8], rot: [R() * 3, R() * 3, 0] }) }
+}
+
+// ------------------------------------------------------------------ kitchen and foyer
+{
+  const L = kitF, zW = -0.4 + TI / 2
+  bx(L, M.steelMatte, 2.9, 0, zW + 0.04, 5.3, 0.1, zW + 0.56)
+  bx(L, M.veneerDark, 2.86, 0.1, zW, 5.3, 0.88, zW + 0.6)
+  for (let i = 1; i < 4; i++) bx(L, M.steelMatte, 2.86 + i * 0.61 - 0.002, 0.1, zW + 0.6, 2.86 + i * 0.61 + 0.002, 0.88, zW + 0.602)
+  bx(L, M.quartz, 2.84, 0.88, zW, 5.32, 0.92, zW + 0.63)
+  bx(L, M.steelMatte, 3.65, 0.917, zW + 0.12, 4.25, 0.921, zW + 0.5)
+  L.put(GEO.pipe([[3.95, 0.92, zW + 0.06], [3.95, 1.22, zW + 0.06], [3.95, 1.28, zW + 0.14], [3.95, 1.22, zW + 0.26]], 0.012, { seg: 24, radial: 10 }), M.steel)
+  bx(L, M.glassBlack, 4.5, 0.92, zW + 0.08, 5.1, 0.926, zW + 0.55)
+  bx(L, M.veneerDark, 2.86, 1.55, zW, 5.3, 2.4, zW + 0.36)
+  bx(L, M.alu, 2.9, 1.53, zW + 0.02, 5.26, 1.55, zW + 0.34)
+  bx(L, M.ledHouse, 2.95, 1.525, zW + 0.28, 5.2, 1.531, zW + 0.3)
+  // the tall column: fridge and oven, against the east wall
+  bx(L, M.veneerDark, 5.3, 0, zW, 6 - TE / 2, 2.4, 1.7)
+  bx(L, M.glassBlack, 5.296, 0.86, 0.55, 5.3, 1.46, 1.15)
+  bx(L, M.steel, 5.27, 1.5, 0.12, 5.3, 2.2, 0.15, { r: 0.008 })
+  // the island: a marble waterfall over a dark body
+  bx(L, M.veneerDark, 3.36, 0.06, 1.2, 5.04, 0.88, 2.0)
+  bx(L, M.marble, 3.3, 0.88, 1.15, 5.1, 0.92, 2.05)
+  bx(L, M.marble, 3.3, 0, 1.15, 3.34, 0.88, 2.05)
+  bx(L, M.marble, 5.06, 0, 1.15, 5.1, 0.88, 2.05)
+  for (const x of [3.9, 4.4]) { lathe(L, M.ceramic, [[0, 0], [0.06, 0], [0.11, 0.07], [0.12, 0.09], [0, 0.09]], x, 0.92, 1.6) }
+  // foyer: a full-height fluted shoe cabinet as the divider, a lit niche, a bench, a round mirror
+  bx(L, M.fluted, 3.4, 0, 2.8, 6 - TE / 2, 2.4, 3.2)
+  bx(L, M.veneerDark, 3.6, 1.0, 3.16, 5.6, 1.36, 3.201)
+  bx(L, M.marble, 3.6, 1.0, 2.86, 5.6, 1.03, 3.2)
+  bx(L, M.ledHouse, 3.65, 1.355, 3.12, 5.55, 1.36, 3.14)
+  lathe(L, M.ceramic, [[0, 0], [0.05, 0], [0.07, 0.12], [0.03, 0.2], [0.035, 0.24], [0, 0.24]], 4.2, 1.03, 3.0)
+  bx(L, M.oak, 3.05, 0.38, 4.5, 4.25, 0.43, 4.86, { r: 0.008 })
+  for (const x of [3.11, 4.19]) bx(L, M.steel, x - 0.02, 0, 4.52, x + 0.02, 0.38, 4.84)
+  L.put(new THREE.CylinderGeometry(0.4, 0.4, 0.015, 64).rotateX(Math.PI / 2), M.mirror, { pos: [3.62, 1.55, 5 - TE / 2 - 0.012] })
+  L.put(new THREE.TorusGeometry(0.4, 0.012, 10, 64), M.steel, { pos: [3.62, 1.55, 5 - TE / 2 - 0.014] })
+  // corridor storage behind the TV wall: white lacquer, shadow-gap doors
+  bx(L, M.lacquer, IN.x0 + 0.02, 0, -0.4 - TI / 2 - 0.4, -2.75, 2.6, -0.4 - TI / 2)
+  for (let x = IN.x0 + 0.62; x < -2.8; x += 0.6) bx(L, M.steelMatte, x - 0.003, 0.02, -0.4 - TI / 2 - 0.401, x + 0.003, 2.58, -0.4 - TI / 2 - 0.39)
+}
+
+// ------------------------------------------------------------------ bedrooms
+function bed(L, w, len, { head = 1.0, throwM = M.fabricDark } = {}) {
+  // local frame: headboard at z = 0, foot at z = len, centred on x
+  bx(L, M.fabric, -w / 2 - 0.08, 0.3, 0, w / 2 + 0.08, 0.3 + head, 0.09, { r: 0.04 })
+  bx(L, M.fabric, -w / 2, 0.08, 0.09, w / 2, 0.32, len, { r: 0.03 })
+  bx(L, M.steelMatte, -w / 2 + 0.08, 0, 0.17, w / 2 - 0.08, 0.08, len - 0.08)
+  bx(L, M.linen, -w / 2 + 0.01, 0.32, 0.1, w / 2 - 0.01, 0.53, len - 0.01, { r: 0.06, seg: 4 })
+  bx(L, M.linen, -w / 2 - 0.03, 0.44, 0.55, w / 2 + 0.03, 0.58, len + 0.03, { r: 0.05, seg: 4 })
+  bx(L, throwM, -w / 2 - 0.035, 0.5, len - 0.55, w / 2 + 0.035, 0.6, len + 0.035, { r: 0.04, seg: 3 })
+  for (const s of [-1, 1]) for (const [dz, dy, m] of [[0.2, 0.62, M.linen], [0.3, 0.6, M.fabric]]) L.put(GEO.rbox(w / 2 - 0.14, 0.17, 0.14, 0.06, 4), m, { pos: [s * (w / 4), dy, dz], rot: [-0.35, 0, 0] })
+}
+function nightstand(L, x, z, ry) {
+  inFrame(x, z, ry, () => {
+    bx(L, M.woodBlack, -0.24, 0.12, -0.2, 0.24, 0.5, 0.2, { r: 0.01 })
+    bx(L, M.steelMatte, -0.2, 0, -0.16, 0.2, 0.12, 0.16)
+    lathe(L, M.ceramic, [[0, 0], [0.07, 0], [0.09, 0.08], [0.05, 0.2], [0.012, 0.24], [0, 0.24]], 0.08, 0.5, 0)
+    lathe(L, M.ledHouse, [[0, 0], [0.13, 0], [0.11, 0.17], [0, 0.17]], 0.08, 0.72, 0)
+  })
+}
+{
+  const L = bedF
+  // master bedroom: walnut panel behind the bed, a king bed, nightstands, a bench, wardrobe, armchair, rug, drapes
+  bx(L, M.veneer, -5.75, 0, IN.z0, -2.25, 2.6, IN.z0 + 0.025)
+  bx(L, M.ledHouse, -5.7, 2.6, IN.z0 + 0.005, -2.3, 2.606, IN.z0 + 0.02)
+  bx(L, M.rug, -5.45, 0, -4.1, -2.55, 0.012, -1.95)
+  inFrame(-4.0, IN.z0 + 0.025, 0, () => bed(L, 1.95, 2.15))
+  nightstand(L, -5.32, -4.62, 0); nightstand(L, -2.68, -4.62, 0)
+  bx(L, M.fabric, -4.7, 0.32, -2.55, -3.3, 0.45, -2.15, { r: 0.04 })
+  for (const x of [-4.62, -3.38]) for (const z of [-2.5, -2.2]) bx(L, M.steel, x - 0.015, 0, z - 0.015, x + 0.015, 0.32, z + 0.015)
+  bx(L, M.veneerDark, -1.2 - TI / 2 - 0.6, 0, IN.z0 + 0.02, -1.2 - TI / 2, 2.6, -2.72)
+  for (let z = IN.z0 + 0.6; z < -2.8; z += 0.55) bx(L, M.steelMatte, -1.2 - TI / 2 - 0.602, 0.05, z - 0.003, -1.2 - TI / 2 - 0.59, 2.55, z + 0.003)
+  inFrame(-5.2, -2.45, -2.3, () => {
+    bx(L, M.steelMatte, -0.3, 0, -0.28, 0.3, 0.12, 0.28)
+    bx(L, M.fabric, -0.38, 0.12, -0.35, 0.38, 0.42, 0.35, { r: 0.08, seg: 4 })
+    bx(L, M.fabric, -0.38, 0.4, 0.17, 0.38, 0.85, 0.35, { r: 0.08, seg: 4 })
+    bx(L, M.fabric, -0.46, 0.12, -0.35, -0.3, 0.62, 0.3, { r: 0.06 })
+    bx(L, M.fabric, 0.3, 0.12, -0.35, 0.46, 0.62, 0.3, { r: 0.06 })
+  })
+  // bedroom 2: queen bed head to the west wall, a desk under the window, a wardrobe on the east wall
+  inFrame(1.0 + TI / 2, -3.45, Math.PI / 2, () => bed(L, 1.55, 2.0, { head: 0.85, throwM: M.fabric }))
+  nightstand(L, 1.33, -4.55, Math.PI / 2)
+  bx(L, M.oak, 3.2, 0.72, IN.z0 + 0.02, 4.12, 0.75, IN.z0 + 0.6, { r: 0.006 })
+  for (const x of [3.23, 4.09]) bx(L, M.steel, x - 0.015, 0, IN.z0 + 0.04, x + 0.015, 0.72, IN.z0 + 0.58)
+  chair(L, 3.66, -3.98, 0)
+  bx(L, M.veneerDark, 4.2 - TI / 2 - 0.58, 0, -3.55, 4.2 - TI / 2, 2.6, -1.6 - TI / 2 - 0.02)
+  bx(L, M.rug, 1.5, 0, -4.4, 3.4, 0.012, -2.4)
+}
+// curtains in the master bedroom: a drawn sheer and two dark drapes stacked at the ends (static)
+{
+  const g = new THREE.PlaneGeometry(2.3, 2.75, 120, 1); const p = g.attributes.position
+  for (let i = 0; i < p.count; i++) p.setZ(i, 0.03 * Math.sin((p.getX(i) / 0.11) * Math.PI * 2))
+  g.computeVertexNormals(); g.rotateY(Math.PI / 2); g.translate(IN.x0 + 0.12, 1.4, -3.3)
+  bedF.put(g, M.sheer)
+  for (const z of [-4.62, -1.98]) { const d = new THREE.PlaneGeometry(0.42, 2.85, 40, 1); const q = d.attributes.position; for (let i = 0; i < q.count; i++) q.setZ(i, 0.05 * Math.sin((q.getX(i) / 0.08) * Math.PI * 2)); d.computeVertexNormals(); d.rotateY(Math.PI / 2); d.translate(IN.x0 + 0.2, 1.44, z); bedF.put(d, M.drape) }
+}
+
+// ------------------------------------------------------------------ bathrooms
+{
+  const L = bathF
+  // master bath: shower behind glass, wall-hung WC, a floating double vanity with a lit mirror
+  bx(L, M.stone, 0.0, 0, IN.z0, 1.0 - TI / 2, 0.04, -3.75)
+  bx(L, M.shower, 0.0, 0.04, -3.76, 0.01, 2.1, -3.75)
+  bx(L, M.shower, 0.0, 0.04, -3.75, 0.62, 2.1, -3.74)
+  bx(L, M.steel, 0.0, 2.08, -3.77, 0.62, 2.1, -3.73)
+  lathe(L, M.steel, [[0, 0], [0.12, 0], [0.12, 0.01], [0, 0.01]], 0.5, 2.25, -4.4)
+  bx(L, M.ceramic, -0.95, 0.38, IN.z0, -0.55, 0.56, IN.z0 + 0.52, { r: 0.08, seg: 4 })
+  bx(L, M.steelMatte, -1.0, 1.0, IN.z0, -0.5, 1.15, IN.z0 + 0.012)
+  bx(L, M.veneerDark, 1.0 - TI / 2 - 0.5, 0.35, -3.35, 1.0 - TI / 2, 0.8, -1.82)
+  bx(L, M.marble, 1.0 - TI / 2 - 0.52, 0.8, -3.37, 1.0 - TI / 2, 0.84, -1.8)
+  for (const z of [-2.95, -2.2]) lathe(L, M.ceramic, [[0, 0], [0.14, 0], [0.19, 0.1], [0.19, 0.12], [0, 0.12]], 0.7, 0.84, z)
+  bx(L, M.mirror, 1.0 - TI / 2 - 0.02, 1.1, -3.3, 1.0 - TI / 2, 2.0, -1.87)
+  bx(L, M.ledHouse, 1.0 - TI / 2 - 0.025, 2.0, -3.3, 1.0 - TI / 2, 2.012, -1.87)
+  // bath 2
+  bx(L, M.stone, 4.2 + TI / 2, 0, IN.z0, 6 - TE / 2, 0.04, -4.0)
+  bx(L, M.shower, 4.9, 0.04, -4.01, 6 - TE / 2, 2.1, -4.0)
+  bx(L, M.ceramic, 4.3, 0.38, -3.55, 4.82, 0.56, -3.15, { r: 0.08, seg: 4 })
+  bx(L, M.veneerDark, 5.45, 0.35, -3.4, 6 - TE / 2, 0.8, -2.3)
+  bx(L, M.marble, 5.43, 0.8, -3.42, 6 - TE / 2, 0.84, -2.28)
+  lathe(L, M.ceramic, [[0, 0], [0.13, 0], [0.17, 0.1], [0.17, 0.12], [0, 0.12]], 5.65, 0.84, -2.85)
+  bx(L, M.mirror, 6 - TE / 2 - 0.02, 1.1, -3.3, 6 - TE / 2, 2.0, -2.4)
+}
+
+// ------------------------------------------------------------------ ceiling layer (seen from inside, or when the apartment comes apart)
+const FAN = new THREE.Vector3(-4.05, 0, 1.7)
+const TRACKS = [-5.2, -2.75]
+{
+  const L = ceilL
+  bx(L, M.ceil, X0 - 0.1, H, Z0 - 0.1, X1 + 0.1, H + 0.18, Z1 + 0.1)
+  // the drop band along the living room's east side, with the cove's LED on its lip
+  bx(L, M.ceil, -1.6, 2.74, -0.4 + TI / 2, -0.6 - TI / 2, H, Z1 - TE / 2)
+  bx(L, M.ledCove, -1.62, 2.74, -0.25, -1.6, 2.76, 4.85)
+  // curtain tracks in their pockets, the magnetic tracks and their six spots
+  bx(L, M.alu, IN.x0 + 0.06, H - 0.04, -0.25, IN.x0 + 0.12, H, 4.85)
+  bx(L, M.alu, -5.85, H - 0.04, Z1 - TE / 2 - 0.12, -1.0, H, Z1 - TE / 2 - 0.06)
+  for (const x of TRACKS) {
+    bx(L, M.steel, x - 0.03, H - 0.035, 0.25, x + 0.03, H, 4.45)
+    for (const z of [0.85, 1.95, 3.05]) {
+      bx(L, M.steel, x - 0.012, H - 0.06, z - 0.012, x + 0.012, H - 0.035, z + 0.012)
+      const tilt = new THREE.Matrix4().makeRotationX(0.5).premultiply(new THREE.Matrix4().makeTranslation(x, H - 0.11, z))
+      L.put(new THREE.CylinderGeometry(0.03, 0.03, 0.12, 24).applyMatrix4(tilt), M.steel)
+      L.put(new THREE.CylinderGeometry(0.024, 0.024, 0.004, 24).translate(0, -0.061, 0).applyMatrix4(tilt), M.ledSpot)
+    }
+  }
+  // the fan's canopy and downrod (the rotor turns, so it is its own mesh)
+  lathe(L, M.steel, [[0, 0], [0.075, 0], [0.065, -0.05], [0.02, -0.065], [0, -0.065]], FAN.x, H, FAN.z)
+  cyl(L, M.steel, FAN.x, 2.6, FAN.z, 0.012, 0.34, 16)
+  lathe(L, M.steel, [[0, 0], [0.13, 0], [0.145, 0.03], [0.13, 0.08], [0.05, 0.11], [0, 0.11]], FAN.x, 2.5, FAN.z)
+  // dining pendant: a black bar on two cables, with a warm diffuser underneath
+  for (const z of [1.75, 3.05]) cyl(L, M.steel, 1.1, 1.82, z, 0.0025, H - 1.82, 6)
+  bx(L, M.steel, 1.06, 1.76, 1.6, 1.14, 1.82, 3.2, { r: 0.01 })
+  bx(L, M.ledHouse, 1.07, 1.758, 1.62, 1.13, 1.762, 3.18)
+  // downlights through the rest of the flat
+  for (const [x, z] of [[-4.6, -3.6], [-3.0, -3.6], [-4.6, -2.3], [-3.0, -2.3], [2.0, -3.6], [3.2, -2.6], [-0.1, -2.6], [5.1, -2.8], [-4.2, -1.0], [-2.0, -1.0], [0.4, -1.0], [2.8, -1.0], [5.0, -1.0], [3.6, 0.6], [4.6, 0.6], [4.2, 4.0], [5.2, 4.0], [0.1, 0.4]]) {
+    cyl(L, M.ceil, x, H - 0.006, z, 0.045, 0.006, 24)
+    cyl(L, M.ledHouse, x, H - 0.008, z, 0.032, 0.003, 24)
+  }
+}
+const coveWash = new THREE.Mesh(new THREE.PlaneGeometry(0.9, 5.05).rotateX(Math.PI / 2).rotateY(0), new THREE.MeshBasicMaterial({ color: 0x000000, map: coveTex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }))
+coveWash.position.set(-2.05, H - 0.004, 2.3); coveWash.rotation.y = 0
+// the fan rotor: six black paddles on a hub, 1.52 m across
+const rotor = new THREE.Group()
+{
+  const sh = new THREE.Shape(); sh.moveTo(0.14, -0.035); sh.lineTo(0.7, -0.055); sh.quadraticCurveTo(0.76, 0, 0.7, 0.055); sh.lineTo(0.14, 0.035); sh.closePath()
+  const blade = GEO.extrude(sh, 0.007, 0.0015).rotateX(-Math.PI / 2).rotateX(0.0)
+  const one = blade.clone().applyMatrix4(new THREE.Matrix4().makeRotationX(0.2))
+  rotor.add(new THREE.Mesh(GEO.ring(one, 6, 'y'), M.steelMatte))
+  rotor.add(new THREE.Mesh(GEO.lathe([[0, -0.02], [0.15, -0.02], [0.15, 0.02], [0, 0.02]], 48), M.steel))
+  rotor.position.set(FAN.x, 2.53, FAN.z)
+}
+
+// ------------------------------------------------------------------ sheers on the living room glazing (they draw and stack)
+const sheers = []
+function sheerRun(axis, c, a0, a1) {
+  const mid = (a0 + a1) / 2
+  for (const [s0, s1, stackAt] of [[a0, mid, a0], [mid, a1, a1]]) {
+    const len = s1 - s0 + 0.04, g = new THREE.PlaneGeometry(len, 2.93, Math.ceil(len / 0.012), 1), p = g.attributes.position
+    for (let i = 0; i < p.count; i++) p.setZ(i, 0.028 * Math.sin(((p.getX(i) + len / 2) / 0.12) * Math.PI * 2))
+    g.translate(stackAt === s0 ? len / 2 : -len / 2, 0, 0); g.computeVertexNormals()
+    const m = new THREE.Mesh(g, M.sheer)
+    const pivot = new THREE.Group(); pivot.add(m)
+    if (axis === 'z') { pivot.rotation.y = -Math.PI / 2; pivot.position.set(c, 1.47, stackAt) } else pivot.position.set(stackAt, 1.47, c)
+    m.userData.noAO = true
+    sheers.push(pivot)
+  }
+}
+sheerRun('z', IN.x0 + 0.09, -0.24, 4.8)
+sheerRun('x', Z1 - TE / 2 - 0.09, -5.82, -1.02)
+
+// ------------------------------------------------------------------ assemble: one group per layer, registered for explode, x-ray, labels
+const UP = { floor: [0, 0, 0], furn: [0, 1.5, 0], wall: [0, 3.9, 0], ceil: [0, 7.4, 0] }
+const addLayer = (L, explode, extra = []) => {
+  const g = L.build(); for (const e of extra) g.add(e)
+  lab.add(g, { name: L.name, explode, count: L.count + extra.length, xray: L === wallL ? 'shell' : undefined })
+  g.traverse((m) => { if (!m.isMesh) return; const mm = m.material; if (SHADOWLESS.has(mm)) m.castShadow = false; if (NOAO.has(mm)) m.userData.noAO = true })
+  return g
+}
+const gFloor = addLayer(floorL, UP.floor)
+const gWall = addLayer(wallL, UP.wall, doors)
+const gGlaz = addLayer(glazL, UP.wall, sheers)
+const gTv = addLayer(tvL, UP.wall)
+const gLiv = addLayer(livF, UP.furn, [lampShade])
+const gKit = addLayer(kitF, UP.furn)
+const gBed = addLayer(bedF, UP.furn)
+const gBath = addLayer(bathF, UP.furn)
+// the ceiling: what you see (shown from inside, or apart) in its own group, and a shadow-only slab that always
+// keeps the sun out from above, so daylight comes in through the windows only
+const ceilVis = ceilL.build(); ceilVis.add(rotor, coveWash)
+const shadowCeil = new THREE.Mesh(new THREE.BoxGeometry(X1 - X0 + 0.2, 0.2, Z1 - Z0 + 0.2).translate(0, H + 0.1, 0), new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false }))
+shadowCeil.userData.noAO = true
+const gCeil = new THREE.Group(); gCeil.add(ceilVis, shadowCeil)
+lab.add(gCeil, { name: ceilL.name, explode: UP.ceil, count: ceilL.count + 7 })
+gCeil.traverse((m) => { if (m.isMesh && SHADOWLESS.has(m.material)) m.castShadow = false })
+shadowCeil.castShadow = true; shadowCeil.receiveShadow = false
+coveWash.castShadow = false
+
+// ------------------------------------------------------------------ lights
+const KC = { cove: new THREE.Color(1.0, 0.8, 0.6), track: new THREE.Color(1.0, 0.86, 0.72), strip: new THREE.Color(1.0, 0.58, 0.28), lamp: new THREE.Color(1.0, 0.74, 0.48), house: new THREE.Color(1.0, 0.82, 0.64) }
+const rect = (parent, color, w, h, x, y, z, rx = -Math.PI / 2, ry = 0) => { const l = new THREE.RectAreaLight(color, 0, w * K, h * K); l.position.set(x, y, z); l.rotation.set(rx, ry, 0, 'YXZ'); parent.add(l); return l }
+const spot = (parent, color, x, y, z, tx, ty, tz, angle, pen) => { const l = new THREE.SpotLight(color, 0, 0, angle, pen, 2); l.position.set(x, y, z); l.target.position.set(tx, ty, tz); parent.add(l, l.target); return l }
+const point = (parent, color, x, y, z) => { const l = new THREE.PointLight(color, 0, 0, 2); l.position.set(x, y, z); parent.add(l); return l }
+const LIGHT = {
+  cove: rect(gCeil, KC.cove, 4.0, 4.9, -3.5, H - 0.02, 2.3),
+  trackA: spot(gCeil, KC.track, TRACKS[0], H - 0.1, 1.6, -4.3, 0.9, -0.3, 0.55, 0.65),
+  trackB: spot(gCeil, KC.track, TRACKS[1], H - 0.1, 2.3, -4.0, 0.3, 1.5, 0.6, 0.7),
+  strip: rect(gTv, KC.strip, FR.x1 - FR.x0 - 0.2, 0.08, (FR.x0 + FR.x1) / 2, FR.y0 - 0.02, FR.z0 + 0.04, -Math.PI / 2 - 0.35),
+  lamp: spot(gLiv, KC.lamp, lampAt.x, lampAt.y - 0.03, lampAt.z, -4.4, 0.35, 1.7, 0.85, 0.85),
+  sky: rect(gGlaz, new THREE.Color(0.92, 0.95, 1.0), 4.9, 2.7, IN.x0 + 0.02, 1.45, 2.3, 0, -Math.PI / 2),
+  // the rest of the flat, on a simple schedule (not part of the living room's numbers)
+  house: [
+    point(gCeil, KC.house, 1.1, 1.6, 2.4),
+    point(gCeil, KC.house, 4.2, 2.5, 1.2),
+    point(gCeil, KC.house, -3.4, 2.6, -3.2),
+    point(gCeil, KC.house, 2.6, 2.6, -3.2),
+  ],
+}
+// the dining pendant is a ceiling fixture: hide its light with the ceiling only when the ceiling is apart (its cable hangs from it)
+
+// ------------------------------------------------------------------ the solver state and the editorial layer
+const sim = { apart: false, before: 'overview', scene: 'daily', sheerMode: 'auto', finish: 'walnut', sheer: 0.0, sheerWant: 0, dim: { cove: 0, track: 0, strip: 0, lamp: 0 }, house: 0, fanA: 0, view: 'overview', out: null }
+lab.hero({ label: '客厅平均照度', unit: 'lx', max: 1000, digits: 0 })
+const timeC = lab.slider({ id: 'time', label: '时间 · 吉隆坡 10 月 14 日', min: 6, max: 24, value: 18, step: 0.05, fmt: hhmm, ends: ['06:00', '24:00'] })
+const rows = document.createElement('div'); rows.className = 'apt-rows on'
+const pills = (key, label, opts) => `<div class="apt-row"><span>${label}</span><div class="apt-pills" data-key="${key}" role="group" aria-label="${label}">${opts.map(([v, t]) => `<button type="button" data-v="${v}">${t}</button>`).join('')}</div></div>`
+rows.innerHTML = pills('scene', '场景', Object.entries(SCENES).map(([k, s]) => [k, s.name]))
+  + pills('sheer', '纱帘', [['auto', '自动'], ['closed', '拉上'], ['open', '拉开']])
+  + pills('finish', '电视墙', Object.entries(FINISHES).map(([k, f]) => [k, f.short]))
+lab.$('.lab-ctls').appendChild(rows)
+const views = document.createElement('div'); views.className = 'apt-views on'
+views.innerHTML = `<span>视角</span><button type="button" data-view="overview">鸟瞰</button><button type="button" data-view="living">客厅（参考图）</button><button type="button" data-view="plan">平面</button>`
+lab.ui.appendChild(views)
+// labels: room names and areas from above, the reference's pieces from inside the living room
+const _ul = lab._updateLabels.bind(lab)
+lab._updateLabels = () => {
+  const all = lab.labels, room = sim.view !== 'living'
+  lab.labels = all.filter((L) => !!L.room === room)
+  for (const L of all) if (!!L.room !== room) L.el.style.opacity = '0'
+  _ul(); lab.labels = all
+}
+function syncPills() {
+  for (const b of rows.querySelectorAll('button')) { const k = b.parentElement.dataset.key; b.classList.toggle('act', ({ scene: sim.scene, sheer: sim.sheerMode, finish: sim.finish })[k] === b.dataset.v); b.setAttribute('aria-pressed', b.classList.contains('act')) }
+  for (const b of views.querySelectorAll('button')) { b.classList.toggle('act', b.dataset.view === (sim.view === 'apart' ? 'overview' : sim.view)); b.setAttribute('aria-pressed', b.classList.contains('act')) }
+}
+const setScene = (v) => { if (SCENES[v]) { sim.scene = v; syncPills() } }
+const setSheer = (v) => { if (['auto', 'open', 'closed'].includes(v)) { sim.sheerMode = v; syncPills() } }
+const FIN_LOOK = {
+  walnut: () => [[M.feature, { map: TX.veneer, color: 0xffffff, roughness: 0.5, clearcoat: 0.18 }], [M.featureFluted, { map: TX.veneerDark, color: 0xffffff, roughness: 0.6, clearcoat: 0 }]],
+  white: () => [[M.feature, { map: null, color: new THREE.Color(0.76, 0.75, 0.72), roughness: 0.85, clearcoat: 0 }], [M.featureFluted, { map: null, color: new THREE.Color(0.76, 0.75, 0.72), roughness: 0.85, clearcoat: 0 }]],
+  marble: () => [[M.feature, { map: TX.marble, color: 0xffffff, roughness: 0.16, clearcoat: 0.45 }], [M.featureFluted, { map: TX.marble, color: 0xffffff, roughness: 0.2, clearcoat: 0.3 }]],
+}
+function setFinish(v) {
+  if (!FINISHES[v]) return
+  sim.finish = v
+  for (const [m, o] of FIN_LOOK[v]()) { const had = !!m.map; m.map = o.map; m.color.set(o.color); m.roughness = o.roughness; m.clearcoat = o.clearcoat; if (had !== !!o.map) m.needsUpdate = true }
+  syncPills()
+}
+rows.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; const k = b.parentElement.dataset.key; ({ scene: setScene, sheer: setSheer, finish: setFinish })[k](b.dataset.v) })
+views.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) goView(b.dataset.view) })
+
+lab.how('太阳位置用 NOAA 公式按吉隆坡（3.14°N, 101.69°E）2026-10-14 逐分钟计算；室外天光取 IES 多云天公式。客厅的平均日光系数用 BRE 公式：玻璃与纱帘的透光率、窗的净面积、可见天空角、室内表面的平均反射率（换电视墙饰面会改变它）。日光照度 = DF × 室外天光；灯光用流明法，控制器按场景目标补足日光不足的部分。数字是房间平均值，不是逐点光照计算；3D 里的光影只是示意。', [
+  'α, A = NOAA(φ, λ, 第 287 天, t)',
+  'E_sky = 0.3 + 45 sin α   klx',
+  'DF = T · A_w · θ / (A (1 − R²))',
+  'E_day = DF · E_sky',
+  'E_el = Σ Φ · d · UF · MF / A',
+  'd = (E_target − E_day) / E_full',
+])
+
+// labels: rooms on the floor, the reference's key pieces in the living room
+const roomLab = (id, value) => { const r = ROOMS[id]; lab.label(gFloor, r.name, { at: [(r.x[0] + r.x[1]) / 2, 0.05, (r.z[0] + r.z[1]) / 2], value: value ?? (() => `约 ${fmt(r.area, 1)} m²`) }) }
+for (const id of Object.keys(ROOMS)) if (id !== 'liv') roomLab(id)
+roomLab('liv', () => `约 ${fmt(ROOMS.liv.area, 1)} m² · ${fmt(sim.out?.E ?? 0)} lx`)
+for (const L of lab.labels) L.room = true
+lab.label(gTv, '大理石电视框', { at: [FR.x1, FR.y1, FR.z1], value: () => 'ρ 0.70 · 书页对纹' })
+lab.label(gTv, '电视墙饰面', { at: [TVW.x0 + 0.3, 2.5, TVW.z + 0.03], value: () => `${FINISHES[sim.finish].name} · ρ ${FINISHES[sim.finish].rho.toFixed(2)}` })
+lab.label(gTv, '暖光灯带', { at: [FR.x0 + 0.4, FR.y0 - 0.01, FR.z1], value: () => `${fmt(LAYERS[2].W * sim.dim.strip)} W · 2400 K` })
+lab.label(gGlaz, '纱帘', { at: [IN.x0 + 0.1, 2.3, 3.6], value: () => `τ 0.55 · ${sim.sheer > 0.5 ? '拉上' : '拉开'}` })
+lab.label(gLiv, '落地灯', { at: [lampAt.x, lampAt.y + 0.05, lampAt.z], value: () => `${fmt(LAYERS[3].lm * sim.dim.lamp)} lm` })
+lab.label(ceilVis, '吊扇', { at: [FAN.x + 0.76, 2.53, FAN.z], value: () => '1.52 m · 6 叶 · 140 rpm' })
+lab.label(ceilVis, '磁吸轨道灯', { at: [TRACKS[1], H - 0.1, 0.85], value: () => `${fmt(LAYERS[1].lm * sim.dim.track)} lm` })
+
+// room tags in the plan view: name and area at each room's centre, the way a drawing is annotated
+const tags = document.createElement('div'); tags.className = 'apt-tags'
+tags.innerHTML = Object.entries(ROOMS).map(([id, r]) => `<div data-room="${id}"><b>${r.name}</b><span>约 ${fmt(r.area, 1)} m²</span></div>`).join('')
+lab.ui.insertBefore(tags, lab.ui.firstChild)
+const tagEls = [...tags.children].map((el) => ({ el, r: ROOMS[el.dataset.room] }))
+const tagP = new THREE.Vector3()
+function placeTags() {
+  const a = sim.view === 'plan' ? smoothstep(0.6, 1, lab.state.cut) : 0
+  tags.style.opacity = a.toFixed(3)
+  if (a <= 0) return
+  for (const { el, r } of tagEls) {
+    tagP.set((r.x[0] + r.x[1]) / 2, 1.3, (r.z[0] + r.z[1]) / 2 + (el.dataset.room === 'liv' ? 0.55 : 0)).multiplyScalar(K).project(lab.camera)
+    el.style.transform = `translate(${((tagP.x * 0.5 + 0.5) * innerWidth).toFixed(1)}px, ${((-tagP.y * 0.5 + 0.5) * innerHeight).toFixed(1)}px) translate(-50%, -50%)`
+  }
+}
+const _render = lab.render.bind(lab)
+lab.render = (dt) => { _render(dt); placeTags() }
+
+// ------------------------------------------------------------------ views: an eased move between three framings
+let camAnim = null
+const R2D = 180 / Math.PI
+function frameX() { return narrow() ? 0 : -0.16 }
+function currentView() {
+  const t = lab.controlsOrbit.target, off = lab.camera.position.clone().sub(t), r = off.length()
+  return { az: Math.atan2(off.x, off.z) * R2D, el: Math.asin(clamp(off.y / r, -1, 1)) * R2D, dist: r / 2.4, target: t.clone().divideScalar(K).toArray(), fov: lab.camera.fov }
+}
+function viewFor(id) {
+  const v = { ...VIEWS[id], frameX: frameX() }
+  if (!narrow()) return v
+  // portrait: lift the subject into the top half, clear of the readout band
+  if (id === 'living') return { ...v, fov: 80, el: 4, target: [v.target[0], 0.9, v.target[2]] }
+  if (id === 'plan') return { ...v, dist: v.dist * 2.15, target: [v.target[0], v.target[1], v.target[2] + 4.6] }
+  return { ...v, dist: v.dist * 1.5, target: [v.target[0], v.target[1] - 3.2, v.target[2]] }
+}
+function goView(id, instant = false) {
+  if (!VIEWS[id]) return
+  const prev = sim.view; sim.view = id; syncPills()
+  if (id === 'plan') lab.toggle('cut', true); else if (prev === 'plan') lab.toggle('cut', false)
+  lab.controlsOrbit.maxPolarAngle = id === 'living' ? Math.PI * 0.6 : Math.PI * 0.495
+  if (id !== 'apart' && lab.target.explode > 0.5) { lab.toggle('explode', false); sim.apart = false }
+  lab._cam = id !== 'overview' && id !== 'apart'
+  const to = viewFor(id)
+  if (instant || still) { lab.setView(to); return }
+  camAnim = { from: currentView(), to, t: 0 }
+  lab.controlsOrbit.enabled = false
+}
+
+// ------------------------------------------------------------------ the studio follows the sun: day paper, night ink
+const DAY = { bg: lab.bgColor.clone(), floor: lab.floor.material.color.clone() }
+const NIGHT = { bg: new THREE.Color(0x0e0f11).convertSRGBToLinear(), floor: new THREE.Color(0x101113).convertSRGBToLinear() }
+const rim = lab.scene.children.find((o) => o.isDirectionalLight && o !== lab.key)
+const fill = lab.scene.children.find((o) => o.isHemisphereLight)
+const sunCol = new THREE.Color()
+const CENTER = new THREE.Vector3(0, 1.2, 0)
+
+// ------------------------------------------------------------------ run
+lab.onTick((dt, lab, rdt) => {
+  const hour = timeC.value
+  const sun = sunAt(hour), sky = skyAt(sun.alt)
+  const west = onFacade(sun, sky.Edn, 270), south = onFacade(sun, sky.Edn, 180)
+  // sheers: forced, or automatic (closed after dark for privacy, closed while direct sun on the glass passes 8 klx)
+  const sc = SCENES[sim.scene]
+  let want = sim.sheerMode === 'open' ? 0 : sim.sheerMode === 'closed' ? 1 : sim.sheerWant
+  let why = ''
+  if (sim.sheerMode === 'auto') {
+    const Ev = Math.max(west.Ev, south.Ev)
+    if (sun.alt < -1) { want = 1; why = '入夜' } else if (Ev > 8000) { want = 1; why = west.Ev >= south.Ev ? '西晒' : '南窗直射' } else if (Ev < 6000) want = 0
+    else why = sim.sheerWant ? '直射' : ''
+  }
+  if (sc.sheer) { want = Math.max(want, sc.sheer); why = sc.name }
+  sim.sheerWant = want
+  sim.sheer = approach(sim.sheer, want, 0.9, rdt)
+  const d = daylightFactor(sim.finish, sim.sheer)
+  const Eday = (d.DF / 100) * sky.Esky
+  const dims = dimsFor(sim.scene, Eday)
+  let Eel = 0, Wt = 0
+  for (const L of LAYERS) { sim.dim[L.id] = approach(sim.dim[L.id], dims[L.id], 0.7, rdt); Eel += layerLux(L, sim.dim[L.id]); Wt += L.W * sim.dim[L.id] }
+  const E = Eday + Eel
+  sim.out = { sun, sky, d, Eday, Eel, E, Wt }
+
+  // the scene in 3D: sheers stack toward their ends, curtains glow with the light behind them, the lamps follow the dimmers
+  const open = 1 - sim.sheer
+  for (const s of sheers) s.children[0].scale.x = lerp(1, 0.13, open)
+  M.sheer.emissiveIntensity = 0.03 + 0.22 * smoothstep(0, 20000, sky.Esky) + 0.25 * smoothstep(1000, 20000, Math.max(west.Ev, south.Ev))
+  M.ledAmber.emissiveIntensity = 5 * sim.dim.strip
+  M.ledCove.emissiveIntensity = 4 * sim.dim.cove
+  M.ledSpot.emissiveIntensity = 4 * sim.dim.track
+  M.ledLamp.emissiveIntensity = 3 * sim.dim.lamp
+  coveWash.material.color.copy(KC.cove).multiplyScalar(0.55 * sim.dim.cove)
+  M.orb.emissiveIntensity = 2.2 * Math.max(sim.dim.lamp, sim.dim.strip * 0.6)
+  LIGHT.cove.intensity = 1.5 * sim.dim.cove
+  LIGHT.trackA.intensity = 0.9 * sim.dim.track
+  LIGHT.trackB.intensity = 0.9 * sim.dim.track
+  LIGHT.strip.intensity = 26 * sim.dim.strip
+  LIGHT.lamp.intensity = 0.55 * sim.dim.lamp
+  LIGHT.sky.intensity = 1.6 * smoothstep(0, 30000, sky.Esky) * d.T / 0.62
+  LIGHT.sky.color.setRGB(1, lerp(0.8, 0.96, smoothstep(0, 25, sun.alt)), lerp(0.62, 1.0, smoothstep(0, 25, sun.alt)))
+  // the rest of the flat: lights come on at dusk; the night scene leaves only the corridor at a glow
+  const houseWant = sky.Esky > 3000 ? 0 : sim.scene === 'night' ? 0.12 : sim.scene === 'movie' ? 0.3 : 0.8
+  sim.house = approach(sim.house, houseWant, 0.8, rdt)
+  LIGHT.house.forEach((l) => { l.intensity = 0.32 * sim.house })
+  M.ledHouse.emissiveIntensity = 2.6 * sim.house
+  sim.fanA += rdt * (140 / 60) * Math.PI * 2
+  rotor.rotation.y = -sim.fanA
+
+  const cam = lab.camera.position.clone().divideScalar(K)
+  const inside = cam.y < H - 0.05 && Math.abs(cam.x) < X1 && Math.abs(cam.z) < Z1
+  // the studio: sun as the key light, paper by day, ink by night
+  const dayK = smoothstep(-7, 6, sun.alt)
+  lab.bgColor.copy(NIGHT.bg).lerp(DAY.bg, dayK); lab.scene.background.copy(lab.bgColor)
+  lab.floor.material.color.copy(NIGHT.floor).lerp(DAY.floor, dayK)
+  lab.scene.environmentIntensity = lerp(0.06, 0.8, dayK) * lerp(0.7, 1, smoothstep(2, 30, sun.alt)) * (inside ? 0.55 : 1)
+  lab.ao.blendIntensity = 0.85 * (1 - smoothstep(0.02, 0.4, lab.state.explode))
+  const up = Math.max(sun.alt, 2) * Math.PI / 180, az = sun.az * Math.PI / 180
+  const dir = new THREE.Vector3(Math.sin(az) * Math.cos(up), Math.sin(up), -Math.cos(az) * Math.cos(up))
+  lab.key.target.position.copy(CENTER).multiplyScalar(K)
+  lab.key.position.copy(lab.key.target.position).addScaledVector(dir, 9)
+  lab.key.intensity = 2.7 * smoothstep(-0.5, 8, sun.alt) * lerp(0.55, 1, smoothstep(5, 40, sun.alt))
+  sunCol.setRGB(1, lerp(0.62, 0.95, smoothstep(0, 30, sun.alt)), lerp(0.36, 0.88, smoothstep(0, 35, sun.alt)))
+  lab.key.color.copy(sunCol)
+  if (rim) rim.intensity = 0.9 * dayK
+  if (fill) fill.intensity = 0.04 + 0.16 * dayK
+  lab.bloom.strength = lerp(0.42, 0.18, dayK); lab.bloom.threshold = lerp(0.85, 1.6, dayK)
+  lab.bloom.enabled = dayK < 0.85 || Math.max(sim.dim.strip, sim.dim.lamp, sim.dim.cove) > 0.05   // nothing glows by day: skip the pass
+  lab.grade.uniforms.uVig.value = lerp(0.3, 0.1, dayK)
+  document.documentElement.classList.toggle('lab-night', dayK < 0.35)
+
+  // the ceiling shows from inside, and when the flat comes apart
+  ceilVis.visible = inside || lab.state.explode > 0.02
+  // explode: pull back to a framing that holds the whole stack, and come back when it closes
+  const apart = lab.target.explode > 0.5
+  if (apart !== sim.apart) {
+    sim.apart = apart
+    if (apart && sim.view !== 'apart') { sim.before = sim.view === 'apart' ? 'overview' : sim.view; goView('apart') } else if (!apart && sim.view === 'apart') goView(sim.before ?? 'overview')
+  }
+  document.documentElement.classList.toggle('apt-inside', inside)
+  // view moves
+  if (camAnim) {
+    camAnim.t += rdt / 1.6
+    const k = ease.io(clamp(camAnim.t)), a = camAnim.from, b = camAnim.to
+    const daz = ((b.az - a.az + 540) % 360) - 180
+    lab.setView({ az: a.az + daz * k, el: lerp(a.el, b.el, k), dist: lerp(a.dist, b.dist, k), fov: lerp(a.fov, b.fov, k), frameX: b.frameX, target: a.target.map((v, i) => lerp(v, b.target[i], k)) })
+    if (camAnim.t >= 1) { camAnim = null; lab.controlsOrbit.enabled = true }
+  }
+
+  // hero
+  const stateWord = sc.fixed ? sc.name : Eday >= sc.target - 1 ? '日光充足' : Eday > 3 ? '日光 + 补光' : '全靠灯光'
+  const sheerTxt = `纱帘${sim.sheer > 0.5 ? '拉上' : '拉开'}${why && sim.sheerMode === 'auto' && !sc.sheer ? `（${why}）` : sc.sheer ? '' : sim.sheerMode === 'auto' ? '' : '（手动）'}`
+  const line2 = sim.scene === 'movie'
+    ? `电视对比度 <span class="warm">${fmt(tvContrast(E))} : 1</span> · ${sheerTxt}`
+    : sun.alt > 0 ? `太阳 高度 ${fmt(sun.alt)}° · 方位 ${fmt(sun.az)}° · ${sheerTxt}` : `日落后 · ${sheerTxt}`
+  lab.setHero(E, { state: stateWord, sub: `日光 ${fmt(Eday)} lx（DF ${fmt(d.DF, 1)} %）· 灯光 <span class="warm">${fmt(Eel)} lx</span> · ${fmt(Wt)} W<br><small>${line2}</small>` })
+})
+{
+  // the glowing strip itself: an emissive line inside the aluminium channel under the frame
+  const m = new THREE.Mesh(new THREE.BoxGeometry(FR.x1 - FR.x0 - 0.24, 0.004, 0.012), M.ledAmber)
+  m.position.set((FR.x0 + FR.x1) / 2, FR.y0 - 0.016, FR.z0 + 0.045); m.castShadow = false
+  const slot = new THREE.Mesh(new THREE.BoxGeometry(1.16, 0.004, 0.006), M.ledAmber)
+  slot.position.set(-4.3, 0.518, TVW.z + 0.037); slot.castShadow = false
+  gTv.add(m, slot)
+}
+
+// ------------------------------------------------------------------ adaptive resolution: hold about 30 fps on slow GPUs and 2x screens
+// every 1.5 s, drop the pixel ratio by 15 % below 27 fps (down to 0.7) and raise it above 50 fps (up to the kit's cap)
+const PR = { max: Math.min(devicePixelRatio, 2), cur: Math.min(devicePixelRatio, 2), t0: performance.now(), n: 0 }
+lab.onTick(() => {
+  if (lab.filmMode) return
+  PR.n++
+  const now = performance.now(), span = (now - PR.t0) / 1000
+  if (span < 1.5) return
+  const fps = PR.n / span; PR.t0 = now; PR.n = 0
+  const next = fps < 27 ? Math.max(0.7, PR.cur * 0.85) : fps > 50 ? Math.min(PR.max, PR.cur * 1.15) : PR.cur
+  if (Math.abs(next - PR.cur) < 0.01 || document.hidden) return
+  PR.cur = next; lab.renderer.setPixelRatio(next); lab.composer.setPixelRatio(next); lab._resize()
+})
+
+// ------------------------------------------------------------------ messages from the page that embeds this one (index.html)
+addEventListener('message', (e) => {
+  if (window.parent === window || e.source !== window.parent) return
+  const d = e.data
+  if (!d || d.ns !== 'moshi' || d.type !== 'set') return
+  if (typeof d.sheer === 'string') setSheer(d.sheer)
+  if (typeof d.finish === 'string') setFinish(d.finish)
+  if (typeof d.scene === 'string') setScene(d.scene)
+  if (typeof d.view === 'string') goView(d.view)
+  if (Number.isFinite(d.hour)) timeC.set(clamp(d.hour, 6, 24))
+})
+window.moshi = { sim, setScene, setSheer, setFinish, goView, time: timeC, pr: PR }
+
+// Chinese captions for the kit's buttons (the kit itself is untouched)
+const ZH = { run: ['暂停', '运行'], explode: '爆炸', cut: '剖切', xray: 'X 光', slow: '慢放', labels: '标签' }
+const _sync = lab._syncButtons.bind(lab)
+lab._syncButtons = () => { _sync(); for (const b of lab.ui.querySelectorAll('.lab-modes button')) { const k = b.dataset.k; if (k === 'run') b.firstChild.textContent = lab.paused ? ZH.run[1] : ZH.run[0]; else if (ZH[k]) b.firstChild.textContent = ZH[k] } }
+lab.$('.lab-how summary').textContent = '如何计算'
+const _hud = lab._buildHUD.bind(lab)
+lab._buildHUD = (A) => { _hud(A); if (lab._building) { lab.metricEl.querySelector('.lbl').firstChild.textContent = '组装中 · '; const i = lab.metricEl.querySelector('.lab-big i'); i.textContent = i.textContent.replace(/^of (.*) parts$/, '/ $1 件'); lab._hsub.textContent = lab._hsub.textContent.replace('triangles', '三角面').replace('materials', '种材质') } }
+
+// the film (not recorded for this project; node machine/scripts/record.mjs can make it)
+lab.autoFilm({ runBeat: '时间从下午走到深夜。', runSub: '日光由公式算出，灯光按场景补足。', sliderTo: 0.85 })
+
+// reduced motion: no fly-in, no idle orbit, instant view changes; every control still works
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+if (still) lab.o.autoOrbit = false
+syncPills()
+lab.start()
+if (still) lab._assembly = 0
+goView('overview', true)
+addEventListener('resize', () => { if (!camAnim) lab.setView(viewFor(sim.view)) })
+
+</script>
+</body>
+</html>

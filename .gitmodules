@@ -1,0 +1,21 @@
+[submodule "skills/3D_model/anatomy"]
+	path = skills/3D_model/anatomy
+	url = https://github.com/wheresryan22/anatomy.git
+[submodule "skills/3D_model/hairline"]
+	path = skills/3D_model/hairline
+	url = https://github.com/lucasmarkes/hairline.git
+[submodule "skills/3D_model/machine"]
+	path = skills/3D_model/machine
+	url = https://github.com/AirsupHQ/machine-skill.git
+[submodule "skills/Copy/rea"]
+	path = skills/Copy/rea
+	url = https://github.com/morluto/rea.git
+[submodule "skills/Copy/scrap/Agent-Reach"]
+	path = skills/Copy/scrap/Agent-Reach
+	url = https://github.com/Panniantong/Agent-Reach.git
+[submodule "skills/Copy/scrap/browser-use"]
+	path = skills/Copy/scrap/browser-use
+	url = https://github.com/browser-use/browser-use.git
+[submodule "skills/Copy/scrap/crawl4ai"]
+	path = skills/Copy/scrap/crawl4ai
+	url = https://github.com/unclecode/crawl4ai.git

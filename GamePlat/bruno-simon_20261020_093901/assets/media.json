@@ -1,0 +1,1220 @@
+[
+  {
+    "url": "https://bruno-simon.com/sounds/reveal/reveal-1.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0022_reveal-1_b966284cd3.txt",
+    "body_size_bytes": 43139,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5100b-a883\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "43139",
+      "date": "Tue, 20 Oct 2026 09:39:10 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:15 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/suspensions/Robotic_Lifeforms_2_-_Air_Source_-_Piston_Studio_Chair_07.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0096_Robotic_Lifeforms_2_-_Air_Source_-_Piston_Studio_Chair_07_74e4032084.txt",
+    "body_size_bytes": 8603,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101f-219b\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "8603",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:35 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/honk/Car%20Horn%20Long%204.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0097_Car_Horn_Long_4_4f5c5dfd6e.txt",
+    "body_size_bytes": 15227,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101b-3b7b\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "15227",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:31 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/springs/HandleSqueak_BW.60329.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0095_HandleSqueak_BW.60329_dc717772dd.txt",
+    "body_size_bytes": 4687,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101d-124f\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "4687",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:33 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/springs/SpringMetalMovements_1u54Y_01.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0094_SpringMetalMovements_1u54Y_01_8abb025a4e.txt",
+    "body_size_bytes": 4583,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101e-11e7\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "4583",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:34 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/floor/wheels-on-pebbles-road.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0100_wheels-on-pebbles-road_c7b7098460.txt",
+    "body_size_bytes": 147735,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101e-24117\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "147735",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:34 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/floor/Source%20Stone%20Loop%20Small%20Rubbing%20Pebbles%20On%20Concrete%2002.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0099_Source_Stone_Loop_Small_Rubbing_Pebbles_On_Concrete_02_8ddd634aa3.txt",
+    "body_size_bytes": 102986,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101e-1924a\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "102986",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:34 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/engine/muscle%20car%20engine%20loop%20idle.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0101_muscle_car_engine_loop_idle_c994db172a.txt",
+    "body_size_bytes": 56933,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101f-de65\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "56933",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:35 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/spin/41051%20Glass%20stone%20turning%20loop%2009-full.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0102_41051_Glass_stone_turning_loop_09-full_16430e56ca.txt",
+    "body_size_bytes": 60230,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101d-eb46\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "60230",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:33 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/energy/Energy_-_force_field_8_loop.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0098_Energy_-_force_field_8_loop_7e2605d737.txt",
+    "body_size_bytes": 112724,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101c-1b854\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "112724",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:32 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/paper/PaperMovement_fNAyV_01-3.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0103_PaperMovement_fNAyV_01-3_fb2c0f6ae3.txt",
+    "body_size_bytes": 6637,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51007-19ed\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "6637",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:11 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/paper/PaperMovement_fNAyV_01-2.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0104_PaperMovement_fNAyV_01-2_3a783d4274.txt",
+    "body_size_bytes": 5573,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51007-15c5\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "5573",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:11 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/achievements/Money%20Reward%202.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0105_Money_Reward_2_d33c5d239a.txt",
+    "body_size_bytes": 35910,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51009-8c46\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "35910",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:13 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/vehicle/paint/Spray%20Paint%2014.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0106_Spray_Paint_14_2c3afc44a6.txt",
+    "body_size_bytes": 9099,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101b-238b\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "9099",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:31 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/thunder/near/THUNDER_GEN-HDF-23300.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0107_THUNDER_GEN-HDF-23300_56bdbc5fd2.txt",
+    "body_size_bytes": 48860,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51025-bedc\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "48860",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:41 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/thunder/near/Lightning-Streak-with-Thunder-Crash_TTX028903.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0108_Lightning-Streak-with-Thunder-Crash_TTX028903_e048175eb8.txt",
+    "body_size_bytes": 49752,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51024-c258\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "49752",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:40 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/thunder/near/ThunderSharpStrikingRumblingCrackling_JMDKp_04.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0109_ThunderSharpStrikingRumblingCrackling_JMDKp_04_59e4c56f98.txt",
+    "body_size_bytes": 28805,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51025-7085\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "28805",
+      "date": "Tue, 20 Oct 2026 09:39:20 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:41 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/thunder/distant/Thunder32GentleCr%20SIG014001.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0110_Thunder32GentleCr_SIG014001_1697d202f2.txt",
+    "body_size_bytes": 117271,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51024-1ca17\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "117271",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:40 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/thunder/distant/Thunder44LowRippl%20SIG015201.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0111_Thunder44LowRippl_SIG015201_6e3574b0d7.txt",
+    "body_size_bytes": 65358,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51024-ff4e\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "65358",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:40 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/clicks/Source%20Metal%20Clicks%20Delicate%20Light%20Sharp%20Clip%20Mid%2007.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0112_Source_Metal_Clicks_Delicate_Light_Sharp_Clip_Mid_07_4a005235ad.txt",
+    "body_size_bytes": 2969,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5101a-b99\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "2969",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:30 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/explosions/SmallImpactMediumE%20PE281202.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0113_SmallImpactMediumE_PE281202_6b5aacced3.txt",
+    "body_size_bytes": 26339,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5100a-66e3\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "26339",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:14 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/explosions/SmallImpactMediumE%20PE281203.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0114_SmallImpactMediumE_PE281203_740896b471.txt",
+    "body_size_bytes": 23989,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5100a-5db5\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "23989",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:14 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/stoneSlides/stoneSlideOut.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0115_stoneSlideOut_869e6229ca.txt",
+    "body_size_bytes": 6165,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5100f-1815\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "6165",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:19 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/stoneSlides/stoneSlideIn.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0117_stoneSlideIn_1d681807ea.txt",
+    "body_size_bytes": 9376,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51010-24a0\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "9376",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:20 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/anvil/METLImpt_Anvil%20Single%20Hammer%20Strike%20Hammers_GENHD1-01372.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0116_METLImpt_Anvil_Single_Hammer_Strike_Hammers_GENHD1-01372_c358f0d1e8.txt",
+    "body_size_bytes": 4339,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51011-10f3\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "4339",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:21 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/mecanism/05947%20light%20wooden%20cart%20riding%20on%20cobblestone%20-%20looping.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0118_05947_light_wooden_cart_riding_on_cobblestone_-_looping_593cb7d095.txt",
+    "body_size_bytes": 124549,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51008-1e685\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "124549",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:12 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/ding/Cash%20Register%2003.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0119_Cash_Register_03_794816e411.txt",
+    "body_size_bytes": 14564,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5100c-38e4\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "14564",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:16 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/magic/Ghostly%20Whisper%20Background%20Loop%209.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0120_Ghostly_Whisper_Background_Loop_9_ca4fc5599d.txt",
+    "body_size_bytes": 149337,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51009-24759\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "149337",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:13 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/bell/Death%20Hit.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0121_Death_Hit_3dd2862b35.txt",
+    "body_size_bytes": 32957,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5100f-80bd\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "32957",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:19 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/bell/Epic%20Bell%20Impact%20Hit.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0122_Epic_Bell_Impact_Hit_e6ffe4198b.txt",
+    "body_size_bytes": 30555,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5100f-775b\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "30555",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:19 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/hits/pins/ComedyCrash%206115_16_4.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0123_ComedyCrash_6115_16_4_03e7cd993d.txt",
+    "body_size_bytes": 3247,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51022-caf\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "3247",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:38 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/rolling/06290%20medium%20ball%20rolling%20lp.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0124_06290_medium_ball_rolling_lp_479d68fa3f.txt",
+    "body_size_bytes": 82775,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51008-14357\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "82775",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:12 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/circuit/countdown/Game%20Start%20Countdown%2031-1.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0125_Game_Start_Countdown_31-1_2e25053342.txt",
+    "body_size_bytes": 11950,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51020-2eae\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "11950",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:36 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/circuit/countdown/Game%20Start%20Countdown%2031-2.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0126_Game_Start_Countdown_31-2_32391a6194.txt",
+    "body_size_bytes": 13613,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51020-352d\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "13613",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:36 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/circuit/checkpoint/Win%20Score%201.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0127_Win_Score_1_232548fbf6.txt",
+    "body_size_bytes": 12930,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51020-3282\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "12930",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:36 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/circuit/finish/Big%20Win%20Fanfare%202.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0130_Big_Win_Fanfare_2_1d8f336e6c.txt",
+    "body_size_bytes": 42702,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51021-a6ce\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "42702",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:37 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/circuit/applause/huge%20win.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0128_huge_win_6d6d9d4e1c.txt",
+    "body_size_bytes": 118132,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51020-1cd74\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "118132",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:36 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/magic/Environmental%20Loop%20Scifi%20Bright%20Glassy%20Wandering%20Tones%20Layered%2002.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0129_Environmental_Loop_Scifi_Bright_Glassy_Wandering_Tones_Layered_02_957ce0936c.txt",
+    "body_size_bytes": 106083,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51009-19e63\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "106083",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:13 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/magic/Mountain%20Audio%20-%20Small%20Chimes%20-%20Loop.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0131_Mountain_Audio_-_Small_Chimes_-_Loop_73fe60ca93.txt",
+    "body_size_bytes": 155057,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51009-25db1\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "155057",
+      "date": "Tue, 20 Oct 2026 09:39:21 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:13 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/tv/alert.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0132_alert_6a30c4eb32.txt",
+    "body_size_bytes": 11576,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d5100c-2d38\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "11576",
+      "date": "Tue, 20 Oct 2026 09:39:22 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:16 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/swoosh/Swoosh%2002.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0133_Swoosh_02_842a1791e2.txt",
+    "body_size_bytes": 20479,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51010-4fff\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "20479",
+      "date": "Tue, 20 Oct 2026 09:39:22 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:20 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/sounds/swoosh/Swoosh%2005.mp3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "audio/mpeg",
+    "extension": ".mp3",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0134_Swoosh_05_d095ed2b7a.txt",
+    "body_size_bytes": 34642,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51010-8752\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "34642",
+      "date": "Tue, 20 Oct 2026 09:39:22 GMT",
+      "content-type": "audio/mpeg",
+      "last-modified": "Tue, 07 Apr 2026 14:09:20 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  }
+]

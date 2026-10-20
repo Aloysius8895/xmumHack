@@ -1,0 +1,136 @@
+{
+ "local_desktop": {
+  "url": "http://127.0.0.1:26488/",
+  "device": {
+   "viewport": {
+    "width": 1440,
+    "height": 1000
+   }
+  },
+  "offline": true,
+  "blocked_external": [],
+  "http_errors": [],
+  "failed_requests": [],
+  "console_errors": [],
+  "page_errors": [],
+  "steps": [
+   {
+    "name": "01-intro",
+    "screenshot": "local-desktop-01-intro.png",
+    "classes": "is-started is-server-offline is-gamepad-default input-filter-intro is-mode-mouse-keyboard"
+   },
+   {
+    "name": "02-started",
+    "screenshot": "local-desktop-02-started.png",
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-wandering"
+   },
+   {
+    "name": "03-driving",
+    "screenshot": "local-desktop-03-driving.png",
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-wandering"
+   },
+   {
+    "name": "04-menu",
+    "reached": true,
+    "screenshot": "local-desktop-04-menu.png",
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-menu"
+   },
+   {
+    "name": "05-map",
+    "screenshot": "local-desktop-05-map.png",
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-modal"
+   }
+  ],
+  "renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001681) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "fps": 77.5,
+  "seconds_to_start": 18.1,
+  "websockets": [],
+  "resources_loaded": 189
+ },
+ "local_mobile": {
+  "url": "http://127.0.0.1:26488/",
+  "device": {
+   "viewport": {
+    "width": 390,
+    "height": 844
+   },
+   "is_mobile": true,
+   "has_touch": true,
+   "device_scale_factor": 2
+  },
+  "offline": true,
+  "blocked_external": [],
+  "http_errors": [],
+  "failed_requests": [],
+  "console_errors": [],
+  "page_errors": [],
+  "steps": [
+   {
+    "name": "01-intro",
+    "screenshot": "local-mobile-01-intro.png",
+    "classes": "is-started is-server-offline is-gamepad-default input-filter-intro is-mode-mouse-keyboard"
+   },
+   {
+    "name": "02-started",
+    "screenshot": "local-mobile-02-started.png",
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-touch input-filter-wandering"
+   }
+  ],
+  "renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001681) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "fps": 83.5,
+  "seconds_to_start": 17.8,
+  "websockets": [],
+  "resources_loaded": 156
+ },
+ "original_desktop": {
+  "url": "https://bruno-simon.com/",
+  "device": {
+   "viewport": {
+    "width": 1440,
+    "height": 1000
+   }
+  },
+  "offline": false,
+  "blocked_external": [],
+  "http_errors": [],
+  "failed_requests": [
+   "net::ERR_ABORTED https://www.google-analytics.com/g/collect?v=2&tid=G-JMSN30BQ5J&gtm=45je6ag1v9119042115za208zd9119042115xf1&_p=1792490540162&gcd=13l3l3l3l1l1&npa=0&dma=0&are=1&cid=123248370.1792490540&frm=0&ngs=1&pscdl=noapi&rcb=12&sr=1440x1000&uaa=x86&uab=64&uafvl=Not%252FA)Brand%3B99.0.0.0%7CChromium%3B148.0.7778.96&uam=&uamb=0&uap=Windows&uapv=19.0.0&uaw=0&ul=en-us&_s=1&tag_exp=115616985~115938466~115938469~118897920~118897930~120213116~120385422~120469145~120469153~121246026~121246034&sid=1792490540&sct=1&seg=0&dl=https%3A%2F%2Fbruno-simon.com%2F&dt=Bruno%27s&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=803"
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "steps": [
+   {
+    "name": "01-intro",
+    "screenshot": "original-desktop-01-intro.png",
+    "classes": "is-started is-server-offline is-gamepad-default input-filter-intro is-mode-mouse-keyboard"
+   },
+   {
+    "name": "02-started",
+    "screenshot": "original-desktop-02-started.png",
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-wandering"
+   },
+   {
+    "name": "03-driving",
+    "screenshot": "original-desktop-03-driving.png",
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-wandering"
+   },
+   {
+    "name": "04-menu",
+    "reached": true,
+    "screenshot": "original-desktop-04-menu.png",
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-menu"
+   },
+   {
+    "name": "05-map",
+    "screenshot": "original-desktop-05-map.png",
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-modal"
+   }
+  ],
+  "renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001681) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "fps": 86,
+  "seconds_to_start": 18.0,
+  "websockets": [],
+  "resources_loaded": 186
+ },
+ "server_errors": []
+}

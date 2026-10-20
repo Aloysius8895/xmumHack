@@ -1,0 +1,111 @@
+[
+  {
+    "url": "https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaB.woff2",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "font",
+    "content_type": "font/woff2",
+    "extension": ".woff2",
+    "body_saved": false,
+    "saved_body_path": null,
+    "body_size_bytes": null,
+    "request_headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://fonts.googleapis.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "age": "282250",
+      "report-to": "{\"group\":\"apps-themes\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/apps-themes\"}]}",
+      "x-content-type-options": "nosniff",
+      "expires": "Sun, 17 Oct 2027 03:14:57 GMT",
+      "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+      "date": "Sat, 17 Oct 2026 03:14:57 GMT",
+      "last-modified": "Mon, 15 Sep 2025 17:03:34 GMT",
+      "content-type": "font/woff2",
+      "cache-control": "public, max-age=31536000",
+      "timing-allow-origin": "*",
+      "cross-origin-opener-policy": "same-origin; report-to=\"apps-themes\"",
+      "cross-origin-resource-policy": "cross-origin",
+      "content-security-policy-report-only": "require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/apps-themes",
+      "accept-ranges": "bytes",
+      "access-control-allow-origin": "*",
+      "content-length": "39128",
+      "x-xss-protection": "0",
+      "server": "sffe"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://fonts.gstatic.com/s/amaticsc/v28/TUZ3zwprpvBS1izr_vOMscGKfrUC.woff2",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "font",
+    "content_type": "font/woff2",
+    "extension": ".woff2",
+    "body_saved": false,
+    "saved_body_path": null,
+    "body_size_bytes": null,
+    "request_headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://fonts.googleapis.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "report-to": "{\"group\":\"apps-themes\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/apps-themes\"}]}",
+      "x-content-type-options": "nosniff",
+      "expires": "Wed, 20 Oct 2027 09:39:07 GMT",
+      "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+      "date": "Tue, 20 Oct 2026 09:39:07 GMT",
+      "content-type": "font/woff2",
+      "last-modified": "Tue, 16 Sep 2025 03:41:26 GMT",
+      "cache-control": "public, max-age=31536000",
+      "timing-allow-origin": "*",
+      "cross-origin-opener-policy": "same-origin; report-to=\"apps-themes\"",
+      "cross-origin-resource-policy": "cross-origin",
+      "content-security-policy-report-only": "require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/apps-themes",
+      "accept-ranges": "bytes",
+      "access-control-allow-origin": "*",
+      "content-length": "27220",
+      "x-xss-protection": "0",
+      "server": "sffe"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "https://bruno-simon.com/fonts/Pally-Medium.woff2",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "font",
+    "content_type": "font/woff2",
+    "extension": ".woff2",
+    "body_saved": false,
+    "saved_body_path": null,
+    "body_size_bytes": null,
+    "request_headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/assets/index-Di03QkGT.css",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d50fef-584c\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "22604",
+      "date": "Tue, 20 Oct 2026 09:39:07 GMT",
+      "content-type": "font/woff2",
+      "last-modified": "Tue, 07 Apr 2026 14:08:47 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  }
+]

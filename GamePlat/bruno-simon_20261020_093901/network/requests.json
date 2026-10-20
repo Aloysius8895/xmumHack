@@ -1,0 +1,2151 @@
+[
+  {
+    "timestamp": "2026-10-20T09:39:05.146089+00:00",
+    "url": "https://bruno-simon.com/",
+    "method": "GET",
+    "resource_type": "document",
+    "headers": {
+      "upgrade-insecure-requests": "1",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "\"Windows\""
+    },
+    "post_data": null,
+    "is_navigation_request": true
+  },
+  {
+    "timestamp": "2026-10-20T09:39:08.599801+00:00",
+    "url": "https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Nunito:wght@400;700;900&display=block",
+    "method": "GET",
+    "resource_type": "stylesheet",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:08.600062+00:00",
+    "url": "https://bruno-simon.com/respawns/respawnsReferences-compressed.glb",
+    "method": "GET",
+    "resource_type": "other",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:08.600291+00:00",
+    "url": "https://bruno-simon.com/behindTheScene/stars.ktx",
+    "method": "GET",
+    "resource_type": "other",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:08.600491+00:00",
+    "url": "https://bruno-simon.com/intro/sound.ktx",
+    "method": "GET",
+    "resource_type": "other",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:08.600628+00:00",
+    "url": "https://bruno-simon.com/palette.ktx",
+    "method": "GET",
+    "resource_type": "other",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:08.600753+00:00",
+    "url": "https://www.googletagmanager.com/gtag/js?id=G-JMSN30BQ5J",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:08.600878+00:00",
+    "url": "https://bruno-simon.com/assets/index-ORr3L4no.js",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:08.601007+00:00",
+    "url": "https://bruno-simon.com/assets/index-Di03QkGT.css",
+    "method": "GET",
+    "resource_type": "stylesheet",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:08.979861+00:00",
+    "url": "https://www.google-analytics.com/g/collect?v=2&tid=G-JMSN30BQ5J&gtm=45je6ag1v9119042115za208zd9119042115xf1&_p=1792489148700&gcd=13l3l3l3l1l1&npa=0&dma=0&are=1&cid=281389630.1792489149&frm=0&ngs=1&pscdl=noapi&rcb=0&sr=1440x1000&uaa=x86&uab=64&uafvl=Chromium%3B148.0.7778.96%7CHeadlessChrome%3B148.0.7778.96%7CNot%252FA)Brand%3B99.0.0.0&uam=&uamb=0&uap=Windows&uapv=10.0&uaw=0&ul=en-gb&_s=1&tag_exp=115616986~115938465~115938469~118897920~118897930~120213116~120385423~120469145~120469153~121246026~121246034&sid=1792489148&sct=1&seg=0&dl=https%3A%2F%2Fbruno-simon.com%2F&dt=Bruno%27s&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=3832",
+    "method": "POST",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:09.003344+00:00",
+    "url": "https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaB.woff2",
+    "method": "GET",
+    "resource_type": "font",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://fonts.googleapis.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:09.003548+00:00",
+    "url": "https://fonts.gstatic.com/s/amaticsc/v28/TUZ3zwprpvBS1izr_vOMscGKfrUC.woff2",
+    "method": "GET",
+    "resource_type": "font",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://fonts.googleapis.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:09.003734+00:00",
+    "url": "https://bruno-simon.com/fonts/Pally-Medium.woff2",
+    "method": "GET",
+    "resource_type": "font",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/assets/index-Di03QkGT.css",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:10.302255+00:00",
+    "url": "https://bruno-simon.com/ui/map.svg",
+    "method": "GET",
+    "resource_type": "image",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:10.632574+00:00",
+    "url": "https://bruno-simon.com/draco/draco_wasm_wrapper.js",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:10.632840+00:00",
+    "url": "https://bruno-simon.com/draco/draco_decoder.wasm",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:10.633033+00:00",
+    "url": "https://bruno-simon.com/respawns/respawnsReferences-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:10.633172+00:00",
+    "url": "https://bruno-simon.com/behindTheScene/stars.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:10.633295+00:00",
+    "url": "https://bruno-simon.com/intro/sound.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:10.633418+00:00",
+    "url": "https://bruno-simon.com/palette.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:10.644966+00:00",
+    "url": "https://bruno-simon.com/basis/basis_transcoder.js",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:10.645160+00:00",
+    "url": "https://bruno-simon.com/basis/basis_transcoder.wasm",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.000252+00:00",
+    "url": "blob:https://bruno-simon.com/8c1a3b76-0dec-4414-bd06-d400b1ce06ae",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.004326+00:00",
+    "url": "blob:https://bruno-simon.com/8c1a3b76-0dec-4414-bd06-d400b1ce06ae",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.004547+00:00",
+    "url": "blob:https://bruno-simon.com/8c1a3b76-0dec-4414-bd06-d400b1ce06ae",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.670201+00:00",
+    "url": "https://bruno-simon.com/sounds/reveal/reveal-1.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.670761+00:00",
+    "url": "https://bruno-simon.com/foliage/foliageSDF.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.671230+00:00",
+    "url": "https://bruno-simon.com/bushes/bushesReferences-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.671617+00:00",
+    "url": "https://bruno-simon.com/vehicle/default-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.671874+00:00",
+    "url": "https://bruno-simon.com/playground/playgroundVisual-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.672115+00:00",
+    "url": "https://bruno-simon.com/playground/playgroundPhysical-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.672415+00:00",
+    "url": "https://bruno-simon.com/flowers/flowersReferences-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.672609+00:00",
+    "url": "https://bruno-simon.com/bricks/bricks-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.672888+00:00",
+    "url": "https://bruno-simon.com/fences/fences-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.673183+00:00",
+    "url": "https://bruno-simon.com/benches/benches-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.673461+00:00",
+    "url": "https://bruno-simon.com/explosiveCrates/explosiveCrates-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.673778+00:00",
+    "url": "https://bruno-simon.com/lanterns/lanterns-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.674146+00:00",
+    "url": "https://bruno-simon.com/terrain/terrain.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.674436+00:00",
+    "url": "https://bruno-simon.com/terrain/terrain-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.674668+00:00",
+    "url": "https://bruno-simon.com/floor/slabs.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.674888+00:00",
+    "url": "https://bruno-simon.com/birchTrees/birchTreesVisual-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.675100+00:00",
+    "url": "https://bruno-simon.com/birchTrees/birchTreesReferences-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.676516+00:00",
+    "url": "https://bruno-simon.com/oakTrees/oakTreesVisual-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.676718+00:00",
+    "url": "https://bruno-simon.com/oakTrees/oakTreesReferences-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.676895+00:00",
+    "url": "https://bruno-simon.com/cherryTrees/cherryTreesVisual-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.677039+00:00",
+    "url": "https://bruno-simon.com/cherryTrees/cherryTreesReferences-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.677168+00:00",
+    "url": "https://bruno-simon.com/scenery/scenery-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.677293+00:00",
+    "url": "https://bruno-simon.com/areas/areas-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.677426+00:00",
+    "url": "https://bruno-simon.com/poleLights/poleLights-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.677633+00:00",
+    "url": "https://bruno-simon.com/whispers/whisperFlame.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.677787+00:00",
+    "url": "https://bruno-simon.com/areas/satanStar.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.677976+00:00",
+    "url": "https://bruno-simon.com/tornado/tornadoPathReferences-compressed.glb?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.678191+00:00",
+    "url": "https://bruno-simon.com/overlay/overlayPattern.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.678348+00:00",
+    "url": "https://bruno-simon.com/interactivePoints/interactivePointsKeyIconCross.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.678500+00:00",
+    "url": "https://bruno-simon.com/interactivePoints/interactivePointsKeyIconEnter.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.678646+00:00",
+    "url": "https://bruno-simon.com/interactivePoints/interactivePointsKeyIconA.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.678787+00:00",
+    "url": "https://bruno-simon.com/jukebox/jukeboxMusicNotes.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.678928+00:00",
+    "url": "https://bruno-simon.com/achievements/glyphs.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.679078+00:00",
+    "url": "https://bruno-simon.com/career/careerFreelancer.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.679231+00:00",
+    "url": "https://bruno-simon.com/career/careerHetic.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.679380+00:00",
+    "url": "https://bruno-simon.com/career/careerImmersiveGarden.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.679518+00:00",
+    "url": "https://bruno-simon.com/career/careerIRLTeacher.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.679680+00:00",
+    "url": "https://bruno-simon.com/career/careerOnlineTeacher.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.679825+00:00",
+    "url": "https://bruno-simon.com/career/careerUzik.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.679978+00:00",
+    "url": "https://bruno-simon.com/timeMachine/timeMachineScreenMGS.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.680113+00:00",
+    "url": "https://bruno-simon.com/timeMachine/timeMachineScreenFolio.ktx?cb=1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:11.680265+00:00",
+    "url": "https://bruno-simon.com/assets/rapier-BmPn8Tpt.js",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "origin": "https://bruno-simon.com",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/assets/index-ORr3L4no.js",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.919585+00:00",
+    "url": "blob:https://bruno-simon.com/46874969-5a33-4207-9e14-e26e61f3b49d",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.920396+00:00",
+    "url": "blob:https://bruno-simon.com/46874969-5a33-4207-9e14-e26e61f3b49d",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.921599+00:00",
+    "url": "blob:https://bruno-simon.com/46874969-5a33-4207-9e14-e26e61f3b49d",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.923526+00:00",
+    "url": "blob:https://bruno-simon.com/46874969-5a33-4207-9e14-e26e61f3b49d",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.924601+00:00",
+    "url": "blob:https://bruno-simon.com/9523e870-3b2a-44d0-8746-e7551e1c962b",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.926068+00:00",
+    "url": "blob:https://bruno-simon.com/dbeeae50-798d-44fd-9617-414aba1d2ed3",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.929580+00:00",
+    "url": "blob:https://bruno-simon.com/570dba41-0528-4b05-bd15-2c1c887358d9",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.930183+00:00",
+    "url": "blob:https://bruno-simon.com/c9d21fa2-a8a1-4c20-b813-6a568b5e2311",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.931131+00:00",
+    "url": "blob:https://bruno-simon.com/11c1ce77-3702-4ba0-a43b-12eb241ad1c4",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.932361+00:00",
+    "url": "blob:https://bruno-simon.com/741c08eb-5c5f-41d7-838b-b3f46fa85998",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.933835+00:00",
+    "url": "blob:https://bruno-simon.com/559ffe96-843b-4c5c-b185-63f27f9e20c7",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.935511+00:00",
+    "url": "blob:https://bruno-simon.com/e82f7cda-b371-4a45-8d9d-5042e349e211",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.938951+00:00",
+    "url": "blob:https://bruno-simon.com/86589b72-f276-472a-a79a-a70f99db10ad",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.939250+00:00",
+    "url": "blob:https://bruno-simon.com/4a4b7017-3fbb-47a1-9f6f-74ee3bc06c48",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.971162+00:00",
+    "url": "blob:https://bruno-simon.com/8c1a3b76-0dec-4414-bd06-d400b1ce06ae",
+    "method": "GET",
+    "resource_type": "script",
+    "headers": {
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.971606+00:00",
+    "url": "blob:https://bruno-simon.com/8fb556d1-5018-449e-b7d4-38abdce6e28d",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.978473+00:00",
+    "url": "blob:https://bruno-simon.com/7507d364-86a5-4607-b1d9-2ea93128d28d",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.978743+00:00",
+    "url": "blob:https://bruno-simon.com/bfc94749-2896-4d67-9d98-88fedd729ec1",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.979032+00:00",
+    "url": "blob:https://bruno-simon.com/f3a77dff-3caf-462f-b49d-40f7ff7427d2",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.979158+00:00",
+    "url": "blob:https://bruno-simon.com/e0f379a2-69b7-4e8e-ae5f-569a41ab1a74",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.979307+00:00",
+    "url": "blob:https://bruno-simon.com/706a5cfa-cad2-49dd-a556-f329ee2e7438",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.979426+00:00",
+    "url": "blob:https://bruno-simon.com/e1c96741-6728-487f-8426-26537e187fa6",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.979541+00:00",
+    "url": "blob:https://bruno-simon.com/7a79ea29-1ae1-4bf3-a719-34d30364e57b",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.979651+00:00",
+    "url": "blob:https://bruno-simon.com/5ec76b84-96ae-4104-bed7-415b014b14e3",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.979764+00:00",
+    "url": "blob:https://bruno-simon.com/aa146edc-901d-495f-ab78-9c3935126b9a",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.979881+00:00",
+    "url": "blob:https://bruno-simon.com/2efd71dc-e137-45b5-8844-f95e0ee9daf0",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.979997+00:00",
+    "url": "blob:https://bruno-simon.com/38eb800f-6963-48ef-99f9-b22f8b46ad49",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.980109+00:00",
+    "url": "blob:https://bruno-simon.com/a807ccde-d3e3-46e2-a903-bfbb010f00ac",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:13.980231+00:00",
+    "url": "blob:https://bruno-simon.com/773d33ed-8b38-4025-9766-92430380cc84",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:14.599765+00:00",
+    "url": "https://bruno-simon.com/assets/rapier_wasm3d_bg-0Vyjx73g.wasm",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.530960+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/suspensions/Robotic_Lifeforms_2_-_Air_Source_-_Piston_Studio_Chair_07.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.531384+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/honk/Car%20Horn%20Long%204.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.531765+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/springs/HandleSqueak_BW.60329.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.532106+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/springs/SpringMetalMovements_1u54Y_01.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.532436+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/floor/wheels-on-pebbles-road.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.532614+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/floor/Source%20Stone%20Loop%20Small%20Rubbing%20Pebbles%20On%20Concrete%2002.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.532752+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/engine/muscle%20car%20engine%20loop%20idle.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.532876+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/spin/41051%20Glass%20stone%20turning%20loop%2009-full.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.533002+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/energy/Energy_-_force_field_8_loop.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.533124+00:00",
+    "url": "https://bruno-simon.com/sounds/paper/PaperMovement_fNAyV_01-3.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.533241+00:00",
+    "url": "https://bruno-simon.com/sounds/paper/PaperMovement_fNAyV_01-2.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.533356+00:00",
+    "url": "https://bruno-simon.com/sounds/achievements/Money%20Reward%202.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.533476+00:00",
+    "url": "https://bruno-simon.com/sounds/vehicle/paint/Spray%20Paint%2014.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.533588+00:00",
+    "url": "https://bruno-simon.com/sounds/thunder/near/THUNDER_GEN-HDF-23300.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.533705+00:00",
+    "url": "https://bruno-simon.com/sounds/thunder/near/Lightning-Streak-with-Thunder-Crash_TTX028903.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.533827+00:00",
+    "url": "https://bruno-simon.com/sounds/thunder/near/ThunderSharpStrikingRumblingCrackling_JMDKp_04.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.533946+00:00",
+    "url": "https://bruno-simon.com/sounds/thunder/distant/Thunder32GentleCr%20SIG014001.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.534063+00:00",
+    "url": "https://bruno-simon.com/sounds/thunder/distant/Thunder44LowRippl%20SIG015201.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.534213+00:00",
+    "url": "https://bruno-simon.com/sounds/clicks/Source%20Metal%20Clicks%20Delicate%20Light%20Sharp%20Clip%20Mid%2007.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.534362+00:00",
+    "url": "https://bruno-simon.com/sounds/explosions/SmallImpactMediumE%20PE281202.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.534507+00:00",
+    "url": "https://bruno-simon.com/sounds/explosions/SmallImpactMediumE%20PE281203.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.534686+00:00",
+    "url": "https://bruno-simon.com/sounds/stoneSlides/stoneSlideOut.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.534816+00:00",
+    "url": "https://bruno-simon.com/sounds/stoneSlides/stoneSlideIn.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.534946+00:00",
+    "url": "https://bruno-simon.com/sounds/anvil/METLImpt_Anvil%20Single%20Hammer%20Strike%20Hammers_GENHD1-01372.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.535065+00:00",
+    "url": "https://bruno-simon.com/projects/images/threejs-journey-1.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.535869+00:00",
+    "url": "https://bruno-simon.com/sounds/mecanism/05947%20light%20wooden%20cart%20riding%20on%20cobblestone%20-%20looping.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.536161+00:00",
+    "url": "https://bruno-simon.com/lab/images/black-hole.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.536429+00:00",
+    "url": "https://bruno-simon.com/lab/images/black-hole-mini.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.536723+00:00",
+    "url": "https://bruno-simon.com/lab/images/infinite-world-mini.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.536912+00:00",
+    "url": "https://bruno-simon.com/lab/images/my-room-in-3d-mini.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.537091+00:00",
+    "url": "https://bruno-simon.com/lab/images/particles-system-mini.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.537260+00:00",
+    "url": "https://bruno-simon.com/lab/images/organic-sphere-mini.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.537436+00:00",
+    "url": "https://bruno-simon.com/lab/images/attractors-mini.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.537652+00:00",
+    "url": "https://bruno-simon.com/sounds/ding/Cash%20Register%2003.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.537826+00:00",
+    "url": "https://bruno-simon.com/sounds/magic/Ghostly%20Whisper%20Background%20Loop%209.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.537949+00:00",
+    "url": "https://bruno-simon.com/sounds/bell/Death%20Hit.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.538073+00:00",
+    "url": "https://bruno-simon.com/sounds/bell/Epic%20Bell%20Impact%20Hit.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.538187+00:00",
+    "url": "https://bruno-simon.com/sounds/hits/pins/ComedyCrash%206115_16_4.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.538308+00:00",
+    "url": "https://bruno-simon.com/sounds/rolling/06290%20medium%20ball%20rolling%20lp.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.538427+00:00",
+    "url": "https://bruno-simon.com/sounds/circuit/countdown/Game%20Start%20Countdown%2031-1.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.538548+00:00",
+    "url": "https://bruno-simon.com/sounds/circuit/countdown/Game%20Start%20Countdown%2031-2.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.538679+00:00",
+    "url": "https://bruno-simon.com/sounds/circuit/checkpoint/Win%20Score%201.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.538807+00:00",
+    "url": "https://bruno-simon.com/sounds/circuit/finish/Big%20Win%20Fanfare%202.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.538927+00:00",
+    "url": "https://bruno-simon.com/sounds/circuit/applause/huge%20win.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.539047+00:00",
+    "url": "https://bruno-simon.com/sounds/magic/Environmental%20Loop%20Scifi%20Bright%20Glassy%20Wandering%20Tones%20Layered%2002.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.539168+00:00",
+    "url": "https://bruno-simon.com/sounds/magic/Mountain%20Audio%20-%20Small%20Chimes%20-%20Loop.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.539288+00:00",
+    "url": "https://bruno-simon.com/sounds/tv/alert.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.539408+00:00",
+    "url": "https://bruno-simon.com/sounds/swoosh/Swoosh%2002.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:21.539527+00:00",
+    "url": "https://bruno-simon.com/sounds/swoosh/Swoosh%2005.mp3",
+    "method": "GET",
+    "resource_type": "xhr",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:30.360556+00:00",
+    "url": "https://bruno-simon.com/projects/images/threejs-journey-2.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:30.360913+00:00",
+    "url": "https://bruno-simon.com/lab/images/infinite-world.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  },
+  {
+    "timestamp": "2026-10-20T09:39:59.229326+00:00",
+    "url": "https://bruno-simon.com/intro/mouseKeyboardLabel.ktx",
+    "method": "GET",
+    "resource_type": "fetch",
+    "headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "post_data": null,
+    "is_navigation_request": false
+  }
+]

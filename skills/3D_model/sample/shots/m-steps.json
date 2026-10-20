@@ -1,0 +1,8 @@
+[
+ { "js": "lab.toggle('cut', true); lab.toggle('labels', true)", "wait": 3.5, "out": "shots/m-cut.png" },
+ { "js": "lab.toggle('cut', false); lab.toggle('labels', false); lab.toggle('explode', true)", "wait": 4.5, "out": "shots/m-explode.png" },
+ { "js": "lab.toggle('explode', false); lab.toggle('xray', true)", "wait": 3, "out": "shots/m-xray.png" },
+ { "js": "lab.toggle('xray', false); lab.toggle('cut', true); lab.setView({ az: 80, el: 10, dist: 1.0, target: [0, 0.14, -0.03] })", "wait": 3, "out": "shots/m-near-head.png" },
+ { "js": "lab.setView({ az: 50, el: 38, dist: 0.95, target: [0.0, 0.02, -0.005] })", "wait": 3, "out": "shots/m-near-board.png" },
+ { "js": "lab.toggle('cut', false); lab.setView({ az: 160, el: 12, dist: 1.4, target: [0, 0.07, -0.03] })", "wait": 3.5, "out": "shots/m-back.png" }
+]

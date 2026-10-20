@@ -1,0 +1,27 @@
+{
+  "enabled": true,
+  "total_api_candidates": 127,
+  "rest_candidates": 127,
+  "graphql_candidates": 0,
+  "json_responses": 0,
+  "by_method": {
+    "GET": 126,
+    "POST": 1
+  },
+  "by_status_code": {
+    "200": 126,
+    "204": 1
+  },
+  "with_post_data": 0,
+  "with_saved_body": 126,
+  "top_api_hosts": [
+    {
+      "host": "bruno-simon.com",
+      "count": 102
+    },
+    {
+      "host": "www.google-analytics.com",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "enabled": true,
+  "started_at": "2026-10-20T09:39:33.108769+00:00",
+  "finished_at": "2026-10-20T09:39:38.694630+00:00",
+  "budget": 2,
+  "wait_ms": 4000,
+  "mute_audio": true,
+  "clicked": false,
+  "success": false,
+  "stop_reason": "no_actionable_candidates",
+  "selected_candidate": null,
+  "before": {
+    "url": "https://bruno-simon.com/",
+    "title": "Bruno's",
+    "scroll_y": 0,
+    "scroll_height": 1000,
+    "viewport_height": 1000,
+    "dom_node_count": 970,
+    "body_text_length": 0,
+    "body_text_sample": "",
+    "entry_prompt_visible": false,
+    "loader_like_count": 1
+  },
+  "after": {
+    "url": "https://bruno-simon.com/",
+    "title": "Bruno's",
+    "scroll_y": 0,
+    "scroll_height": 1000,
+    "viewport_height": 1000,
+    "dom_node_count": 970,
+    "body_text_length": 0,
+    "body_text_sample": "",
+    "entry_prompt_visible": false,
+    "loader_like_count": 1
+  },
+  "changes": {
+    "url_changed": false,
+    "title_changed": false,
+    "dom_delta": 0,
+    "text_length_delta": 0,
+    "scroll_height_delta": 0,
+    "entry_prompt_cleared": false,
+    "loader_count_delta": 0,
+    "body_text_changed": false
+  },
+  "attempts": []
+}

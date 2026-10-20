@@ -1,0 +1,511 @@
+[
+  {
+    "url": "https://bruno-simon.com/ui/map.svg",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "image",
+    "content_type": "image/svg+xml",
+    "extension": ".svg",
+    "body_saved": true,
+    "saved_body_path": "responses/svg/0010_map_960764bd3f.svg",
+    "body_size_bytes": 1050,
+    "request_headers": {
+      "sec-ch-ua-platform": "\"Windows\"",
+      "referer": "https://bruno-simon.com/",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "sec-ch-ua": "\"Chromium\";v=\"148\", \"HeadlessChrome\";v=\"148\", \"Not/A)Brand\";v=\"99\"",
+      "sec-ch-ua-mobile": "?0"
+    },
+    "response_headers": {
+      "etag": "\"69d51027-41a\"",
+      "connection": "keep-alive",
+      "accept-ranges": "bytes",
+      "content-length": "1050",
+      "date": "Tue, 20 Oct 2026 09:39:09 GMT",
+      "content-type": "image/svg+xml",
+      "last-modified": "Tue, 07 Apr 2026 14:09:43 GMT",
+      "server": "nginx/1.24.0 (Ubuntu)"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/9523e870-3b2a-44d0-8746-e7551e1c962b",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0069_9523e870-3b2a-44d0-8746-e7551e1c962b_cc291a1a5e.txt",
+    "body_size_bytes": 995,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "995"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/dbeeae50-798d-44fd-9617-414aba1d2ed3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0070_dbeeae50-798d-44fd-9617-414aba1d2ed3_8eb872d146.txt",
+    "body_size_bytes": 718,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "718"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/570dba41-0528-4b05-bd15-2c1c887358d9",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0071_570dba41-0528-4b05-bd15-2c1c887358d9_c39770d8ae.txt",
+    "body_size_bytes": 996,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "996"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/c9d21fa2-a8a1-4c20-b813-6a568b5e2311",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0072_c9d21fa2-a8a1-4c20-b813-6a568b5e2311_806065d6ea.txt",
+    "body_size_bytes": 718,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "718"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/11c1ce77-3702-4ba0-a43b-12eb241ad1c4",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0073_11c1ce77-3702-4ba0-a43b-12eb241ad1c4_4c09d98282.txt",
+    "body_size_bytes": 995,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "995"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/741c08eb-5c5f-41d7-838b-b3f46fa85998",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0074_741c08eb-5c5f-41d7-838b-b3f46fa85998_e8264e894e.txt",
+    "body_size_bytes": 995,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "995"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/559ffe96-843b-4c5c-b185-63f27f9e20c7",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0075_559ffe96-843b-4c5c-b185-63f27f9e20c7_f6244bed64.txt",
+    "body_size_bytes": 718,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "718"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/e82f7cda-b371-4a45-8d9d-5042e349e211",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0076_e82f7cda-b371-4a45-8d9d-5042e349e211_80218c9b9a.txt",
+    "body_size_bytes": 718,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "718"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/86589b72-f276-472a-a79a-a70f99db10ad",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0077_86589b72-f276-472a-a79a-a70f99db10ad_a72b610c54.txt",
+    "body_size_bytes": 995,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "995"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/4a4b7017-3fbb-47a1-9f6f-74ee3bc06c48",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0078_4a4b7017-3fbb-47a1-9f6f-74ee3bc06c48_4ca97dfe09.txt",
+    "body_size_bytes": 718,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "718"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/8fb556d1-5018-449e-b7d4-38abdce6e28d",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0079_8fb556d1-5018-449e-b7d4-38abdce6e28d_df24e4f20a.txt",
+    "body_size_bytes": 718,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "718"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/7507d364-86a5-4607-b1d9-2ea93128d28d",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0080_7507d364-86a5-4607-b1d9-2ea93128d28d_40d5ee9e29.txt",
+    "body_size_bytes": 1011,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "1011"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/bfc94749-2896-4d67-9d98-88fedd729ec1",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0081_bfc94749-2896-4d67-9d98-88fedd729ec1_aa89265366.txt",
+    "body_size_bytes": 7689,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "7689"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/f3a77dff-3caf-462f-b49d-40f7ff7427d2",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0082_f3a77dff-3caf-462f-b49d-40f7ff7427d2_5e9d466d17.txt",
+    "body_size_bytes": 11517,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "11517"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/e0f379a2-69b7-4e8e-ae5f-569a41ab1a74",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0083_e0f379a2-69b7-4e8e-ae5f-569a41ab1a74_4b8a6d7102.txt",
+    "body_size_bytes": 16420,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "16420"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/706a5cfa-cad2-49dd-a556-f329ee2e7438",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0084_706a5cfa-cad2-49dd-a556-f329ee2e7438_ac67eed373.txt",
+    "body_size_bytes": 6460,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "6460"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/e1c96741-6728-487f-8426-26537e187fa6",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0085_e1c96741-6728-487f-8426-26537e187fa6_25079f809e.txt",
+    "body_size_bytes": 16779,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "16779"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/7a79ea29-1ae1-4bf3-a719-34d30364e57b",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0086_7a79ea29-1ae1-4bf3-a719-34d30364e57b_4f5bfafa00.txt",
+    "body_size_bytes": 17373,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "17373"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/5ec76b84-96ae-4104-bed7-415b014b14e3",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0087_5ec76b84-96ae-4104-bed7-415b014b14e3_489b432ce5.txt",
+    "body_size_bytes": 1806,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "1806"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/aa146edc-901d-495f-ab78-9c3935126b9a",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0088_aa146edc-901d-495f-ab78-9c3935126b9a_bdd7d1cf74.txt",
+    "body_size_bytes": 4785,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "4785"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/2efd71dc-e137-45b5-8844-f95e0ee9daf0",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0089_2efd71dc-e137-45b5-8844-f95e0ee9daf0_ee87842511.txt",
+    "body_size_bytes": 3053,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "3053"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/38eb800f-6963-48ef-99f9-b22f8b46ad49",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0090_38eb800f-6963-48ef-99f9-b22f8b46ad49_e939e549ff.txt",
+    "body_size_bytes": 6362,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "6362"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/a807ccde-d3e3-46e2-a903-bfbb010f00ac",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0091_a807ccde-d3e3-46e2-a903-bfbb010f00ac_e182ca109e.txt",
+    "body_size_bytes": 2902,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "2902"
+    },
+    "is_sourcemap": false
+  },
+  {
+    "url": "blob:https://bruno-simon.com/773d33ed-8b38-4025-9766-92430380cc84",
+    "method": "GET",
+    "status": 200,
+    "resource_type": "fetch",
+    "content_type": "image/ktx2",
+    "extension": "",
+    "body_saved": true,
+    "saved_body_path": "responses/text/0092_773d33ed-8b38-4025-9766-92430380cc84_f2b45112fb.txt",
+    "body_size_bytes": 2982,
+    "request_headers": {
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+      "referer": ""
+    },
+    "response_headers": {
+      "content-type": "image/ktx2",
+      "content-length": "2982"
+    },
+    "is_sourcemap": false
+  }
+]
