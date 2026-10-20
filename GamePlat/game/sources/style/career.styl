@@ -1,0 +1,901 @@
+/* Career platform UI (sources/Career/CareerUI.js), same palette as the game modals */
+
+.career-ui {
+    --career-bg: rgba(37, 31, 43, 0.94);
+    --career-bg-strong: #1d1721;
+    --career-line: rgba(255, 255, 255, 0.12);
+    --career-text: #ffffff;
+    --career-muted: rgba(255, 255, 255, 0.62);
+    --career-accent: #ffd23f;
+    --career-good: #7dd87a;
+    --career-warn: #ffb648;
+    --career-bad: #ff6b6b;
+    --career-gutter: 16px;
+
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    color: var(--career-text);
+    font-family: "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+/* Above the game menu / map buttons (z-index 9) while a panel or dialogue is open */
+.career-ui.is-overlay {
+    z-index: 10;
+}
+
+.career-ui button,
+.career-ui input,
+.career-ui select,
+.career-ui textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+.career-ui button {
+    cursor: pointer;
+}
+
+.career-ui :focus-visible {
+    outline: 2px solid var(--career-accent);
+    outline-offset: 2px;
+}
+
+/* HUD */
+
+.career-hud {
+    position: absolute;
+    top: calc(var(--career-gutter) + env(safe-area-inset-top));
+    left: calc(var(--career-gutter) + env(safe-area-inset-left));
+    width: 290px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.career-pet-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px 8px 8px;
+    border: 1px solid var(--career-line);
+    border-radius: 999px;
+    background: var(--career-bg);
+    text-align: left;
+}
+
+.career-pet-chip.is-empty {
+    opacity: 0.85;
+}
+
+.career-pet-avatar {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--pet, var(--career, #6b6475));
+    font-weight: 800;
+    font-size: 18px;
+    box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.18);
+}
+
+.career-pet-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.career-pet-info em,
+.career-pet-card em {
+    font-style: normal;
+    color: var(--career-accent);
+    font-size: 13px;
+    margin-left: 4px;
+}
+
+.career-pet-info small {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--career-muted);
+}
+
+.career-hud-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.career-points {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--career-bg);
+    border: 1px solid var(--career-line);
+    color: var(--career-accent);
+    font-weight: 800;
+}
+
+.career-points small {
+    color: var(--career-muted);
+    font-weight: 400;
+}
+
+.career-badge {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.career-badge.is-mock {
+    background: rgba(138, 108, 255, 0.85);
+}
+
+.career-badge.is-warning {
+    background: var(--career-warn);
+    color: #1d1721;
+}
+
+.career-next {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 14px;
+    border: 1px solid var(--career-line);
+    border-left: 4px solid var(--career-accent);
+    border-radius: 12px;
+    background: var(--career-bg);
+    text-align: left;
+}
+
+.career-next small {
+    color: var(--career-accent);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+}
+
+.career-next.is-highlight {
+    animation: career-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes career-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 210, 63, 0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(255, 210, 63, 0); }
+}
+
+/* Bars */
+
+.career-bar {
+    display: block;
+    flex: 1;
+    min-width: 60px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+}
+
+.career-bar > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--career-good);
+    transition: width 0.4s ease;
+}
+
+.career-bar.is-heart > span {
+    background: linear-gradient(90deg, #ff6fa8, #ff9a6b);
+}
+
+.career-bar.is-thin {
+    height: 4px;
+}
+
+/* Rail */
+
+.career-rail {
+    position: absolute;
+    left: calc(var(--career-gutter) + env(safe-area-inset-left));
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+    border-radius: 18px;
+    background: var(--career-bg);
+    border: 1px solid var(--career-line);
+    pointer-events: auto;
+}
+
+.career-rail-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    width: 58px;
+    padding: 8px 4px 6px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    font-size: 11px;
+    color: var(--career-muted);
+}
+
+.career-rail-item svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.career-rail-item:hover,
+.career-rail-item.is-active {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--career-text);
+}
+
+.career-rail-item.has-dot::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--career-accent);
+    box-shadow: 0 0 0 2px var(--career-bg-strong);
+}
+
+/* Panel */
+
+.career-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    background: #251f2b;
+    border-left: 1px solid var(--career-line);
+    box-shadow: -20px 0 40px rgba(0, 0, 0, 0.25);
+    transform: translateX(105%);
+    transition: transform 0.28s ease, visibility 0s linear 0.28s;
+    visibility: hidden;
+    pointer-events: none;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-right: env(safe-area-inset-right);
+}
+
+.career-panel.is-open {
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition: transform 0.28s ease;
+}
+
+.career-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 10px;
+}
+
+.career-panel-header h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.career-close {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 22px;
+    line-height: 1;
+}
+
+.career-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 20px 28px;
+    overscroll-behavior: contain;
+}
+
+.career-panel-body h3 {
+    margin: 22px 0 8px;
+    font-size: 16px;
+}
+
+.career-panel-body p {
+    margin: 8px 0;
+}
+
+.career-panel-body textarea,
+.career-panel-body input[type="text"],
+.career-panel-body select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--career-line);
+    background: var(--career-bg-strong);
+    resize: vertical;
+}
+
+.career-panel-body select {
+    width: auto;
+}
+
+.career-muted {
+    color: var(--career-muted);
+    font-size: 13px;
+}
+
+.career-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.career-row input[type="text"] {
+    flex: 1;
+    width: auto;
+}
+
+.career-button {
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--career-accent);
+    color: #1d1721 !important;
+    font-weight: 800;
+}
+
+.career-button.is-secondary {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--career-text) !important;
+}
+
+.career-button.is-danger {
+    background: var(--career-bad);
+    color: #ffffff !important;
+    margin-top: 20px;
+}
+
+.career-button.is-wide {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.career-link {
+    padding: 4px 0;
+    border: 0;
+    background: none;
+    color: var(--career-accent);
+    text-decoration: underline;
+}
+
+.career-icon-button {
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.career-file-button {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px dashed var(--career-line);
+    cursor: pointer;
+    color: var(--career-muted);
+}
+
+.career-file {
+    color: var(--career-good);
+    font-size: 13px;
+}
+
+.career-notice {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(125, 216, 122, 0.15);
+    border-left: 3px solid var(--career-good);
+}
+
+.career-notice.is-error {
+    background: rgba(255, 107, 107, 0.15);
+    border-color: var(--career-bad);
+}
+
+.career-notice.is-warning {
+    background: rgba(255, 182, 72, 0.12);
+    border-color: var(--career-warn);
+}
+
+.career-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 2px 4px 2px 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.career-tag.is-target,
+.career-tag.is-verified {
+    background: var(--career-good);
+    color: #1d1721;
+    font-weight: 700;
+}
+
+.career-tag.is-mp {
+    background: rgba(90, 160, 255, 0.25);
+    color: #b9d6ff;
+}
+
+/* Lists */
+
+.career-skill-list,
+.career-requirements,
+.career-pet-skills,
+.career-posting,
+.career-tasks,
+.career-logs,
+.career-questions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.career-skill-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--career-line);
+}
+
+.career-skill-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.career-skill-name small,
+.career-posting small,
+.career-tasks small {
+    display: block;
+    color: var(--career-muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.career-requirements li,
+.career-pet-skills li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 120px;
+    align-items: center;
+    gap: 4px 10px;
+    padding: 6px 0;
+}
+
+.career-requirements li small {
+    grid-column: 1 / -1;
+    color: var(--career-muted);
+    font-size: 12px;
+}
+
+.career-requirements li.has-gap .career-bar > span {
+    background: var(--career-warn);
+}
+
+.career-posting li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--career-line);
+}
+
+.career-status {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.career-posting .is-met .career-status { color: var(--career-good); }
+.career-posting .is-partial .career-status { color: var(--career-warn); }
+.career-posting .is-gap .career-status { color: var(--career-bad); }
+
+/* Career cards */
+
+.career-cards {
+    display: grid;
+    gap: 10px;
+}
+
+.career-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px;
+    border: 1px solid var(--career-line);
+    border-left: 5px solid var(--career);
+    border-radius: 14px;
+    background: var(--career-bg-strong);
+    text-align: left;
+}
+
+.career-card:hover {
+    border-color: var(--career);
+}
+
+.career-card-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.career-card small {
+    color: var(--career-muted);
+}
+
+.career-card-match {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.career-card-match em {
+    font-style: normal;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.career-modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.career-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px;
+    border: 2px solid var(--career-line);
+    border-radius: 12px;
+    background: var(--career-bg-strong);
+    text-align: left;
+}
+
+.career-mode small {
+    color: var(--career-muted);
+}
+
+.career-mode.is-selected {
+    border-color: var(--career-accent);
+}
+
+/* Pet */
+
+.career-pet-card {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 14px;
+    border-radius: 16px;
+    background: var(--career-bg-strong);
+}
+
+.career-pet-card > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.career-pet-card small {
+    color: var(--career-muted);
+}
+
+.career-pet-portrait {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--pet);
+    font-size: 32px;
+    font-weight: 800;
+    box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.18);
+}
+
+.career-affinity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+/* Roadmap */
+
+.career-stage {
+    margin: 14px 0;
+    padding: 14px;
+    border-radius: 14px;
+    background: var(--career-bg-strong);
+    border: 1px solid var(--career-line);
+}
+
+.career-stage.is-locked {
+    opacity: 0.6;
+}
+
+.career-stage.is-cleared {
+    border-color: var(--career-good);
+}
+
+.career-stage header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.career-stage header strong {
+    flex: 1 1 100%;
+    font-size: 16px;
+}
+
+.career-stage-index {
+    color: var(--career-accent);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.career-stage p small {
+    color: var(--career-accent);
+    font-weight: 700;
+}
+
+.career-tasks li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 8px;
+    padding: 8px 0;
+    border-top: 1px solid var(--career-line);
+}
+
+.career-tasks li .career-bar {
+    grid-column: 1 / -1;
+}
+
+.career-tasks label {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.career-tasks input {
+    margin-top: 4px;
+    accent-color: var(--career-good);
+}
+
+.career-stage footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--career-line);
+}
+
+/* Logs */
+
+.career-logs li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--career-line);
+}
+
+.career-logs time,
+.career-logs small {
+    color: var(--career-muted);
+    font-size: 12px;
+}
+
+/* Gym */
+
+.career-questions li {
+    margin: 14px 0;
+}
+
+.career-questions textarea {
+    margin-top: 6px;
+}
+
+.career-result {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.career-result strong {
+    font-size: 22px;
+}
+
+.career-result.is-passed {
+    background: rgba(125, 216, 122, 0.2);
+    border: 1px solid var(--career-good);
+}
+
+.career-result.is-failed {
+    background: rgba(255, 182, 72, 0.15);
+    border: 1px solid var(--career-warn);
+}
+
+/* NPC dialogue */
+
+.career-dialogue {
+    position: absolute;
+    left: 50%;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    width: calc(100% - 32px);
+    max-width: 680px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: var(--career-bg);
+    border: 1px solid var(--career-line);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, 140%);
+    transition: transform 0.25s ease, visibility 0s linear 0.25s;
+    visibility: hidden;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.career-dialogue.is-open {
+    transform: translate(-50%, 0);
+    visibility: visible;
+    pointer-events: auto;
+    transition: transform 0.25s ease;
+}
+
+.career-dialogue-speaker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.career-dialogue-speaker strong {
+    flex: 1;
+}
+
+.career-dialogue-line {
+    margin: 12px 0;
+    font-size: 16px;
+}
+
+.career-dialogue-choices {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 8px;
+}
+
+.career-dialogue-choices button {
+    padding: 10px 12px;
+    border: 1px solid var(--career-line);
+    border-radius: 10px;
+    background: var(--career-bg-strong);
+    text-align: left;
+}
+
+.career-dialogue-choices button:hover {
+    border-color: var(--career-accent);
+}
+
+/* Busy */
+
+.career-busy {
+    position: absolute;
+    top: calc(14px + env(safe-area-inset-top));
+    left: 50%;
+    transform: translate(-50%, -200%);
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: rgba(138, 108, 255, 0.95);
+    font-weight: 700;
+    transition: transform 0.2s ease;
+}
+
+.career-ui.is-busy .career-busy {
+    transform: translate(-50%, 0);
+}
+
+.career-ui.is-busy .career-panel-body button,
+.career-ui.is-busy .career-dialogue-choices button {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Hidden during the intro, like the rest of the game UI */
+
+html:not(.is-started) .career-ui {
+    display: none;
+}
+
+/* Phone: rail at the bottom, panel full width */
+
+@media (max-width: 720px) {
+    .career-ui {
+        --career-gutter: 10px;
+        font-size: 14px;
+    }
+
+    .career-hud {
+        width: calc(100% - 120px);
+        max-width: 260px;
+    }
+
+    .career-rail {
+        top: auto;
+        bottom: calc(10px + env(safe-area-inset-bottom));
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        max-width: calc(100% - 20px);
+        overflow-x: auto;
+    }
+
+    .career-rail-item {
+        width: 48px;
+        font-size: 10px;
+    }
+
+    .career-panel {
+        max-width: none;
+        border-left: 0;
+    }
+
+    .career-dialogue {
+        bottom: calc(86px + env(safe-area-inset-bottom));
+    }
+
+    .career-modes {
+        grid-template-columns: 1fr;
+    }
+}
