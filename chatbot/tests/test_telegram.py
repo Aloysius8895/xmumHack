@@ -2,6 +2,7 @@
 channel="telegram" and from="tg:<id>"), button callbacks, whitelist, duplicate
 updates, and non-text messages. The Telegram Bot API is mocked via httpx.post."""
 import itertools
+import logging
 
 import httpx
 import pytest
@@ -160,3 +161,23 @@ def test_group_chat_messages_are_ignored(tg_client, fake_ai, monkeypatch):
     post_update(tg_client, _update(msg))
     assert sent == []
     assert fake_ai == []
+
+
+def test_telegram_requests_do_not_leak_bot_token_in_logs(tg_client, monkeypatch, caplog):
+    """httpx logs "HTTP Request: <method> <url> ..." at INFO, and the Telegram API
+    url embeds the bot token. app/main.py quiets the httpx/httpcore loggers to
+    WARNING; this test goes through a real httpx.Client (via MockTransport, not
+    a bypassed httpx.post) so that httpx's actual request-logging code path runs,
+    to prove the suppression actually holds rather than just not being exercised."""
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"ok": True, "result": {}})
+
+    def fake_post(url, json=None, headers=None, timeout=None, **kw):
+        with httpx.Client(transport=httpx.MockTransport(handler)) as c:
+            return c.post(url, json=json, timeout=timeout)
+    monkeypatch.setattr(httpx, "post", fake_post)
+
+    with caplog.at_level(logging.DEBUG):
+        post_update(tg_client, _update(_text_message("/start")))
+
+    assert TOKEN not in caplog.text

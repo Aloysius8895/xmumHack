@@ -12,7 +12,7 @@ from typing import Optional
 
 from . import ai, career_api, db
 
-log = logging.getLogger("whatsapp")
+log = logging.getLogger("chatbot")
 
 DELTA_MIN, DELTA_MAX = -10, 15
 

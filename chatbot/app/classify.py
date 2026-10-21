@@ -10,7 +10,7 @@ import re
 
 from . import ai
 
-log = logging.getLogger("whatsapp")
+log = logging.getLogger("chatbot")
 
 TYPES = {"report", "chat", "uncertain"}
 LANGS = {"zh", "en", "ms"}

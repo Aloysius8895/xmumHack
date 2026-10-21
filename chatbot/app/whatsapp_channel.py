@@ -5,7 +5,7 @@ import logging
 from . import db, handlers
 from . import whatsapp_api as wa
 
-log = logging.getLogger("whatsapp")
+log = logging.getLogger("chatbot")
 
 CHANNEL = handlers.Channel(name="whatsapp", send_text=wa.send_text, send_buttons=wa.send_buttons)
 

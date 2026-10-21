@@ -9,7 +9,7 @@ import logging
 from . import db, handlers
 from . import telegram_api as tg
 
-log = logging.getLogger("whatsapp")
+log = logging.getLogger("chatbot")
 
 WELCOME = (
     "你好！我是 CareerSphere 小助手 👋\n"

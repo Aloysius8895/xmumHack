@@ -12,7 +12,7 @@ from typing import Optional
 from . import digest
 from .db import MYT
 
-log = logging.getLogger("whatsapp")
+log = logging.getLogger("chatbot")
 
 RUN_AT = time(23, 30)
 

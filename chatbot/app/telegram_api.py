@@ -7,7 +7,7 @@ import httpx
 
 from .config import get_settings
 
-log = logging.getLogger("whatsapp")
+log = logging.getLogger("chatbot")
 TIMEOUT = 15.0
 
 
@@ -24,7 +24,10 @@ def _post(method: str, payload: dict) -> Optional[dict]:
             return None
         return r.json()
     except httpx.HTTPError as e:
-        log.error("Telegram %s error: %s", method, e)
+        # Some httpx exceptions (e.g. ConnectError) embed the request URL - and
+        # this URL contains the bot token - in str(e)/repr(e), so log only the
+        # exception type.
+        log.error("Telegram %s error: %s", method, type(e).__name__)
         return None
 
 

@@ -9,7 +9,7 @@ from typing import Callable, Optional
 from . import ai, career_api, classify, db
 from .config import get_settings
 
-log = logging.getLogger("whatsapp")
+log = logging.getLogger("chatbot")
 
 RESET_WORDS = {"重新开始", "清除对话", "reset", "/reset", "restart"}
 FALLBACK = "抱歉，我现在有点忙不过来 🙏 请稍后再发一次。\nSorry, I can't reply right now. Please try again in a moment."

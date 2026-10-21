@@ -10,7 +10,7 @@ import httpx
 
 from .config import get_settings
 
-log = logging.getLogger("whatsapp")
+log = logging.getLogger("chatbot")
 
 TIMEOUT = 15.0
 

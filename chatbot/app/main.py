@@ -18,7 +18,11 @@ from . import whatsapp_api as wa
 from .config import get_settings
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-log = logging.getLogger("whatsapp")
+# httpx/httpcore log each request at INFO, including the full URL - Telegram's API
+# URLs embed the bot token (https://api.telegram.org/bot<token>/...), so keep them quiet.
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+log = logging.getLogger("chatbot")
 
 
 @asynccontextmanager
