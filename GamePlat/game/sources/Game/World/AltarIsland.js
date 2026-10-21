@@ -23,6 +23,13 @@ export const ALTAR_ISLAND = Object.freeze({
 // Sea colours of the map pictures next to their east edge, shown past the original terrain
 export const MAP_SEA_COLORS = Object.freeze({ day: '#334156', night: '#0c2059' })
 
+// The picture's sea gets lighter from north to south, so a flat colour leaves a seam at its east edge
+// Sampled down the last columns of ui/map/map-*.webp, laid over the picture's height (repeat-x)
+export const MAP_SEA_GRADIENTS = Object.freeze({
+    day: 'linear-gradient(#253041 0%, #2b3647 12.5%, #313c4c 25%, #343f52 37.5%, #384255 50%, #3a4458 62.5%, #3a4659 75%, #3c475a 87.5%, #3b4659 100%)',
+    night: 'linear-gradient(#061748 0%, #071b4e 12.5%, #0b1d55 25%, #0b1f5b 37.5%, #0e225d 50%, #0c2461 62.5%, #0e2461 75%, #0f2463 87.5%, #0e2461 100%)',
+})
+
 /**
  * Island picture for the minimap and the M map, positioned in percent of the cropped map (MAP_BOUNDS)
  */

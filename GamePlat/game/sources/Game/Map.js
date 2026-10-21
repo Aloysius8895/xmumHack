@@ -1,7 +1,7 @@
 import { clamp } from 'three/src/math/MathUtils.js'
 import { Game } from './Game.js'
 import { MAP_WIDTH, MAP_HEIGHT, worldToCroppedMap } from './MapBounds.js'
-import { createAltarIslandMapElement, MAP_SEA_COLORS } from './World/AltarIsland.js'
+import { createAltarIslandMapElement, MAP_SEA_COLORS, MAP_SEA_GRADIENTS } from './World/AltarIsland.js'
 
 export class Map
 {
@@ -118,6 +118,14 @@ export class Map
                 left: `${-(b.minX + size / 2) / MAP_WIDTH * 100}%`, top: `${-(b.minZ + size / 2) / MAP_HEIGHT * 100}%`
             })
 
+            // Sea past the original map picture, matching its east edge from north to south
+            this.texture.seaElement = document.createElement('div')
+            Object.assign(this.texture.seaElement.style, {
+                position: 'absolute', left: '0', width: '100%', pointerEvents: 'none',
+                top: this.texture.element.style.top, height: this.texture.element.style.height
+            })
+            this.texture.element.before(this.texture.seaElement)
+
             // Altar island, past the original map picture
             this.texture.islandElement = createAltarIslandMapElement(b)
             this.texture.element.after(this.texture.islandElement)
@@ -143,6 +151,7 @@ export class Map
                 {
                     const night = url.includes('night')
                     this.element.style.backgroundColor = MAP_SEA_COLORS[night ? 'night' : 'day']
+                    this.texture.seaElement.style.backgroundImage = MAP_SEA_GRADIENTS[night ? 'night' : 'day']
                     this.texture.islandElement.setNight(night)
                 }
             }
