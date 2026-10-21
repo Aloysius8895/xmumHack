@@ -6,18 +6,10 @@ is answered directly (not routed through handlers) so we can show the user
 their numeric Telegram id for the allowlist."""
 import logging
 
-from . import db, handlers
+from . import db, handlers, messages
 from . import telegram_api as tg
 
 log = logging.getLogger("chatbot")
-
-WELCOME = (
-    "你好！我是 CareerSphere 小助手 👋\n"
-    "Hi, I'm the CareerSphere companion bot.\n\n"
-    "你的 Telegram user id 是 / Your Telegram user id is: {uid}\n"
-    "（请把这个 id 发给管理员加进白名单，才能记录学习进度 / "
-    "send this id to the admin to get whitelisted for progress logging）"
-)
 
 
 def _uid(user_id: int) -> str:
@@ -56,11 +48,11 @@ def handle_update(update: dict) -> None:
 
     text = message.get("text")
     if text is None:
-        tg.send_message(chat["id"], handlers.NON_TEXT)
+        tg.send_message(chat["id"], messages.t("non_text"))
         return
 
     if text.strip() == "/start":
-        tg.send_message(chat["id"], WELCOME.format(uid=user_id))
+        tg.send_message(chat["id"], messages.t("welcome", uid=user_id))
         return
 
     handlers.handle_text(CHANNEL, _uid(user_id), str(user_id), text)

@@ -35,7 +35,7 @@ def test_auth_style_errors_show_generic_misconfig_message(client, monkeypatch, c
         raise career_api.CareerAPIError(code)
     monkeypatch.setattr(career_api, "chat", boom)
     reply = send(client, "练了一下")[0]
-    assert "设定" in reply
+    assert "misconfigured" in reply.lower()
     assert db.reports_for_date(db.today_myt()) == []
 
 
@@ -47,7 +47,7 @@ def test_transient_errors_show_retry_message_and_are_not_logged(client, monkeypa
         raise career_api.CareerAPIError(code)
     monkeypatch.setattr(career_api, "chat", boom)
     reply = send(client, "练了一下")[0]
-    assert "暂时失败" in reply
+    assert "couldn't save" in reply.lower()
     assert db.reports_for_date(db.today_myt()) == []
 
 

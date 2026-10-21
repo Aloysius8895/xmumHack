@@ -2,7 +2,7 @@
 Cloud API. All routing logic lives in app/handlers.py."""
 import logging
 
-from . import db, handlers
+from . import db, handlers, messages
 from . import whatsapp_api as wa
 
 log = logging.getLogger("chatbot")
@@ -34,7 +34,7 @@ def handle_message(msg: dict) -> None:
         return
 
     if msg.get("type") != "text":
-        wa.send_text(wa_id, handlers.NON_TEXT)
+        wa.send_text(wa_id, messages.t("non_text"))
         return
 
     handlers.handle_text(CHANNEL, wa_id, wa_id, msg["text"].get("body", ""))

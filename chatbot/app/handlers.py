@@ -6,20 +6,12 @@ import logging
 from dataclasses import dataclass
 from typing import Callable, Optional
 
-from . import ai, career_api, classify, db
+from . import ai, career_api, classify, db, messages
 from .config import get_settings
 
 log = logging.getLogger("chatbot")
 
 RESET_WORDS = {"重新开始", "清除对话", "reset", "/reset", "restart"}
-FALLBACK = "抱歉，我现在有点忙不过来 🙏 请稍后再发一次。\nSorry, I can't reply right now. Please try again in a moment."
-NON_TEXT = "目前只支持文字消息哦 📝\nI can only read text messages for now."
-CONFIRM_PROMPT = "要把这条记成学习记录吗？\nShould I log this as a study record?"
-NOT_LOGGED = "好的，这条没有记录 👍\nOkay, not logged."
-NO_PENDING = "这条已经处理过了，请直接发新消息 🙏\nThat one's already handled - just send a new message."
-AUTH_ERROR = "系统设定有问题，请稍后再试 🙏\nSomething's misconfigured on our end, please try again later."
-TEMP_FAIL = "记录暂时失败，请稍后再发一次 🙏\nCouldn't save that just now - please send it again in a moment."
-DEMO_NOTE = "（demo：进度记录目前只开放给测试号码 / progress logging is demo-only for test numbers）"
 _AUTH_FAIL_CODES = {"unauthorized", "service-unavailable"}
 
 
@@ -41,7 +33,7 @@ def handle_text(channel: Channel, uid: str, raw_id: str, text: str) -> None:
     if text.lower() in RESET_WORDS:
         db.clear_history(uid)
         db.pop_pending(uid)
-        channel.send_text(uid, "好的，我们重新开始 👋\nOkay, fresh start!")
+        channel.send_text(uid, messages.t("reset_reply"))
         return
 
     result = classify.classify_message(text)
@@ -51,13 +43,15 @@ def handle_text(channel: Channel, uid: str, raw_id: str, text: str) -> None:
         if _is_allowed(channel, raw_id):
             _submit_report(channel, uid, text, lang)
         else:
-            _handle_chat(channel, uid, text, extra_note=DEMO_NOTE)
+            _handle_chat(channel, uid, text, extra_note=messages.t("demo_note"))
         return
 
     if kind == "uncertain":
         if _is_allowed(channel, raw_id):
             db.set_pending(uid, text, lang)
-            channel.send_buttons(uid, CONFIRM_PROMPT, [("report_yes", "记录 Log"), ("report_no", "聊聊 Chat")])
+            channel.send_buttons(uid, messages.t("confirm_prompt"),
+                                  [("report_yes", messages.t("confirm_yes_label")),
+                                   ("report_no", messages.t("confirm_no_label"))])
         else:
             _handle_chat(channel, uid, text)
         return
@@ -70,14 +64,15 @@ def handle_button(channel: Channel, uid: str, button_id: str) -> None:
         return
     pending = db.pop_pending(uid)
     if not pending:
-        channel.send_text(uid, NO_PENDING)
+        channel.send_text(uid, messages.t("no_pending"))
         return
     if button_id == "report_yes":
         _submit_report(channel, uid, pending["text"], pending["lang"])
     else:
+        not_logged = messages.t("not_logged")
         db.add_message(uid, "user", pending["text"])
-        db.add_message(uid, "assistant", NOT_LOGGED)
-        channel.send_text(uid, NOT_LOGGED)
+        db.add_message(uid, "assistant", not_logged)
+        channel.send_text(uid, not_logged)
 
 
 def _is_allowed(channel: Channel, raw_id: str) -> bool:
@@ -91,11 +86,11 @@ def _submit_report(channel: Channel, uid: str, text: str, lang: str) -> None:
         result = career_api.chat(text, lang, uid, channel=channel.name)
     except career_api.CareerAPIError as e:
         log.error("career_api.chat failed for %s: %s", uid, e.code)
-        channel.send_text(uid, AUTH_ERROR if e.code in _AUTH_FAIL_CODES else TEMP_FAIL)
+        channel.send_text(uid, messages.t("auth_error") if e.code in _AUTH_FAIL_CODES else messages.t("temp_fail"))
         return
 
     log_entry = result.get("log")
-    reply_text = result.get("reply") or FALLBACK
+    reply_text = result.get("reply") or messages.t("fallback")
     if log_entry:
         db.save_report(uid, text, log_entry.get("summary"), log_entry.get("skillIds") or [],
                         log_entry.get("advanced") or [], log_entry.get("points"))
@@ -111,12 +106,15 @@ def _handle_chat(channel: Channel, uid: str, text: str, extra_note: Optional[str
         answer = ai.reply(history)
     except Exception:
         log.exception("AI reply failed")
-        channel.send_text(uid, FALLBACK)
+        channel.send_text(uid, messages.t("fallback"))
         return
     if not answer:
-        channel.send_text(uid, FALLBACK)
+        channel.send_text(uid, messages.t("fallback"))
         return
+    # Telegram/WhatsApp render plain text, but the model sometimes replies with
+    # Markdown anyway (despite the system prompt) - strip it before sending.
+    answer = ai.strip_markdown(answer)
     if extra_note:
-        answer = f"{answer}\n{extra_note}"
+        answer = f"{answer}\n\n{extra_note}"
     db.add_message(uid, "assistant", answer)
     channel.send_text(uid, answer)
