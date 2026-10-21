@@ -825,6 +825,46 @@ button.career-points {
     white-space: nowrap;
 }
 
+/* Skill popularity (CareerUI.skillPopularity) */
+
+.career-skill-trends {
+    margin: 6px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.career-skill-trend {
+    display: grid;
+    grid-template-columns: minmax(90px, 1.4fr) 2fr 40px minmax(70px, auto);
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 13px;
+}
+
+.career-skill-trend-share {
+    font-weight: 700;
+    text-align: right;
+}
+
+.career-skill-trend-change {
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.career-skill-trend-change.is-up {
+    color: #1F6B35;
+}
+
+.career-skill-trend-change.is-down {
+    color: #A3271A;
+}
+
+.career-skill-trend-change.is-flat {
+    opacity: 0.6;
+}
+
 /* Lists */
 
 .career-skill-list,

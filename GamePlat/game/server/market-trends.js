@@ -55,3 +55,44 @@ export function marketSnapshot(careerId, market = loadMarket())
     const trend = MARKET_TRENDS.careers[careerId]
     return trend ? { period: MARKET_TRENDS.period, ...trend, history: [], live: false } : null
 }
+
+/**
+ * Skill popularity: share of the postings asking for each skill (%), in the last SKILL_TREND_WEEKS snapshots
+ * versus the SKILL_TREND_WEEKS before, change in percentage points. careerId null = every career together.
+ * { period, previousPeriod, postings, skills: [ { id, share, change } ] most asked first } or null without live data;
+ * change is null until there is a previous window.
+ */
+export const SKILL_TREND_WEEKS = 1 // 1 = this week vs last week, 4 = last 4 weeks vs the 4 before
+
+export function skillTrend(careerId, market = loadMarket())
+{
+    const history = (market.history ?? [ market.previous, market.latest ].filter(Boolean))
+        .filter((snapshot) => careerId === null ? Object.keys(snapshot.careers ?? {}).length : snapshot.careers?.[careerId])
+    const recent = history.slice(- SKILL_TREND_WEEKS)
+    const before = history.slice(- 2 * SKILL_TREND_WEEKS, - SKILL_TREND_WEEKS)
+    if(!recent.length)
+        return null
+
+    const total = (snapshots) =>
+    {
+        const sum = { postings: 0, counts: {} }
+        for(const snapshot of snapshots)
+            for(const [ id, career ] of Object.entries(snapshot.careers))
+            {
+                if(careerId !== null && id !== careerId)
+                    continue
+                sum.postings += career.postings ?? 0
+                for(const [ skill, count ] of Object.entries(career.topSkills ?? {}))
+                    sum.counts[skill] = (sum.counts[skill] ?? 0) + count
+            }
+        return sum
+    }
+    const now = total(recent)
+    const then = before.length === SKILL_TREND_WEEKS ? total(before) : null
+    const share = (sum, skill) => sum.postings ? Math.round((sum.counts[skill] ?? 0) / sum.postings * 100) : 0
+
+    const skills = [ ...new Set([ ...Object.keys(now.counts), ...Object.keys(then?.counts ?? {}) ]) ]
+        .map((id) => ({ id, share: share(now, id), change: then?.postings ? share(now, id) - share(then, id) : null }))
+        .sort((a, b) => b.share - a.share || a.id.localeCompare(b.id))
+    return { period: recent.at(- 1).period, previousPeriod: then ? before.at(- 1).period : null, postings: now.postings, skills }
+}

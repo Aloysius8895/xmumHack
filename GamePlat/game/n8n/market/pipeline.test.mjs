@@ -81,10 +81,10 @@ test('aggregate dedupes, filters titles and counts skills', () =>
     for(const lang of [ 'zh', 'en', 'ms' ])
         assert.ok(analyst.note[lang].length <= 200)
 
-    // Only catalog skills, at most settings.topSkills
+    // Only catalog skills, every one found (settings.topSkills 0)
     for(const career of Object.values(payload.careers))
     {
-        assert.ok(Object.keys(career.topSkills).length <= DEFAULT_SETTINGS.topSkills)
+        assert.ok(Object.keys(career.topSkills).length <= Object.keys(catalog().skills).length)
         for(const skillId of Object.keys(career.topSkills))
             assert.ok(catalog().skills[skillId])
     }

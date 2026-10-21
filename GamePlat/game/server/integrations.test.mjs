@@ -87,6 +87,44 @@ test('backfilled weeks are kept but never compared', async () =>
     assert.equal(trend.change, 10)
 })
 
+test('skill popularity: share of postings per skill, change in points vs the previous week', async () =>
+{
+    await call('/api/integrations/market', { period: '2029-01-01', careers: { 'data-analyst': { postings: 20, topSkills: { sql: 10, excel: 5 } }, 'frontend-developer': { postings: 30, topSkills: { react: 15 } } } })
+    let state = game.view(store.load(), { mock: true })
+    let analyst = state.careers.find((career) => career.id === 'data-analyst').market.skills
+    assert.equal(analyst.previousPeriod, '2028-01-24', 'compared with the week pushed by the test before')
+
+    await call('/api/integrations/market', { period: '2029-01-08', careers: { 'data-analyst': { postings: 25, topSkills: { sql: 15, python: 5 } }, 'frontend-developer': { postings: 25, topSkills: { react: 15 } } } })
+    state = game.view(store.load(), { mock: true })
+    analyst = state.careers.find((career) => career.id === 'data-analyst').market.skills
+    assert.equal(analyst.period, '2029-01-08')
+    assert.equal(analyst.previousPeriod, '2029-01-01')
+    assert.equal(analyst.postings, 25)
+    assert.deepEqual(analyst.skills, [
+        { id: 'sql', share: 60, change: 10 },       // 15/25 vs 10/20
+        { id: 'python', share: 20, change: 20 },    // new this week
+        { id: 'excel', share: 0, change: - 25 },    // gone: 0 vs 5/20
+    ])
+
+    // Every career together: 50 postings each week
+    const market = state.marketSkills
+    assert.equal(market.postings, 50)
+    assert.deepEqual(market.skills.find((skill) => skill.id === 'react'), { id: 'react', share: 30, change: 0 })
+    assert.deepEqual(market.skills.find((skill) => skill.id === 'sql'), { id: 'sql', share: 30, change: 10 })
+})
+
+test('skill popularity of the first week has no change yet', async () =>
+{
+    const { skillTrend } = await import('./market-trends.js')
+    const week = { period: '2026-10-19', careers: { 'data-analyst': { postings: 15, topSkills: { 'data-visualization': 10, sql: 5 } } } }
+    assert.deepEqual(skillTrend('data-analyst', { latest: week, previous: null, history: [ week ] }), {
+        period: '2026-10-19', previousPeriod: null, postings: 15,
+        skills: [ { id: 'data-visualization', share: 67, change: null }, { id: 'sql', share: 33, change: null } ],
+    })
+    assert.equal(skillTrend('ml-engineer', { latest: week, previous: null, history: [ week ] }), null)
+    assert.equal(skillTrend(null, { latest: null, previous: null, history: [] }), null)
+})
+
 test('chat messages from the bots are filed as logs and get a reply', async () =>
 {
     const save = store.load()

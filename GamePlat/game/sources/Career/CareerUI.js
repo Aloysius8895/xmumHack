@@ -790,12 +790,39 @@ export class CareerUI
             ${notes.map((note) => `<p class="career-muted">${esc(note)}</p>`).join('')}`
     }
 
+    /**
+     * Skill popularity (server/market-trends.js skillTrend): share of the postings asking for each skill and its
+     * change in percentage points vs the previous period, most asked first
+     */
+    skillPopularity(trend, title, limit = 8)
+    {
+        if(!trend?.skills.length)
+            return ''
+
+        const rows = trend.skills.slice(0, limit).map((skill) => `
+            <li class="career-skill-trend">
+                <span class="career-skill-trend-name">${esc(this.skillName(skill.id, skill.id))}</span>
+                <span class="career-skill-trend-bar">${bar(skill.share)}</span>
+                <span class="career-skill-trend-share">${skill.share}%</span>
+                <span class="career-skill-trend-change is-${skill.change > 0 ? 'up' : skill.change < 0 ? 'down' : 'flat'}">${esc(skill.change === null ? '—' : t('careers.skillChange', { arrow: skill.change > 0 ? '↑' : skill.change < 0 ? '↓' : '→', n: Math.abs(skill.change) }))}</span>
+            </li>`).join('')
+
+        const note = trend.previousPeriod
+            ? t('careers.skillsVs', { period: periodLabel(trend.period), previous: periodLabel(trend.previousPeriod), n: trend.postings })
+            : t('careers.skillsFirst', { period: periodLabel(trend.period), n: trend.postings })
+        return `
+            <h3>${esc(title)}</h3>
+            <ul class="career-skill-trends">${rows}</ul>
+            <p class="career-muted">${esc(note)}</p>`
+    }
+
     renderCareers()
     {
         const careers = [ ...this.state.careers ].sort((a, b) => (b.affinity ?? 0) - (a.affinity ?? 0))
         return [ t('careers.title'), `
             <p>${esc(t('careers.intro'))}</p>
             ${careers[0]?.market.snapshot ? `<p class="career-muted">${esc(t(careers[0].market.snapshot.live ? (isWeek(careers[0].market.snapshot.period) ? 'careers.weekLive' : 'careers.monthLive') : 'careers.monthNote', { period: careers[0].market.snapshot.period }))}</p>` : ''}
+            ${this.skillPopularity(this.state.marketSkills, t('careers.skillsMarket'), 6)}
             <div class="career-cards">
                 ${careers.map((career) => `
                     <button class="career-card" data-action="career" data-career="${career.id}" style="--career:${career.color}">
@@ -835,6 +862,7 @@ export class CareerUI
             <p>${this.marketBadges(career)} <span class="career-tag">${esc(t('careers.pet', { name: career.pet.name }))}</span></p>
             <p class="career-muted">${esc(t('careers.effort', { range }))} · ${esc(t('careers.marketNote'))}</p>
             ${this.weeklyTrend(career)}
+            ${this.skillPopularity(career.market.skills, t('careers.skillsCareer'))}
             <h3>${esc(t('careers.requirements'))}</h3>
             <p class="career-muted career-skill-reference">${esc(t('skill.reference'))}</p>
             <ul class="career-skill-grid career-requirements" style="--skill-accent:${career.color}">${requirements}</ul>

@@ -7,7 +7,7 @@
 import { CAREERS, SKILLS, getCareer, matchCareer } from './careers.js'
 import { SKILL_DETAILS } from './skill-details.js'
 import { friendCode, leaderboard } from './friends.js'
-import { marketSnapshot } from './market-trends.js'
+import { marketSnapshot, skillTrend } from './market-trends.js'
 import { loadMarket } from './store.js'
 
 export const RULES = {
@@ -224,7 +224,7 @@ export function view(save, ai)
         name: career.name,
         summary: career.summary,
         color: career.color,
-        market: { ...career.market, snapshot: marketSnapshot(career.id, market) },
+        market: { ...career.market, snapshot: marketSnapshot(career.id, market), skills: skillTrend(career.id, market) },
         effortMonths: career.effortMonths,
         pet: career.pet,
         affinity: save.pet?.careerId === career.id ? save.pet.affinity : 0,
@@ -272,6 +272,7 @@ export function view(save, ai)
         skillDetails: SKILL_DETAILS,
         profile: save.profile,
         careers,
+        marketSkills: skillTrend(null, market),
         target: save.target,
         pet,
         roadmap,

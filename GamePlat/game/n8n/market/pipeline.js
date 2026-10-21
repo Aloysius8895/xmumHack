@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS = {
     datePosted: 'week',                    // JSearch date_posted: all | today | 3days | week | month
     numPages: 2,                           // pages per query (~10 jobs per page)
     timezone: 'Asia/Kuala_Lumpur',
-    topSkills: 8,                          // skills kept per career in the push
+    topSkills: 0,                          // skills kept per career in the push, 0 = every skill found (the skill trend compares them all)
 }
 
 /**
@@ -259,7 +259,7 @@ export function aggregate(responses, settings, catalog, now = new Date())
         const topSkills = Object.fromEntries(
             Object.entries(skillCounts)
                 .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-                .slice(0, settings.topSkills)
+                .slice(0, settings.topSkills > 0 ? settings.topSkills : undefined)
         )
         const summary = { postings: career.jobs.size, topSkills, saturated: career.saturated }
         careers[careerId] = { postings: summary.postings, topSkills, note: noteFor(summary, catalog, settings) }
