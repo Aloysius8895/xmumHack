@@ -37,17 +37,20 @@ test('skill keywords', () =>
     assert.ok(!extractSkills('JavaScript only').includes('backend-language'), 'java must not match javascript')
 })
 
-test('period is the month in Malaysia time', () =>
+test('period is the Monday of the week in Malaysia time', () =>
 {
-    assert.equal(periodOf(new Date('2026-10-31T17:00:00Z'), 'Asia/Kuala_Lumpur'), '2026-11')
-    assert.equal(periodOf(NOW, 'Asia/Kuala_Lumpur'), '2026-10')
+    assert.equal(periodOf(NOW, 'Asia/Kuala_Lumpur'), '2026-10-19')
+    assert.equal(periodOf(new Date('2026-10-19T00:00:00Z'), 'Asia/Kuala_Lumpur'), '2026-10-19', 'Monday 08:00 MYT run')
+    assert.equal(periodOf(new Date('2026-10-25T15:59:00Z'), 'Asia/Kuala_Lumpur'), '2026-10-19', 'Sunday 23:59 MYT')
+    assert.equal(periodOf(new Date('2026-10-25T16:00:00Z'), 'Asia/Kuala_Lumpur'), '2026-10-26', 'Monday 00:00 MYT, still Sunday in UTC')
+    assert.equal(periodOf(new Date('2026-11-01T00:00:00Z'), 'Asia/Kuala_Lumpur'), '2026-10-26', 'week across a month')
 })
 
 test('aggregate dedupes, filters titles and counts skills', () =>
 {
     const { payload, report } = aggregate(fixtureResponses(), DEFAULT_SETTINGS, catalog(), NOW)
 
-    assert.equal(payload.period, '2026-10')
+    assert.equal(payload.period, '2026-10-19')
     assert.equal(payload.collectedAt, NOW.toISOString())
     assert.ok(payload.source.length <= 120)
     assert.deepEqual(Object.keys(payload.careers).sort(), catalog().careers.slice().sort())
@@ -135,7 +138,7 @@ test('the generated n8n workflow runs the same pipeline', () =>
     const failing = queries.map((item, index) => ({ json: { error: { message: 'down' } }, pairedItem: { item: index } }))
     assert.throws(() => runCodeNode(code('Aggregate skills'), { input: failing, nodes: { 'Build queries': queries } }), /Every JSearch query failed/)
 
-    const [ summary ] = runCodeNode(code('Run summary'), { input: [ { json: { period: '2026-10', careers: [ 'data-analyst' ] } } ], nodes: { 'Aggregate skills': [ aggregated ] } })
+    const [ summary ] = runCodeNode(code('Run summary'), { input: [ { json: { period: '2026-10-19', careers: [ 'data-analyst' ] } } ], nodes: { 'Aggregate skills': [ aggregated ] } })
     assert.equal(summary.json.postings['data-analyst'], 3)
 })
 
@@ -161,9 +164,9 @@ test('the game server accepts the push and shows it in the careers panel', async
     assert.equal(response.statusCode, 200, body)
     assert.deepEqual(JSON.parse(body).careers.sort(), catalog().careers.slice().sort())
 
-    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.monthly
+    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.snapshot
     assert.equal(trend.live, true)
-    assert.equal(trend.period, '2026-10')
+    assert.equal(trend.period, '2026-10-19')
     assert.equal(trend.postings, 3)
     assert.equal(trend.topSkills.sql, 3)
 })

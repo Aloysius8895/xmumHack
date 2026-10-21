@@ -82,6 +82,20 @@ function list(items)
     return items.join(getLang() === 'zh' ? '、' : ', ')
 }
 
+// Market periods: a week (its Monday, YYYY-MM-DD) from the job market workflow, or a month (YYYY-MM) of the reference values
+function isWeek(period)
+{
+    return /^\d{4}-\d{2}-\d{2}$/.test(String(period))
+}
+
+function periodLabel(period)
+{
+    const locale = getLang() === 'zh' ? 'zh-CN' : getLang()
+    return isWeek(period)
+        ? new Date(`${period}T00:00:00`).toLocaleString(locale, { month: 'short', day: 'numeric' })
+        : new Date(`${period}-01T00:00:00`).toLocaleString(locale, { month: 'short' })
+}
+
 function bar(percent, extraClass = '')
 {
     return `<span class="career-bar ${extraClass}"><span style="width:${Math.max(0, Math.min(100, percent))}%"></span></span>`
@@ -724,15 +738,40 @@ export class CareerUI
 
     marketBadges(career)
     {
-        const monthly = career.market.monthly
-        const trend = monthly
-            ? `<span class="career-tag is-trend is-${monthly.change > 0 ? 'up' : monthly.change < 0 ? 'down' : 'flat'}" title="${esc([ monthly.note ? pick(monthly.note) : '', monthly.postings !== undefined && monthly.postings !== null ? t('careers.postings', { n: monthly.postings }) : '' ].filter(Boolean).join(' · '))}">${esc(t('careers.monthTrend', {
-                month: new Date(`${monthly.period}-01T00:00:00`).toLocaleString(getLang() === 'zh' ? 'zh-CN' : getLang(), { month: 'short' }),
-                arrow: monthly.change > 0 ? '↑' : monthly.change < 0 ? '↓' : '→',
-                change: `${monthly.change > 0 ? '+' : ''}${monthly.change}`,
+        const snapshot = career.market.snapshot
+        const trend = snapshot
+            ? `<span class="career-tag is-trend is-${snapshot.change > 0 ? 'up' : snapshot.change < 0 ? 'down' : 'flat'}" title="${esc([ snapshot.note ? pick(snapshot.note) : '', snapshot.postings !== undefined && snapshot.postings !== null ? t('careers.postings', { n: snapshot.postings }) : '' ].filter(Boolean).join(' · '))}">${esc(t(isWeek(snapshot.period) ? 'careers.weekTrend' : 'careers.monthTrend', {
+                month: periodLabel(snapshot.period),
+                week: periodLabel(snapshot.period),
+                arrow: snapshot.change > 0 ? '↑' : snapshot.change < 0 ? '↓' : '→',
+                change: `${snapshot.change > 0 ? '+' : ''}${snapshot.change}`,
             }))}</span>`
             : ''
         return `<span class="career-tag">${esc(t('careers.heat', { p: career.market.heat }))}</span><span class="career-tag">${esc(t(`careers.trend.${career.market.trend}`))}</span>${trend}`
+    }
+
+    /**
+     * Postings per week of the live snapshots (server/market-trends.js), one bar per week
+     */
+    weeklyTrend(career)
+    {
+        const history = career.market.snapshot?.history ?? []
+        if(!history.length)
+            return ''
+
+        const max = Math.max(1, ...history.map((point) => point.postings ?? 0))
+        const bars = history.map((point) => `
+            <li class="career-week" title="${esc(t('careers.postings', { n: point.postings ?? 0 }))}">
+                <span class="career-week-value">${point.postings ?? 0}</span>
+                <span class="career-week-bar"><span style="height:${Math.round((point.postings ?? 0) / max * 100)}%"></span></span>
+                <span class="career-week-change is-${point.change > 0 ? 'up' : point.change < 0 ? 'down' : 'flat'}">${point.change > 0 ? '+' : ''}${point.change}%</span>
+                <span class="career-week-label">${esc(periodLabel(point.period))}</span>
+            </li>`).join('')
+
+        return `
+            <h3>${esc(t('careers.weekly'))}</h3>
+            <ol class="career-weeks" style="--career:${career.color}" aria-label="${esc(t('careers.weekly'))}">${bars}</ol>
+            <p class="career-muted">${esc(t(history.length === 1 ? 'careers.weeklyFirst' : 'careers.weeklyNote'))}</p>`
     }
 
     renderCareers()
@@ -740,7 +779,7 @@ export class CareerUI
         const careers = [ ...this.state.careers ].sort((a, b) => (b.affinity ?? 0) - (a.affinity ?? 0))
         return [ t('careers.title'), `
             <p>${esc(t('careers.intro'))}</p>
-            ${careers[0]?.market.monthly ? `<p class="career-muted">${esc(t(careers[0].market.monthly.live ? 'careers.monthLive' : 'careers.monthNote', { period: careers[0].market.monthly.period }))}</p>` : ''}
+            ${careers[0]?.market.snapshot ? `<p class="career-muted">${esc(t(careers[0].market.snapshot.live ? (isWeek(careers[0].market.snapshot.period) ? 'careers.weekLive' : 'careers.monthLive') : 'careers.monthNote', { period: careers[0].market.snapshot.period }))}</p>` : ''}
             <div class="career-cards">
                 ${careers.map((career) => `
                     <button class="career-card" data-action="career" data-career="${career.id}" style="--career:${career.color}">
@@ -779,6 +818,7 @@ export class CareerUI
             <p>${esc(pick(career.summary))}</p>
             <p>${this.marketBadges(career)} <span class="career-tag">${esc(t('careers.pet', { name: career.pet.name }))}</span></p>
             <p class="career-muted">${esc(t('careers.effort', { range }))} · ${esc(t('careers.marketNote'))}</p>
+            ${this.weeklyTrend(career)}
             <h3>${esc(t('careers.requirements'))}</h3>
             <p class="career-muted career-skill-reference">${esc(t('skill.reference'))}</p>
             <ul class="career-skill-grid career-requirements" style="--skill-accent:${career.color}">${requirements}</ul>

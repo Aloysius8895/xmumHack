@@ -118,7 +118,7 @@ export function save(data)
 
 /**
  * Market snapshots pushed by the job market workflow (server/integrations.js), shared by every player
- * { latest: { period, source, collectedAt, careers }, previous: same | null }
+ * { latest: { period, source, collectedAt, careers }, previous: same | null, history: [ same, ... ] oldest first, ends with latest }
  */
 const MARKET_FILE = path.join(DIRECTORY, 'market.json')
 
@@ -130,7 +130,7 @@ export function loadMarket()
     }
     catch
     {
-        return { latest: null, previous: null }
+        return { latest: null, previous: null, history: [] }
     }
 }
 

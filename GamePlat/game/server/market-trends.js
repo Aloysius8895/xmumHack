@@ -36,12 +36,21 @@ export const MARKET_TRENDS = {
     },
 }
 
-export function monthlyTrend(careerId, market = loadMarket())
+/**
+ * Latest market snapshot of a career for the careers panel: the live one pushed by the workflow, with its weekly
+ * history ([ { period, postings, change } ] oldest first), or the reference values above (live: false, no history)
+ */
+export function marketSnapshot(careerId, market = loadMarket())
 {
     const live = market.latest?.careers?.[careerId]
     if(live)
-        return { period: market.latest.period, change: live.change, note: live.note, postings: live.postings, topSkills: live.topSkills, live: true }
+    {
+        const history = (market.history ?? [ market.previous, market.latest ].filter(Boolean))
+            .filter((snapshot) => snapshot.careers?.[careerId])
+            .map((snapshot) => ({ period: snapshot.period, postings: snapshot.careers[careerId].postings, change: snapshot.careers[careerId].change }))
+        return { period: market.latest.period, change: live.change, note: live.note, postings: live.postings, topSkills: live.topSkills, history, live: true }
+    }
 
     const trend = MARKET_TRENDS.careers[careerId]
-    return trend ? { period: MARKET_TRENDS.period, ...trend, live: false } : null
+    return trend ? { period: MARKET_TRENDS.period, ...trend, history: [], live: false } : null
 }

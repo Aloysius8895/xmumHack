@@ -39,7 +39,7 @@ test('market snapshots update the careers trend, change computed from postings',
     result = await call('/api/integrations/market', { period: '2026-11', careers: { 'data-analyst': { postings: 1100, note: 'More BI roles', topSkills: { sql: 700, unknown: 3 } } } })
     assert.equal(result.status, 200)
 
-    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.monthly
+    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.snapshot
     assert.equal(trend.live, true)
     assert.equal(trend.period, '2026-11')
     assert.equal(trend.change, 10)
@@ -47,6 +47,32 @@ test('market snapshots update the careers trend, change computed from postings',
     assert.deepEqual(trend.topSkills, { sql: 700 })
 
     assert.equal((await call('/api/integrations/market', { period: 'October', careers: {} })).status, 400)
+})
+
+test('weekly snapshots are kept as history, the same week is a correction', async () =>
+{
+    // Earlier monthly snapshots (previous test) are migrated into the history and sort before the weeks
+    for(const [ period, postings ] of [ [ '2026-12-07', 20 ], [ '2026-12-21', 30 ], [ '2026-12-14', 25 ], [ '2026-12-21', 24 ] ])
+        assert.equal((await call('/api/integrations/market', { period, careers: { 'data-analyst': { postings } } })).status, 200)
+
+    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.snapshot
+    assert.equal(trend.period, '2026-12-21')
+    assert.equal(trend.postings, 24, 'second push of the week replaced the first')
+    assert.deepEqual(trend.history.map((point) => point.period), [ '2026-10', '2026-11', '2026-12-07', '2026-12-14', '2026-12-21' ])
+    assert.deepEqual(trend.history.slice(2).map((point) => point.postings), [ 20, 25, 24 ])
+    assert.equal(trend.history.at(- 2).change, 25, 'week pushed late compares with the week before it: 25 vs 20')
+    assert.equal(trend.change, - 4, '24 vs 25 of the week before')
+
+    // Only the last 26 periods are kept
+    for(let week = 0; week < 30; week++)
+    {
+        const day = new Date(Date.UTC(2027, 0, 4 + week * 7)).toISOString().slice(0, 10)
+        await call('/api/integrations/market', { period: day, careers: { 'data-analyst': { postings: week } } })
+    }
+    const market = store.loadMarket()
+    assert.equal(market.history.length, 26)
+    assert.equal(market.latest.period, market.history.at(- 1).period)
+    assert.equal(market.previous.period, market.history.at(- 2).period)
 })
 
 test('chat messages from the bots are filed as logs and get a reply', async () =>

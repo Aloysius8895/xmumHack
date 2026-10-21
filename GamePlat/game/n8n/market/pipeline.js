@@ -147,14 +147,16 @@ export function extractSkills(text)
 }
 
 /**
- * Month of the collection in the given time zone, YYYY-MM (the careers panel shows a monthly trend).
- * Weekly runs inside a month replace that month's snapshot, the server compares with the previous month.
+ * Week of the collection: its Monday in the given time zone, YYYY-MM-DD (the careers panel shows a weekly trend).
+ * Runs inside the same week replace that week's snapshot, the server keeps one snapshot per week as history.
  */
 export function periodOf(now, timezone)
 {
-    const parts = new Intl.DateTimeFormat('en-CA', { timeZone: timezone, year: 'numeric', month: '2-digit' }).formatToParts(now)
-    const get = (type) => parts.find((part) => part.type === type).value
-    return `${get('year')}-${get('month')}`
+    const parts = new Intl.DateTimeFormat('en-CA', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now)
+    const get = (type) => Number(parts.find((part) => part.type === type).value)
+    const day = new Date(Date.UTC(get('year'), get('month') - 1, get('day')))
+    day.setUTCDate(day.getUTCDate() - (day.getUTCDay() + 6) % 7)
+    return day.toISOString().slice(0, 10)
 }
 
 function windowLabel(datePosted)

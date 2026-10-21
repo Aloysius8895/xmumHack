@@ -753,6 +753,70 @@ button.career-points {
     color: var(--text, #2A1F6E);
 }
 
+/* Weekly postings chart of a career (CareerUI.weeklyTrend) */
+
+.career-weeks {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    margin: 8px 0 4px;
+    padding: 0 0 4px;
+    list-style: none;
+    overflow-x: auto;
+}
+
+.career-week {
+    display: flex;
+    flex: 0 0 52px;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    cursor: help;
+}
+
+.career-week-value {
+    font-weight: 700;
+}
+
+.career-week-bar {
+    display: flex;
+    align-items: flex-end;
+    width: 26px;
+    height: 72px;
+    border-radius: 6px;
+    background: var(--face-soft, #EDE6FF);
+    overflow: hidden;
+}
+
+.career-week-bar > span {
+    width: 100%;
+    min-height: 2px;
+    border-radius: 6px 6px 0 0;
+    background: var(--career, #7a5cff);
+}
+
+.career-week-change {
+    font-weight: 700;
+}
+
+.career-week-change.is-up {
+    color: #1F6B35;
+}
+
+.career-week-change.is-down {
+    color: #A3271A;
+}
+
+.career-week-change.is-flat {
+    opacity: 0.6;
+}
+
+.career-week-label {
+    opacity: 0.7;
+    white-space: nowrap;
+}
+
 /* Lists */
 
 .career-skill-list,

@@ -16,6 +16,7 @@ import * as store from './store.js'
 
 export const CHANNELS = [ 'whatsapp', 'telegram' ]
 const MAX_DIGESTS = 60
+const MARKET_HISTORY = 26 // snapshots kept, half a year of weekly runs
 
 export class IntegrationError extends Error
 {
@@ -46,7 +47,7 @@ export function authorize(request)
 /**
  * Market snapshot
  * body: {
- *   period: '2026-10',                       // month (YYYY-MM) or day (YYYY-MM-DD) of the collection
+ *   period: '2026-10-19',                    // week (its Monday, YYYY-MM-DD, what the n8n workflow sends) or month (YYYY-MM)
  *   source: 'linkedin+indeed',               // free text, shown nowhere but kept for traceability
  *   collectedAt: '2026-10-21T08:00:00Z',     // optional
  *   careers: {
@@ -55,6 +56,7 @@ export function authorize(request)
  *   }
  * }
  * change (% vs the previous period) is computed from postings when it isn't given.
+ * Every period is kept as history (the last MARKET_HISTORY), the careers panel draws it as the weekly trend.
  */
 export function receiveMarket(body)
 {
@@ -66,8 +68,9 @@ export function receiveMarket(body)
 
     const known = new Set(CAREERS.map((career) => career.id))
     const market = store.loadMarket()
-    // A new period moves the current snapshot to "previous", the same period is a correction
-    const previous = market.latest && market.latest.period !== period ? market.latest : market.previous
+    // One snapshot per period, oldest first: a new period is appended, the same period is a correction
+    const history = (market.history ?? [ market.previous, market.latest ].filter(Boolean)).filter((snapshot) => snapshot.period !== period)
+    const previous = history.filter((snapshot) => snapshot.period < period).at(- 1) ?? null
 
     const careers = {}
     for(const [ id, value ] of Object.entries(body.careers))
@@ -93,8 +96,11 @@ export function receiveMarket(body)
     if(!Object.keys(careers).length)
         throw new IntegrationError(400, 'no-known-career')
 
-    const latest = { period, source: String(body.source ?? '').slice(0, 120), collectedAt: String(body.collectedAt ?? new Date().toISOString()), receivedAt: new Date().toISOString(), careers }
-    store.saveMarket({ latest, previous })
+    const snapshot = { period, source: String(body.source ?? '').slice(0, 120), collectedAt: String(body.collectedAt ?? new Date().toISOString()), receivedAt: new Date().toISOString(), careers }
+    history.push(snapshot)
+    history.sort((a, b) => a.period.localeCompare(b.period))
+    history.splice(0, Math.max(0, history.length - MARKET_HISTORY))
+    store.saveMarket({ latest: history.at(- 1), previous: history.at(- 2) ?? null, history })
     return { period, careers: Object.keys(careers) }
 }
 

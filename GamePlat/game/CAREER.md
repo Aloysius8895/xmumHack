@@ -92,13 +92,13 @@ animation/pets/build.py     用 Blender 生成 6 只职业宠物 → static/pets
 
 ### 1. 招聘市场数据：`POST /api/integrations/market`
 
-用工具（n8n、Apify、自写爬虫等）从 LinkedIn、Indeed 等招聘网站抓取职位后，按职业汇总推送过来。「探索职业」里的本月趋势会改用这份数据（标明来自招聘网站）；还没推送过时，用 `server/market-trends.js` 里的参考值。
+用工具（n8n、Apify、自写爬虫等）从 LinkedIn、Indeed 等招聘网站抓取职位后，按职业汇总推送过来。「探索职业」里的趋势标签和每周走势图会改用这份数据（标明来自招聘网站）；还没推送过时，用 `server/market-trends.js` 里的参考值。
 
 ```json
 {
-  "period": "2026-11",
+  "period": "2026-11-02",
   "source": "linkedin+indeed",
-  "collectedAt": "2026-11-01T08:00:00Z",
+  "collectedAt": "2026-11-02T00:00:00Z",
   "careers": {
     "data-analyst": { "postings": 1100, "note": { "zh": "BI 岗位增加", "en": "More BI roles", "ms": "Lebih banyak jawatan BI" }, "topSkills": { "sql": 700, "python": 520 } },
     "ml-engineer": { "postings": 430, "change": 6 }
@@ -107,7 +107,8 @@ animation/pets/build.py     用 Blender 生成 6 只职业宠物 → static/pets
 ```
 
 - `careers` 的键是 `server/careers.js` 里的职业 id，`topSkills` 的键是 `SKILLS` 里的技能 id，未知的会被忽略。
-- `change`（较上一期的 %）可以不填：新的 `period` 会把上一份数据存为上一期，再用职位数算出变化。同一个 `period` 再推送会覆盖（用来修正）。
+- `period` 是那一周的星期一（`YYYY-MM-DD`，n8n 工作流用这个），也接受月份 `YYYY-MM`。每个 `period` 存一份，最多保留 26 份作为历史；同一个 `period` 再推送会覆盖（用来修正）。
+- `change`（较上一期的 %）可以不填：会用上一期的职位数算出变化。
 - 数据存在 `server/data/market.json`，所有玩家共用。
 - 现成的 n8n 工作流（JSearch → 技能关键词统计 → 本接口）在 `n8n/market/`，设置步骤见那里的 README。
 
