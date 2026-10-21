@@ -1,6 +1,8 @@
 import * as THREE from 'three/webgpu'
 import { Game } from '../Game.js'
 import { Events } from '../Events.js'
+import { CharacterRecovery } from './CharacterRecovery.js'
+import { CharacterDiagnostics } from './CharacterDiagnostics.js'
 
 /**
  * Walking character body replacing PhysicsVehicle
@@ -53,17 +55,21 @@ export class PhysicsCharacter
 
         // Character state
         this.grounded = false
-        this.lastGroundedTime = 0
+        this.lastGroundedTime = - Infinity
         this.jumpTime = - Infinity
         this.jumping = false
         this.crouching = false
         this.facing = 0 // Angle around Y, 0 = facing +X like the vehicle
+        this.motionTime = 0
 
-        // Knocked by an explosion: 'none' > 'air' (flying, no control) > 'down' (on the floor until VisualCharacter calls standUp)
+        // 'none' > 'air' > 'down'; physics owns the recovery deadline, animations may finish it earlier.
         this.knockState = 'none'
         this.knockLandTime = 0
         this.knockLaunch = { horizontal: 1.6, vertical: 2.2, minVertical: 6 }
-        this.knockMaxDownDuration = 8 // Safety if the get up animation never reports back
+        this.knockRecoveryDuration = 4.4 // Simulation seconds; physics can recover without an animation callback.
+        this.knockDownTime = 0
+        this.knockSettleTime = 0
+        this.knockBlockedTime = 0
 
         this.setChassis()
         this.setWheels()
@@ -71,6 +77,9 @@ export class PhysicsCharacter
         this.setUpsideDown()
         this.setStuck()
         this.setFlip()
+        this.setMapBoundaries()
+        this.recovery = new CharacterRecovery(this)
+        this.diagnostics = new CharacterDiagnostics(this)
 
         this.game.ticker.events.on('tick', () =>
         {
@@ -93,6 +102,8 @@ export class PhysicsCharacter
             type: 'dynamic',
             position: this.position,
             friction: 0,
+            frictionRule: 'min',
+            category: 'character',
             restitution: 0,
             colliders: [
                 { shape: 'capsule', mass: 2.5, parameters: [ capsuleHalfLength, this.radius ] },
@@ -106,7 +117,25 @@ export class PhysicsCharacter
         })
         this.chassis.physical = object.physical
         this.chassis.physical.body.lockRotations(true, true)
+        this.chassis.physical.body.enableCcd(true)
+        this.chassis.physical.body.setAdditionalSolverIterations(4)
         this.chassis.mass = this.chassis.physical.body.mass()
+    }
+
+    setMapBoundaries()
+    {
+        const b = this.game.mapBounds
+        if(!b) return
+        const x = (b.minX + b.maxX) / 2, z = (b.minZ + b.maxZ) / 2
+        // Character-only walls are solved by Rapier, including CCD. Never clamp a solved body into scenery.
+        for(const [position, parameters] of [
+            [{ x: b.minX - 0.5, y: 0, z }, [0.5, 1000, (b.maxZ - b.minZ) / 2 + 1]],
+            [{ x: b.maxX + 0.5, y: 0, z }, [0.5, 1000, (b.maxZ - b.minZ) / 2 + 1]],
+            [{ x, y: 0, z: b.minZ - 0.5 }, [(b.maxX - b.minX) / 2 + 1, 1000, 0.5]],
+            [{ x, y: 0, z: b.maxZ + 0.5 }, [(b.maxX - b.minX) / 2 + 1, 1000, 0.5]],
+        ])
+            this.game.objects.add(null, { type: 'fixed', position, friction: 0, restitution: 0,
+                colliders: [{ shape: 'cuboid', parameters, category: 'characterBoundary' }] })
     }
 
     setWheels()
@@ -244,15 +273,42 @@ export class PhysicsCharacter
         this.chassis.physical.body.setRotation(quaternion)
         this.chassis.physical.body.setLinvel({ x: 0, y: 0, z: 0 })
         this.chassis.physical.body.setAngvel({ x: 0, y: 0, z: 0 })
+        this.chassis.physical.body.resetForces(true)
+        this.chassis.physical.body.resetTorques(true)
+        this.game.physics.world.propagateModifiedBodyPositionsToColliders()
+        this.game.physics.world.updateSceneQueries()
 
         // Vehicle rotation is around Y with the vehicle facing +X
         this.facing = rotation
         this.position.copy(position)
+        this.velocity.set(0, 0, 0)
+        this.speed = this.xzSpeed = this.forwardSpeed = 0
+        this.jumping = this.crouching = false
+        this.jumpTime = - Infinity
+        this.knockDownTime = this.knockSettleTime = this.knockBlockedTime = 0
+        this.lastGroundedTime = - Infinity
         this.standUp()
+        this.recovery?.reset()
+        this.grounded = this.recovery ? this.testGround() : false
+        if(this.grounded) this.lastGroundedTime = this.motionTime
+        this.wheels.inContactCount = this.grounded ? 4 : 0
+        this.wheels.justTouchedCount = 0
+        if(this.stuck.active) this.events.trigger('unstuck')
+        this.stuck.active = false
+        this.stuck.savedItems = []
+        this.stuck.durationSaved = this.stuck.distance = 0
+        if(this.game.player)
+        {
+            this.game.player.jumpRequested = false
+            this.game.player.position?.copy(this.position)
+        }
+        this.game.clickMove?.cancel()
+        this.game.world?.visualVehicle?.syncFromPhysics(true)
     }
 
     knock(velocity)
     {
+        if(!this.chassis.physical.body.isEnabled()) return
         // Launch higher than a regular object so the explosion sends the character flying
         const launch = {
             x: velocity.x * this.knockLaunch.horizontal,
@@ -264,7 +320,8 @@ export class PhysicsCharacter
         this.knockState = 'air'
         this.jumping = false
         this.grounded = false
-        this.jumpTime = this.game.ticker.elapsed // Ignore the ground for a moment, like a jump
+        this.jumpTime = this.motionTime
+        this.knockDownTime = this.knockSettleTime = this.knockBlockedTime = 0
         this.events.trigger('knock')
     }
 
@@ -274,30 +331,14 @@ export class PhysicsCharacter
             return
 
         this.knockState = 'none'
+        this.knockDownTime = this.knockSettleTime = this.knockBlockedTime = 0
         this.events.trigger('standUp')
     }
 
     testGround()
     {
-        const RAPIER = this.game.RAPIER
-        const body = this.chassis.physical.body
-        const origin = body.translation()
-        const reach = this.halfHeight + 0.12
-        const spread = this.radius * 0.6
-
-        // Center and 4 rays around so standing on an edge still counts
-        const offsets = [ [ 0, 0 ], [ spread, 0 ], [ - spread, 0 ], [ 0, spread ], [ 0, - spread ] ]
-
-        for(const [ x, z ] of offsets)
-        {
-            const ray = new RAPIER.Ray({ x: origin.x + x, y: origin.y, z: origin.z + z }, { x: 0, y: - 1, z: 0 })
-            const hit = this.game.physics.world.castRay(ray, reach, true, undefined, undefined, undefined, body)
-
-            if(hit)
-                return true
-        }
-
-        return false
+        this.groundInfo = this.recovery.ground()
+        return this.groundInfo.grounded
     }
 
     updatePrePhysics()
@@ -309,12 +350,14 @@ export class PhysicsCharacter
             return
 
         const delta = this.game.ticker.deltaScaled
-        const elapsed = this.game.ticker.elapsed
+        this.motionTime += delta
+        const elapsed = this.motionTime
 
         // Ground
         const wasGrounded = this.grounded
         // Right after a jump the rays still reach the ground, ignore it for a moment
-        this.grounded = elapsed - this.jumpTime > 0.2 && this.testGround()
+        const ground = this.testGround()
+        this.grounded = elapsed - this.jumpTime > 0.2 && ground && body.linvel().y - this.groundInfo.velocityY < 0.8
 
         if(this.grounded)
             this.lastGroundedTime = elapsed
@@ -339,15 +382,19 @@ export class PhysicsCharacter
             player.jumpRequested = false
 
             // Rays can hit debris flying along (crates blown by the same explosion), so landing also needs to have stopped falling
-            const resting = this.grounded && body.linvel().y > - 1.5
+            const speed = body.linvel()
+            const resting = this.groundInfo.supported && Math.abs(speed.y - this.groundInfo.velocityY) < 0.9
+                && speed.y < 0.8 && Math.abs(this.groundInfo.velocityY) < 1.5 && elapsed - this.jumpTime > 0.2
+            this.knockSettleTime = resting ? this.knockSettleTime + delta : 0
 
-            if(this.knockState === 'air' && resting)
+            if(this.knockState === 'air' && this.knockSettleTime > 0.08)
             {
                 this.knockState = 'down'
                 this.knockLandTime = elapsed
+                this.knockDownTime = 0
                 this.events.trigger('knockLand')
             }
-            else if(this.knockState === 'down' && !this.grounded && elapsed - this.knockLandTime > 0.3)
+            else if(this.knockState === 'down' && !this.groundInfo.supported && elapsed - this.knockLandTime > 0.3)
             {
                 // Slid off something, falling again
                 this.knockState = 'air'
@@ -356,13 +403,26 @@ export class PhysicsCharacter
 
             if(this.knockState === 'down')
             {
+                this.knockDownTime += delta
                 // Slide to a stop on the floor
                 const linvel = body.linvel()
                 const friction = Math.max(0, 1 - 8 * delta)
                 body.setLinvel({ x: linvel.x * friction, y: linvel.y, z: linvel.z * friction }, true)
 
-                if(elapsed - this.knockLandTime > this.knockMaxDownDuration)
+                if(this.knockDownTime > this.knockRecoveryDuration)
                     this.standUp()
+            }
+            else
+            {
+                // A contact wedge can hold the capsule without a walkable floor. Release the input lock
+                // before the independently validated geometric recovery considers any relocation.
+                const held = this.groundInfo.contacts.length > 0 && Math.hypot(speed.x, speed.y, speed.z) < 0.2
+                this.knockBlockedTime = held ? this.knockBlockedTime + delta : 0
+                if(this.knockBlockedTime > 1.2)
+                {
+                    this.standUp()
+                    this.events.trigger('knockContactRelease')
+                }
             }
 
             return
@@ -417,6 +477,8 @@ export class PhysicsCharacter
 
     updatePostPhysics()
     {
+        if(!this.chassis.physical.body.isEnabled()) return
+        this.recovery.update(this.game.ticker.deltaScaled)
         const newPosition = new THREE.Vector3().copy(this.chassis.physical.body.translation())
         this.velocity = newPosition.clone().sub(this.position)
         this.direction = this.velocity.clone().normalize()
@@ -440,6 +502,7 @@ export class PhysicsCharacter
 
         this.stop.test()
         this.stuck.test()
+        this.diagnostics.update()
     }
 
     activate()

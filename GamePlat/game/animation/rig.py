@@ -7,8 +7,9 @@ skeleton from height fractions > distance based skin weights (no bone heat, it f
 import json
 import struct
 
+import bmesh
 import bpy
-from mathutils import Matrix, Vector
+from mathutils import Matrix, Vector, kdtree
 
 # Every character has these bones (left side mirrored from .R), so every action in actions/ fits every character
 PARENTS = {
@@ -62,6 +63,72 @@ def import_mesh(path):
     mesh.name = 'Character'
     mesh.parent = None
     return mesh
+
+
+def keep_main_body(mesh):
+    """
+    Delete the props modelled next to the character (a pet beside it...): the loose parts are found on welded
+    positions, the biggest one is the body, each small part (eyes, buttons...) follows the big part it touches
+    """
+    bm = bmesh.new()
+    bm.from_mesh(mesh.data)
+    bm.verts.ensure_lookup_table()
+
+    # Union find over the vertices: shared edges and identical positions (the importer splits on UV seams)
+    parent = list(range(len(bm.verts)))
+
+    def find(index):
+        while parent[index] != index:
+            parent[index] = parent[parent[index]]
+            index = parent[index]
+        return index
+
+    def union(a, b):
+        a, b = find(a), find(b)
+        if a != b:
+            parent[b] = a
+
+    for edge in bm.edges:
+        union(edge.verts[0].index, edge.verts[1].index)
+    seen = {}
+    for vertex in bm.verts:
+        key = (round(vertex.co.x, 5), round(vertex.co.y, 5), round(vertex.co.z, 5))
+        if key in seen:
+            union(seen[key], vertex.index)
+        else:
+            seen[key] = vertex.index
+
+    parts = {}
+    for vertex in bm.verts:
+        parts.setdefault(find(vertex.index), []).append(vertex)
+    if len(parts) < 2:
+        bm.free()
+        return
+
+    sizes = sorted(parts.items(), key=lambda item: - len(item[1]))
+    body = sizes[0][0]
+    big = [ root for root, vertices in sizes if len(vertices) > 0.05 * len(bm.verts) ]
+    trees = {}
+    for root in big:
+        tree = kdtree.KDTree(len(parts[root]))
+        for index, vertex in enumerate(parts[root]):
+            tree.insert(vertex.co, index)
+        tree.balance()
+        trees[root] = tree
+
+    removed = []
+    for root, vertices in parts.items():
+        if root == body:
+            continue
+        owner = root if root in big else min(big, key=lambda other: min(trees[other].find(vertex.co)[2] for vertex in vertices))
+        if owner != body:
+            removed.extend(vertices)
+
+    bmesh.ops.delete(bm, geom=removed, context='VERTS')
+    bm.to_mesh(mesh.data)
+    bm.free()
+    mesh.data.update()
+    print(f'kept the main body: {len(removed)} vertices of props removed')
 
 
 def normalize_mesh(mesh):

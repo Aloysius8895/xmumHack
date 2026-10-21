@@ -3,6 +3,7 @@
  * plain data with a schema version, atomic write (temp file + rename) with a .bak of the last good save,
  * migrations on load, validation with a fallback to the backup
  */
+import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -11,10 +12,20 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 const DIRECTORY = process.env.SAVE_DIR ?? path.join(here, 'data')
 const FILE = path.join(DIRECTORY, 'save.json')
 
-export const SAVE_VERSION = 1
+export const SAVE_VERSION = 3
+
+function newPlayer()
+{
+    return { id: crypto.randomUUID().replaceAll('-', '').slice(0, 12), name: '' }
+}
 
 // v(n) > v(n+1), pure functions on plain data
-const MIGRATIONS = {}
+const MIGRATIONS = {
+    // Leaderboard: the player identity in friend codes, and the friends added from their codes
+    1: (data) => ({ ...data, player: newPlayer(), friends: [] }),
+    // Daily digests from the chat agent (server/integrations.js): skill mastery 0-100 and the digest history
+    2: (data) => ({ ...data, mastery: {}, digests: [] }),
+}
 
 export function createSave()
 {
@@ -27,7 +38,11 @@ export function createSave()
         roadmap: null,  // { generatedAt, stages: [...] }
         logs: [],
         points: 0,
-        challenges: [], // gym attempts, questions + hidden rubric stay on the server
+        player: newPlayer(), // { id, name } shared in the friend code
+        friends: [],    // [{ id, name, points, sharedAt, addedAt }] from friend codes
+        mastery: {},    // { skillId: 0-100 } from the daily digests of the chat agent
+        digests: [],    // [{ date, summary, skills, at }] latest first
+        challenges: [], // legacy history retained for save compatibility; no new exams are created
     }
 }
 
@@ -39,7 +54,7 @@ function validate(data)
         throw new Error('save has no version')
     if(!data.profile || !Array.isArray(data.profile.skills))
         throw new Error('save has no profile skills')
-    if(!Array.isArray(data.logs) || !Array.isArray(data.challenges))
+    if(!Array.isArray(data.logs) || !Array.isArray(data.challenges) || !Array.isArray(data.friends ?? []))
         throw new Error('save lists are missing')
     return data
 }
@@ -99,6 +114,32 @@ export function save(data)
     if(fs.existsSync(FILE))
         fs.copyFileSync(FILE, FILE + '.bak')
     fs.renameSync(temporary, FILE)
+}
+
+/**
+ * Market snapshots pushed by the job market workflow (server/integrations.js), shared by every player
+ * { latest: { period, source, collectedAt, careers }, previous: same | null }
+ */
+const MARKET_FILE = path.join(DIRECTORY, 'market.json')
+
+export function loadMarket()
+{
+    try
+    {
+        return JSON.parse(fs.readFileSync(MARKET_FILE, 'utf8'))
+    }
+    catch
+    {
+        return { latest: null, previous: null }
+    }
+}
+
+export function saveMarket(data)
+{
+    fs.mkdirSync(DIRECTORY, { recursive: true })
+    const temporary = MARKET_FILE + '.tmp'
+    fs.writeFileSync(temporary, JSON.stringify(data, null, 1), 'utf8')
+    fs.renameSync(temporary, MARKET_FILE)
 }
 
 export function reset()

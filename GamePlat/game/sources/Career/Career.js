@@ -1,6 +1,7 @@
 import { CareerApi } from './CareerApi.js'
 import { CareerUI } from './CareerUI.js'
 import { CareerWorld } from './CareerWorld.js'
+import { CareerMinimap } from './CareerMinimap.js'
 import { getLang } from './i18n.js'
 
 /**
@@ -14,6 +15,7 @@ export class Career
         this.api = new CareerApi()
         this.ui = new CareerUI(this.api)
         this.world = new CareerWorld(this.api, this.ui)
+        this.minimap = new CareerMinimap(this.api, this.ui, this.world)
 
         let lang = getLang()
         this.api.events.on('state', () =>

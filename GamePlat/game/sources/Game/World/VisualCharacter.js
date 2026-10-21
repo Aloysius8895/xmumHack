@@ -52,6 +52,17 @@ export class VisualCharacter
         this.game.tracks.remove(this.mainGroundTrack)
     }
 
+    // Swap the model in place (character selection), keeps every event listener
+    setCharacter(gltf)
+    {
+        this.animations.mixer.stopAllAction()
+        this.model.removeFromParent()
+
+        this.setModel(gltf)
+        this.setMixer(gltf)
+        this.animations.play('idle', 0)
+    }
+
     setModel(gltf)
     {
         this.model = cloneSkinned(gltf.scene)
@@ -71,34 +82,18 @@ export class VisualCharacter
     setAnimations(gltf)
     {
         this.animations = {}
-        this.animations.mixer = new THREE.AnimationMixer(this.model)
-        this.animations.actions = {}
-        this.animations.current = null
+        this.setMixer(gltf)
 
-        for(const clip of gltf.animations)
-            this.animations.actions[clip.name] = this.animations.mixer.clipAction(clip)
-
-        // One shots hold their last pose (jump stays tucked while in the air)
-        for(const name of [ 'jump', 'knockdown', 'getUp' ])
-        {
-            const action = this.animations.actions[name]
-            if(action)
-            {
-                action.setLoop(THREE.LoopOnce, 1)
-                action.clampWhenFinished = true
-            }
-        }
-
-        this.animations.play = (name, fadeDuration = 0.2) =>
+        this.animations.play = (name, fadeDuration = 0.2, restart = false) =>
         {
             const action = this.animations.actions[name]
 
-            if(!action || action === this.animations.current)
+            if(!action || (action === this.animations.current && !restart))
                 return
 
             action.reset().setEffectiveTimeScale(1).fadeIn(fadeDuration).play()
 
-            if(this.animations.current)
+            if(this.animations.current && action !== this.animations.current)
                 this.animations.current.fadeOut(fadeDuration)
 
             this.animations.current = action
@@ -115,6 +110,35 @@ export class VisualCharacter
             else
                 this.animations.play('jump', 0.08)
         })
+    }
+
+    setMixer(gltf)
+    {
+        this.animations.mixer = new THREE.AnimationMixer(this.model)
+        this.animations.actions = {}
+        this.animations.current = null
+        this.animations.currentName = null
+
+        for(const clip of gltf.animations)
+            this.animations.actions[clip.name] = this.animations.mixer.clipAction(clip)
+
+        // One shots hold their last pose (jump stays tucked while in the air)
+        for(const name of [ 'jump', 'knockdown', 'getUp' ])
+        {
+            const action = this.animations.actions[name]
+            if(action)
+            {
+                action.setLoop(THREE.LoopOnce, 1)
+                action.clampWhenFinished = true
+            }
+        }
+
+        this.animations.mixer.addEventListener('finished', (event) => this.onAnimationFinished(event))
+        // Physics owns a deadline derived from the clips, not their completion callback.
+        // Account for the same game-to-animation time conversion used by getAnimationDelta().
+        const recoveryDuration = ['knockdown', 'getUp'].reduce((sum, name) => sum + (this.animations.actions[name]?.getClip().duration ?? 0), 0)
+        this.game.physicalVehicle.knockRecoveryDuration = Math.min(16, Math.max(2,
+            recoveryDuration * this.game.time.defaultScale + 0.5))
     }
 
     setSquash()
@@ -142,30 +166,37 @@ export class VisualCharacter
 
         physical.events.on('knock', () =>
         {
-            this.animations.play('fall', 0.1)
+            this.animations.play('fall', 0.1, true)
         })
 
         physical.events.on('knockLand', () =>
         {
             this.squash.value = 1
             this.sounds.knockLand.play()
-            this.animations.play('knockdown', 0.06)
-        })
-
-        this.animations.mixer.addEventListener('finished', (event) =>
-        {
-            if(physical.knockState === 'none')
-                return
-
-            if(event.action === this.animations.actions.knockdown)
-                this.animations.play('getUp', 0.25)
-            else if(event.action === this.animations.actions.getUp)
-                physical.standUp()
+            this.animations.play('knockdown', 0.06, true)
         })
 
         // Characters without the clips still get control back
-        if(!this.animations.actions.knockdown || !this.animations.actions.getUp)
-            physical.events.on('knockLand', () => physical.standUp())
+        physical.events.on('knockLand', () =>
+        {
+            if(!this.animations.actions.knockdown || !this.animations.actions.getUp)
+                physical.standUp()
+        })
+        physical.events.on('standUp', () => this.syncFromPhysics(true))
+    }
+
+    onAnimationFinished(event)
+    {
+        const physical = this.game.physicalVehicle
+
+        // A previous getUp action may finish after another blast or after sliding off a ledge.
+        if(physical.knockState !== 'down' || event.action !== this.animations.current)
+            return
+
+        if(event.action === this.animations.actions.knockdown)
+            this.animations.play('getUp', 0.25)
+        else if(event.action === this.animations.actions.getUp)
+            physical.standUp()
     }
 
     setSounds()
@@ -292,16 +323,27 @@ export class VisualCharacter
         return this.game.ticker.deltaScaled / this.game.time.defaultScale
     }
 
+    syncFromPhysics(reset = false)
+    {
+        const physical = this.game.physicalVehicle
+        this.root.position.set(physical.position.x, physical.position.y - physical.halfHeight, physical.position.z)
+        this.root.rotation.y = physical.facing + Math.PI * 0.5
+        if(reset)
+        {
+            this.knock.spin = 0
+            this.pivot.rotation.x = 0
+            this.squash.value = 0
+            this.body.scale.set(1, 1, 1)
+        }
+    }
+
     update()
     {
         const physical = this.game.physicalVehicle
         const delta = this.game.ticker.deltaScaled
 
         // Position (body is the capsule center, the model has its feet at 0)
-        this.root.position.set(physical.position.x, physical.position.y - physical.halfHeight, physical.position.z)
-
-        // Rotation, the model faces +Z and the physical facing angle is around Y with 0 = +X
-        this.root.rotation.y = physical.facing + Math.PI * 0.5
+        this.syncFromPhysics()
 
         // Animation
         this.updateAnimation()

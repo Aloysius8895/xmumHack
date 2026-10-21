@@ -1,5 +1,7 @@
 import { clamp } from 'three/src/math/MathUtils.js'
 import { Game } from './Game.js'
+import { MAP_WIDTH, MAP_HEIGHT, worldToCroppedMap } from './MapBounds.js'
+import { createAltarIslandMapElement, MAP_SEA_COLORS } from './World/AltarIsland.js'
 
 export class Map
 {
@@ -10,8 +12,15 @@ export class Map
         this.initiated = false
         this.modal = this.game.modals.items.get('map')
         this.element = this.modal.element.querySelector('.js-map-container')
+        if(this.game.mapBounds)
+        {
+            const map = this.element.closest('.map')
+            const ratio = MAP_WIDTH / MAP_HEIGHT
+            map.style.width = `min(${85 * ratio}vmin, ${900 * ratio}px)`
+            map.style.height = 'min(85vmin, 900px)'
+            map.style.aspectRatio = `${ratio}`
+        }
 
-        this.setTrigger()
         this.setInputs()
 
         this.modal.events.on('open', () =>
@@ -43,6 +52,7 @@ export class Map
         this.locations.items = [
             { name: 'Achievements', respawnName: 'achievements', offset: { x: 0, y: -0.01 } },
             { name: 'Altar', respawnName: 'altar', offset: { x: 0, y: -0.05 } },
+            { name: 'Island', respawnName: 'altarIsland', offset: { x: 0, y: -0.03 } },
             { name: 'Behind<br /> the scene', respawnName: 'behindTheScene', offset: { x: 0.01, y: 0 } },
             { name: 'Bowling', respawnName: 'bowling', offset: { x: -0.08, y: 0.03 } },
             { name: 'Career', respawnName: 'career', offset: { x: 0, y: -0.06 } },
@@ -55,6 +65,7 @@ export class Map
             { name: 'Time Machine', respawnName: 'timeMachine', offset: { x: 0, y: 0 } },
         ]
 
+        this.locations.items = this.locations.items.filter(item => this.game.respawns.items.has(item.respawnName) && (!this.game.mapBounds || item.respawnName !== 'circuit'))
         for(const item of this.locations.items)
         {
             const respawn = this.game.respawns.getByName(item.respawnName)
@@ -99,6 +110,18 @@ export class Map
     {
         this.texture = {}
         this.texture.element = this.element.querySelector('.js-texture')
+        if(this.game.mapBounds)
+        {
+            const b = this.game.mapBounds, size = this.game.terrain.size
+            Object.assign(this.texture.element.style, {
+                width: `${size / MAP_WIDTH * 100}%`, height: `${size / MAP_HEIGHT * 100}%`,
+                left: `${-(b.minX + size / 2) / MAP_WIDTH * 100}%`, top: `${-(b.minZ + size / 2) / MAP_HEIGHT * 100}%`
+            })
+
+            // Altar island, past the original map picture
+            this.texture.islandElement = createAltarIslandMapElement(b)
+            this.texture.element.after(this.texture.islandElement)
+        }
         this.texture.previousUrl = null
 
         this.texture.element.addEventListener('load', () =>
@@ -115,22 +138,15 @@ export class Map
                 this.texture.element.classList.remove('is-visible')
                 this.texture.previousUrl = url
                 this.texture.element.src = url
+
+                if(this.texture.islandElement)
+                {
+                    const night = url.includes('night')
+                    this.element.style.backgroundColor = MAP_SEA_COLORS[night ? 'night' : 'day']
+                    this.texture.islandElement.setNight(night)
+                }
             }
         }
-    }
-
-    setTrigger()
-    {
-        const element = this.game.domElement.querySelector('.js-map-trigger')
-        
-        element.addEventListener('click', (event) =>
-        {
-            this.game.modals.open('map')
-        })
-        element.addEventListener('keydown', (event) =>
-        {
-            event.preventDefault()
-        })
     }
 
     setInputs()
@@ -155,6 +171,11 @@ export class Map
     {
         let x = coordinates.x
         let y = typeof coordinates.z !== 'undefined' ? coordinates.z : coordinates.y
+
+        if(this.game.mapBounds)
+        {
+            return worldToCroppedMap(coordinates)
+        }
 
         x /= this.game.terrain.size
         y /= this.game.terrain.size
@@ -187,7 +208,8 @@ export class Map
 
             this.player.element.style.left = `${x}%`
             this.player.element.style.top = `${y}%`
-            this.player.element.style.transform = `rotate(${-this.game.physicalVehicle.yRotation}rad)`
+            // Only the direction pointer turns, the character portrait stays upright
+            this.player.element.style.setProperty('--heading', `${-this.game.physicalVehicle.yRotation}rad`)
         }
     }
 }

@@ -42,6 +42,7 @@ export class Areas
         {
             for(const [ name, AreaClass ] of list)
             {
+                if(this.game.mapBounds && (name === 'circuit' || !this.game.respawns.items.has(name))) continue
                 if(child.name.startsWith(name))
                     this[name] = new AreaClass(child)
             }

@@ -49,6 +49,9 @@ import { PreRenderer } from './PreRenderer.js'
 import { Options } from './Options.js'
 import gsap from 'gsap'
 import { Map } from './Map.js'
+import { MAP_BOUNDS, cropFoliage } from './MapBounds.js'
+import { MapClickMove } from './Navigation/MapClickMove.js'
+import { CharacterSelect } from './CharacterSelect.js'
 
 export class Game
 {
@@ -77,6 +80,7 @@ export class Game
 
         // First batch for intro
         this.scene = new THREE.Scene()
+        this.mapBounds = MAP_BOUNDS
         this.debug = new Debug()
         this.resourcesLoader = new ResourcesLoader()
         this.quality = new Quality()
@@ -135,7 +139,7 @@ export class Game
                 [ 'foliageTexture',                        `foliage/foliageSDF.${compressedTextureExtension}${cb}`,                              compressedTextureFormat, (resource) => { resource.minFilter = THREE.NearestFilter; resource.magFilter = THREE.NearestFilter; resource.generateMipmaps = false; } ],
                 [ 'bushesReferences',                      `bushes/bushesReferences${compressedModelSuffix}.glb${cb}`,                           'gltf' ],
                 [ 'vehicle',                               `vehicle/default${compressedModelSuffix}.glb${cb}`,                                   'gltf' ],
-                [ 'playerCharacter',                       `player/xinchan.glb${cb}`,                                                            'gltf' ],
+                [ 'playerCharacter',                       `${CharacterSelect.getSaved().path}${cb}`,                                                            'gltf' ],
                 [ 'playgroundVisual',                      `playground/playgroundVisual${compressedModelSuffix}.glb${cb}`,                       'gltf' ],
                 [ 'playgroundPhysical',                    `playground/playgroundPhysical${compressedModelSuffix}.glb${cb}`,                     'gltf' ],
                 [ 'flowersReferencesModel',                `flowers/flowersReferences${compressedModelSuffix}.glb${cb}`,                         'gltf' ],
@@ -154,6 +158,9 @@ export class Game
                 [ 'cherryTreesVisualModel',                `cherryTrees/cherryTreesVisual${compressedModelSuffix}.glb${cb}`,                     'gltf' ],
                 [ 'cherryTreesReferencesModel',            `cherryTrees/cherryTreesReferences${compressedModelSuffix}.glb${cb}`,                 'gltf' ],
                 [ 'sceneryModel',                          `scenery/scenery${compressedModelSuffix}.glb${cb}`,                                   'gltf' ],
+                [ 'altarIslandModel',                      `altarIsland/altarIsland.glb${cb}`,                                                   'gltf' ],
+                [ 'altarIslandStyleTexture',               `altarIsland/altarIslandStyle.png${cb}`,                                              'texture', (resource) => { resource.flipY = false; resource.generateMipmaps = false; resource.minFilter = THREE.LinearFilter; resource.magFilter = THREE.LinearFilter } ],
+                [ 'chillLettersModel',                     `areas/chillLetters.glb${cb}`,                                                        'gltf' ],
                 [ 'areasModel',                            `areas/areas${compressedModelSuffix}.glb${cb}`,                                       'gltf' ],
                 [ 'poleLightsModel',                       `poleLights/poleLights${compressedModelSuffix}.glb${cb}`,                             'gltf' ],
                 [ 'whisperFlameTexture',                   `whispers/whisperFlame.${compressedTextureExtension}${cb}`,                           compressedTextureFormat, (resource) => { resource.minFilter = THREE.LinearFilter; resource.magFilter = THREE.LinearFilter; resource.generateMipmaps = false } ],
@@ -183,6 +190,7 @@ export class Game
         const [ newResources, RAPIER ] = await Promise.all([ resourcesPromise, rapierPromise ])
         this.RAPIER = RAPIER
         this.resources = { ...newResources, ...this.resources }
+        cropFoliage(this.resources)
 
         this.terrain = new Terrain()
         this.physics = new Physics()
@@ -200,7 +208,10 @@ export class Game
         // this.monitoring = new Monitoring()
         this.world.step(1)
         this.career = new Career()
+        this.world.areas.landing?.guildLeaderboard?.bind(this.career.api)
+        this.characterSelect = new CharacterSelect()
         this.overlay = new Overlay()
+        this.ticker.wait(10, () => { this.clickMove = new MapClickMove(this) })
 
         // Pre-render if quality high
         if(this.quality.level === 0 && this.rendering.renderer.backend.isWebGPUBackend)
@@ -248,7 +259,6 @@ export class Game
             // Social
             if(this.world.areas.social)
             {
-                this.world.areas.social.statue.down = false
                 this.world.areas.social.fans.instancedGroup.needsUpdate = true
             }
             

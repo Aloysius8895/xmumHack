@@ -264,6 +264,7 @@ export class Player
 
     respawn(respawnName = null, callback = null)
     {
+        this.game.clickMove?.cancel()
         this.game.overlay.show(() =>
         {
             if(typeof callback === 'function')
@@ -369,6 +370,7 @@ export class Player
         /**
          * Run / crouch
          */
+        this.game.clickMove?.update(this)
         if(this.game.inputs.actions.get('run').active)
             this.running = true
 

@@ -5,14 +5,21 @@ import { InteractivePoints } from '../../InteractivePoints.js'
 import { Area } from './Area.js'
 import gsap from 'gsap'
 import { MeshDefaultMaterial } from '../../Materials/MeshDefaultMaterial.js'
+import { GuildLeaderboard } from '../GuildLeaderboard.js'
 
 export class LandingArea extends Area
 {
     constructor(model)
     {
+        // Keep the old map's transform as the attachment reference for the guild parchment.
+        const kioskSurface = model.children.find((child) => child.isMesh && child.material.name === 'stylizedMap')
+        kioskSurface?.removeFromParent()
+
         super(model)
 
         this.localTime = uniform(0)
+        if(kioskSurface)
+            this.guildLeaderboard = new GuildLeaderboard(this, kioskSurface)
 
         this.setLetters()
         this.setKiosk()
@@ -24,6 +31,8 @@ export class LandingArea extends Area
     setLetters()
     {
         const references = this.references.items.get('letters')
+
+        this.setChillLetters(references)
 
         for(const reference of references)
         {
@@ -37,19 +46,75 @@ export class LandingArea extends Area
         }
     }
 
+    /**
+     * "BRUNO SIMON" > "CHILL CHILL": the same 10 physical letters (mass, sounds, reset), new glyphs from
+     * static/areas/chillLetters.glb (world-building/build_chill_letters.mjs), cuboids fitted to the glyphs
+     * and the letters spaced again along their line, centred on the original sign
+     */
+    setChillLetters(references)
+    {
+        const word = 'CHILLCHILL'
+        const letterGap = 0.19 // Original spacing between letters and between the two words
+        const wordGap = 0.51
+
+        const glyphs = new Map()
+        for(const child of this.game.resources.chillLettersModel.scene.children)
+        {
+            child.geometry.computeBoundingBox()
+            glyphs.set(child.name.replace('letter', ''), child.geometry)
+        }
+
+        const objects = references.map((reference) => reference.userData.object)
+        const rotation = new THREE.Quaternion().copy(objects[0].physical.body.rotation())
+        const direction = new THREE.Vector3(1, 0, 0).applyQuaternion(rotation) // Reading direction, letters local +X
+        const along = (object) => new THREE.Vector3().copy(object.physical.body.translation()).dot(direction)
+        objects.sort((a, b) => along(a) - along(b))
+
+        // Original sign extent
+        const first = objects[0], last = objects[objects.length - 1]
+        const start = new THREE.Vector3().copy(first.physical.body.translation()).addScaledVector(direction, - first.physical.colliders[0].halfExtents().x)
+        const end = new THREE.Vector3().copy(last.physical.body.translation()).addScaledVector(direction, last.physical.colliders[0].halfExtents().x)
+        const middle = start.clone().add(end).multiplyScalar(0.5)
+
+        // New layout
+        const widths = [ ...word ].map((letter) => glyphs.get(letter).boundingBox.max.x - glyphs.get(letter).boundingBox.min.x)
+        const total = widths.reduce((sum, width) => sum + width, 0) + letterGap * (word.length - 2) + wordGap
+        let offset = - total / 2
+
+        objects.forEach((object, index) =>
+        {
+            const width = widths[index]
+            const position = middle.clone().addScaledVector(direction, offset + width / 2)
+            position.y = object.physical.body.translation().y
+            offset += width + (index === 4 ? wordGap : letterGap)
+
+            // Visual
+            object.visual.object3D.geometry = glyphs.get(word[index])
+            object.visual.object3D.position.copy(position)
+
+            // Physical
+            const collider = object.physical.colliders[0]
+            const halfExtents = collider.halfExtents()
+            collider.setHalfExtents({ x: width / 2, y: halfExtents.y, z: halfExtents.z })
+            collider.setTranslationWrtParent({ x: 0, y: 0, z: 0 })
+            object.physical.body.setTranslation(position, false)
+            Object.assign(object.physical.initialState.position, { x: position.x, y: position.y, z: position.z }) // Reset puts the letters back here
+        })
+    }
+
     setKiosk()
     {
         // Interactive point
         const interactivePoint = this.game.interactivePoints.create(
             this.references.items.get('kioskInteractivePoint')[0].position,
-            'Map',
+            'Leaderboard',
             InteractivePoints.ALIGN_RIGHT,
             InteractivePoints.STATE_CONCEALED,
             () =>
             {
+                // The kiosk is the friends leaderboard (Career, server/friends.js), the map stays on the M key
                 this.game.inputs.interactiveButtons.clearItems()
-                this.game.modals.open('map')
-                // interactivePoint.hide()
+                this.game.career?.ui.openPanel('leaderboard')
             },
             () =>
             {

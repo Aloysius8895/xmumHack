@@ -29,6 +29,8 @@ import { Fences } from './Fences.js'
 import { Benches } from './Benches.js'
 import { Scenery } from './Scenery.js'
 import { Characters } from './Characters.js'
+import { AltarIsland } from './AltarIsland.js'
+import { clipExtraMaterials } from '../MapBounds.js'
 
 export class World
 {
@@ -80,6 +82,8 @@ export class World
             this.scenery = new Scenery()
             this.areas = new Areas()
             this.characters = new Characters()
+            clipExtraMaterials(this.game.scene)
+            if(!location.search.includes('noIsland')) this.altarIsland = new AltarIsland() // ?noIsland skips it, to compare performance
         }
         else if(step === 2)
         {

@@ -14,7 +14,7 @@ export class ClosingManager
 
         this.game.inputs.addActions([
             { name: 'close', categories: [ 'modal', 'menu', 'racing', 'cinematic', 'wandering' ], keys: [ 'Keyboard.Escape', 'Gamepad.cross' ] },
-            { name: 'pause', categories: [ 'modal', 'menu', 'racing', 'cinematic', 'wandering' ], keys: [ 'Gamepad.start' ] }
+            { name: 'pause', categories: [ 'modal', 'menu', 'racing', 'cinematic', 'wandering', 'career' ], keys: [ 'Gamepad.start' ] }
         ])
         
         // Close input => Go through everything that can be closed
@@ -50,20 +50,27 @@ export class ClosingManager
                 else if(this.game.world.areas?.lab && (this.game.world.areas?.lab.state === LabArea.STATE_OPEN || this.game.world.areas?.lab.state === LabArea.STATE_OPENING))
                     this.game.world.areas.lab.close()
 
-                // Nothing opened and used the keyboard Escape key => Open default modal
-                else if(action.activeKeys.has('Keyboard.Escape'))
-                    this.game.menu.open()
             }
         })
 
-        // Pause input => Close menu or open menu  intro
+        // Pause input => close the current screen or toggle the career dropdown.
         this.game.inputs.events.on('pause', (action) =>
         {
             if(action.active)
             {
+                const careerUI = this.game.career?.ui
                 if(this.game.menu.state === Menu.OPEN || this.game.menu.state === Menu.OPENING)
-                {
                     this.game.menu.close()
+                else if(this.game.modals.state === Modals.OPEN || this.game.modals.state === Modals.OPENING)
+                    this.game.modals.close()
+                else if(careerUI)
+                {
+                    if(careerUI.dialogue)
+                        careerUI.closeDialogue()
+                    else if(careerUI.panel)
+                        careerUI.closePanel()
+                    else
+                        careerUI.setMenuOpen(!careerUI.menuOpen, careerUI.menuOpen)
                 }
                 else
                 {

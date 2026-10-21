@@ -298,6 +298,7 @@ export class WaterSurface
     setMaterial()
     {
         const material = new MeshDefaultMaterial({
+            clipToMapBounds: false,
             depthWrite: false,
             colorNode: color(0xffffff),
             alphaNode: this.detailsMask(),

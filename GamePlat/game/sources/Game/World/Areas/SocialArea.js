@@ -169,7 +169,23 @@ export class SocialArea extends Area
         }
     }
 
+    // Removed: the OnlyFans logo, its pedestal and its "spawn a fan" interactive point
     setOnlyFans()
+    {
+        for(const object of this.objects.items)
+        {
+            if(/^onlyfans/i.test(object.visual?.object3D?.name ?? ''))
+            {
+                object.visual.object3D.visible = false
+                object.physical?.body.setEnabled(false)
+            }
+        }
+
+        // Pedestal under the logo, in the pedestals mesh space (collider cuboid.049 of the model)
+        this.removePedestal(13.51, - 15.08, 0.9)
+    }
+
+    setOnlyFansInteractivePoint()
     {
         const interactiveArea = this.game.interactivePoints.create(
             this.references.items.get('onlyFans')[0].position,
@@ -195,11 +211,50 @@ export class SocialArea extends Area
         )
     }
 
+    // The statue and its central pedestal are removed (the lantern next to them stays)
     setStatue()
     {
-        this.statue = {}
-        this.statue.body = this.references.items.get('statue')[0].userData.object.physical.body
-        this.statue.down = false
+        const statue = this.references.items.get('statue')[0].userData.object
+        statue.visual.object3D.visible = false
+        statue.physical.body.setEnabled(false)
+        this.statue = null
+
+        this.removePedestal(0, 0, 1.7)
+    }
+
+    /**
+     * Remove one pedestal of the shared pedestals mesh (Cube.133, centred on the statue): its triangles around
+     * (x, z) in the mesh space, and the colliders standing there
+     */
+    removePedestal(x, z, half)
+    {
+        for(const object of this.objects.items)
+        {
+            const mesh = object.visual?.object3D
+            if(!mesh?.isMesh || !/^Cube\.?133/.test(mesh.name))
+                continue
+
+            const position = mesh.geometry.attributes.position
+            const index = mesh.geometry.index
+            const kept = []
+            for(let i = 0; i < index.count; i += 3)
+            {
+                const corners = [ index.getX(i), index.getX(i + 1), index.getX(i + 2) ]
+                if(!corners.every((corner) => Math.abs(position.getX(corner) - x) < half && Math.abs(position.getZ(corner) - z) < half))
+                    corners.forEach((corner) => kept.push(corner))
+            }
+            mesh.geometry.setIndex(kept)
+
+            mesh.updateMatrixWorld(true)
+            const center = new THREE.Vector3(x, 0, z).applyMatrix4(mesh.matrixWorld)
+            for(const other of this.objects.items)
+                for(const collider of other.physical?.type === 'fixed' ? other.physical.colliders : [])
+                {
+                    const at = collider.translation()
+                    if(Math.abs(at.x - center.x) < half && Math.abs(at.z - center.z) < half)
+                        collider.setEnabled(false)
+                }
+        }
     }
 
     setFWA()
@@ -265,8 +320,7 @@ export class SocialArea extends Area
                 )
                 
                 // Buttons
-                document.querySelector('.js-menu-trigger').style.display = 'none'
-                document.querySelector('.js-map-trigger').style.display = 'none'
+                this.game.career?.ui.menuElement.setAttribute('hidden', '')
             }
         })
         this.game.inputs.events.on('winFWA', (action) =>

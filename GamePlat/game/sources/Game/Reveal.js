@@ -103,19 +103,15 @@ export class Reveal
                 }
                 else
                 {
-                    // Next function
+                    // Next function, called once the character is confirmed
                     const next = () =>
                     {
                         this.updateStep(1)
-                        this.game.inputs.events.off('introStart', inputCallback)
                         this.game.rayCursor.removeIntersect(intersect)
                     }
 
-                    // Input callback
-                    const inputCallback = () =>
-                    {
-                        next()
-                    }
+                    // Character selection (A / D to browse, Enter or click on the circle to confirm)
+                    this.game.characterSelect.open(next)
 
                     // Intsect
                     const position = this.position.clone()
@@ -124,7 +120,7 @@ export class Reveal
                     const intersect = this.game.rayCursor.addIntersect({
                         active: true,
                         shape: new THREE.Sphere(position, 3.5),
-                        onClick: next,
+                        onClick: () => this.game.characterSelect.confirm(),
                         onEnter: () =>
                         {
                             gsap.to(this, { intensityMultiplier: 1.22, duration: 0.2, overwrite: true })
@@ -134,20 +130,15 @@ export class Reveal
                             gsap.to(this, { intensityMultiplier: 1, duration: 0.2, overwrite: true })
                         }
                     })
-                    
-                    // Inputs (for gamepad and keyboard)
-                    this.game.inputs.addActions([
-                        { name: 'introStart', categories: [ 'intro' ], keys: [ 'Gamepad.cross', 'Keyboard.Enter', 'Keyboard.ArrowUp', 'Keyboard.ArrowDown', 'Keyboard.KeyW', 'Keyboard.KeyD' ] },
-                    ])
 
-            // { name: 'forward',               categories: [ 'wandering', 'racing', 'cinematic' ], keys: [ 'Keyboard.ArrowUp', 'Keyboard.KeyW', 'Gamepad.up', 'Gamepad.r2' ] },
-            // { name: 'right',                 categories: [ 'wandering', 'racing', 'cinematic' ], keys: [ 'Keyboard.ArrowRight', 'Keyboard.KeyD', 'Gamepad.right' ] },
-                    this.game.inputs.events.on('introStart', inputCallback)
                 }
             })
         }
         else if(step === 1)
         {
+            // Character confirmed > minimap
+            document.documentElement.classList.add('is-character-selected')
+
             // Audio
             this.game.audio.init()
             this.sound.play()

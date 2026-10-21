@@ -57,6 +57,8 @@ def build(name):
     print(f'--- {name}: {source} > {output}')
 
     mesh = rig.import_mesh(source)
+    if getattr(character, 'KEEP_MAIN_BODY', False):
+        rig.keep_main_body(mesh)
     rig.normalize_mesh(mesh)
     bones = rig.bone_list(character)
     armature = rig.build_armature(bones)

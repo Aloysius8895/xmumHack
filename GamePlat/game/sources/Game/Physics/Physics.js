@@ -24,18 +24,24 @@ export class Physics
             // }
         )
         this.eventQueue = new this.game.RAPIER.EventQueue(true)
+        this.maxStep = 1 / 60
+        this.world.integrationParameters.maxCcdSubsteps = 4
 
         this.physicals = []
 
         this.groups = {
             all: 0b0000000000000001,
             object:  0b0000000000000010,
-            bumper:  0b0000000000000100
+            bumper:  0b0000000000000100,
+            character: 0b0000000000001000,
+            boundary: 0b0000000000010000,
         }
         this.categories = {
             floor: (this.groups.all) << 16 | (this.groups.all),
             object: (this.groups.all | this.groups.object) << 16 | (this.groups.all | this.groups.bumper),
             bumper: (this.groups.bumper) << 16 | this.groups.object,
+            character: (this.groups.all | this.groups.object | this.groups.character) << 16 | (this.groups.all | this.groups.bumper | this.groups.boundary),
+            characterBoundary: this.groups.boundary << 16 | this.groups.character,
         }
         this.frictionRules = {
             average: this.game.RAPIER.CoefficientCombineRule.Average,
@@ -241,7 +247,10 @@ export class Physics
 
     update()
     {
-        this.world.timestep = this.game.ticker.deltaScaled
+        const delta = this.game.ticker.deltaScaled
+        if(delta <= 0) return
+        this.substeps = Math.max(1, Math.ceil(delta / this.maxStep))
+        this.world.timestep = delta / this.substeps
     
         for(const physical of this.physicals)
         {
@@ -260,8 +269,16 @@ export class Physics
             }
         }
         
-        // this.world.step()
-        this.world.step(this.eventQueue)
+        for(let i = 0; i < this.substeps; i++)
+        {
+            this.world.step(this.eventQueue)
+            // EventQueue auto-clears on step; drain each substep or early crate impacts disappear.
+            this.drainContactEvents()
+        }
+    }
+
+    drainContactEvents()
+    {
 
         // // Works but not handy
         // this.eventQueue.drainCollisionEvents((handle1, handle2, started) =>
@@ -285,10 +302,12 @@ export class Physics
             // Retrieve colliders
             const collider1 = this.world.getCollider(event.collider1())
             const collider2 = this.world.getCollider(event.collider2())
+            if(!collider1 || !collider2) return
 
             // Retrieve bodies
             const body1 = collider1.parent()
             const body2 = collider2.parent()
+            if(!body1 || !body2) return
 
             // Retrieve callbacks
             const callback1 = body1.userData?.object?.physical?.onCollision

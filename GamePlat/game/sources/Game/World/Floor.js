@@ -68,6 +68,7 @@ export class Floor
 
         // Material
         const material = new MeshDefaultMaterial({
+            clipToMapBounds: false,
             colorNode: colorNode,
             normalNode: vec3(0, 1, 0),
             shadowNode: terrainData.g,
@@ -135,7 +136,8 @@ export class Floor
             const indexZ = Math.round(((z / (halfExtent * 2)) + 0.5) * (rowsCount - 1))
             const index = indexZ + indexX * rowsCount
 
-            heights[index] = y
+            const b = this.game.mapBounds
+            heights[index] = b && (x < b.minX || x > b.maxX || z < b.minZ || z > b.maxZ) ? -1.5 : y
         }
 
         const object = this.game.objects.add(

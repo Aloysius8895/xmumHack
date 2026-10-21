@@ -37,6 +37,7 @@ export class MeshDefaultMaterial extends THREE.MeshLambertNodeMaterial
         this.hasFog = parameters.hasFog ?? true
         this.hasWater = parameters.hasWater ?? true
         this.hasReveal = parameters.hasReveal ?? true
+        this.userData.mapClipped = true
 
         this._colorNode = parameters.colorNode ?? color(0xffffff)
         this._normalNode = parameters.normalNode ?? normalWorld
@@ -66,6 +67,12 @@ export class MeshDefaultMaterial extends THREE.MeshLambertNodeMaterial
          */
         this.outputNode = Fn(() =>
         {
+            if(this.game.mapBounds && parameters.clipToMapBounds !== false)
+            {
+                const b = this.game.mapBounds
+                positionWorld.x.lessThan(b.minX).or(positionWorld.x.greaterThan(b.maxX))
+                    .or(positionWorld.z.lessThan(b.minZ)).or(positionWorld.z.greaterThan(b.maxZ)).discard()
+            }
             const baseColor = this._colorNode.toVar()
             const outputColor = this._colorNode.toVar()
             // outputColor.assign(vec3(0))

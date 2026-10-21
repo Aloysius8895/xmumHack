@@ -1,0 +1,35 @@
+/** Authored game reference scores, not live recruitment statistics. Heat is 0–100; difficulty is 1–5. */
+const DETAILS = [
+    ['sql', 'database', 'high', 3, '用查询、关联和聚合，从数据库中提取需要的信息。', 'Query, join and aggregate database records to find useful information.', 'Kueri, gabung dan agregat rekod pangkalan data untuk mencari maklumat berguna.'],
+    ['excel', 'sheet', 'high', 2, '用公式、数据透视表和表格整理信息并制作报表。', 'Organize information and build reports with formulas and pivot tables.', 'Susun maklumat dan bina laporan dengan formula dan jadual pangsi.'],
+    ['statistics', 'chart', 'medium', 3, '理解分布、抽样和统计指标，让结论有依据。', 'Understand distributions, sampling and metrics to support conclusions.', 'Fahami taburan, persampelan dan metrik untuk menyokong kesimpulan.'],
+    ['python', 'code', 'high', 3, '编写脚本处理数据、自动化重复工作并解决问题。', 'Write scripts to process data, automate tasks and solve problems.', 'Tulis skrip untuk memproses data, mengautomasikan tugas dan menyelesaikan masalah.'],
+    ['data-cleaning', 'filter', 'high', 2, '处理缺失值、重复项和格式问题，得到可靠的数据。', 'Handle missing values, duplicates and inconsistent formats for reliable data.', 'Urus nilai hilang, pendua dan format tidak seragam untuk data yang boleh dipercayai.'],
+    ['data-visualization', 'chart', 'high', 3, '选择合适的图表，清楚表达趋势、对比与结论。', 'Choose clear charts to communicate trends, comparisons and findings.', 'Pilih carta yang jelas untuk menyampaikan trend, perbandingan dan penemuan.'],
+    ['communication', 'message', 'high', 2, '把想法说清楚，理解反馈，并与他人协作推进工作。', 'Explain ideas clearly, understand feedback and collaborate with others.', 'Jelaskan idea, fahami maklum balas dan bekerjasama dengan orang lain.'],
+    ['html-css', 'layout', 'high', 2, '搭建网页结构与样式，适配不同尺寸的屏幕。', 'Build page structure and styles that adapt to different screen sizes.', 'Bina struktur dan gaya halaman yang sesuai untuk pelbagai saiz skrin.'],
+    ['javascript', 'code', 'high', 3, '处理网页交互、异步请求和应用逻辑。', 'Handle web interactions, asynchronous requests and application logic.', 'Urus interaksi web, permintaan tak segerak dan logik aplikasi.'],
+    ['react', 'layers', 'high', 3, '用组件与状态组织界面，构建可维护的交互应用。', 'Organize interfaces with components and state for maintainable applications.', 'Susun antara muka dengan komponen dan keadaan untuk aplikasi yang mudah diselenggara.'],
+    ['git', 'branch', 'high', 2, '记录代码变化，管理分支并与团队协作合并修改。', 'Track changes, manage branches and merge work with a team.', 'Jejak perubahan, urus cabang dan gabung kerja bersama pasukan.'],
+    ['accessibility', 'layout', 'medium', 3, '让界面适配设备，并支持键盘和辅助技术访问。', 'Adapt interfaces to devices and support keyboards and assistive technology.', 'Sesuaikan antara muka dengan peranti serta sokong papan kekunci dan teknologi bantuan.'],
+    ['api-integration', 'link', 'high', 3, '连接服务接口，处理数据、加载状态和错误反馈。', 'Connect service APIs and handle data, loading states and errors.', 'Sambungkan API perkhidmatan serta urus data, keadaan pemuatan dan ralat.'],
+    ['backend-language', 'code', 'high', 4, '实现服务端业务逻辑，处理请求并组织可靠的服务。', 'Implement server logic, handle requests and organize reliable services.', 'Laksanakan logik pelayan, kendalikan permintaan dan susun perkhidmatan yang boleh dipercayai.'],
+    ['databases', 'database', 'high', 4, '设计数据结构、关系与索引，保障数据的一致性。', 'Design schemas, relationships and indexes while maintaining data consistency.', 'Reka skema, hubungan dan indeks sambil mengekalkan ketekalan data.'],
+    ['rest-api', 'link', 'high', 3, '设计清晰的资源接口、请求规则和错误响应。', 'Design clear resource APIs, request contracts and error responses.', 'Reka API sumber, kontrak permintaan dan respons ralat yang jelas.'],
+    ['cloud-deploy', 'cloud', 'high', 4, '把服务部署到云端，管理配置、监控和运行环境。', 'Deploy services to the cloud and manage configuration and monitoring.', 'Gunakan perkhidmatan di awan serta urus konfigurasi dan pemantauan.'],
+    ['testing', 'check', 'high', 3, '编写自动化检查，验证关键行为并及时发现回归。', 'Write automated checks for important behavior and catch regressions.', 'Tulis semakan automatik untuk tingkah laku penting dan kesan regresi.'],
+    ['user-research', 'search', 'medium', 3, '通过访谈与观察了解用户目标、行为和真实问题。', 'Use interviews and observation to understand user goals and problems.', 'Gunakan temu bual dan pemerhatian untuk memahami matlamat dan masalah pengguna.'],
+    ['prototyping', 'layout', 'medium', 3, '用线框和交互原型验证信息结构与操作流程。', 'Use wireframes and prototypes to validate information and interaction flows.', 'Gunakan rangka wayar dan prototaip untuk mengesahkan aliran maklumat dan interaksi.'],
+    ['figma', 'pen', 'high', 2, '制作界面、组件和原型，并协作交付设计。', 'Create interfaces, components and prototypes and collaborate on design handoff.', 'Cipta antara muka, komponen dan prototaip serta bekerjasama dalam penyerahan reka bentuk.'],
+    ['visual-design', 'pen', 'medium', 3, '运用排版、色彩和层级，让信息清楚且风格一致。', 'Use typography, color and hierarchy for clear, consistent visuals.', 'Gunakan tipografi, warna dan hierarki untuk visual yang jelas dan konsisten.'],
+    ['usability-testing', 'search', 'medium', 3, '观察用户完成任务，发现体验问题并验证改进。', 'Observe users completing tasks to find problems and validate improvements.', 'Perhatikan pengguna melaksanakan tugas untuk mencari masalah dan mengesahkan penambahbaikan.'],
+    ['ml-math', 'brain', 'medium', 5, '掌握线性代数、概率和优化，理解模型背后的原理。', 'Study linear algebra, probability and optimization to understand models.', 'Kaji algebra linear, kebarangkalian dan pengoptimuman untuk memahami model.'],
+    ['ml-frameworks', 'brain', 'high', 4, '使用机器学习框架训练、评估和改进模型。', 'Train, evaluate and improve models with machine learning frameworks.', 'Latih, nilai dan tingkatkan model dengan rangka kerja pembelajaran mesin.'],
+    ['mlops', 'cloud', 'high', 5, '管理模型部署、版本与监控，让模型持续可靠运行。', 'Manage model deployment, versions and monitoring for reliable operation.', 'Urus penggunaan, versi dan pemantauan model untuk operasi yang boleh dipercayai.'],
+    ['roadmapping', 'compass', 'medium', 3, '梳理目标与优先级，把产品方向拆成可执行的计划。', 'Turn product goals and priorities into an actionable plan.', 'Tukar matlamat dan keutamaan produk kepada pelan yang boleh dilaksanakan.'],
+    ['agile', 'layers', 'medium', 2, '通过迭代、反馈和团队协作持续交付改进。', 'Deliver improvements through iteration, feedback and team collaboration.', 'Sampaikan penambahbaikan melalui lelaran, maklum balas dan kerjasama pasukan.'],
+    ['market-analysis', 'chart', 'medium', 3, '研究用户、竞品和行业信息，支持产品决策。', 'Research users, competitors and industry information to support decisions.', 'Kaji pengguna, pesaing dan maklumat industri untuk menyokong keputusan.'],
+]
+
+export const SKILL_DETAILS = Object.fromEntries(DETAILS.map(([id, icon, demand, difficulty, zh, en, ms]) =>
+    [id, { icon, demand, heat: { high: 80, medium: 60, low: 30 }[demand], difficulty, description: { zh, en, ms } }]))

@@ -6,7 +6,10 @@
 import * as ai from './ai.js'
 import { AiError } from './ai.js'
 import * as features from './features.js'
+import * as friends from './friends.js'
 import * as game from './game.js'
+import * as integrations from './integrations.js'
+import { IntegrationError } from './integrations.js'
 import { getCareer } from './careers.js'
 import * as store from './store.js'
 
@@ -153,6 +156,12 @@ const routes = {
             throw new HttpError(404, 'no-task')
     },
 
+    'POST /api/stage/unlock': async (save, body) =>
+    {
+        if(!game.forceStage(save, String(body.stageId)))
+            throw new HttpError(404, 'no-stage')
+    },
+
     'POST /api/log': async (save, body) =>
     {
         const content = text(body.text, 2000).trim()
@@ -165,32 +174,53 @@ const routes = {
         return { log, reply: classification.reply }
     },
 
-    'POST /api/gym/start': async (save, body) =>
+    'POST /api/player': async (save, body) =>
     {
-        const check = game.canChallenge(save, String(body.stageId))
-        if(!check.ok)
-            throw new HttpError(409, check.reason)
-        const result = await features.createChallenge({ stage: check.stage, target: save.target, lang: lang(save, body) })
-        const challenge = game.startChallenge(save, check.stage, result.questions)
-        return { challengeId: challenge.id }
+        const name = friends.cleanName(body.name)
+        if(!name)
+            throw new HttpError(400, 'empty-name')
+        save.player.name = name
     },
 
-    'POST /api/gym/submit': async (save, body) =>
+    'POST /api/friends': async (save, body) =>
     {
-        const challenge = save.challenges.find((item) => item.id === body.challengeId && !item.result)
-        if(!challenge)
-            throw new HttpError(404, 'no-challenge')
-        const answers = challenge.questions.map((_, index) => text(body.answers?.[index], 3000))
-        const stage = save.roadmap?.stages.find((item) => item.id === challenge.stageId)
-        if(!stage)
-            throw new HttpError(409, 'no-stage')
-        const grading = await features.gradeChallenge({ stage, questions: challenge.questions, answers, lang: lang(save, body) })
-        return { result: game.finishChallenge(save, challenge, grading, answers) }
+        const result = friends.addFriend(save, text(body.code, 2000))
+        if(result.startsWith('friend-'))
+            throw new HttpError(400, result)
+        return { friend: result }
     },
 
-    'POST /api/gym/abandon': async (save, body) =>
+    'POST /api/friends/remove': async (save, body) =>
     {
-        save.challenges = save.challenges.filter((item) => item.result || item.id !== body.challengeId)
+        if(!friends.removeFriend(save, String(body.id)))
+            throw new HttpError(404, 'no-friend')
+    },
+
+    /**
+     * Outside workflows (server/integrations.js), Authorization: Bearer INTEGRATION_TOKEN
+     */
+    'POST /api/integrations/market': async (save, body) =>
+    {
+        return integrations.receiveMarket(body)
+    },
+
+    'POST /api/integrations/chat': async (save, body) =>
+    {
+        if(!integrations.CHANNELS.includes(body.channel))
+            throw new HttpError(400, 'bad-channel')
+        const content = text(body.text, 2000).trim()
+        if(!content)
+            throw new HttpError(400, 'empty')
+        if(!save.roadmap)
+            return { log: null, reply: { zh: '先在游戏里生成学习路线，我才能把汇报对应到任务。', en: 'Plan a roadmap in the game first so I can match your reports to tasks.', ms: 'Rancang peta laluan dalam permainan dahulu supaya laporan boleh dipadankan dengan tugasan.' }[lang(save, body)] }
+        const classification = await features.classifyLog({ text: content, roadmap: save.roadmap, lang: lang(save, body) })
+        const log = game.applyLog(save, { text: content, source: body.channel, classification })
+        return { log, reply: classification.reply }
+    },
+
+    'POST /api/integrations/digest': async (save, body) =>
+    {
+        return { digest: integrations.applyDigest(save, body) }
     },
 
     'POST /api/reset': async () =>
@@ -224,8 +254,13 @@ export async function handle(request, response)
         return true
     }
 
+    const integration = url.pathname.startsWith('/api/integrations/')
+
     try
     {
+        if(integration)
+            integrations.authorize(request)
+
         const body = request.method === 'POST' ? await readBody(request) : {}
         const payload = await exclusive(async () =>
         {
@@ -238,11 +273,12 @@ export async function handle(request, response)
                 store.save(save)
             return { result, save }
         })
-        send(response, 200, { ...payload.result, state: game.view(payload.save, ai.status()) })
+        // Workflows and bots only need the result, the game client gets the whole state
+        send(response, 200, integration ? payload.result : { ...payload.result, state: game.view(payload.save, ai.status()) })
     }
     catch(error)
     {
-        if(error instanceof HttpError)
+        if(error instanceof HttpError || error instanceof IntegrationError)
             send(response, error.status, { error: error.code })
         else if(error instanceof AiError)
             send(response, 502, { error: error.code, detail: error.message.slice(0, 300) })

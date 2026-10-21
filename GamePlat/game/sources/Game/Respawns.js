@@ -1,5 +1,7 @@
 import * as THREE from 'three/webgpu'
 import { Game } from './Game.js'
+import { insideMap } from './MapBounds.js'
+import { ALTAR_ISLAND } from './World/AltarIsland.js'
 
 export class Respawns
 {
@@ -33,18 +35,29 @@ export class Respawns
                 rotation: child.rotation.y
             }
 
-            this.items.set(name, item)
+            if(!this.game.mapBounds || insideMap(item.position)) this.items.set(name, item)
+        }
+
+        // Altar island (World/AltarIsland.js), on the plateau at the top of its stairs, facing the lagoon
+        if(!location.search.includes('noIsland'))
+        {
+            const { center, diameter, stairs } = ALTAR_ISLAND
+            this.items.set('altarIsland', {
+                name: 'altarIsland',
+                position: new THREE.Vector3(center.x + stairs.to.x * diameter, stairs.top * diameter + 1.5, center.z + stairs.to.z * diameter),
+                rotation: Math.PI * 0.5
+            })
         }
     }
 
     getByName(name)
     {
-        return this.items.get(name)
+        return this.items.get(name) ?? this.getDefault()
     }
 
     getDefault()
     {
-        return this.items.get(this.defaultName)
+        return this.items.get(this.defaultName) ?? this.items.get('landing')
     }
 
     getClosest(position)

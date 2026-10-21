@@ -1,15 +1,22 @@
-/* Career platform UI (sources/Career/CareerUI.js), same palette as the game modals */
+/* Career platform UI (sources/Career/CareerUI.js), warm paper / ink / pink palette of the dropdown menu */
 
 .career-ui {
-    --career-bg: rgba(37, 31, 43, 0.94);
-    --career-bg-strong: #1d1721;
-    --career-line: rgba(255, 255, 255, 0.12);
-    --career-text: #ffffff;
-    --career-muted: rgba(255, 255, 255, 0.62);
-    --career-accent: #ffd23f;
-    --career-good: #7dd87a;
-    --career-warn: #ffb648;
-    --career-bad: #ff6b6b;
+    --career-paper: #fffbf8;
+    --career-ink: #383340;
+    --career-pink: #ff659b;
+    --career-pink-soft: #ffe9f0;
+    --career-pink-ink: #a22f5a;
+    --career-pink-strong: #cc3570; /* Button fill, keeps white text readable */
+    --career-bg: rgba(255, 251, 248, 0.96);
+    --career-bg-strong: #ffffff;
+    --career-line: rgba(56, 51, 64, 0.1);
+    --career-text: var(--career-ink);
+    --career-muted: #7a7180;
+    --career-accent: var(--career-pink);
+    --career-shadow: 0 4px 18px rgba(37, 31, 43, 0.12);
+    --career-good: #3fae5a;
+    --career-warn: #e8932a;
+    --career-bad: #e04f5f;
     --career-gutter: 16px;
 
     position: absolute;
@@ -48,10 +55,10 @@
 /* HUD */
 
 .career-hud {
-    position: absolute;
-    top: calc(var(--career-gutter) + env(safe-area-inset-top));
-    left: calc(var(--career-gutter) + env(safe-area-inset-left));
-    width: 290px;
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+    color: var(--career-text);
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -66,6 +73,7 @@
     border: 1px solid var(--career-line);
     border-radius: 999px;
     background: var(--career-bg);
+    box-shadow: var(--career-shadow);
     text-align: left;
 }
 
@@ -80,7 +88,8 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: var(--pet, var(--career, #6b6475));
+    background: var(--pet, var(--career, #b9b1bd));
+    color: #ffffff;
     font-weight: 800;
     font-size: 18px;
     box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.18);
@@ -112,6 +121,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .career-points {
@@ -119,13 +129,20 @@
     border-radius: 999px;
     background: var(--career-bg);
     border: 1px solid var(--career-line);
-    color: var(--career-accent);
+    box-shadow: var(--career-shadow);
+    color: var(--career-pink-ink);
     font-weight: 800;
 }
 
 .career-points small {
     color: var(--career-muted);
     font-weight: 400;
+}
+
+button.career-points {
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
 }
 
 .career-badge {
@@ -136,12 +153,13 @@
 }
 
 .career-badge.is-mock {
-    background: rgba(138, 108, 255, 0.85);
+    background: var(--career-pink-soft);
+    color: var(--career-pink-ink);
 }
 
 .career-badge.is-warning {
-    background: var(--career-warn);
-    color: #1d1721;
+    background: #fff1dc;
+    color: #8a5310;
 }
 
 .career-next {
@@ -153,11 +171,12 @@
     border-left: 4px solid var(--career-accent);
     border-radius: 12px;
     background: var(--career-bg);
+    box-shadow: var(--career-shadow);
     text-align: left;
 }
 
 .career-next small {
-    color: var(--career-accent);
+    color: var(--career-pink-ink);
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -169,8 +188,8 @@
 }
 
 @keyframes career-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 210, 63, 0.5); }
-    50% { box-shadow: 0 0 0 8px rgba(255, 210, 63, 0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 101, 155, 0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(255, 101, 155, 0); }
 }
 
 /* Bars */
@@ -181,7 +200,7 @@
     min-width: 60px;
     height: 8px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(56, 51, 64, 0.1);
     overflow: hidden;
 }
 
@@ -201,21 +220,131 @@
     height: 4px;
 }
 
-/* Rail */
+/* Upper-right career dropdown; palette matches the warm-white dialogue reference. */
 
-.career-rail {
+.career-menu {
+    --menu-paper: var(--career-paper);
+    --menu-ink: var(--career-ink);
+    --menu-pink: var(--career-pink);
     position: absolute;
-    left: calc(var(--career-gutter) + env(safe-area-inset-left));
-    top: 50%;
-    transform: translateY(-50%);
+    top: calc(var(--career-gutter) + env(safe-area-inset-top));
+    right: calc(var(--career-gutter) + env(safe-area-inset-right));
+    z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 6px;
-    border-radius: 18px;
-    background: var(--career-bg);
-    border: 1px solid var(--career-line);
+    align-items: flex-end;
+    width: 290px;
+    max-width: calc(100vw - 2 * var(--career-gutter));
+    color: var(--menu-ink);
+    pointer-events: none;
+    transition: opacity 0.4s ease 0.6s, transform 0.4s ease 0.6s;
+}
+
+.career-menu[hidden] {
+    display: none;
+}
+
+.career-menu-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-width: 112px;
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid rgba(56, 51, 64, 0.08);
+    border-radius: 16px;
+    background: var(--menu-paper);
+    box-shadow: 0 4px 18px rgba(37, 31, 43, 0.12);
+    font-weight: 800;
     pointer-events: auto;
+    transition: background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.career-menu-trigger::before {
+    content: "";
+    width: 3px;
+    height: 18px;
+    border-radius: 3px;
+    background: var(--menu-pink);
+}
+
+.career-menu svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.career-menu-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.career-menu-chevron {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.24s ease;
+}
+
+.career-menu.is-open .career-menu-chevron {
+    transform: rotate(180deg);
+}
+
+.career-menu-trigger:hover,
+.career-menu.is-open .career-menu-trigger {
+    background: #fff2f5;
+    box-shadow: 0 5px 20px rgba(37, 31, 43, 0.16);
+}
+
+.career-menu :focus-visible {
+    outline-color: var(--menu-pink);
+    outline-offset: -3px;
+}
+
+.career-rail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 88px;
+    max-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-radius: 22px;
+    background: var(--menu-paper);
+    border: 0 solid rgba(56, 51, 64, 0.08);
+    box-shadow: 0 10px 32px rgba(37, 31, 43, 0.16);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px) scaleY(0.96);
+    transform-origin: top center;
+    clip-path: inset(0 0 100% 0 round 22px);
+    pointer-events: none;
+    transition: max-height 0.24s ease, padding 0.24s ease, margin 0.24s ease, opacity 0.2s ease, transform 0.24s ease, clip-path 0.24s ease, visibility 0s linear 0.24s;
+}
+
+.career-menu.is-open .career-rail {
+    max-height: unquote("max(72px, calc(100dvh - 300px - env(safe-area-inset-top) - env(safe-area-inset-bottom)))");
+    margin-top: 10px;
+    padding: 8px;
+    border-width: 1px;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    clip-path: inset(0 0 0 0 round 22px);
+    pointer-events: auto;
+    transition-delay: 0s;
+}
+
+.career-panel.is-open ~ .career-menu,
+.career-dialogue.is-open ~ .career-menu {
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .career-rail-item {
@@ -223,14 +352,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
-    width: 58px;
-    padding: 8px 4px 6px;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 3px;
+    width: 100%;
+    min-height: 60px;
+    padding: 8px 2px;
     border: 0;
     border-radius: 12px;
     background: transparent;
-    font-size: 11px;
-    color: var(--career-muted);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--menu-ink);
+    overflow-wrap: anywhere;
+    transition: color 0.15s ease, background 0.15s ease;
 }
 
 .career-rail-item svg {
@@ -245,26 +380,127 @@
 
 .career-rail-item:hover,
 .career-rail-item.is-active {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--career-text);
+    background: var(--career-pink-soft);
+    color: var(--career-pink-ink);
 }
 
-.career-rail-item.has-dot::after {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 10px;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--career-accent);
-    box-shadow: 0 0 0 2px var(--career-bg-strong);
+/* Menu as an always expanded toy bar at the top center (CareerUI .is-bar), the HUD stays top right */
+
+.career-menu.is-bar .career-menu-trigger {
+    display: none;
+}
+
+.career-menu.is-bar .career-hud {
+    margin-top: 0;
+}
+
+.career-menu.is-bar .career-rail {
+    position: fixed;
+    top: calc(18px + env(safe-area-inset-top));
+    left: 50%;
+    flex-direction: row;
+    gap: 4px;
+    width: auto;
+    max-width: calc(100vw - 2 * 230px);
+    max-height: none;
+    margin: 0;
+    padding: 6px;
+    overflow: visible;
+    border: 3px solid var(--outline);
+    border-radius: 20px;
+    background: var(--face);
+    box-shadow: 0 5px 0 var(--extrude);
+    opacity: 1;
+    visibility: visible;
+    clip-path: none;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    transition: left 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+/* A side panel is open: the bar slides to the middle of the space between the minimap (~230px) and the panel
+   (18px + 520px + 16px gap), so it stays fully visible and works as tabs between the panels */
+.career-panel.is-open:not(.is-map) ~ .career-menu.is-bar .career-rail {
+    left: calc(50vw - 162px);
+}
+
+@media (max-width: 1440px) {
+    .career-panel.is-open:not(.is-map) ~ .career-menu.is-bar .career-rail-item span {
+        display: none;
+    }
+
+    .career-panel.is-open:not(.is-map) ~ .career-menu.is-bar .career-rail-item {
+        padding: 6px 10px;
+    }
+}
+
+/* The roadmap scroll takes the whole screen: the bar steps aside until it closes */
+.career-panel.is-map.is-open ~ .career-menu.is-bar .career-rail {
+    visibility: hidden;
+}
+
+.career-menu.is-bar .career-rail-item {
+    flex-direction: row;
+    gap: 6px;
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 6px 12px;
+    border-radius: 14px;
+    color: var(--text);
+    font-size: 14px;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    transition: var(--toy-press), background 0.12s ease;
+}
+
+.career-menu.is-bar .career-rail-item svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--outline);
+    stroke-width: 2.2;
+}
+
+.career-menu.is-bar .career-rail-item:hover {
+    background: var(--face-soft);
+    color: var(--text);
+}
+
+.career-menu.is-bar .career-rail-item.is-active {
+    background: var(--amber);
+    color: var(--text);
+    box-shadow: inset 0 0 0 2px var(--outline);
+}
+
+.career-menu.is-bar .career-rail-item:active {
+    transform: translateY(2px);
+}
+
+/* Not enough room between the minimap and the HUD: icons only (the label stays as title / accessible name) */
+@media (max-width: 1100px) {
+    .career-menu.is-bar .career-rail-item span {
+        display: none;
+    }
+
+    .career-menu.is-bar .career-rail-item {
+        padding: 6px 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .career-menu-trigger,
+    .career-menu-chevron,
+    .career-rail,
+    .career-rail-item {
+        transition: none;
+    }
 }
 
 /* Panel */
 
 .career-panel {
     position: absolute;
+    z-index: 3;
     top: 0;
     right: 0;
     bottom: 0;
@@ -272,9 +508,10 @@
     max-width: 460px;
     display: flex;
     flex-direction: column;
-    background: #251f2b;
+    background: var(--career-paper);
+    color: var(--career-ink);
     border-left: 1px solid var(--career-line);
-    box-shadow: -20px 0 40px rgba(0, 0, 0, 0.25);
+    box-shadow: -20px 0 40px rgba(37, 31, 43, 0.22);
     transform: translateX(105%);
     transition: transform 0.28s ease, visibility 0s linear 0.28s;
     visibility: hidden;
@@ -299,8 +536,22 @@
 }
 
 .career-panel-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin: 0;
     font-size: 22px;
+}
+
+/* Pink bar before titles, like the menu button */
+.career-panel-header h2::before,
+.career-panel-body h3::before {
+    content: "";
+    flex-shrink: 0;
+    width: 4px;
+    height: 0.9em;
+    border-radius: 3px;
+    background: var(--career-pink);
 }
 
 .career-close {
@@ -308,9 +559,15 @@
     height: 36px;
     border: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(56, 51, 64, 0.07);
     font-size: 22px;
     line-height: 1;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.career-close:hover {
+    background: var(--career-pink-soft);
+    color: var(--career-pink-ink);
 }
 
 .career-panel-body {
@@ -321,6 +578,9 @@
 }
 
 .career-panel-body h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin: 22px 0 8px;
     font-size: 16px;
 }
@@ -336,9 +596,14 @@
     box-sizing: border-box;
     padding: 10px 12px;
     border-radius: 10px;
-    border: 1px solid var(--career-line);
+    border: 1px solid rgba(56, 51, 64, 0.16);
     background: var(--career-bg-strong);
     resize: vertical;
+}
+
+.career-panel-body textarea::placeholder,
+.career-panel-body input::placeholder {
+    color: #a59cab;
 }
 
 .career-panel-body select {
@@ -368,18 +633,28 @@
     padding: 10px 18px;
     border: 0;
     border-radius: 10px;
-    background: var(--career-accent);
-    color: #1d1721 !important;
+    background: var(--career-pink-strong);
+    color: #ffffff !important;
     font-weight: 800;
+    transition: background 0.15s ease;
+}
+
+.career-button:hover {
+    background: #b72c63;
 }
 
 .career-button.is-secondary {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--career-text) !important;
+    background: rgba(56, 51, 64, 0.08);
+    color: var(--career-ink) !important;
+}
+
+.career-button.is-secondary:hover {
+    background: var(--career-pink-soft);
+    color: var(--career-pink-ink) !important;
 }
 
 .career-button.is-danger {
-    background: var(--career-bad);
+    background: #c9364a;
     color: #ffffff !important;
     margin-top: 20px;
 }
@@ -394,7 +669,7 @@
     padding: 4px 0;
     border: 0;
     background: none;
-    color: var(--career-accent);
+    color: var(--career-pink-ink);
     text-decoration: underline;
 }
 
@@ -403,13 +678,13 @@
     height: 28px;
     border: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(56, 51, 64, 0.07);
 }
 
 .career-file-button {
     padding: 8px 14px;
     border-radius: 10px;
-    border: 1px dashed var(--career-line);
+    border: 1px dashed rgba(56, 51, 64, 0.25);
     cursor: pointer;
     color: var(--career-muted);
 }
@@ -441,21 +716,41 @@
     padding: 2px 8px;
     margin: 2px 4px 2px 0;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--career-pink-soft);
+    color: var(--career-pink-ink);
     font-size: 12px;
+    font-weight: 700;
     white-space: nowrap;
 }
 
-.career-tag.is-target,
-.career-tag.is-verified {
-    background: var(--career-good);
-    color: #1d1721;
+.career-tag.is-target {
+    background: #def3e2;
+    color: #1f6b35;
     font-weight: 700;
 }
 
 .career-tag.is-mp {
-    background: rgba(90, 160, 255, 0.25);
-    color: #b9d6ff;
+    background: #e3eeff;
+    color: #2a5ea8;
+}
+
+.career-tag.is-trend {
+    cursor: help;
+}
+
+.career-tag.is-trend.is-up {
+    background: #DDF3E2;
+    color: #1F6B35;
+}
+
+.career-tag.is-trend.is-down {
+    background: #FFE2DC;
+    color: #A3271A;
+}
+
+.career-tag.is-trend.is-flat {
+    background: var(--face-soft, #EDE6FF);
+    color: var(--text, #2A1F6E);
 }
 
 /* Lists */
@@ -465,8 +760,7 @@
 .career-pet-skills,
 .career-posting,
 .career-tasks,
-.career-logs,
-.career-questions {
+.career-logs {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -492,25 +786,6 @@
     color: var(--career-muted);
     font-size: 12px;
     overflow-wrap: anywhere;
-}
-
-.career-requirements li,
-.career-pet-skills li {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 120px;
-    align-items: center;
-    gap: 4px 10px;
-    padding: 6px 0;
-}
-
-.career-requirements li small {
-    grid-column: 1 / -1;
-    color: var(--career-muted);
-    font-size: 12px;
-}
-
-.career-requirements li.has-gap .career-bar > span {
-    background: var(--career-warn);
 }
 
 .career-posting li {
@@ -547,6 +822,7 @@
     border-left: 5px solid var(--career);
     border-radius: 14px;
     background: var(--career-bg-strong);
+    box-shadow: 0 2px 10px rgba(37, 31, 43, 0.06);
     text-align: left;
 }
 
@@ -564,16 +840,17 @@
     color: var(--career-muted);
 }
 
-.career-card-match {
+.career-card-affinity {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.career-card-match em {
+.career-card-affinity em {
     font-style: normal;
     font-weight: 800;
     white-space: nowrap;
+    color: var(--career-pink-ink);
 }
 
 .career-modes {
@@ -603,13 +880,225 @@
 
 /* Pet */
 
+.career-skill-reference {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.career-panel:has(.career-skill-grid) {
+    max-width: 760px;
+}
+
+.career-skill-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding-bottom: 6px;
+}
+
+.career-skill-card {
+    container-type: inline-size;
+    padding: 12px;
+    border: 1px solid var(--career-line);
+    border-top: 3px solid var(--skill-accent, var(--career-pink));
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(37, 31, 43, 0.08);
+    min-width: 0;
+}
+
+.career-skill-card-header {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px 10px;
+    margin-bottom: 10px;
+}
+
+.career-skill-card-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    color: #463a22;
+    border: 3px solid #fff0b4;
+    border-radius: 10px;
+    background: #f6d66c;
+    box-shadow: inset 0 -4px 0 rgba(96, 67, 9, 0.14);
+}
+
+.career-skill-card-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.career-skill-card-header h4 {
+    min-width: 0;
+    margin: 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--skill-accent, var(--career-pink));
+    font-size: 16px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.career-skill-mastery {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 12px;
+}
+
+.career-skill-stones {
+    display: flex;
+    gap: 8px;
+    padding: 3px;
+}
+
+.career-skill-stones i {
+    display: block;
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--stone);
+    transform: rotate(45deg);
+    opacity: 0.55;
+}
+
+.career-skill-stones i.is-filled {
+    background: var(--stone);
+    opacity: 1;
+}
+
+.career-skill-mastery small {
+    color: var(--career-muted);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.career-skill-mastery b {
+    color: var(--career-pink-ink);
+}
+
+.career-skill-stats {
+    display: grid;
+    gap: 5px;
+    margin: 0;
+}
+
+.career-skill-stats > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 28px;
+    padding: 4px 9px;
+    border-radius: 5px;
+    color: var(--career-ink);
+    background: var(--career-paper);
+    box-shadow: inset 0 0 0 1px rgba(56, 51, 64, 0.08);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.career-skill-stats dt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 8px;
+    font-weight: 800;
+}
+
+.career-skill-stats dt small {
+    color: #736a78;
+    font-size: 10px;
+    font-weight: 400;
+}
+
+.career-skill-stats dd {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 8px;
+    margin: 0;
+    font-weight: 800;
+}
+
+.career-panel-body .career-skill-description {
+    margin: 9px 1px 0;
+    color: #5b5262;
+    font-size: 12px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.career-panel-body .career-skill-requirement {
+    margin: 8px 1px 0;
+    padding-top: 7px;
+    border-top: 1px solid var(--career-line);
+    color: var(--career-muted);
+    font-size: 11px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+@container (max-width: 230px) {
+    .career-skill-card-header {
+        grid-template-columns: 34px minmax(0, 1fr);
+        gap: 7px;
+    }
+
+    .career-skill-card-icon {
+        width: 34px;
+        height: 34px;
+        border-width: 2px;
+        border-radius: 7px;
+    }
+
+    .career-skill-card-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .career-skill-card-header h4 {
+        font-size: 13px;
+    }
+
+    .career-skill-stats > div {
+        padding: 4px 6px;
+        font-size: 12px;
+    }
+
+    .career-skill-description {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 440px) {
+    .career-skill-grid {
+        gap: 8px;
+    }
+
+    .career-skill-card {
+        padding: 8px;
+    }
+}
+
 .career-pet-card {
     display: flex;
     gap: 14px;
     align-items: center;
     padding: 14px;
+    border: 1px solid var(--career-line);
     border-radius: 16px;
     background: var(--career-bg-strong);
+    box-shadow: 0 2px 10px rgba(37, 31, 43, 0.06);
 }
 
 .career-pet-card > div {
@@ -630,6 +1119,7 @@
     height: 72px;
     border-radius: 50%;
     background: var(--pet);
+    color: #ffffff;
     font-size: 32px;
     font-weight: 800;
     box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.18);
@@ -674,13 +1164,13 @@
 }
 
 .career-stage-index {
-    color: var(--career-accent);
+    color: var(--career-pink-ink);
     font-size: 12px;
     font-weight: 800;
 }
 
 .career-stage p small {
-    color: var(--career-accent);
+    color: var(--career-pink-ink);
     font-weight: 700;
 }
 
@@ -719,6 +1209,784 @@
     border-top: 1px dashed var(--career-line);
 }
 
+/* Roadmap as a treasure map on a toy scroll (CareerUI.renderRoadmapMap): two rollers, the paper unrolls from the
+   middle when the roadmap opens, the world map is drawn on the paper with a dotted trail, flags, notes on hover */
+
+.career-panel.is-map {
+    --paper: #FFF3DA;
+    --paper-edge: #F4DDB0;
+    --roller: var(--amber);
+    --roller-light: var(--amber-soft);
+    --scrim: rgba(24, 18, 34, 0.45);
+    --unroll: 0.9s cubic-bezier(0.22, 0.9, 0.3, 1.08);
+
+    top: calc(18px + env(safe-area-inset-top));
+    bottom: calc(28px + env(safe-area-inset-bottom));
+    left: 50%;
+    right: auto;
+    width: unquote("min(1400px, calc(100% - 24px))");
+    max-width: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: 0 0 0 100vmax var(--scrim);
+    transform: translate(-50%, 24px);
+    opacity: 0;
+    transition: transform 0.28s ease, opacity 0.28s ease, visibility 0s linear 0.28s;
+}
+
+.career-panel.is-map.is-open {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    transition: transform 0.28s ease, opacity 0.28s ease;
+}
+
+/* Rollers */
+.career-panel.is-map::before,
+.career-panel.is-map::after {
+    content: "";
+    position: absolute;
+    z-index: 5;
+    top: -12px;
+    bottom: -12px;
+    width: 46px;
+    border: 3px solid var(--outline);
+    border-radius: 23px;
+    background: var(--roller);
+    box-shadow: inset 10px 0 0 var(--roller-light), inset 0 14px 0 var(--extrude), inset 0 -14px 0 var(--extrude), 0 8px 0 var(--extrude);
+}
+
+.career-panel.is-map::before {
+    left: 0;
+}
+
+.career-panel.is-map::after {
+    right: 0;
+}
+
+.career-panel.is-map .career-panel-header {
+    position: absolute;
+    z-index: 6;
+    top: 22px;
+    right: 40px;
+    padding: 0;
+}
+
+.career-panel.is-map .career-panel-header h2 {
+    display: none;
+}
+
+/* Paper */
+.career-panel.is-map .career-panel-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    margin: 0 23px;
+    padding: 18px 34px 12px;
+    overflow: hidden;
+    border-top: 3px solid var(--outline);
+    border-bottom: 3px solid var(--outline);
+    background: var(--paper);
+    box-shadow: inset 0 10px 0 var(--paper-edge), inset 0 -10px 0 var(--paper-edge);
+}
+
+.career-panel.is-map .career-panel-body > .career-notice {
+    margin: 0 0 10px;
+}
+
+/* Unroll: the paper opens from the middle while the rollers travel outward, with a small bounce */
+.career-panel.is-map.is-open .career-panel-body {
+    animation: career-unroll-paper var(--unroll) both;
+}
+
+.career-panel.is-map.is-open::before {
+    animation: career-unroll-left var(--unroll) both;
+}
+
+.career-panel.is-map.is-open::after {
+    animation: career-unroll-right var(--unroll) both;
+}
+
+.career-panel.is-map.is-open .career-panel-header {
+    animation: career-unroll-fade 0.3s ease 0.7s both;
+}
+
+@keyframes career-unroll-paper {
+    from { clip-path: inset(0 50% 0 50%); }
+    to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes career-unroll-left {
+    from { left: calc(50% - 46px); }
+    to { left: 0; }
+}
+
+@keyframes career-unroll-right {
+    from { right: calc(50% - 46px); }
+    to { right: 0; }
+}
+
+@keyframes career-unroll-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.career-map {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    gap: 10px;
+}
+
+/* The map drawn on the paper */
+.career-map-viewport {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 3px solid var(--outline);
+    border-radius: 18px;
+    box-shadow: 0 5px 0 var(--extrude-soft);
+}
+
+.career-map-board {
+    position: relative;
+    height: 100%;
+    min-height: 420px;
+    overflow: hidden;
+    background-size: 165% auto; /* East side of the world map picture (woods, lakes), away from the circuit */
+    background-position: 100% 42%;
+    background-color: #334156;
+}
+
+.career-map-trail {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.career-map-trail path {
+    fill: none;
+    stroke: var(--face-white);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 14 13;
+}
+
+/* Header: banner, ribbon, MP pill */
+
+.career-map-header {
+    position: absolute;
+    z-index: 2;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.career-map-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 22px 10px 12px;
+    border: 3px solid var(--outline);
+    border-radius: 16px;
+    background: var(--face);
+    box-shadow: 0 5px 0 var(--extrude);
+    transform: rotate(-2deg);
+}
+
+.career-map-emblem {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--outline);
+    border-radius: 12px;
+    background: var(--amber-soft);
+}
+
+.career-map-emblem svg {
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke: var(--outline);
+    stroke-width: 2.4;
+}
+
+.career-map-banner strong {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+    text-shadow: 0 3px 0 var(--extrude-soft);
+}
+
+.career-map-banner small {
+    display: block;
+    margin-top: 2px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.career-map-ribbon {
+    margin: 8px 0 0 54px;
+    padding: 5px 16px;
+    border: 2px solid var(--outline);
+    border-radius: 999px;
+    background: var(--face-white);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 700;
+    transform: rotate(-2deg);
+    box-shadow: 0 3px 0 var(--outline);
+}
+
+.career-map-mp {
+    position: absolute;
+    z-index: 2;
+    top: 16px;
+    right: 76px;
+    padding: 6px 16px;
+    border: 2px solid var(--outline);
+    border-radius: 999px;
+    background: var(--face-white);
+    color: var(--text);
+    font-weight: 600;
+    box-shadow: 0 3px 0 var(--outline);
+    cursor: help;
+}
+
+.career-map-hint {
+    position: absolute;
+    z-index: 1;
+    top: 62px;
+    right: 16px;
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: var(--outline);
+    color: var(--face-white);
+    font-size: 12px;
+}
+
+/* Stops: flag on a stone base, the avatar beside the active one, the note beside the flag */
+
+.career-map-node {
+    position: absolute;
+    z-index: 2; /* Under the open note: it fully covers the flags behind it */
+    display: block;
+    width: 84px;
+    height: 104px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    transform: translate(-50%, -100%);
+}
+
+.career-map-base {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 26px;
+    border: 3px solid var(--outline);
+    border-radius: 50%;
+    background: #B9A99A;
+    transform: translateX(-50%);
+}
+
+.career-map-pole {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    width: 6px;
+    height: 84px;
+    border: 2px solid var(--outline);
+    border-radius: 3px;
+    background: #8A5A3C;
+    transform: translateX(-50%);
+}
+
+.career-map-flag {
+    position: absolute;
+    left: calc(50% + 2px);
+    top: 4px;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 40px;
+    padding-right: 12px;
+    clip-path: polygon(0 0, 100% 0, 78% 50%, 100% 100%, 0 100%);
+    background: #E8513F;
+    color: var(--face-white);
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 600;
+    transform-origin: left center;
+    transition: transform 0.2s ease;
+}
+
+.career-map-node {
+    transition: opacity 0.15s ease;
+}
+
+.career-map-node:hover .career-map-flag,
+.career-map-node:focus-visible .career-map-flag {
+    transform: scale(1.12) rotate(-4deg);
+}
+
+.career-map-stop.is-active .career-map-node::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -8px;
+    width: 92px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid var(--amber);
+    transform: translateX(-50%);
+    animation: career-map-pulse 1.6s ease-out infinite;
+}
+
+@keyframes career-map-pulse {
+    from { opacity: 1; transform: translateX(-50%) scale(0.7); }
+    to { opacity: 0; transform: translateX(-50%) scale(1.25); }
+}
+
+.career-map-stop.is-cleared .career-map-flag {
+    background: #2E9B4C;
+}
+
+.career-map-stop.is-locked .career-map-flag {
+    background: var(--extrude);
+}
+
+.career-map-stop.is-locked .career-map-base {
+    width: 58px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--extrude-soft);
+}
+
+.career-map-stop.is-locked .career-map-base svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: var(--outline);
+    stroke-width: 2.4;
+}
+
+.career-map-avatar {
+    position: absolute;
+    z-index: 1;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    filter: brightness(1.45) saturate(1.1) drop-shadow(0 4px 0 rgba(30, 20, 20, 0.35)); /* The portraits are rendered dark */
+    transform: translate(-125%, -100%);
+    pointer-events: none;
+}
+
+/* Note: the whole map height beside the flag, the padding bridges the gap so the card can be reached */
+
+.career-map-note {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    width: 470px;
+    max-width: 70%;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.18s ease, visibility 0s linear 0.18s;
+    pointer-events: none; /* Only the card and its bridge catch the pointer, not the whole column */
+}
+
+.career-map-note.is-right {
+    padding: 12px 12px 12px 48px;
+}
+
+.career-map-note.is-left {
+    justify-content: flex-end;
+    padding: 12px 48px 12px 12px;
+}
+
+.career-map-stop:hover .career-map-note,
+.career-map-stop:focus-within .career-map-note,
+.career-map-stop.is-open .career-map-note {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.18s ease;
+}
+
+.career-map-stop:hover .career-map-card,
+.career-map-stop:focus-within .career-map-card,
+.career-map-stop.is-open .career-map-card {
+    pointer-events: auto;
+}
+
+.career-map-stop:hover .career-map-card,
+.career-map-stop:focus-within .career-map-card,
+.career-map-stop.is-open .career-map-card {
+    animation: career-map-pop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes career-map-pop {
+    from { transform: scale(0.92); }
+    to { transform: none; }
+}
+
+.career-map-card {
+    position: relative;
+    width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 16px 18px;
+    border: 3px solid var(--outline);
+    border-radius: 20px;
+    background: var(--face-white);
+    box-shadow: 0 6px 0 var(--extrude);
+}
+
+.career-map-card-index {
+    display: block;
+    padding-left: 8px;
+    border-left: 4px solid var(--outline);
+    color: var(--accent-text);
+    font-weight: 700;
+}
+
+.career-map-card-title {
+    display: block;
+    margin: 4px 0 8px;
+    font-family: var(--font-heading);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--text);
+    text-shadow: 0 3px 0 var(--extrude-soft);
+}
+
+.career-map-tags .career-tag {
+    padding: 4px 14px;
+    border: 2px solid var(--outline);
+    font-size: 14px;
+}
+
+.career-tag.is-active {
+    background: #FFE2DC;
+    color: #A3271A;
+}
+
+.career-tag.is-cleared {
+    background: #DDF3E2;
+    color: #1F6B35;
+}
+
+.career-tag.is-locked {
+    background: var(--face-soft);
+    color: var(--text);
+}
+
+.career-map-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.career-map-progress small {
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.career-map-why,
+.career-map-lock {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin: 8px 0;
+    color: var(--text);
+}
+
+.career-map-why svg,
+.career-map-lock svg {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: var(--outline);
+    stroke-width: 2.4;
+}
+
+.career-map-why b {
+    display: block;
+    color: var(--accent-text);
+}
+
+.career-map-card .career-tasks li {
+    padding: 10px 12px;
+    margin-top: 8px;
+    border: 2px solid var(--outline);
+    border-radius: 14px;
+    background: var(--face);
+}
+
+.career-tag.is-forced {
+    background: var(--amber-soft);
+    color: var(--text);
+}
+
+/* Locked stage: chains and a padlock over the tasks, opaque */
+
+.career-map-locked {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 22px 16px 16px;
+    overflow: hidden;
+    border: 2px solid var(--outline);
+    border-radius: 16px;
+    background: var(--face-soft);
+    text-align: center;
+}
+
+.career-map-chains {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.career-map-chains .is-link {
+    fill: none;
+    stroke: var(--outline);
+    stroke-width: 7;
+}
+
+.career-map-chains .is-shine {
+    fill: none;
+    stroke: var(--extrude-soft);
+    stroke-width: 2.5;
+}
+
+.career-map-padlock {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 70px;
+    height: 78px;
+}
+
+.career-map-padlock svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.career-map-padlock .is-shackle { fill: none; stroke: var(--outline); stroke-width: 9; stroke-linecap: round; }
+.career-map-padlock .is-shackle-shine { fill: none; stroke: var(--amber); stroke-width: 3.5; stroke-linecap: round; }
+.career-map-padlock .is-body { fill: var(--amber); stroke: var(--outline); stroke-width: 3; }
+.career-map-padlock .is-keyhole { fill: var(--outline); }
+.career-map-padlock .is-gem { fill: #FF5FA2; stroke: var(--outline); stroke-width: 2; }
+
+.career-map-locked .career-map-lock,
+.career-map-locked .career-map-force-warning,
+.career-map-locked .career-button,
+.career-map-force-actions {
+    position: relative;
+    z-index: 1;
+}
+
+.career-map-locked .career-map-lock {
+    justify-content: center;
+    margin: 0;
+    padding: 4px 12px;
+    border: 2px solid var(--outline);
+    border-radius: 999px;
+    background: var(--face-white);
+    font-weight: 700;
+}
+
+.career-map-force-warning {
+    margin: 0;
+    padding: 10px 12px;
+    border: 2px solid var(--outline);
+    border-radius: 12px;
+    background: var(--face-white);
+    color: var(--text);
+    font-size: 14px;
+}
+
+.career-map-force-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Shatter: the padlock bursts into shards, the chains fall away */
+
+.career-map-shards i {
+    position: absolute;
+    left: 50%;
+    top: 58%;
+    width: 24px;
+    height: 24px;
+    margin: -12px 0 0 -12px;
+    background: var(--amber);
+    border: 2px solid var(--outline);
+    clip-path: polygon(50% 0, 100% 70%, 20% 100%);
+    opacity: 0;
+}
+
+.career-map-shards i:nth-child(3n) {
+    background: #FF5FA2;
+}
+
+.career-map-locked.is-breaking .career-map-padlock svg {
+    animation: career-lock-crack 0.45s ease-in forwards;
+}
+
+.career-map-locked.is-breaking .career-map-shards i {
+    animation: career-lock-shard 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+.career-map-locked.is-breaking .career-map-chains {
+    animation: career-lock-chains 0.7s ease-in 0.15s forwards;
+}
+
+.career-map-locked.is-breaking .career-map-lock,
+.career-map-locked.is-breaking .career-map-force-warning,
+.career-map-locked.is-breaking .career-button {
+    animation: career-unroll-fade 0.3s ease reverse forwards;
+}
+
+@keyframes career-lock-crack {
+    0% { transform: none; }
+    30% { transform: scale(1.15) rotate(-6deg); }
+    55% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+    100% { transform: scale(0.4); opacity: 0; }
+}
+
+@keyframes career-lock-shard {
+    0%, 35% { transform: none; opacity: 0; }
+    40% { opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)) rotate(var(--r)); opacity: 0; }
+}
+
+@keyframes career-lock-chains {
+    to { transform: translateY(40px) rotate(4deg); opacity: 0; }
+}
+
+/* Invisible strip between the flag and the card (on the note, the scrolling card would clip it) */
+.career-map-note::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    width: 52px;
+}
+
+.career-map-note.is-right::before {
+    left: 0;
+}
+
+.career-map-note.is-left::before {
+    right: 0;
+}
+
+.career-map-stop:hover .career-map-note::before,
+.career-map-stop:focus-within .career-map-note::before,
+.career-map-stop.is-open .career-map-note::before {
+    pointer-events: auto;
+}
+
+/* Chest at the end of the trail */
+
+.career-map-chest {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transform: translate(-50%, -70%);
+}
+
+.career-map-chest svg {
+    width: 104px;
+}
+
+.career-map-chest-shadow { fill: rgba(30, 20, 20, 0.35); }
+.career-map-chest-wood { fill: #A0582C; stroke: var(--outline); stroke-width: 2; }
+.career-map-chest-lid { fill: #C06A33; stroke: var(--outline); stroke-width: 2; }
+.career-map-chest-band { fill: none; stroke: var(--amber); stroke-width: 4; }
+.career-map-chest-lock { fill: var(--amber); stroke: var(--outline); stroke-width: 2; }
+
+.career-map-chest.is-open .career-map-chest-lid {
+    transform: translateY(-8px) rotate(-8deg);
+    transform-origin: 6px 24px;
+}
+
+.career-map-bubble {
+    max-width: 180px;
+    padding: 8px 14px;
+    border: 2px solid var(--outline);
+    border-radius: 14px;
+    background: var(--face-white);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    box-shadow: 0 3px 0 var(--outline);
+}
+
+/* Written at the bottom of the paper */
+.career-map-footer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--text);
+}
+
+.career-map-footer p {
+    flex: 1;
+    margin: 0;
+    font-size: 13px;
+}
+
+.career-map-footer p small {
+    display: block;
+    color: var(--text-muted);
+}
+
+@media (max-width: 700px) {
+    .career-map-banner strong { font-size: 20px; }
+    .career-map-emblem { width: 38px; height: 38px; }
+    .career-map-note { width: 330px; max-width: 90%; }
+    .career-map-footer { flex-direction: column; align-items: stretch; }
+}
+
 /* Logs */
 
 .career-logs li {
@@ -735,54 +2003,78 @@
     font-size: 12px;
 }
 
-/* Gym */
+/* Leaderboard (friend codes) */
 
-.career-questions li {
-    margin: 14px 0;
+.career-leaderboard {
+    list-style: none;
+    margin: 12px 0;
+    padding: 0;
 }
 
-.career-questions textarea {
-    margin-top: 6px;
-}
-
-.career-result {
+.career-leaderboard-row {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px;
-    border-radius: 14px;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--career-line);
+}
+
+.career-leaderboard-row.is-me {
+    border-radius: 10px;
+    background: var(--career-pink-soft);
+}
+
+.career-leaderboard-rank {
+    width: 24px;
+    font-weight: 800;
+    color: var(--career-muted);
     text-align: center;
 }
 
-.career-result strong {
-    font-size: 22px;
+.career-leaderboard-row:nth-child(1) .career-leaderboard-rank { color: #d9a400; }
+.career-leaderboard-row:nth-child(2) .career-leaderboard-rank { color: #8f96a3; }
+.career-leaderboard-row:nth-child(3) .career-leaderboard-rank { color: #b8733a; }
+
+.career-leaderboard-name {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
-.career-result.is-passed {
-    background: rgba(125, 216, 122, 0.2);
-    border: 1px solid var(--career-good);
+.career-leaderboard-name em {
+    color: var(--career-pink-ink);
+    font-size: 12px;
+    font-style: normal;
 }
 
-.career-result.is-failed {
-    background: rgba(255, 182, 72, 0.15);
-    border: 1px solid var(--career-warn);
+.career-leaderboard-name small {
+    display: block;
+    color: var(--career-muted);
+    font-size: 12px;
 }
 
-/* NPC dialogue */
+.career-leaderboard-row strong {
+    color: var(--career-pink-ink);
+}
+
+.js-friend-code {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px;
+}
+
+/* NPC dialogue, Pokemon Scarlet/Violet style: white box, speaker tab with a color bar, choices on the right */
 
 .career-dialogue {
+    --dialogue-ink: #2f2c3a;
     position: absolute;
+    z-index: 4;
     left: 50%;
-    bottom: calc(24px + env(safe-area-inset-bottom));
+    bottom: calc(22px + env(safe-area-inset-bottom));
     width: calc(100% - 32px);
-    max-width: 680px;
-    padding: 16px 18px;
-    border-radius: 18px;
-    background: var(--career-bg);
-    border: 1px solid var(--career-line);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    transform: translate(-50%, 140%);
-    transition: transform 0.25s ease, visibility 0s linear 0.25s;
+    max-width: 920px;
+    transform: translate(-50%, 30px);
+    opacity: 0;
+    transition: transform 0.22s ease, opacity 0.22s ease, visibility 0s linear 0.22s;
     visibility: hidden;
     pointer-events: none;
     box-sizing: border-box;
@@ -790,42 +2082,284 @@
 
 .career-dialogue.is-open {
     transform: translate(-50%, 0);
+    opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transition: transform 0.25s ease;
+    transition: transform 0.22s ease, opacity 0.22s ease;
 }
 
-.career-dialogue-speaker {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.career-dialogue-box {
+    position: relative;
+    min-height: 118px;
+    padding: 30px 64px 24px 44px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
+    color: var(--dialogue-ink);
+    cursor: pointer;
+    box-sizing: border-box;
 }
 
-.career-dialogue-speaker strong {
-    flex: 1;
+.career-dialogue-name {
+    position: absolute;
+    top: -18px;
+    left: 0;
+    padding: 6px 30px 6px 16px;
+    border-radius: 14px 14px 14px 0;
+    background: #ffffff;
+    color: var(--dialogue-ink);
+    font-weight: 800;
+    font-size: 17px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.12);
+    clip-path: inset(-20px -20px 0 -20px);
+}
+
+.career-dialogue-name::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 1.1em;
+    margin-right: 10px;
+    vertical-align: -0.15em;
+    border-radius: 2px;
+    background: var(--career, #8ad14b);
 }
 
 .career-dialogue-line {
-    margin: 12px 0;
-    font-size: 16px;
+    margin: 0;
+    font-size: 21px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.career-dialogue-next {
+    position: absolute;
+    right: 26px;
+    bottom: 20px;
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: var(--dialogue-ink);
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+}
+
+/* Arrow bounces once the line is typed and there is something to continue to */
+.career-dialogue.is-typed:not(.has-choices) .career-dialogue-next {
+    opacity: 1;
+    animation: career-next-bounce 0.9s ease-in-out infinite;
+}
+
+@keyframes career-next-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
 }
 
 .career-dialogue-choices {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    position: absolute;
+    right: 18px;
+    bottom: calc(100% + 26px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     gap: 8px;
+    min-width: 260px;
+    max-width: 380px;
+    opacity: 0;
+    transform: translateX(16px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+}
+
+.career-dialogue.has-choices .career-dialogue-choices {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
 }
 
 .career-dialogue-choices button {
-    padding: 10px 12px;
-    border: 1px solid var(--career-line);
-    border-radius: 10px;
-    background: var(--career-bg-strong);
+    position: relative;
+    padding: 11px 22px 11px 40px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--dialogue-ink) !important;
+    font-weight: 700;
+    font-size: 16px;
     text-align: left;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
 }
 
+.career-dialogue-choices button.is-selected,
 .career-dialogue-choices button:hover {
-    border-color: var(--career-accent);
+    background: #2f2c3a;
+    color: #ffffff !important;
+}
+
+.career-dialogue-choices button.is-selected::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    border: 7px solid transparent;
+    border-left: 10px solid var(--career, #8ad14b);
+    transform: translateY(-50%);
+}
+
+/* Minimap (upper left), career mentors as avatars */
+
+.career-minimap {
+    position: absolute;
+    z-index: 1;
+    transition: opacity 0.4s ease 0.6s, transform 0.4s ease 0.6s;
+    left: calc(var(--career-gutter) + env(safe-area-inset-left));
+    top: calc(var(--career-gutter) + env(safe-area-inset-top));
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.92);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+    background: #1d1721;
+    overflow: hidden;
+    pointer-events: auto;
+}
+
+.career-minimap-open {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
+}
+
+.career-minimap-world {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: 100% 100%;
+    background-repeat: no-repeat; // The cropped map goes past the picture (altar island), show the sea colour there
+    pointer-events: none;
+    will-change: transform;
+}
+
+.career-minimap-markers {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.career-minimap-player {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    width: 18px;
+    height: 18px;
+    fill: var(--career-pink);
+    stroke: #ffffff;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+
+.career-minimap-npc,
+.career-map-npc {
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 3px solid var(--career);
+    border-radius: 50%;
+    background: #fff8ef;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.career-minimap-npc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 32px;
+    height: 32px;
+    pointer-events: auto;
+    transition: width 0.15s ease, height 0.15s ease;
+}
+
+.career-minimap-npc img,
+.career-map-npc img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.career-minimap-npc span,
+.career-map-npc span {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background: var(--career);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.career-minimap-npc:hover {
+    width: 40px;
+    height: 40px;
+}
+
+.career-minimap-npc.is-edge {
+    width: 24px;
+    height: 24px;
+    opacity: 0.85;
+}
+
+.career-minimap-npc.is-target,
+.career-map-npc.is-target {
+    border-color: #ffd23f;
+    box-shadow: 0 0 0 2px #1d1721, 0 0 10px #ffd23f;
+}
+
+/* Markers on the M map (inside the game map modal, positioned in % of the map) */
+.career-map-npc {
+    position: absolute;
+    z-index: 2000;
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
+    overflow: visible;
+    font-family: "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+.career-map-npc img,
+.career-map-npc span {
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.career-map-npc em {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(29, 23, 33, 0.85);
+    color: #ffffff;
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.career-map-npc:hover {
+    transform: scale(1.12);
 }
 
 /* Busy */
@@ -837,7 +2371,9 @@
     transform: translate(-50%, -200%);
     padding: 8px 18px;
     border-radius: 999px;
-    background: rgba(138, 108, 255, 0.95);
+    background: var(--career-paper);
+    color: var(--career-pink-ink);
+    box-shadow: var(--career-shadow);
     font-weight: 700;
     transition: transform 0.2s ease;
 }
@@ -854,11 +2390,24 @@
 
 /* Hidden during the intro, like the rest of the game UI */
 
+/* Minimap, menu and HUD pop in once the character is chosen (Reveal step 1) */
+html:not(.is-character-selected) .career-minimap {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+html:not(.is-character-selected) .career-menu {
+    opacity: 0;
+    transform: translateY(-12px);
+    visibility: hidden;
+}
+
 html:not(.is-started) .career-ui {
     display: none;
 }
 
-/* Phone: rail at the bottom, panel full width */
+/* Phone: dropdown stays at the upper right, panel full width */
 
 @media (max-width: 720px) {
     .career-ui {
@@ -866,24 +2415,12 @@ html:not(.is-started) .career-ui {
         font-size: 14px;
     }
 
-    .career-hud {
-        width: calc(100% - 120px);
-        max-width: 260px;
-    }
-
-    .career-rail {
-        top: auto;
-        bottom: calc(10px + env(safe-area-inset-bottom));
-        left: 50%;
-        transform: translateX(-50%);
-        flex-direction: row;
-        max-width: calc(100% - 20px);
-        overflow-x: auto;
+    .career-menu {
+        width: unquote("min(230px, calc(100vw - 152px))");
     }
 
     .career-rail-item {
-        width: 48px;
-        font-size: 10px;
+        min-height: 56px;
     }
 
     .career-panel {
@@ -895,7 +2432,416 @@ html:not(.is-started) .career-ui {
         bottom: calc(86px + env(safe-area-inset-bottom));
     }
 
+    .career-dialogue-box {
+        min-height: 96px;
+        padding: 24px 44px 18px 22px;
+    }
+
+    .career-dialogue-line {
+        font-size: 16px;
+    }
+
+    .career-dialogue-choices {
+        right: 0;
+        min-width: 0;
+        max-width: 78%;
+    }
+
+    .career-dialogue-choices button {
+        font-size: 14px;
+        padding: 9px 16px 9px 34px;
+    }
+
+    .career-minimap {
+        width: 112px;
+        height: 112px;
+        border-width: 3px;
+    }
+
+    .career-minimap-npc {
+        width: 24px;
+        height: 24px;
+    }
+
     .career-modes {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * Toy block theme: matches the chunky "CHILL CHILL" letters of the landing (lavender-white faces,
+ * thick purple outline, hard purple extrusion). Styling only, every colour is a token below.
+ * No blur, gradients or soft shadows: every shadow is a hard vertical offset.
+ * ------------------------------------------------------------------------------------------- */
+
+.career-ui {
+    --face: #F3EEFF;
+    --face-white: #FFFFFF;
+    --face-soft: #EDE6FF;
+    --outline: #3B2E9E;
+    --extrude: #6A55E0;
+    --extrude-soft: #CFC4FF;
+    --amber: #FFB547;
+    --amber-soft: #FFE1A8;
+    --teal-pet: #178577;
+    --text: #2A1F6E;
+    --text-muted: #5A4FA0;
+    --accent-text: #6A2BB0;
+    --placeholder: #7D74B8;
+    --line-soft: rgba(59, 46, 158, 0.18);
+    --on-dark: #FFFFFF;
+
+    --toy-border: 3px solid var(--outline);
+    --toy-press: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --font-heading: "Fredoka", "ZCOOL KuaiLe", "Noto Sans SC", system-ui, sans-serif; /* Latin and numbers in Fredoka */
+    --font-body: "Fredoka", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+
+    /* The rest of the career UI follows the same palette */
+    --career-paper: var(--face);
+    --career-ink: var(--text);
+    --career-text: var(--text);
+    --career-muted: var(--text-muted);
+    --career-bg: var(--face);
+    --career-bg-strong: var(--face-white);
+    --career-line: var(--line-soft);
+    --career-shadow: 0 5px 0 var(--extrude);
+
+    font-family: var(--font-body);
+}
+
+.career-ui h2,
+.career-ui h3,
+.career-ui h4 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+}
+
+.career-ui textarea::placeholder,
+.career-ui input::placeholder {
+    color: var(--placeholder);
+}
+
+/* Panel */
+
+.career-panel:not(.is-map) {
+    top: calc(18px + env(safe-area-inset-top));
+    right: calc(18px + env(safe-area-inset-right));
+    bottom: calc(28px + env(safe-area-inset-bottom));
+    width: calc(100% - 36px);
+    max-width: 520px;
+    padding: 0;
+    border: var(--toy-border);
+    border-radius: 28px;
+    background: var(--face);
+    color: var(--text);
+    box-shadow: 0 9px 0 var(--extrude);
+    transform: translateX(calc(100% + 40px));
+}
+
+.career-panel:not(.is-map).is-open {
+    transform: none;
+}
+
+.career-panel:not(.is-map) .career-panel-body {
+    border-radius: 0 0 26px 26px;
+}
+
+.career-panel-header h2 {
+    font-size: 30px;
+    color: var(--text);
+    text-shadow: 0 3px 0 var(--extrude-soft);
+}
+
+.career-panel-header h2::before,
+.career-panel-body h3::before {
+    background: var(--outline);
+}
+
+.career-panel-body h3 {
+    color: var(--text);
+}
+
+.career-close {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: var(--toy-border);
+    border-radius: 50%;
+    background: var(--face-white);
+    color: var(--outline);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 0 4px 0 var(--outline);
+    transition: var(--toy-press);
+}
+
+.career-close:hover {
+    background: var(--face-soft);
+}
+
+/* Cards */
+
+.career-pet-card {
+    border: var(--toy-border);
+    border-radius: 20px;
+    background: var(--face-white);
+    box-shadow: 0 5px 0 var(--extrude-soft);
+}
+
+.career-pet-card strong {
+    color: var(--text);
+}
+
+.career-pet-portrait,
+.career-pet-avatar {
+    background: var(--teal-pet);
+    border: var(--toy-border);
+    color: var(--on-dark);
+    box-shadow: none;
+}
+
+.career-pet-info em,
+.career-pet-card em {
+    display: inline-block;
+    padding: 0 8px;
+    border: 2px solid var(--outline);
+    border-radius: 999px;
+    background: var(--amber);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.career-pet-card em {
+    align-self: flex-start; /* The card text is a flex column, keep the Lv badge a pill */
+    margin-left: 0;
+}
+
+.career-skill-card {
+    border: var(--toy-border);
+    border-radius: 18px;
+    background: var(--face-white);
+    box-shadow: 0 5px 0 var(--extrude);
+}
+
+.career-skill-card-header h4 {
+    border-bottom-color: var(--face-soft);
+    color: var(--text);
+}
+
+.career-skill-card-header {
+    grid-template-columns: 34px minmax(0, 1fr);
+}
+
+.career-skill-card-icon {
+    width: 34px;
+    height: 34px;
+    border: 2px solid var(--outline);
+    border-radius: 11px;
+    background: var(--amber-soft);
+    color: var(--outline);
+    box-shadow: none;
+}
+
+.career-skill-card-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--outline);
+    stroke-width: 2.4;
+}
+
+.career-skill-stones i {
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--outline);
+    border-radius: 2px;
+    background: transparent;
+    opacity: 1;
+}
+
+.career-skill-stones i.is-filled {
+    background: var(--amber);
+}
+
+.career-skill-mastery small,
+.career-skill-description {
+    color: var(--text-muted);
+}
+
+.career-skill-mastery b {
+    color: var(--accent-text);
+}
+
+.career-skill-stats > div {
+    border-radius: 10px;
+    background: var(--face-soft);
+    box-shadow: none;
+    color: var(--text);
+}
+
+.career-skill-stats dd {
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+
+/* 好感度 bar */
+
+.career-bar {
+    height: 12px;
+    border: 2px solid var(--outline);
+    background: var(--face-soft);
+}
+
+.career-bar > span,
+.career-bar.is-heart > span {
+    background: var(--extrude);
+}
+
+.career-bar.is-thin {
+    height: 8px;
+    border-width: 1px;
+}
+
+/* Inputs and buttons */
+
+.career-panel-body textarea,
+.career-panel-body input[type="text"],
+.career-panel-body select {
+    border: var(--toy-border);
+    border-radius: 14px;
+    background: var(--face-white);
+    color: var(--text);
+    box-shadow: none;
+}
+
+.career-panel-body textarea:focus,
+.career-panel-body input[type="text"]:focus,
+.career-panel-body select:focus {
+    outline: 3px solid var(--extrude-soft);
+    outline-offset: 1px;
+}
+
+.career-button,
+.career-file-button {
+    min-height: 44px;
+    padding: 9px 18px;
+    border: var(--toy-border);
+    border-radius: 14px;
+    box-shadow: 0 4px 0 var(--outline);
+    font-weight: 700;
+    transition: var(--toy-press), background 0.12s ease;
+}
+
+.career-button {
+    background: var(--amber);
+    color: var(--text) !important;
+}
+
+.career-button:hover {
+    background: var(--amber-soft);
+}
+
+.career-button.is-secondary,
+.career-file-button {
+    display: inline-flex;
+    align-items: center;
+    background: var(--face-white);
+    color: var(--text) !important;
+}
+
+.career-button.is-secondary:hover,
+.career-file-button:hover {
+    background: var(--face-soft);
+    color: var(--text) !important;
+}
+
+.career-button.is-danger {
+    background: var(--outline);
+    color: var(--on-dark) !important;
+}
+
+.career-icon-button {
+    min-width: 44px;
+    min-height: 44px;
+    border: 2px solid var(--outline);
+    background: var(--face-white);
+    color: var(--outline);
+    box-shadow: 0 3px 0 var(--outline);
+    transition: var(--toy-press);
+}
+
+/* Toy key press: sink by the shadow height */
+.career-button:active,
+.career-file-button:active,
+.career-close:active,
+.career-icon-button:active,
+.career-pet-chip:active,
+.career-next:active,
+.career-points:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+/* HUD: pet chip, points, next step */
+
+.career-pet-chip {
+    min-height: 44px;
+    border: var(--toy-border);
+    border-radius: 20px;
+    background: var(--face);
+    color: var(--text);
+    box-shadow: 0 5px 0 var(--extrude);
+    transition: var(--toy-press);
+}
+
+.career-pet-info strong {
+    color: var(--text);
+}
+
+.career-pet-info small {
+    color: var(--text-muted);
+}
+
+.career-points {
+    min-height: 44px;
+    border: var(--toy-border);
+    background: var(--face-white);
+    color: var(--text);
+    box-shadow: 0 4px 0 var(--extrude);
+    transition: var(--toy-press);
+}
+
+.career-points small {
+    color: var(--text-muted);
+}
+
+.career-next {
+    min-height: 44px;
+    border: var(--toy-border);
+    border-radius: 20px;
+    background: var(--face-white);
+    color: var(--text);
+    box-shadow: 0 5px 0 var(--extrude);
+    transition: var(--toy-press);
+}
+
+.career-next small {
+    color: var(--accent-text);
+}
+
+/* Minimap: outline, then a face ring, then the extrusion */
+
+.career-minimap {
+    border: 4px solid var(--outline);
+    box-shadow: 0 0 0 5px var(--face), 0 9px 0 5px var(--extrude);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .career-ui {
+        --toy-press: none;
     }
 }

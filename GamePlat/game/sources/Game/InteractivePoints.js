@@ -343,6 +343,15 @@ export class InteractivePoints
         item.materials = materials
         this.items.push(item)
 
+        // Follow a moving owner (wandering NPCs): visual, proximity and cursor sphere (its center is newPosition)
+        item.setPosition = (value) =>
+        {
+            newPosition.copy(value)
+            group.position.copy(value)
+            item.position.set(value.x, value.z)
+            this.needsTest = true // The owner may come within reach of a player standing still
+        }
+
         /**
          * Cursor
          */
@@ -592,7 +601,7 @@ export class InteractivePoints
             for(const item of this.items)
             {
                 const itemDistance = Math.hypot(item.position.x - this.game.player.position2.x, item.position.y - this.game.player.position2.y)
-                const isIn = itemDistance < 2.5
+                const isIn = itemDistance < (item.radius ?? 2.5)
                 
                 if(isIn)
                 {

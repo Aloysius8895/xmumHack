@@ -1,0 +1,122 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "editable_collections",
+      "passed": true,
+      "details": [
+        "01_Terrain",
+        "02_Beaches_and_Reefs",
+        "03_Roads_and_Graded_Paths",
+        "04_Bridge_and_Stairs",
+        "05_Six_Building_Sites",
+        "06_Navigation_Surfaces",
+        "90_Preview_Only"
+      ]
+    },
+    {
+      "name": "metre_units",
+      "passed": true,
+      "details": "Blender metre scale"
+    },
+    {
+      "name": "finite_mesh_coordinates",
+      "passed": true,
+      "details": 362
+    },
+    {
+      "name": "six_building_sites",
+      "passed": true,
+      "details": 6
+    },
+    {
+      "name": "primary_route_widths",
+      "passed": true,
+      "details": 3.6
+    },
+    {
+      "name": "primary_route_gradients",
+      "passed": true,
+      "details": {
+        "max_degrees": 12.6044,
+        "limit_degrees": 18
+      }
+    },
+    {
+      "name": "all_sites_connected_to_port",
+      "passed": true,
+      "details": {
+        "data-analyst": true,
+        "frontend-developer": true,
+        "product-manager": true,
+        "backend-developer": true,
+        "ui-ux-designer": true,
+        "ml-engineer": true
+      }
+    },
+    {
+      "name": "all_routes_connected",
+      "passed": true,
+      "details": {
+        "reachable": 52,
+        "total": 52
+      }
+    },
+    {
+      "name": "actual_terrain_supports_routes",
+      "passed": true,
+      "details": {
+        "samples": 1989,
+        "max_surface_gap_m": 0.1353,
+        "max_centerline_height_error_m": 0.0566,
+        "mismatches": [],
+        "mismatch_count": 0
+      }
+    },
+    {
+      "name": "level_supported_building_sites",
+      "passed": true,
+      "details": []
+    },
+    {
+      "name": "self_contained_glb",
+      "passed": true,
+      "details": {
+        "bytes": 3421820,
+        "external_resources": []
+      }
+    },
+    {
+      "name": "glb_excludes_preview_and_navigation",
+      "passed": true,
+      "details": 342
+    },
+    {
+      "name": "glb_reimports_with_terrain_and_circulation",
+      "passed": true,
+      "details": {
+        "meshes": 342,
+        "materials": 20
+      }
+    },
+    {
+      "name": "reasonable_asset_bounds",
+      "passed": true,
+      "details": {
+        "blender_xyz_metres": [
+          214.368,
+          233.131,
+          41.1
+        ]
+      }
+    }
+  ],
+  "imported_visual_meshes": 342,
+  "imported_triangles": 86258,
+  "previews": {
+    "preview-southwest.png": true,
+    "preview-overhead.png": true,
+    "preview-northeast.png": true
+  },
+  "limitation": "In-game physics, camera and click-to-move are not integrated or tested."
+}

@@ -2,19 +2,19 @@
  * Game rules: everything that changes progress, affinity or points is decided here, never by the AI
  *
  * Loop (skills/game/game-design-theory, MDA): know your skills > pick a target > get the career pet > follow the roadmap
- * > log what you did (progress only) > pass the stage gym (understanding check) > affinity and points go up
+ * > log what you did and track preparation. Daily-report mastery growth is a separate, future feature.
  */
 import { CAREERS, SKILLS, getCareer, matchCareer } from './careers.js'
+import { SKILL_DETAILS } from './skill-details.js'
+import { friendCode, leaderboard } from './friends.js'
+import { monthlyTrend } from './market-trends.js'
+import { loadMarket } from './store.js'
 
 export const RULES = {
-    gymUnlockProgress: 80,     // % of the stage tasks before its gym opens
-    passAverage: 70,           // average score to pass a gym
-    passMinimum: 40,           // and no question below this
-    affinityPerGym: 20,        // first clear of a stage only, logs never give affinity
+    affinityPerLevel: 20,      // retain existing pet levels; new affinity growth is deferred
     affinityMax: 100,
-    pointsPerGym: 100,
-    pointsPerLog: 5,
-    pointLogsPerDay: 3,        // logs past this still count for progress but give no points
+    // Points = task progress gained (percentage points) × weight of the skill difficulty (skill-details, 1-5)
+    difficultyWeights: { high: 3, medium: 2, low: 1 },
     maxStages: 6,
     maxTasksPerStage: 4,
 }
@@ -22,7 +22,14 @@ export const RULES = {
 // Pet level 1-6 from affinity
 export function petLevel(affinity)
 {
-    return 1 + Math.floor(Math.min(affinity, RULES.affinityMax) / RULES.affinityPerGym)
+    return 1 + Math.floor(Math.min(affinity, RULES.affinityMax) / RULES.affinityPerLevel)
+}
+
+// Difficulty 4-5 high, 3 medium, 1-2 or unknown skill low
+export function difficultyTier(skillId)
+{
+    const difficulty = SKILL_DETAILS[skillId]?.difficulty ?? 1
+    return difficulty >= 4 ? 'high' : difficulty === 3 ? 'medium' : 'low'
 }
 
 /**
@@ -75,7 +82,6 @@ export function setTarget(save, { careerId, mode, posting })
         save.pet = { careerId, name: career.pet.name, species: career.pet.species, affinity: 0, createdAt: new Date().toISOString() }
     }
     save.roadmap = null
-    save.challenges = save.challenges.filter((challenge) => challenge.result)
 }
 
 export function gapsFor(save)
@@ -108,7 +114,6 @@ export function buildRoadmap(plan)
                 mp: Math.max(1, Math.min(200, Math.round(task.effortHours))),
                 progress: 0,
             })),
-            challenge: stage.challenge,
             cleared: false,
             clearedAt: null,
         })),
@@ -125,10 +130,34 @@ function stageProgress(stage)
 
 function stageStatus(roadmap, stage)
 {
-    if(stage.cleared)
+    const complete = (item) => item.cleared || (item.tasks.length > 0 && item.tasks.every((task) => task.progress >= 100))
+    if(complete(stage))
         return 'cleared'
-    const ready = stage.prerequisites.every((id) => roadmap.stages.find((other) => other.id === id)?.cleared)
+    // Unlocked early by the player (confirmed in the roadmap), prerequisites are a recommendation, not a wall
+    if(stage.forced)
+        return 'active'
+    const ready = stage.prerequisites.every((id) =>
+    {
+        const previous = roadmap.stages.find((other) => other.id === id)
+        return previous && complete(previous)
+    })
     return ready ? 'active' : 'locked'
+}
+
+/**
+ * Start a locked stage anyway (the client asks for a confirmation first)
+ */
+export function forceStage(save, stageId)
+{
+    const stage = save.roadmap?.stages.find((item) => item.id === stageId)
+    if(!stage)
+        return false
+    if(stageStatus(save.roadmap, stage) === 'locked')
+    {
+        stage.forced = true
+        stage.forcedAt = new Date().toISOString()
+    }
+    return true
 }
 
 function findTask(roadmap, taskId)
@@ -141,14 +170,10 @@ function findTask(roadmap, taskId)
 }
 
 /**
- * Logs: progress only
+ * Logs: task progress, and points for the progress gained (only logs give points, ticking a task done doesn't)
  */
 export function applyLog(save, { text, source, classification })
 {
-    const today = new Date().toISOString().slice(0, 10)
-    const logsToday = save.logs.filter((log) => log.at.slice(0, 10) === today && log.points > 0).length
-    const points = logsToday < RULES.pointLogsPerDay ? RULES.pointsPerLog : 0
-
     const advanced = []
     for(const item of classification.items)
     {
@@ -158,7 +183,8 @@ export function applyLog(save, { text, source, classification })
         {
             const before = task.progress
             task.progress = Math.min(100, Math.round(task.progress + hours / task.mp * 100))
-            advanced.push({ taskId: task.id, from: before, to: task.progress })
+            const difficulty = difficultyTier(task.skillId)
+            advanced.push({ taskId: task.id, from: before, to: task.progress, difficulty, points: (task.progress - before) * RULES.difficultyWeights[difficulty] })
         }
     }
 
@@ -170,11 +196,11 @@ export function applyLog(save, { text, source, classification })
         summary: classification.summary,
         skillIds: [ ...new Set(classification.items.map((item) => item.skillId).filter((id) => SKILLS[id])) ],
         advanced,
-        points,
+        points: advanced.reduce((sum, item) => sum + item.points, 0),
     }
     save.logs.unshift(log)
     save.logs = save.logs.slice(0, 500)
-    save.points += points
+    save.points += log.points
     return log
 }
 
@@ -188,107 +214,20 @@ export function setTaskDone(save, taskId, done)
 }
 
 /**
- * Gym
- */
-export function canChallenge(save, stageId)
-{
-    const stage = save.roadmap?.stages.find((item) => item.id === stageId)
-    if(!stage)
-        return { ok: false, reason: 'no-stage' }
-    const status = stageStatus(save.roadmap, stage)
-    if(status === 'locked')
-        return { ok: false, reason: 'locked' }
-    if(stageProgress(stage) < RULES.gymUnlockProgress)
-        return { ok: false, reason: 'not-ready' }
-    return { ok: true, stage }
-}
-
-export function startChallenge(save, stage, questions)
-{
-    const challenge = {
-        id: `c${Date.now()}`,
-        stageId: stage.id,
-        careerId: save.target.careerId,
-        startedAt: new Date().toISOString(),
-        questions: questions.slice(0, 5),
-        result: null,
-    }
-    save.challenges.unshift(challenge)
-    save.challenges = save.challenges.slice(0, 100)
-    return challenge
-}
-
-export function finishChallenge(save, challenge, grading, answers)
-{
-    const scores = challenge.questions.map((_, index) => Math.max(0, Math.min(100, Math.round(grading.results[index]?.score ?? 0))))
-    const average = Math.round(scores.reduce((sum, score) => sum + score, 0) / Math.max(1, scores.length))
-    const passed = average >= RULES.passAverage && scores.every((score) => score >= RULES.passMinimum)
-
-    const stage = save.roadmap.stages.find((item) => item.id === challenge.stageId)
-    const firstClear = passed && stage && !stage.cleared
-    let affinity = 0
-    let points = 0
-
-    if(firstClear)
-    {
-        stage.cleared = true
-        stage.clearedAt = new Date().toISOString()
-
-        affinity = Math.min(RULES.affinityPerGym, RULES.affinityMax - save.pet.affinity)
-        save.pet.affinity += affinity
-        points = RULES.pointsPerGym
-        save.points += points
-
-        // The gym confirms understanding of the stage skills: raise them one level toward what the career needs
-        const career = getCareer(save.target.careerId)
-        for(const skillId of stage.skillIds)
-        {
-            const required = career.skills.find((skill) => skill.id === skillId)?.level ?? 1
-            const existing = save.profile.skills.find((skill) => skill.id === skillId)
-            if(existing)
-            {
-                if(existing.level < required)
-                {
-                    existing.level += 1
-                    existing.source = 'gym'
-                }
-            }
-            else
-            {
-                save.profile.skills.push({ id: skillId, name: SKILLS[skillId].en, level: 1, evidence: stage.challenge.topic, source: 'gym' })
-            }
-        }
-    }
-
-    challenge.answers = answers
-    challenge.result = {
-        at: new Date().toISOString(),
-        scores,
-        average,
-        passed,
-        firstClear,
-        affinity,
-        points,
-        feedback: challenge.questions.map((_, index) => ({ feedback: grading.results[index]?.feedback ?? '', missing: grading.results[index]?.missing ?? [] })),
-        reviewTopics: grading.reviewTopics,
-        summary: grading.summary,
-    }
-    return challenge.result
-}
-
-/**
  * What the client sees (hidden rubric removed, derived values computed)
  */
 export function view(save, ai)
 {
+    const market = loadMarket()
     const careers = CAREERS.map((career) => ({
         id: career.id,
         name: career.name,
         summary: career.summary,
         color: career.color,
-        market: career.market,
+        market: { ...career.market, monthly: monthlyTrend(career.id, market) },
         effortMonths: career.effortMonths,
         pet: career.pet,
+        affinity: save.pet?.careerId === career.id ? save.pet.affinity : 0,
         match: matchCareer(career, save.profile.skills),
     }))
 
@@ -308,8 +247,8 @@ export function view(save, ai)
                 const baseline = Math.round(Math.min(skill.current, skill.required) / skill.required * 100)
                 return {
                     ...skill,
-                    progress: Math.max(baseline, roadmapProgress),
-                    verified: Boolean(save.roadmap?.stages.some((stage) => stage.cleared && stage.skillIds.includes(skill.id))),
+                    // Daily digests of the chat agent (server/integrations.js) can raise it too
+                    progress: Math.max(baseline, roadmapProgress, save.mastery?.[skill.id] ?? 0),
                 }
             }),
         }
@@ -317,22 +256,20 @@ export function view(save, ai)
 
     const roadmap = save.roadmap && {
         ...save.roadmap,
-        stages: save.roadmap.stages.map((stage) => ({
+        stages: save.roadmap.stages.map(({ challenge: _legacyChallenge, ...stage }) => ({
             ...stage,
             status: stageStatus(save.roadmap, stage),
             progress: stageProgress(stage),
             mp: stage.tasks.reduce((sum, task) => sum + task.mp, 0),
-            gymReady: stageStatus(save.roadmap, stage) === 'active' && stageProgress(stage) >= RULES.gymUnlockProgress,
         })),
     }
-
-    const active = save.challenges.find((challenge) => !challenge.result)
 
     return {
         lang: save.lang,
         ai,
         rules: RULES,
         skillNames: SKILLS,
+        skillDetails: SKILL_DETAILS,
         profile: save.profile,
         careers,
         target: save.target,
@@ -340,7 +277,9 @@ export function view(save, ai)
         roadmap,
         logs: save.logs.slice(0, 30),
         points: save.points,
-        activeChallenge: active ? { id: active.id, stageId: active.stageId, questions: active.questions.map(({ kind, question }) => ({ kind, question })) } : null,
-        challenges: save.challenges.filter((challenge) => challenge.result).slice(0, 20).map(({ id, stageId, startedAt, result }) => ({ id, stageId, startedAt, result })),
+        player: { id: save.player.id, name: save.player.name, code: friendCode(save) },
+        mastery: save.mastery ?? {},
+        digests: (save.digests ?? []).slice(0, 7),
+        leaderboard: leaderboard(save),
     }
 }

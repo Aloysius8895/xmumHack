@@ -17,3 +17,4 @@ node_modules/
 # OS / editor
 .DS_Store
 Thumbs.db
+*.zip

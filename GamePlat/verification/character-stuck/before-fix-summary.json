@@ -1,0 +1,6 @@
+{
+  "source": "Actual pre-change controller/Rapier browser run, printed before implementation; summaries preserved from that run",
+  "wall": {"blockedX": 1.0010273456573486, "reversedX": -2.7928712368011475, "grounded": true, "knock": "none"},
+  "edgeWedge": {"elapsedRealSeconds": 15.000000000000325, "position": {"x": 1.2753196720893811e-8, "y": 0.9783822298049927, "z": -6.925631623744266e-7}, "velocityY": -6.534086694019031e-14, "grounded": false, "knock": "air", "displacement": [-1.1732836924238654e-11, 0, 0]},
+  "boundaryOverlap": {"elapsedRealSeconds": 2.9999999999999942, "position": {"x": 0.3499999940395355, "y": 0.7263253927230835, "z": -2.0353609215817414e-5}, "velocityY": 0.3658751845359802, "grounded": true, "knock": "none", "displacementX": 0}
+}

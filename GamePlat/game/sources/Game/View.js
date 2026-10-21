@@ -579,8 +579,14 @@ export class View
             { name: 'viewMapPointer', categories: [ 'intro', 'wandering' ], keys: [ 'Pointer.any' ] },
         ])
 
+        // Pixels dragged since the press, a simple click (click to move) shouldn't detach the camera
+        this.mapDragDistance = 0
+
         this.game.inputs.events.on('viewMapPointer', (action) =>
         {
+            if(!action.active)
+                this.mapDragDistance = 0
+
             if(this.mode === View.MODE_DEFAULT)
             {
                 // Focus point
@@ -589,16 +595,22 @@ export class View
                     // Map
                     if(this.game.inputs.pointer.mode === Pointer.MODE_MOUSE || this.game.inputs.pointer.touches.length >= 2)
                     {
-                        this.focusPoint.isTracking = false
-                        
-                        const mapMovement = new THREE.Vector2(this.game.inputs.pointer.delta.x, this.game.inputs.pointer.delta.y)                    
-                        mapMovement.rotateAround(new THREE.Vector2(), -this.spherical.theta)
+                        if(action.trigger !== 'start')
+                            this.mapDragDistance += Math.hypot(this.game.inputs.pointer.delta.x, this.game.inputs.pointer.delta.y)
 
-                        const smallestSide = Math.min(this.game.viewport.width, this.game.viewport.height)
-                        mapMovement.multiplyScalar(10 / smallestSide)
-                        
-                        this.focusPoint.position.x -= mapMovement.x * 2
-                        this.focusPoint.position.z -= mapMovement.y * 2
+                        if(this.mapDragDistance > 5)
+                        {
+                            this.focusPoint.isTracking = false
+
+                            const mapMovement = new THREE.Vector2(this.game.inputs.pointer.delta.x, this.game.inputs.pointer.delta.y)
+                            mapMovement.rotateAround(new THREE.Vector2(), -this.spherical.theta)
+
+                            const smallestSide = Math.min(this.game.viewport.width, this.game.viewport.height)
+                            mapMovement.multiplyScalar(10 / smallestSide)
+
+                            this.focusPoint.position.x -= mapMovement.x * 2
+                            this.focusPoint.position.z -= mapMovement.y * 2
+                        }
                     }
 
                     // Pinch
@@ -645,6 +657,13 @@ export class View
             // console.log(distanceToMagnet)
             // console.log(magnetStrength)
 
+        }
+
+        if(this.game.mapBounds && !this.focusPoint.isTracking)
+        {
+            const b = this.game.mapBounds
+            this.focusPoint.position.x = clamp(this.focusPoint.position.x, b.minX, b.maxX)
+            this.focusPoint.position.z = clamp(this.focusPoint.position.z, b.minZ, b.maxZ)
         }
 
         const easing = remap(this.focusPoint.easing, 0, 1, 1, this.game.ticker.delta * 10)

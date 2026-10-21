@@ -53,10 +53,11 @@ export class CareerApi
     setTarget(careerId, mode, text, file) { return this.request('POST', 'target', { careerId, mode, text, file }) }
     generateRoadmap() { return this.request('POST', 'roadmap', {}) }
     setTaskDone(taskId, done) { return this.request('POST', 'task', { taskId, done }) }
+    unlockStage(stageId) { return this.request('POST', 'stage/unlock', { stageId }) }
     log(text) { return this.request('POST', 'log', { text, source: 'web' }) }
-    startGym(stageId) { return this.request('POST', 'gym/start', { stageId }) }
-    submitGym(challengeId, answers) { return this.request('POST', 'gym/submit', { challengeId, answers }) }
-    abandonGym(challengeId) { return this.request('POST', 'gym/abandon', { challengeId }) }
+    setPlayerName(name) { return this.request('POST', 'player', { name }) }
+    addFriend(code) { return this.request('POST', 'friends', { code }) }
+    removeFriend(id) { return this.request('POST', 'friends/remove', { id }) }
     reset() { return this.request('POST', 'reset', {}) }
 }
 

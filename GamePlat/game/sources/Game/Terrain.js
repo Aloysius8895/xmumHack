@@ -94,6 +94,15 @@ export class Terrain
         {
             const textureUv = worldPositionToUvNode(position)
             const data = texture(this.game.resources.terrainTexture, textureUv)
+            if(this.game.mapBounds)
+            {
+                const b = this.game.mapBounds
+                const retained = position.x.greaterThanEqual(b.minX).and(position.x.lessThanEqual(b.maxX))
+                    .and(position.y.greaterThanEqual(b.minZ)).and(position.y.lessThanEqual(b.maxZ))
+                data.r.assign(retained.select(data.r, 0))
+                data.g.assign(retained.select(data.g, 0))
+                data.b.assign(retained.select(data.b, 1))
+            }
 
             // Wheel tracks
             const groundDataColor = texture(
