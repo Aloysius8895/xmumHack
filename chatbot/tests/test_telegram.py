@@ -151,7 +151,7 @@ def test_duplicate_update_ignored(tg_client, fake_ai, monkeypatch):
 def test_non_text_message_gets_text_only_reply(tg_client, monkeypatch):
     sent = _capture_telegram(monkeypatch)
     post_update(tg_client, _update(_text_message(photo=True)))
-    assert "只支持文字" in sent[-1]["payload"]["text"]
+    assert "text messages" in sent[-1]["payload"]["text"].lower()
 
 
 def test_group_chat_messages_are_ignored(tg_client, fake_ai, monkeypatch):

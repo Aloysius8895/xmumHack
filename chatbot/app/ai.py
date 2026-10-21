@@ -11,13 +11,16 @@ Pick the provider with AI_PROVIDER and the model with AI_MODEL; otherwise the
 first configured provider is used.
 """
 import os
+import re
 from typing import Optional
 
-SYSTEM_PROMPT = """You are the CareerSphere companion, chatting with a learner on WhatsApp.
+SYSTEM_PROMPT = """You are the CareerSphere companion, chatting with a learner over chat (WhatsApp or Telegram).
 CareerSphere helps people find future-ready careers and prepare for them by self-study.
 
 How to reply:
-- Short, friendly WhatsApp messages: a few sentences, no markdown headings or tables.
+- Short, friendly chat messages: a few sentences.
+- Plain text only - no Markdown. Do not use **bold**, __underline__, or # headings. Simple "- " bullet
+  points are fine if you need a short list.
 - Reply in the language the user writes in (Chinese, English or Malay).
 - Encourage the user, help them reflect on what they studied and plan the next small step.
 - You support the user's own decisions; you do not decide for them.
@@ -25,6 +28,17 @@ How to reply:
   and suggest the user check the CareerSphere app or an official source.
 - You can't see the user's profile, roadmap or progress yet, so don't pretend to know them.
 """
+
+_HEADING_PREFIX = re.compile(r"^[ \t]*#{1,6}[ \t]*", re.MULTILINE)
+
+
+def strip_markdown(text: str) -> str:
+    """Removes common Markdown markers the model sometimes uses despite the
+    system prompt - **bold**, __underline__, and leading '#' headings - so
+    channels that render plain text (Telegram, WhatsApp) show the words
+    instead of the raw punctuation. "- " bullet points are left alone."""
+    text = text.replace("**", "").replace("__", "")
+    return _HEADING_PREFIX.sub("", text)
 
 DEFAULT_MODELS = {"anthropic": "claude-haiku-4-5", "openai": "gpt-5-mini"}
 

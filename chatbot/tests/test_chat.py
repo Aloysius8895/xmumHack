@@ -41,7 +41,7 @@ def test_duplicate_delivery_ignored(client, fake_ai):
 
 def test_reset_clears_history(client, fake_ai):
     send(client, "记住我叫小明")
-    assert "重新开始" in send(client, "重新开始")[0]
+    assert "fresh start" in send(client, "重新开始")[0].lower()
     send(client, "我叫什么？")
     assert fake_ai[-1] == [{"role": "user", "content": "我叫什么？"}]
 
@@ -50,12 +50,24 @@ def test_ai_failure_sends_fallback(client, monkeypatch):
     def boom(_):
         raise RuntimeError("AI down")
     monkeypatch.setattr(ai, "reply", boom)
-    assert "稍后" in send(client, "hello")[0]
+    assert "try again" in send(client, "hello")[0].lower()
 
 
 def test_non_text_message(client, fake_ai):
-    assert "文字" in send(client, mtype="image")[0]
+    assert "text messages" in send(client, mtype="image")[0].lower()
     assert fake_ai == []
+
+
+def test_markdown_is_stripped_from_ai_replies(client, monkeypatch):
+    def reply(history):
+        return "**Excel** is useful.\n# Tips\n## More tips\n- practice daily\n__Good luck__"
+    monkeypatch.setattr(ai, "reply", reply)
+    sent = send(client, "hello")[0]
+    assert "**" not in sent and "__" not in sent
+    assert "# " not in sent
+    assert "Excel is useful." in sent
+    assert "Tips" in sent and "More tips" in sent
+    assert "- practice daily" in sent  # bullets are left alone
 
 
 def test_provider_detection(monkeypatch):
@@ -70,6 +82,21 @@ def test_provider_detection(monkeypatch):
     monkeypatch.setenv("AI_PROVIDER", "openai")
     monkeypatch.setenv("AI_MODEL", "some-model")
     assert ai.provider() == "openai" and ai.model_name() == "some-model"
+
+
+def test_strip_markdown_removes_bold_underline_and_headings():
+    raw = "**Bold** and __underline__ words.\n# Heading\n  ## Subheading\nnormal line\n- one\n- two"
+    cleaned = ai.strip_markdown(raw)
+    assert "**" not in cleaned and "__" not in cleaned
+    assert "Bold and underline words." in cleaned
+    assert "\nHeading\n" in cleaned
+    assert "Subheading" in cleaned and "##" not in cleaned
+    assert "- one" in cleaned and "- two" in cleaned  # bullets are left alone
+
+
+def test_strip_markdown_leaves_plain_text_unchanged():
+    plain = "Great job! Keep practicing SQL joins.\n- try a left join next"
+    assert ai.strip_markdown(plain) == plain
 
 
 def test_history_normalised_for_anthropic():

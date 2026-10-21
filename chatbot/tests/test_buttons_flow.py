@@ -44,13 +44,13 @@ def test_confirm_no_does_not_submit_report(client, monkeypatch):
         raise AssertionError("should not call career_api.chat")
     monkeypatch.setattr(career_api, "chat", fail)
     reply = send_button(client, "report_no")[0]
-    assert "没有记录" in reply
+    assert "not logged" in reply.lower()
     assert db.reports_for_date(db.today_myt()) == []
 
 
 def test_button_without_pending_is_handled_gracefully(client):
     reply = send_button(client, "report_yes")[0]
-    assert "已经处理过" in reply
+    assert "already handled" in reply.lower()
 
 
 def test_unknown_button_id_is_ignored(client):
