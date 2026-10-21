@@ -75,6 +75,18 @@ test('weekly snapshots are kept as history, the same week is a correction', asyn
     assert.equal(market.previous.period, market.history.at(- 2).period)
 })
 
+test('backfilled weeks are kept but never compared', async () =>
+{
+    for(const [ period, postings, backfilled ] of [ [ '2028-01-03', 5, true ], [ '2028-01-10', 8, true ], [ '2028-01-17', 30, false ], [ '2028-01-24', 33, false ] ])
+        assert.equal((await call('/api/integrations/market', { period, backfilled, careers: { 'data-analyst': { postings } } })).status, 200)
+
+    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.snapshot
+    const weeks = trend.history.slice(- 4)
+    assert.deepEqual(weeks.map((point) => point.backfilled), [ true, true, false, false ])
+    assert.deepEqual(weeks.map((point) => point.change), [ null, null, null, 10 ], 'only live week vs live week is compared')
+    assert.equal(trend.change, 10)
+})
+
 test('chat messages from the bots are filed as logs and get a reply', async () =>
 {
     const save = store.load()

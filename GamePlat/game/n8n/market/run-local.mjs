@@ -4,20 +4,34 @@
  *   RAPIDAPI_KEY=... INTEGRATION_TOKEN=... API_BASE_URL=http://localhost:8787 node n8n/market/run-local.mjs
  *   node n8n/market/run-local.mjs --dry-run                     # fetch + print the payload, push nothing
  *   node n8n/market/run-local.mjs --fixture <file> --dry-run    # no network: replay saved JSearch responses
+ *   node n8n/market/run-local.mjs --backfill --dry-run          # past 30 days split by posting date into the 3 weeks before this one
+ *   node n8n/market/run-local.mjs --backfill --replay <file>    # same from the saved responses of an earlier backfill, no quota used
+ *
+ * Every real fetch is saved to n8n/market/cache/ (gitignored) and prints the RapidAPI quota left.
  *
  * Reads the game's .env (RAPIDAPI_KEY, INTEGRATION_TOKEN, API_BASE_URL) when present.
  */
 import 'dotenv/config'
 import fs from 'node:fs'
+import path from 'node:path'
 import { catalog } from './build-workflow.mjs'
-import { aggregate, buildQueries, DEFAULT_SETTINGS } from './pipeline.js'
+import { aggregate, backfill, buildQueries, DEFAULT_SETTINGS } from './pipeline.js'
 
 const args = process.argv.slice(2)
+const option = (name) => args.includes(name) ? args[args.indexOf(name) + 1] : null
 const dryRun = args.includes('--dry-run')
-const fixtureIndex = args.indexOf('--fixture')
-const fixture = fixtureIndex >= 0 ? JSON.parse(fs.readFileSync(args[fixtureIndex + 1], 'utf8')) : null
+const isBackfill = args.includes('--backfill')
+const fixture = option('--fixture') ? JSON.parse(fs.readFileSync(option('--fixture'), 'utf8')) : null
+const replay = option('--replay') ? JSON.parse(fs.readFileSync(option('--replay'), 'utf8')) : null
 
 const settings = { ...DEFAULT_SETTINGS, apiBaseUrl: (process.env.API_BASE_URL || DEFAULT_SETTINGS.apiBaseUrl).replace(/\/+$/, '') }
+// Backfill: one search over the past 30 days with more pages (up to 100 postings per query), split by posting date
+if(isBackfill)
+    Object.assign(settings, { datePosted: 'month', numPages: 10 })
+// A replay keeps the settings of its fetch (pages, window), only the game server URL comes from here
+if(replay?.settings)
+    Object.assign(settings, replay.settings, { apiBaseUrl: settings.apiBaseUrl })
+const CACHE = path.join(path.dirname(new URL(import.meta.url).pathname), 'cache')
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 async function search(query)
@@ -32,6 +46,9 @@ async function search(query)
     try
     {
         const response = await fetch(url, { headers: { 'X-RapidAPI-Key': process.env.RAPIDAPI_KEY, 'X-RapidAPI-Host': 'jsearch.p.rapidapi.com' } })
+        const left = response.headers.get('x-ratelimit-requests-remaining')
+        if(left !== null)
+            console.error(`  quota left this month: ${left} / ${response.headers.get('x-ratelimit-requests-limit')}`)
         const body = await response.json().catch(() => ({}))
         return response.ok ? body : { error: { message: `HTTP ${response.status} ${body.message ?? ''}`.trim() } }
     }
@@ -41,36 +58,55 @@ async function search(query)
     }
 }
 
-const responses = []
-for(const query of buildQueries(settings))
+let responses = replay?.responses
+const now = replay ? new Date(replay.fetchedAt) : new Date()
+if(!responses)
 {
-    console.error(`search: ${query.query}`)
-    responses.push({ query, body: await search(query) })
+    responses = []
+    for(const query of buildQueries(settings))
+    {
+        console.error(`search: ${query.query}`)
+        responses.push({ query, body: await search(query) })
+        if(!fixture)
+            await wait(1500)
+    }
     if(!fixture)
-        await wait(1500)
+    {
+        fs.mkdirSync(CACHE, { recursive: true })
+        const file = path.join(CACHE, `${isBackfill ? 'backfill' : 'weekly'}-${now.toISOString().replace(/[:.]/g, '-')}.json`)
+        fs.writeFileSync(file, JSON.stringify({ fetchedAt: now.toISOString(), settings, responses }))
+        console.error(`saved responses: ${file}  (replay with --replay, no quota used)`)
+    }
 }
 
-const { payload, report } = aggregate(responses, settings, catalog(), new Date())
-console.error(JSON.stringify(report, null, 1))
+const results = isBackfill ? backfill(responses, settings, catalog(), now) : [ aggregate(responses, settings, catalog(), now) ]
+for(const { report } of results)
+    console.error(JSON.stringify(report, null, 1))
 
-if(!Object.keys(payload.careers).length)
+const payloads = results.map(({ payload }) => payload).filter((payload) => Object.keys(payload.careers).length)
+if(!payloads.length)
 {
-    console.error('Every search failed, nothing to push')
+    console.error(isBackfill ? 'No posting dated in the weeks to backfill, nothing to push' : 'Every search failed, nothing to push')
     process.exit(1)
 }
 
 if(dryRun)
 {
-    console.log(JSON.stringify(payload, null, 2))
+    console.log(JSON.stringify(isBackfill ? payloads : payloads[0], null, 2))
     process.exit(0)
 }
 
 if(!process.env.INTEGRATION_TOKEN)
     throw new Error('INTEGRATION_TOKEN missing (env or .env)')
-const response = await fetch(`${settings.apiBaseUrl}/api/integrations/market`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.INTEGRATION_TOKEN}` },
-    body: JSON.stringify(payload),
-})
-console.log(response.status, await response.text())
-process.exit(response.ok ? 0 : 1)
+let ok = true
+for(const payload of payloads)
+{
+    const response = await fetch(`${settings.apiBaseUrl}/api/integrations/market`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.INTEGRATION_TOKEN}` },
+        body: JSON.stringify(payload),
+    })
+    console.log(payload.period, response.status, await response.text())
+    ok &&= response.ok
+}
+process.exit(ok ? 0 : 1)

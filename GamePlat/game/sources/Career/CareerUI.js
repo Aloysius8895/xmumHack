@@ -96,6 +96,14 @@ function periodLabel(period)
         : new Date(`${period}-01T00:00:00`).toLocaleString(locale, { month: 'short' })
 }
 
+// "+5" / "-3" / "0", "—" when the change can't be computed (first week after backfilled ones)
+function changeText(change)
+{
+    if(change === null || change === undefined)
+        return '—'
+    return `${change > 0 ? '+' : ''}${change}`
+}
+
 function bar(percent, extraClass = '')
 {
     return `<span class="career-bar ${extraClass}"><span style="width:${Math.max(0, Math.min(100, percent))}%"></span></span>`
@@ -739,19 +747,21 @@ export class CareerUI
     marketBadges(career)
     {
         const snapshot = career.market.snapshot
+        const direction = (change) => change > 0 ? 'up' : change < 0 ? 'down' : 'flat'
         const trend = snapshot
-            ? `<span class="career-tag is-trend is-${snapshot.change > 0 ? 'up' : snapshot.change < 0 ? 'down' : 'flat'}" title="${esc([ snapshot.note ? pick(snapshot.note) : '', snapshot.postings !== undefined && snapshot.postings !== null ? t('careers.postings', { n: snapshot.postings }) : '' ].filter(Boolean).join(' · '))}">${esc(t(isWeek(snapshot.period) ? 'careers.weekTrend' : 'careers.monthTrend', {
+            ? `<span class="career-tag is-trend is-${direction(snapshot.change)}" title="${esc([ snapshot.note ? pick(snapshot.note) : '', snapshot.postings !== undefined && snapshot.postings !== null ? t('careers.postings', { n: snapshot.postings }) : '' ].filter(Boolean).join(' · '))}">${esc(t(isWeek(snapshot.period) ? 'careers.weekTrend' : 'careers.monthTrend', {
                 month: periodLabel(snapshot.period),
                 week: periodLabel(snapshot.period),
                 arrow: snapshot.change > 0 ? '↑' : snapshot.change < 0 ? '↓' : '→',
-                change: `${snapshot.change > 0 ? '+' : ''}${snapshot.change}`,
+                change: snapshot.change === null || snapshot.change === undefined ? '—' : `${changeText(snapshot.change)}%`,
             }))}</span>`
             : ''
         return `<span class="career-tag">${esc(t('careers.heat', { p: career.market.heat }))}</span><span class="career-tag">${esc(t(`careers.trend.${career.market.trend}`))}</span>${trend}`
     }
 
     /**
-     * Postings per week of the live snapshots (server/market-trends.js), one bar per week
+     * Postings per week of the live snapshots (server/market-trends.js), one bar per week.
+     * Backfilled weeks (rebuilt from posting dates, undercounted) are drawn lighter and never compared.
      */
     weeklyTrend(career)
     {
@@ -760,18 +770,24 @@ export class CareerUI
             return ''
 
         const max = Math.max(1, ...history.map((point) => point.postings ?? 0))
+        const skills = (point) => Object.entries(point.topSkills ?? {}).slice(0, 3)
+            .map(([ id, count ]) => `${this.skillName(id, id)} ${point.postings ? Math.round(count / point.postings * 100) : 0}%`)
+            .join(getLang() === 'zh' ? '、' : ', ')
         const bars = history.map((point) => `
-            <li class="career-week" title="${esc(t('careers.postings', { n: point.postings ?? 0 }))}">
+            <li class="career-week ${point.backfilled ? 'is-backfilled' : ''}" title="${esc([ periodLabel(point.period), t('careers.postings', { n: point.postings ?? 0 }), skills(point), point.backfilled ? t('careers.weekBackfilled') : '' ].filter(Boolean).join(' · '))}">
                 <span class="career-week-value">${point.postings ?? 0}</span>
                 <span class="career-week-bar"><span style="height:${Math.round((point.postings ?? 0) / max * 100)}%"></span></span>
-                <span class="career-week-change is-${point.change > 0 ? 'up' : point.change < 0 ? 'down' : 'flat'}">${point.change > 0 ? '+' : ''}${point.change}%</span>
+                <span class="career-week-change is-${point.change > 0 ? 'up' : point.change < 0 ? 'down' : 'flat'}">${esc(point.change === null || point.change === undefined ? '—' : `${changeText(point.change)}%`)}</span>
                 <span class="career-week-label">${esc(periodLabel(point.period))}</span>
             </li>`).join('')
 
+        const notes = [ t(history.length === 1 ? 'careers.weeklyFirst' : 'careers.weeklyNote') ]
+        if(history.some((point) => point.backfilled))
+            notes.push(t('careers.weeklyBackfilled'))
         return `
             <h3>${esc(t('careers.weekly'))}</h3>
             <ol class="career-weeks" style="--career:${career.color}" aria-label="${esc(t('careers.weekly'))}">${bars}</ol>
-            <p class="career-muted">${esc(t(history.length === 1 ? 'careers.weeklyFirst' : 'careers.weeklyNote'))}</p>`
+            ${notes.map((note) => `<p class="career-muted">${esc(note)}</p>`).join('')}`
     }
 
     renderCareers()

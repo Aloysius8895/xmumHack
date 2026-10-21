@@ -56,6 +56,7 @@ export function authorize(request)
  *   }
  * }
  * change (% vs the previous period) is computed from postings when it isn't given.
+ * backfilled: true marks a week rebuilt from posting dates (n8n/market/run-local.mjs --backfill), never compared.
  * Every period is kept as history (the last MARKET_HISTORY), the careers panel draws it as the weekly trend.
  */
 export function receiveMarket(body)
@@ -70,23 +71,17 @@ export function receiveMarket(body)
     const market = store.loadMarket()
     // One snapshot per period, oldest first: a new period is appended, the same period is a correction
     const history = (market.history ?? [ market.previous, market.latest ].filter(Boolean)).filter((snapshot) => snapshot.period !== period)
-    const previous = history.filter((snapshot) => snapshot.period < period).at(- 1) ?? null
 
     const careers = {}
     for(const [ id, value ] of Object.entries(body.careers))
     {
         if(!known.has(id) || typeof value !== 'object' || value === null)
             continue
-        const postings = Number.isFinite(value.postings) ? Math.max(0, Math.round(value.postings)) : null
-        const before = previous?.careers?.[id]?.postings
-        let change = Number.isFinite(value.change) ? Math.round(value.change) : null
-        if(change === null && postings !== null && before > 0)
-            change = Math.round((postings - before) / before * 100)
-
         const note = typeof value.note === 'string' ? { zh: value.note, en: value.note, ms: value.note } : value.note
         careers[id] = {
-            postings,
-            change: change ?? 0,
+            postings: Number.isFinite(value.postings) ? Math.max(0, Math.round(value.postings)) : null,
+            givenChange: Number.isFinite(value.change) ? Math.round(value.change) : null,
+            change: null,
             note: note && typeof note === 'object' ? { zh: String(note.zh ?? note.en ?? '').slice(0, 200), en: String(note.en ?? note.zh ?? '').slice(0, 200), ms: String(note.ms ?? note.en ?? '').slice(0, 200) } : null,
             topSkills: value.topSkills && typeof value.topSkills === 'object'
                 ? Object.fromEntries(Object.entries(value.topSkills).filter(([ skill, count ]) => SKILLS[skill] && Number.isFinite(count)).map(([ skill, count ]) => [ skill, Math.round(count) ]))
@@ -96,12 +91,33 @@ export function receiveMarket(body)
     if(!Object.keys(careers).length)
         throw new IntegrationError(400, 'no-known-career')
 
-    const snapshot = { period, source: String(body.source ?? '').slice(0, 120), collectedAt: String(body.collectedAt ?? new Date().toISOString()), receivedAt: new Date().toISOString(), careers }
+    const snapshot = { period, backfilled: body.backfilled === true, source: String(body.source ?? '').slice(0, 120), collectedAt: String(body.collectedAt ?? new Date().toISOString()), receivedAt: new Date().toISOString(), careers }
     history.push(snapshot)
     history.sort((a, b) => a.period.localeCompare(b.period))
     history.splice(0, Math.max(0, history.length - MARKET_HISTORY))
+    computeChanges(history)
     store.saveMarket({ latest: history.at(- 1), previous: history.at(- 2) ?? null, history })
     return { period, careers: Object.keys(careers) }
+}
+
+/**
+ * change of every career in every snapshot: the one pushed, or postings vs the snapshot before that has the career.
+ * Recomputed on each push since a late or corrected period changes its neighbours. A backfilled snapshot
+ * (rebuilt from posting dates, older weeks miss the postings taken down) is never compared: change null.
+ */
+function computeChanges(history)
+{
+    history.forEach((snapshot, index) =>
+    {
+        for(const [ id, career ] of Object.entries(snapshot.careers))
+        {
+            const before = history.slice(0, index).reverse().find((item) => item.careers[id])
+            const comparable = before && !before.backfilled && !snapshot.backfilled && before.careers[id].postings > 0 && career.postings !== null
+            career.change = Number.isFinite(career.givenChange) ? career.givenChange
+                : comparable ? Math.round((career.postings - before.careers[id].postings) / before.careers[id].postings * 100)
+                : before || snapshot.backfilled ? null : 0
+        }
+    })
 }
 
 /**

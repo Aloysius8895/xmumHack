@@ -166,6 +166,7 @@ function windowLabel(datePosted)
         '3days': { zh: '近 3 天', en: 'past 3 days', ms: '3 hari lepas' },
         week: { zh: '近 7 天', en: 'past 7 days', ms: '7 hari lepas' },
         month: { zh: '近 30 天', en: 'past 30 days', ms: '30 hari lepas' },
+        backfill: { zh: '这周发布且仍在招的职位中', en: 'posted that week and still open', ms: 'disiar minggu itu dan masih dibuka' },
     }[datePosted] ?? { zh: '近期', en: 'recently', ms: 'kebelakangan ini' }
 }
 
@@ -274,4 +275,45 @@ export function aggregate(responses, settings, catalog, now = new Date())
     }
     report.publishers = publishers
     return { payload, report }
+}
+
+/**
+ * Weeks before the first run, rebuilt from one search over the past 30 days (settings.datePosted: 'month'):
+ * each posting goes to the week (Monday, settings.timezone) of its job_posted_at_timestamp, and every one of the
+ * `weeks` full weeks before the current one becomes a snapshot marked backfilled.
+ * Postings already taken down are missing, so the older a week the lower its count: the server and the careers
+ * panel never compute a change % against a backfilled week, only the skill shares are comparable.
+ * Returns [ { payload, report } ] oldest week first, weeks without any posting left out.
+ */
+export function backfill(responses, settings, catalog, now = new Date(), weeks = 3)
+{
+    const current = periodOf(now, settings.timezone)
+    const weekSettings = { ...settings, datePosted: 'backfill' }
+    const results = []
+
+    for(let index = weeks; index >= 1; index--)
+    {
+        const monday = new Date(`${current}T00:00:00Z`)
+        monday.setUTCDate(monday.getUTCDate() - 7 * index)
+        const period = monday.toISOString().slice(0, 10)
+
+        const weekResponses = responses.map(({ query, body }) =>
+        {
+            const valid = body && !body.error && (Array.isArray(body.data) || Array.isArray(body.data?.jobs))
+            if(!valid)
+                return { query, body }
+            const jobs = jobsFrom(body).filter((job) => Number.isFinite(job.job_posted_at_timestamp) && periodOf(new Date(job.job_posted_at_timestamp * 1000), settings.timezone) === period)
+            return { query, body: { ...body, data: { jobs } } }
+        })
+
+        // Noon on that Monday: aggregate() takes the period from it
+        const { payload, report } = aggregate(weekResponses, weekSettings, catalog, new Date(`${period}T04:00:00Z`))
+        if(!Object.values(payload.careers).some((career) => career.postings))
+            continue
+        payload.backfilled = true
+        payload.source = `Backfill by posting date, ${payload.source}`.slice(0, 120)
+        payload.collectedAt = now.toISOString()
+        results.push({ payload, report })
+    }
+    return results
 }

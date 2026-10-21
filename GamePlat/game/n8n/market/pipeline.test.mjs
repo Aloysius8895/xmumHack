@@ -11,7 +11,7 @@ process.env.SAVE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'market-pipeline-')
 process.env.AI_MOCK = '1'
 process.env.INTEGRATION_TOKEN = 'test-token'
 
-const { aggregate, buildQueries, DEFAULT_SETTINGS, extractSkills, periodOf } = await import('./pipeline.js')
+const { aggregate, backfill, buildQueries, DEFAULT_SETTINGS, extractSkills, periodOf } = await import('./pipeline.js')
 const { buildWorkflow, catalog, checkCoverage } = await import('./build-workflow.mjs')
 
 const here = path.dirname(fileURLToPath(import.meta.url))
@@ -44,6 +44,22 @@ test('period is the Monday of the week in Malaysia time', () =>
     assert.equal(periodOf(new Date('2026-10-25T15:59:00Z'), 'Asia/Kuala_Lumpur'), '2026-10-19', 'Sunday 23:59 MYT')
     assert.equal(periodOf(new Date('2026-10-25T16:00:00Z'), 'Asia/Kuala_Lumpur'), '2026-10-26', 'Monday 00:00 MYT, still Sunday in UTC')
     assert.equal(periodOf(new Date('2026-11-01T00:00:00Z'), 'Asia/Kuala_Lumpur'), '2026-10-26', 'week across a month')
+})
+
+test('backfill splits the past 30 days into the weeks before this one by posting date', () =>
+{
+    const posted = (day, id) => ({ job_id: id, job_title: 'Data Analyst', job_description: 'SQL and Excel reports', job_posted_at_timestamp: Date.parse(`${day}T00:00:00Z`) / 1000 })
+    const jobs = [ posted('2026-09-20', 'too-old'), posted('2026-09-29', 'a'), posted('2026-10-06', 'b'), posted('2026-10-07', 'c'), posted('2026-10-13', 'd'), posted('2026-10-20', 'this-week'), { job_id: 'no-date', job_title: 'Data Analyst' } ]
+    const settings = { ...DEFAULT_SETTINGS, datePosted: 'month', numPages: 10 }
+    const query = buildQueries(settings).find((item) => item.careerId === 'data-analyst')
+    const results = backfill([ { query, body: { status: 'OK', data: { jobs } } } ], settings, catalog(), NOW)
+
+    assert.deepEqual(results.map(({ payload }) => payload.period), [ '2026-09-28', '2026-10-05', '2026-10-12' ])
+    assert.deepEqual(results.map(({ payload }) => payload.careers['data-analyst'].postings), [ 1, 2, 1 ])
+    assert.ok(results.every(({ payload }) => payload.backfilled === true && payload.collectedAt === NOW.toISOString()))
+    assert.equal(results[1].payload.careers['data-analyst'].topSkills.sql, 2)
+    assert.match(results[0].payload.careers['data-analyst'].note.zh, /这周发布且仍在招/)
+    assert.match(results[0].payload.source, /^Backfill by posting date/)
 })
 
 test('aggregate dedupes, filters titles and counts skills', () =>

@@ -73,6 +73,20 @@ npm run n8n:run -- --dry-run          # 只抓取，打印要推送的内容
 npm run n8n:run -- --fixture n8n/market/fixtures/sample-jsearch.json --dry-run   # 不联网，用虚构数据测试
 ```
 
+## 补前几周（回推）
+
+JSearch 抓不到过去某一周的「快照」，但每个职位都有发布日期。回推就是抓一次近 30 天的职位（每个搜索最多 10 页、100 个），按发布日期分到本周之前的 3 个完整周，各推送一份标了 `backfilled: true` 的快照：
+
+```bash
+cd GamePlat/game
+npm run n8n:run -- --backfill --dry-run              # 抓取 + 打印 3 周的数据，不推送（会用额度）
+npm run n8n:run -- --backfill --replay n8n/market/cache/backfill-<时间>.json   # 用存下的结果推送，不用额度
+```
+
+- 每次真的抓取都会把原始结果存到 `n8n/market/cache/`（git 忽略），之后用 `--replay` 重跑不花额度；终端会打印 RapidAPI 本月剩余额度。
+- **回推的周会偏少**：已下架的职位抓不到，越早的周越少。所以服务器不会拿回推的周算变化 %（显示 —），游戏里用浅色柱子画，并写明是按发布日期回推。各周的技能占比仍可参考。
+- 额度：12 个搜索，每个 10 页。多页的计费以 RapidAPI 的定价为准，跑之前先看剩余额度。
+
 ## 提交时要声明
 
 n8n、JSearch API（RapidAPI，数据来自 Google for Jobs）、技能分类来自 `server/careers.js`。

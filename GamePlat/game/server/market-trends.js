@@ -38,7 +38,8 @@ export const MARKET_TRENDS = {
 
 /**
  * Latest market snapshot of a career for the careers panel: the live one pushed by the workflow, with its weekly
- * history ([ { period, postings, change } ] oldest first), or the reference values above (live: false, no history)
+ * history ([ { period, postings, change, topSkills, backfilled } ] oldest first, change null when not comparable),
+ * or the reference values above (live: false, no history)
  */
 export function marketSnapshot(careerId, market = loadMarket())
 {
@@ -47,7 +48,7 @@ export function marketSnapshot(careerId, market = loadMarket())
     {
         const history = (market.history ?? [ market.previous, market.latest ].filter(Boolean))
             .filter((snapshot) => snapshot.careers?.[careerId])
-            .map((snapshot) => ({ period: snapshot.period, postings: snapshot.careers[careerId].postings, change: snapshot.careers[careerId].change }))
+            .map((snapshot) => ({ period: snapshot.period, postings: snapshot.careers[careerId].postings, change: snapshot.careers[careerId].change ?? null, topSkills: snapshot.careers[careerId].topSkills ?? {}, backfilled: snapshot.backfilled === true }))
         return { period: market.latest.period, change: live.change, note: live.note, postings: live.postings, topSkills: live.topSkills, history, live: true }
     }
 

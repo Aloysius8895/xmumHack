@@ -13,3 +13,5 @@ static/sounds/musics/*.wav
 *.blend1
 # Player save of the career platform API
 server/data/
+# Saved JSearch responses of n8n/market/run-local.mjs (replay them without spending quota)
+n8n/market/cache/
