@@ -109,6 +109,7 @@ animation/pets/build.py     用 Blender 生成 6 只职业宠物 → static/pets
 - `careers` 的键是 `server/careers.js` 里的职业 id，`topSkills` 的键是 `SKILLS` 里的技能 id，未知的会被忽略。
 - `change`（较上一期的 %）可以不填：新的 `period` 会把上一份数据存为上一期，再用职位数算出变化。同一个 `period` 再推送会覆盖（用来修正）。
 - 数据存在 `server/data/market.json`，所有玩家共用。
+- 现成的 n8n 工作流（JSearch → 技能关键词统计 → 本接口）在 `n8n/market/`，设置步骤见那里的 README。
 
 ### 2. WhatsApp / Telegram AI agent
 
