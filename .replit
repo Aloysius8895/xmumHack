@@ -1,9 +1,9 @@
-# Runs the WhatsApp chat service in whatsapp/ (the rest of the repo is untouched).
-run = "cd whatsapp && pip install -q -r requirements.txt && python run.py"
+# Runs the chat bot service in chatbot/ (the rest of the repo is untouched).
+run = "cd chatbot && pip install -q -r requirements.txt && python run.py"
 
 [[ports]]
 localPort = 8000
 externalPort = 80
 
 [deployment]
-run = ["sh", "-c", "cd whatsapp && pip install -q -r requirements.txt && python run.py"]
+run = ["sh", "-c", "cd chatbot && pip install -q -r requirements.txt && python run.py"]

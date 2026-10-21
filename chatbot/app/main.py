@@ -1,9 +1,10 @@
-"""CareerSphere WhatsApp chat (FastAPI): WhatsApp <-> Replit AI <-> CareerSphere app.
+"""CareerSphere chat bot (FastAPI): WhatsApp/Telegram <-> Replit AI <-> CareerSphere app.
 
   GET  /whatsapp/webhook      Meta's verification handshake
   POST /whatsapp/webhook      incoming WhatsApp messages
+  POST /telegram/webhook      incoming Telegram updates (X-Telegram-Bot-Api-Secret-Token)
   POST /internal/digest/run   manually (re)run the daily digest (X-Cron-Token)
-  GET  /health                status, and which AI provider/model is active
+  GET  /health                status, which channels are configured, and the active AI provider/model
 """
 import logging
 from contextlib import asynccontextmanager
@@ -12,7 +13,7 @@ from typing import Optional
 from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Query, Request
 from fastapi.responses import PlainTextResponse
 
-from . import ai, db, digest, handlers, scheduler
+from . import ai, db, digest, scheduler, telegram_channel, whatsapp_channel
 from . import whatsapp_api as wa
 from .config import get_settings
 
@@ -35,7 +36,14 @@ app = FastAPI(title="CareerSphere WhatsApp chat", lifespan=lifespan)
 
 @app.get("/health")
 def health() -> dict:
-    return {"ok": True, "dry_run": get_settings().dry_run, "ai_provider": ai.provider(), "ai_model": ai.model_name()}
+    st = get_settings()
+    return {
+        "ok": True, "dry_run": st.dry_run, "ai_provider": ai.provider(), "ai_model": ai.model_name(),
+        "channels": {
+            "whatsapp": bool(st.whatsapp_token and st.phone_number_id and st.app_secret),
+            "telegram": bool(st.telegram_bot_token and st.telegram_webhook_secret),
+        },
+    }
 
 
 @app.get("/whatsapp/webhook", response_class=PlainTextResponse)
@@ -56,7 +64,21 @@ async def receive_webhook(request: Request, background: BackgroundTasks) -> dict
     if not wa.verify_signature(raw, request.headers.get("X-Hub-Signature-256")):
         raise HTTPException(status_code=401, detail="bad signature")
     # Reply 200 to Meta immediately; the AI call happens after the response is sent.
-    background.add_task(handlers.handle_payload, await request.json())
+    background.add_task(whatsapp_channel.handle_payload, await request.json())
+    return {"status": "received"}
+
+
+@app.post("/telegram/webhook")
+async def telegram_webhook(
+    request: Request,
+    background: BackgroundTasks,
+    x_telegram_bot_api_secret_token: Optional[str] = Header(default=None),
+) -> dict:
+    st = get_settings()
+    if not st.telegram_webhook_secret or x_telegram_bot_api_secret_token != st.telegram_webhook_secret:
+        raise HTTPException(status_code=401, detail="bad secret token")
+    # Reply 200 to Telegram immediately; processing happens after the response is sent.
+    background.add_task(telegram_channel.handle_update, await request.json())
     return {"status": "received"}
 
 

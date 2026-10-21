@@ -8,7 +8,7 @@ from conftest import classify_as, send
 
 def test_report_success_saves_and_replies(client, monkeypatch):
     classify_as(monkeypatch, "report", "zh")
-    monkeypatch.setattr(career_api, "chat", lambda text, lang, from_: {
+    monkeypatch.setattr(career_api, "chat", lambda text, lang, from_, channel="whatsapp": {
         "log": {"summary": "练习 SQL JOIN", "skillIds": ["sql"],
                 "advanced": [{"taskId": "t3", "from": 20, "to": 45}], "points": 50},
         "reply": "做得好！SQL JOIN 任务进度到 45%",
@@ -20,7 +20,7 @@ def test_report_success_saves_and_replies(client, monkeypatch):
 
 def test_report_with_null_log_still_replies_but_does_not_save(client, monkeypatch):
     classify_as(monkeypatch, "report", "zh")
-    monkeypatch.setattr(career_api, "chat", lambda text, lang, from_: {
+    monkeypatch.setattr(career_api, "chat", lambda text, lang, from_, channel="whatsapp": {
         "log": None, "reply": "先去生成你的学习路线哦～",
     })
     assert send(client, "练了一下") == ["先去生成你的学习路线哦～"]
@@ -31,7 +31,7 @@ def test_report_with_null_log_still_replies_but_does_not_save(client, monkeypatc
 def test_auth_style_errors_show_generic_misconfig_message(client, monkeypatch, code):
     classify_as(monkeypatch, "report")
 
-    def boom(text, lang, from_):
+    def boom(text, lang, from_, channel="whatsapp"):
         raise career_api.CareerAPIError(code)
     monkeypatch.setattr(career_api, "chat", boom)
     reply = send(client, "练了一下")[0]
@@ -43,7 +43,7 @@ def test_auth_style_errors_show_generic_misconfig_message(client, monkeypatch, c
 def test_transient_errors_show_retry_message_and_are_not_logged(client, monkeypatch, code):
     classify_as(monkeypatch, "report")
 
-    def boom(text, lang, from_):
+    def boom(text, lang, from_, channel="whatsapp"):
         raise career_api.CareerAPIError(code)
     monkeypatch.setattr(career_api, "chat", boom)
     reply = send(client, "练了一下")[0]
@@ -56,7 +56,7 @@ def test_whitelisted_number_calls_career_api(client, monkeypatch):
     classify_as(monkeypatch, "report")
     called = {}
 
-    def fake_chat(text, lang, from_):
+    def fake_chat(text, lang, from_, channel="whatsapp"):
         called["yes"] = True
         return {"log": None, "reply": "ok"}
     monkeypatch.setattr(career_api, "chat", fake_chat)

@@ -24,7 +24,9 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 CREATE INDEX IF NOT EXISTS idx_messages_wa ON messages(wa_id, id);
 
--- Meta can deliver the same message twice; remember what was handled.
+-- Meta/Telegram can deliver the same message/update twice; remember what was
+-- handled. Shared by every channel - Telegram's integer update_id is stored
+-- stringified and prefixed ("tg:<update_id>") to avoid clashing with WhatsApp's.
 CREATE TABLE IF NOT EXISTS seen_messages (
     wa_message_id TEXT PRIMARY KEY,
     seen_at       TEXT NOT NULL

@@ -28,7 +28,7 @@ def test_confirm_yes_submits_report(client, monkeypatch):
     classify_as(monkeypatch, "uncertain", "zh")
     send_raw(client, "练了 SQL JOIN")
 
-    monkeypatch.setattr(career_api, "chat", lambda text, lang, from_: {
+    monkeypatch.setattr(career_api, "chat", lambda text, lang, from_, channel="whatsapp": {
         "log": {"summary": "s", "skillIds": ["sql"], "advanced": [], "points": 10}, "reply": "好样的！",
     })
     assert send_button(client, "report_yes") == ["好样的！"]

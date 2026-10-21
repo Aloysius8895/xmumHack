@@ -53,9 +53,9 @@ def _post(path: str, payload: dict) -> dict:
     raise CareerAPIError(code)
 
 
-def chat(text: str, lang: str, from_: str) -> dict:
+def chat(text: str, lang: str, from_: str, channel: str = "whatsapp") -> dict:
     """POST /api/integrations/chat. Returns {"log": {...} | None, "reply": str}."""
-    return _post("/api/integrations/chat", {"channel": "whatsapp", "text": text, "lang": lang, "from": from_})
+    return _post("/api/integrations/chat", {"channel": channel, "text": text, "lang": lang, "from": from_})
 
 
 def digest(date: str, summary: str, skills: list[dict]) -> dict:

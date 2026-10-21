@@ -10,7 +10,7 @@ def _bool(name: str, default: bool) -> bool:
     return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
-def _wa_id_set(name: str) -> frozenset[str]:
+def _id_set(name: str) -> frozenset[str]:
     raw = os.getenv(name, "")
     return frozenset(p.strip() for p in raw.split(",") if p.strip())
 
@@ -30,6 +30,9 @@ class Settings:
     allowed_wa_ids: frozenset[str]   # empty = no restriction (local testing)
     cron_token: str
     digest_schedule_enabled: bool
+    telegram_bot_token: str
+    telegram_webhook_secret: str
+    allowed_tg_ids: frozenset[str]   # empty = no restriction (local testing)
 
 
 def get_settings() -> Settings:
@@ -45,7 +48,10 @@ def get_settings() -> Settings:
         dry_run=_bool("WHATSAPP_DRY_RUN", default=not token),
         careersphere_api_url=os.getenv("CAREERSPHERE_API_URL", "").rstrip("/"),
         integration_token=os.getenv("INTEGRATION_TOKEN", ""),
-        allowed_wa_ids=_wa_id_set("ALLOWED_WA_IDS"),
+        allowed_wa_ids=_id_set("ALLOWED_WA_IDS"),
         cron_token=os.getenv("CRON_TOKEN", ""),
         digest_schedule_enabled=_bool("DIGEST_SCHEDULE_ENABLED", default=False),
+        telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", ""),
+        telegram_webhook_secret=os.getenv("TELEGRAM_WEBHOOK_SECRET", ""),
+        allowed_tg_ids=_id_set("TELEGRAM_ALLOWED_USER_IDS"),
     )
