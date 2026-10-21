@@ -10,6 +10,11 @@ def _bool(name: str, default: bool) -> bool:
     return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _wa_id_set(name: str) -> frozenset[str]:
+    raw = os.getenv(name, "")
+    return frozenset(p.strip() for p in raw.split(",") if p.strip())
+
+
 @dataclass(frozen=True)
 class Settings:
     whatsapp_token: str
@@ -20,6 +25,11 @@ class Settings:
     db_path: str
     history_turns: int   # how many past messages the AI sees per user
     dry_run: bool        # True = don't call WhatsApp, just record outgoing messages
+    careersphere_api_url: str
+    integration_token: str
+    allowed_wa_ids: frozenset[str]   # empty = no restriction (local testing)
+    cron_token: str
+    digest_schedule_enabled: bool
 
 
 def get_settings() -> Settings:
@@ -33,4 +43,9 @@ def get_settings() -> Settings:
         db_path=os.getenv("DB_PATH", os.path.join(os.path.dirname(__file__), "..", "data", "chat.db")),
         history_turns=int(os.getenv("HISTORY_TURNS", "20")),
         dry_run=_bool("WHATSAPP_DRY_RUN", default=not token),
+        careersphere_api_url=os.getenv("CAREERSPHERE_API_URL", "").rstrip("/"),
+        integration_token=os.getenv("INTEGRATION_TOKEN", ""),
+        allowed_wa_ids=_wa_id_set("ALLOWED_WA_IDS"),
+        cron_token=os.getenv("CRON_TOKEN", ""),
+        digest_schedule_enabled=_bool("DIGEST_SCHEDULE_ENABLED", default=False),
     )

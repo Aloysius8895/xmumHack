@@ -50,5 +50,14 @@ def send_text(to: str, body: str) -> Optional[dict]:
                   "text": {"preview_url": False, "body": body[:4096]}})
 
 
+def send_buttons(to: str, body: str, buttons: list[tuple[str, str]]) -> Optional[dict]:
+    """buttons: up to 3 (id, title) pairs; WhatsApp limits titles to 20 characters."""
+    rows = [{"type": "reply", "reply": {"id": bid, "title": title[:20]}} for bid, title in buttons[:3]]
+    return _post({
+        "recipient_type": "individual", "to": to, "type": "interactive",
+        "interactive": {"type": "button", "body": {"text": body[:1024]}, "action": {"buttons": rows}},
+    })
+
+
 def mark_read(message_id: str) -> Optional[dict]:
     return _post({"status": "read", "message_id": message_id})

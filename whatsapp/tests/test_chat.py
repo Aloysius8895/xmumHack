@@ -1,56 +1,7 @@
 """Simulates Meta's webhook end to end. The AI is mocked and nothing is sent to WhatsApp."""
-import hashlib
-import hmac
-import itertools
-import json
+from app import ai
 
-import pytest
-from fastapi.testclient import TestClient
-
-from app import ai, whatsapp_api as wa
-
-SECRET = "test-secret"
-PHONE = "60123456789"
-_ids = itertools.count(1)
-
-
-@pytest.fixture()
-def client(tmp_path, monkeypatch):
-    monkeypatch.setenv("DB_PATH", str(tmp_path / "chat.db"))
-    monkeypatch.setenv("WHATSAPP_APP_SECRET", SECRET)
-    monkeypatch.setenv("WHATSAPP_VERIFY_TOKEN", "verify-me")
-    monkeypatch.setenv("WHATSAPP_DRY_RUN", "true")
-    wa.OUTBOX.clear()
-    from app.main import app
-    with TestClient(app) as c:
-        yield c
-
-
-@pytest.fixture()
-def fake_ai(monkeypatch):
-    seen = []
-
-    def reply(history):
-        seen.append([dict(m) for m in history])
-        return f"AI reply #{len(seen)}"
-    monkeypatch.setattr(ai, "reply", reply)
-    return seen
-
-
-def _sign(body: bytes) -> str:
-    return "sha256=" + hmac.new(SECRET.encode(), body, hashlib.sha256).hexdigest()
-
-
-def send(client, text=None, *, mtype="text", frm=PHONE, mid=None):
-    msg = {"from": frm, "id": mid or f"wamid.{next(_ids)}", "timestamp": "1760000000", "type": mtype}
-    if mtype == "text":
-        msg["text"] = {"body": text}
-    body = json.dumps({"object": "whatsapp_business_account", "entry": [{"changes": [{
-        "field": "messages", "value": {"messages": [msg]}}]}]}).encode()
-    wa.OUTBOX.clear()
-    r = client.post("/whatsapp/webhook", content=body, headers={"X-Hub-Signature-256": _sign(body)})
-    assert r.status_code == 200, r.text
-    return [m["text"]["body"] for m in wa.OUTBOX if m.get("type") == "text"]
+from conftest import send
 
 
 def test_handshake(client):

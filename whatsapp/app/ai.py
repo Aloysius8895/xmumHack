@@ -77,7 +77,16 @@ def _normalise(history: list[dict]) -> list[dict]:
 
 def reply(history: list[dict]) -> str:
     """history: [{"role": "user"|"assistant", "content": str}, ...] ending with the user's message."""
-    messages = _normalise(history)
+    return _complete(_normalise(history), system=SYSTEM_PROMPT)
+
+
+def complete(prompt: str) -> str:
+    """One-off instruction-following call (no conversation history, no companion persona).
+    Used for small utility tasks like message classification."""
+    return _complete([{"role": "user", "content": prompt}], system=None)
+
+
+def _complete(messages: list[dict], system: Optional[str]) -> str:
     p = provider()
     model = model_name()
 
@@ -87,7 +96,10 @@ def reply(history: list[dict]) -> str:
             raise RuntimeError("Anthropic selected but no credentials found")
         from anthropic import Anthropic
         client = Anthropic(api_key=creds[0], base_url=creds[1]) if creds[1] else Anthropic(api_key=creds[0])
-        resp = client.messages.create(model=model, max_tokens=600, system=SYSTEM_PROMPT, messages=messages)
+        kwargs = {"model": model, "max_tokens": 600, "messages": messages}
+        if system:
+            kwargs["system"] = system
+        resp = client.messages.create(**kwargs)
         return "".join(b.text for b in resp.content if getattr(b, "type", "") == "text").strip()
 
     if p == "openai":
@@ -96,8 +108,8 @@ def reply(history: list[dict]) -> str:
             raise RuntimeError("OpenAI selected but no credentials found")
         from openai import OpenAI
         client = OpenAI(api_key=creds[0], base_url=creds[1]) if creds[1] else OpenAI(api_key=creds[0])
-        resp = client.chat.completions.create(
-            model=model, messages=[{"role": "system", "content": SYSTEM_PROMPT}, *messages])
+        full_messages = [{"role": "system", "content": system}, *messages] if system else messages
+        resp = client.chat.completions.create(model=model, messages=full_messages)
         return (resp.choices[0].message.content or "").strip()
 
     raise RuntimeError("No AI configured: enable Replit AI Integrations or set an API key")

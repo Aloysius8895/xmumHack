@@ -1,17 +1,18 @@
-"""CareerSphere WhatsApp chat (FastAPI): WhatsApp <-> Replit AI.
+"""CareerSphere WhatsApp chat (FastAPI): WhatsApp <-> Replit AI <-> CareerSphere app.
 
-  GET  /whatsapp/webhook   Meta's verification handshake
-  POST /whatsapp/webhook   incoming WhatsApp messages
-  GET  /health             status, and which AI provider/model is active
+  GET  /whatsapp/webhook      Meta's verification handshake
+  POST /whatsapp/webhook      incoming WhatsApp messages
+  POST /internal/digest/run   manually (re)run the daily digest (X-Cron-Token)
+  GET  /health                status, and which AI provider/model is active
 """
 import logging
 from contextlib import asynccontextmanager
 from typing import Optional
 
-from fastapi import BackgroundTasks, FastAPI, HTTPException, Query, Request
+from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Query, Request
 from fastapi.responses import PlainTextResponse
 
-from . import ai, db, handlers
+from . import ai, db, digest, handlers, scheduler
 from . import whatsapp_api as wa
 from .config import get_settings
 
@@ -23,7 +24,10 @@ log = logging.getLogger("whatsapp")
 async def lifespan(_: FastAPI):
     db.init_db()
     log.info("Ready: dry_run=%s, ai=%s/%s", get_settings().dry_run, ai.provider(), ai.model_name())
+    task = scheduler.start() if get_settings().digest_schedule_enabled else None
     yield
+    if task:
+        task.cancel()
 
 
 app = FastAPI(title="CareerSphere WhatsApp chat", lifespan=lifespan)
@@ -54,3 +58,14 @@ async def receive_webhook(request: Request, background: BackgroundTasks) -> dict
     # Reply 200 to Meta immediately; the AI call happens after the response is sent.
     background.add_task(handlers.handle_payload, await request.json())
     return {"status": "received"}
+
+
+@app.post("/internal/digest/run")
+def run_digest(x_cron_token: Optional[str] = Header(default=None), date: Optional[str] = None) -> dict:
+    st = get_settings()
+    if not st.cron_token:
+        raise HTTPException(status_code=503, detail="CRON_TOKEN not configured")
+    if x_cron_token != st.cron_token:
+        raise HTTPException(status_code=401, detail="bad cron token")
+    result = digest.run(date)
+    return {"ran": result is not None, "result": result}
