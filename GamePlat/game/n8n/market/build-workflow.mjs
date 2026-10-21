@@ -47,7 +47,8 @@ export function checkCoverage()
 // --- Workflow ---
 function library()
 {
-    const source = fs.readFileSync(path.join(here, 'pipeline.js'), 'utf8')
+    // LF even on a Windows checkout (core.autocrlf), so the output matches on every OS
+    const source = fs.readFileSync(path.join(here, 'pipeline.js'), 'utf8').replace(/\r\n/g, '\n')
     return source.replace(/^export /gm, '')
 }
 
