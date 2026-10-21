@@ -5,3 +5,9 @@ anthropic>=0.40
 openai>=1.50
 pytest>=8.0
 tzdata>=2024.1
+
+# Security floors for transitive dependencies (HTTP/AI clients and pytest).
+certifi>=2026.10.19
+httpx2>=2.16.0
+httpcore2>=2.16.0
+Pygments>=2.21.0

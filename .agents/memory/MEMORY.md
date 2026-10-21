@@ -1,0 +1,1 @@
+- [Dependency audit ranges](dependency-audit-ranges.md) — compound Python version ranges can produce stale vulnerable-version findings; compare with installed metadata.
