@@ -27,8 +27,8 @@ async function search(query)
 
     if(!process.env.RAPIDAPI_KEY)
         throw new Error('RAPIDAPI_KEY missing (env or .env)')
-    const url = new URL('https://jsearch.p.rapidapi.com/search')
-    url.search = new URLSearchParams({ query: query.query, page: '1', num_pages: String(query.numPages), country: query.country, date_posted: query.datePosted })
+    const url = new URL('https://jsearch.p.rapidapi.com/search-v2')
+    url.search = new URLSearchParams({ query: query.query, num_pages: String(query.numPages), country: query.country, date_posted: query.datePosted })
     try
     {
         const response = await fetch(url, { headers: { 'X-RapidAPI-Key': process.env.RAPIDAPI_KEY, 'X-RapidAPI-Host': 'jsearch.p.rapidapi.com' } })

@@ -62,7 +62,7 @@
     },
     {
       "parameters": {
-        "url": "https://jsearch.p.rapidapi.com/search",
+        "url": "https://jsearch.p.rapidapi.com/search-v2",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendQuery": true,
@@ -71,10 +71,6 @@
             {
               "name": "query",
               "value": "={{ $json.query }}"
-            },
-            {
-              "name": "page",
-              "value": "1"
             },
             {
               "name": "num_pages",

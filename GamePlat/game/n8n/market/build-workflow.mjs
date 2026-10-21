@@ -131,13 +131,12 @@ return [ {
         node('Run now (demo)', 'n8n-nodes-base.manualTrigger', 1, [ 0, 180 ], {}),
         node('Build queries', 'n8n-nodes-base.code', 2, [ 240, 80 ], { jsCode: buildQueriesCode }),
         node('JSearch search', 'n8n-nodes-base.httpRequest', 4.2, [ 480, 80 ], {
-            url: 'https://jsearch.p.rapidapi.com/search',
+            url: 'https://jsearch.p.rapidapi.com/search-v2',
             authentication: 'genericCredentialType',
             genericAuthType: 'httpHeaderAuth',
             sendQuery: true,
             queryParameters: { parameters: [
                 { name: 'query', value: '={{ $json.query }}' },
-                { name: 'page', value: '1' },
                 { name: 'num_pages', value: '={{ $json.numPages }}' },
                 { name: 'country', value: '={{ $json.country }}' },
                 { name: 'date_posted', value: '={{ $json.datePosted }}' },
