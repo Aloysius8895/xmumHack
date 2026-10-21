@@ -9,7 +9,8 @@
  *
  * Every real fetch is saved to n8n/market/cache/ (gitignored) and prints the RapidAPI quota left.
  * --max-cost <n> (3 by default with --backfill): stop before the next search when one search used more than n
- * requests of the quota; the backfill first sends one 1-page search to read the quota left.
+ * requests of the quota; the backfill first sends one 1-page search to read the quota left and doesn't start
+ * when fewer than --min-left (60 by default) are left.
  *
  * Reads the game's .env (RAPIDAPI_KEY, INTEGRATION_TOKEN, API_BASE_URL) when present.
  */
@@ -30,11 +31,16 @@ const settings = { ...DEFAULT_SETTINGS, apiBaseUrl: (process.env.API_BASE_URL ||
 // Backfill: one search over the past 30 days with more pages (up to 100 postings per query), split by posting date
 if(isBackfill)
     Object.assign(settings, { datePosted: 'month', numPages: 10 })
+// --pages <n>: pages per search (~10 postings each); RapidAPI bills about one request per page returned
+if(option('--pages'))
+    settings.numPages = Math.max(1, Math.min(10, Number(option('--pages'))))
 // A replay keeps the settings of its fetch (pages, window), only the game server URL comes from here
 if(replay?.settings)
     Object.assign(settings, replay.settings, { apiBaseUrl: settings.apiBaseUrl })
 const maxCost = Number(option('--max-cost') ?? (isBackfill ? 3 : Infinity))
+const minLeft = Number(option('--min-left') ?? (isBackfill ? 60 : 0))   // quota kept for demos: the backfill doesn't start below it
 let quotaLeft = null
+let stopReason = null
 const CACHE = path.join(path.dirname(new URL(import.meta.url).pathname), 'cache')
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -55,8 +61,9 @@ async function search(query, params = {})
         {
             const used = quotaLeft === null ? null : quotaLeft - Number(left)
             console.error(`  quota left this month: ${left} / ${response.headers.get('x-ratelimit-requests-limit')}${used === null ? '' : ` (this search used ${used})`}`)
+            // Checked after the search is stored: what was paid for is kept
             if(used !== null && used > maxCost)
-                throw new QuotaGuard(`one search used ${used} requests, more than --max-cost ${maxCost}`)
+                stopReason = `one search used ${used} requests, more than --max-cost ${maxCost}`
             quotaLeft = Number(left)
         }
         const body = await response.json().catch(() => ({}))
@@ -64,45 +71,36 @@ async function search(query, params = {})
     }
     catch(error)
     {
-        if(error instanceof QuotaGuard)
-            throw error
         return { error: { message: error.message } }
     }
 }
 
-class QuotaGuard extends Error {}
-
-let isStopped = false
 let responses = replay?.responses
 const now = replay ? new Date(replay.fetchedAt) : new Date()
 if(!responses)
 {
     responses = []
     const queries = buildQueries(settings)
-    try
+    // Baseline of the quota for --max-cost: the cheapest search there is
+    if(isBackfill && !fixture)
     {
-        // Baseline of the quota for --max-cost: the cheapest search there is
-        if(isBackfill && !fixture)
-        {
-            console.error('quota check (1 page, today)')
-            await search(queries[0], { num_pages: '1', date_posted: 'today' })
+        console.error('quota check (1 page, today)')
+        await search(queries[0], { num_pages: '1', date_posted: 'today' })
+        if(quotaLeft !== null && quotaLeft < minLeft)
+            stopReason = `only ${quotaLeft} requests left, under --min-left ${minLeft}`
+        await wait(1500)
+    }
+    for(const query of queries)
+    {
+        if(stopReason)
+            break
+        console.error(`search: ${query.query}`)
+        responses.push({ query, body: await search(query) })
+        if(!fixture)
             await wait(1500)
-        }
-        for(const query of queries)
-        {
-            console.error(`search: ${query.query}`)
-            responses.push({ query, body: await search(query) })
-            if(!fixture)
-                await wait(1500)
-        }
     }
-    catch(error)
-    {
-        if(!(error instanceof QuotaGuard))
-            throw error
-        console.error(`STOPPED: ${error.message}. Nothing pushed; ${responses.length} search(es) done before it are saved below.`)
-        isStopped = true
-    }
+    if(stopReason)
+        console.error(`STOPPED: ${stopReason}. Nothing pushed; the ${responses.length} search(es) done are saved below.`)
     if(!fixture)
     {
         fs.mkdirSync(CACHE, { recursive: true })
@@ -110,7 +108,7 @@ if(!responses)
         fs.writeFileSync(file, JSON.stringify({ fetchedAt: now.toISOString(), settings, responses }))
         console.error(`saved responses: ${file}  (replay with --replay, no quota used)`)
     }
-    if(isStopped)
+    if(stopReason)
         process.exit(2)
 }
 
