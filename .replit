@@ -1,0 +1,40 @@
+# Runs the chat bot service in chatbot/ (the rest of the repo is untouched).
+run = "cd chatbot && pip install -q -r requirements.txt && python run.py"
+modules = ["python-3.11"]
+
+[[ports]]
+localPort = 8000
+externalPort = 80
+
+[deployment]
+run = ["sh", "-c", "cd chatbot && pip install -q -r requirements.txt && python run.py"]
+deploymentTarget = "gce"
+ignorePorts = false
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Chatbot"
+
+[[workflows.workflow]]
+name = "Chatbot"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd chatbot && pip install -r requirements.txt && python run.py"
+waitForPort = 8000
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 180000
