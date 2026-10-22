@@ -1,1 +1,2 @@
 - [Dependency audit ranges](dependency-audit-ranges.md) — compound Python version ranges can produce stale vulnerable-version findings; compare with installed metadata.
+- [Browser graphics verification](browser-graphics-verification.md) — headless GPU crashes can block gameplay verification even when the server and build work.

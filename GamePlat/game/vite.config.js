@@ -27,8 +27,11 @@ export default {
     server:
     {
         // https: true,
-        host: true, // Open to local network and display URL
-        open: true // Open in browser
+        host: '0.0.0.0',
+        port: 5000,
+        strictPort: true,
+        allowedHosts: true, // Replit serves the preview through a proxy
+        open: false
     },
     build:
     {

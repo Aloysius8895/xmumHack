@@ -2,13 +2,37 @@
 # In that Repl's Shell: cp GamePlat/game/replit-repo-root.replit .replit
 # Same commands as GamePlat/game/.replit, run from GamePlat/game.
 modules = ["nodejs-22"]
-run = "cd GamePlat/game && sh replit-start.sh"
+run = "cd GamePlat/game && npm run dev"
 
 [[ports]]
-localPort = 8787
+localPort = 5000
 externalPort = 80
 
 [deployment]
 build = ["sh", "-c", "cd GamePlat/game && npm install && npm run build"]
-run = ["sh", "-c", "cd GamePlat/game && HOST=0.0.0.0 npm run server"]
+run = ["sh", "-c", "cd GamePlat/game && HOST=0.0.0.0 PORT=5000 npm run server"]
 deploymentTarget = "cloudrun"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd GamePlat/game && npm run dev"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
