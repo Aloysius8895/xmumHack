@@ -61,6 +61,7 @@ const STRINGS = {
     'tutorial.replay': { zh: '重看新手教学', en: 'Replay the beginner tour', ms: 'Ulang lawatan pemula' },
     'tutorial.skip': { zh: '跳过教学', en: 'Skip tour', ms: 'Langkau' },
     'tutorial.next': { zh: '继续', en: 'Next', ms: 'Seterusnya' },
+    'hint.pressEnter': { zh: '按 Enter ↵', en: 'Press Enter ↵', ms: 'Tekan Enter ↵' },
     'tutorial.finish': { zh: '开始冒险！', en: 'Start the adventure!', ms: 'Mulakan pengembaraan!' },
     'tutorial.waiting': { zh: '等你完成这一步…', en: 'Waiting for you to do it…', ms: 'Menunggu anda…' },
     'tutorial.demo': { zh: '教学中 AI 使用示例数据', en: 'AI uses demo data during the tour', ms: 'AI guna data demo semasa lawatan' },

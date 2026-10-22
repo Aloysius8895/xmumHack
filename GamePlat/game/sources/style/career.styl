@@ -2441,6 +2441,41 @@ button.career-points {
     animation: career-next-bounce 0.9s ease-in-out infinite;
 }
 
+/* "Press Enter" keycap: under the tour's Next button, on the bottom edge of the NPC dialogue box */
+.career-key-hint {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 2px solid var(--outline, #3B2E9E);
+    border-radius: 8px;
+    background: #FFFFFF;
+    box-shadow: 0 2px 0 var(--outline, #3B2E9E);
+    color: var(--text, #2A1F6E);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.career-dialogue-enter {
+    position: absolute;
+    right: 20px;
+    bottom: -14px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.career-dialogue.is-typed .career-dialogue-enter {
+    opacity: 1;
+}
+
+/* No keyboard on touch screens */
+@media (hover: none) and (pointer: coarse) {
+    .career-key-hint {
+        display: none !important;
+    }
+}
+
 @keyframes career-next-bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(4px); }

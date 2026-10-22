@@ -1649,6 +1649,7 @@ export class CareerUI
                 <div class="career-dialogue-name">${esc(t('npc.leader', { career: pick(career.name) }))}</div>
                 <p class="career-dialogue-line" aria-live="polite"></p>
                 <svg class="career-dialogue-next" viewBox="0 0 24 24" role="img" aria-label="${esc(t('npc.continue'))}"><path d="M5 9l7 7 7-7"/></svg>
+                <kbd class="career-key-hint career-dialogue-enter">${esc(t('hint.pressEnter'))}</kbd>
             </div>
         `
 

@@ -130,7 +130,10 @@ export class CareerTour
                     <span class="career-tour-progress js-progress"></span>
                     <span class="career-tour-waiting js-waiting"></span>
                     <button type="button" class="career-tour-skip js-skip"></button>
-                    <button type="button" class="career-tour-next js-next"></button>
+                    <div class="career-tour-action">
+                        <button type="button" class="career-tour-next js-next"></button>
+                        <kbd class="career-key-hint js-enter-hint"></kbd>
+                    </div>
                 </div>
             </div>
         `
@@ -143,11 +146,25 @@ export class CareerTour
             waiting: this.element.querySelector('.js-waiting'),
             skip: this.element.querySelector('.js-skip'),
             next: this.element.querySelector('.js-next'),
+            enterHint: this.element.querySelector('.js-enter-hint'),
         }
 
         this.elements.skip.addEventListener('click', () => this.finish())
         this.elements.next.addEventListener('click', () => this.next())
         this.elements.text.addEventListener('click', () => this.typing ? this.stopTyping() : null)
+
+        // Enter = Next. Capture phase so the game doesn't also read it as "interact", and preventDefault so a focused Next button isn't clicked twice
+        addEventListener('keydown', (event) =>
+        {
+            if(!this.active || this.waiting || this.ui.dialogue || (event.code !== 'Enter' && event.code !== 'NumpadEnter'))
+                return
+            if(event.target.closest?.('input, textarea, select, [contenteditable]'))
+                return
+            event.preventDefault()
+            event.stopImmediatePropagation()
+            if(!event.repeat)
+                this.next()
+        }, true)
     }
 
     get state()
@@ -285,6 +302,8 @@ export class CareerTour
         this.elements.skip.hidden = isLastStep
         this.elements.next.textContent = isLastStep && isLastPage ? t('tutorial.finish') : t('tutorial.next')
         this.elements.next.hidden = this.waiting
+        this.elements.enterHint.textContent = t('hint.pressEnter')
+        this.elements.enterHint.hidden = this.waiting
         this.elements.waiting.textContent = this.waiting ? t('tutorial.waiting') : ''
         this.elements.waiting.hidden = !this.waiting
         this.element.classList.toggle('is-waiting', this.waiting)
