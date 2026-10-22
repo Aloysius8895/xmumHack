@@ -222,11 +222,25 @@
 }
 
 /* Dims the whole screen except a rounded hole on the element to press, clicks go through */
+.career-tour-dim {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(0, 0, 0, 0.45); // Plain brightness drop, not a coloured (night like) tint
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.career-tour-dim.is-visible {
+    opacity: 1;
+}
+
 .career-tour-spot {
     position: fixed;
     z-index: 11;
     border-radius: 16px;
-    box-shadow: 0 0 0 200vmax rgba(20, 12, 60, 0.6), 0 0 0 4px var(--amber, #FFB547), 0 0 24px 6px rgba(255, 181, 71, 0.7);
+    box-shadow: 0 0 0 200vmax rgba(0, 0, 0, 0.4), 0 0 0 4px var(--amber, #FFB547), 0 0 24px 6px rgba(255, 181, 71, 0.7);
     pointer-events: none;
     opacity: 0;
     visibility: hidden;

@@ -8,7 +8,6 @@ import { WaterSurface } from './WaterSurface.js'
 import { Areas } from './Areas/Areas.js'
 import { WindLines } from './WindLines.js'
 import { Leaves } from './Leaves.js'
-import { Lightnings } from './Lightnings.js'
 import { Snow } from './Snow.js'
 import { VisualCharacter } from './VisualCharacter.js'
 import { VisualTornado } from './VisualTornado.js'
@@ -63,7 +62,6 @@ export class World
             this.confetti = new Confetti()
             this.leaves = new Leaves()
             this.rain = new RainLines()
-            this.lightnings = new Lightnings()
             this.fireballs = new Fireballs()
             this.snow = new Snow()
             this.visualTornado = new VisualTornado()

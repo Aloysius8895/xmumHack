@@ -186,6 +186,9 @@ export class CareerWorld
             this.game.view.focusPoint.isTracking = true
             this.pet.placed = false
             this.game.overlay.hide()
+
+            // Arrival effect once the screen is back
+            setTimeout(() => this.game.world.confetti?.pop(this.game.player.position.clone()), 350)
         })
     }
 

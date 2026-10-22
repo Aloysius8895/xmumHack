@@ -257,8 +257,25 @@ export class CareerUI
             const key = event.target.dataset.draft
             if(key)
                 this.drafts[key] = event.target.value
-            // Search filters as you type (renderPanel keeps the focus and caret)
-            if(key === 'careerSearch')
+            // Search filters as you type (renderPanel keeps the focus and caret). Not mid IME composition (Chinese pinyin):
+            // the re-render would drop the pending text, compositionend renders once the characters are picked
+            if(key === 'careerSearch' && !event.isComposing)
+                this.renderPanel()
+        })
+
+        // IME composition (Chinese pinyin...): no panel re-render meanwhile, it would drop the pending text
+        this.root.addEventListener('compositionstart', () =>
+        {
+            this.composing = true
+        })
+        this.root.addEventListener('compositionend', (event) =>
+        {
+            this.composing = false
+            const key = event.target.dataset?.draft
+            if(key)
+                this.drafts[key] = event.target.value
+            // Render what was held back (state update while composing) or filter the search with the picked characters
+            if(this.renderPending || key === 'careerSearch')
                 this.renderPanel()
         })
 
@@ -300,6 +317,9 @@ export class CareerUI
 
         addEventListener('keydown', (event) =>
         {
+            // Keys typed into an IME (Chinese pinyin: Enter / Esc / Space pick or cancel a candidate) are not commands
+            if(event.isComposing || event.keyCode === 229)
+                return
             // Tab toggles the menu (outside text fields and open panels / dialogues, where Tab keeps moving the focus)
             if(event.code === 'Tab' && !event.altKey && !event.ctrlKey && !event.metaKey && !this.panel && !this.dialogue && !event.target.closest?.('input, textarea, select'))
             {
@@ -382,7 +402,7 @@ export class CareerUI
 
     releaseInputs()
     {
-        if(!this.ownsInputs || this.panel || this.dialogue || this.menuOpen)
+        if(!this.ownsInputs || this.panel || this.dialogue || this.menuOpen || this.touring)
             return
         this.ownsInputs = false
         this.root.classList.remove('is-overlay')
@@ -765,6 +785,12 @@ export class CareerUI
     {
         if(!this.panel || !this.state)
             return
+        if(this.composing)
+        {
+            this.renderPending = true
+            return
+        }
+        this.renderPending = false
 
         // Keep the focused field and its caret while re-rendering
         const active = document.activeElement

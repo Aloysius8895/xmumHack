@@ -337,12 +337,13 @@ export class Whispers
                 this.menu.inputGroup.classList.remove('is-valide')
         }
 
-        this.menu.input.addEventListener('input', () =>
+        this.menu.input.addEventListener('input', (event) =>
         {
             const sanatized = sanatize(this.menu.input.value, false, true, true)
             this.menu.previewMessageText.textContent = sanatized.length ? sanatized : 'Your message here'
 
-            if(this.menu.input.textContent !== sanatized)
+            // Not mid IME composition (Chinese pinyin): writing the value would cancel it, the final input event cleans up
+            if(!event.isComposing && this.menu.input.value !== sanatized)
                 this.menu.input.value = sanatized
 
             updateGroup()
@@ -352,7 +353,7 @@ export class Whispers
         {
             const sanatized = sanatize(this.menu.previewMessageText.textContent, false, true, true)
 
-            if(this.menu.previewMessageText.textContent !== sanatized)
+            if(!event.isComposing && this.menu.previewMessageText.textContent !== sanatized)
                 this.menu.previewMessageText.textContent = sanatized
 
             this.menu.input.value = sanatized
@@ -369,7 +370,8 @@ export class Whispers
 
         this.menu.previewMessageText.addEventListener('keydown', (event) =>
         {
-            if(event.key === 'Enter')
+            // Enter that picks an IME candidate isn't a send
+            if(event.key === 'Enter' && !event.isComposing && event.keyCode !== 229)
                 submit()
         })
 

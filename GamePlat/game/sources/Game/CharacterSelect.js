@@ -8,7 +8,7 @@ import { t, pick } from '../Career/i18n.js'
  * The map portrait is static/ui/avatars/<id>.png (animation/portrait.py)
  */
 export const CHARACTERS = [
-    { id: 'xinchan',  path: 'player/xinchan.glb',                name: { zh: '小新', en: 'Shin-chan', ms: 'Shin-chan' } },
+    { id: 'QX',       path: 'characters/QX/QX.glb',              name: { zh: 'QX', en: 'QX', ms: 'QX' } },
     { id: 'Aloysius', path: 'characters/Aloysius/Aloysius.glb',  name: { zh: 'Aloysius', en: 'Aloysius', ms: 'Aloysius' } },
     { id: 'Edixon',   path: 'characters/Edixon/Edixon.glb',      name: { zh: 'Edixon', en: 'Edixon', ms: 'Edixon' } },
     { id: 'LeeKhim',  path: 'characters/LeeKhim/LeeKhim.glb',    name: { zh: 'Lee Khim', en: 'Lee Khim', ms: 'Lee Khim' } },

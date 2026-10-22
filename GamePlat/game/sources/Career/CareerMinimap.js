@@ -160,6 +160,13 @@ export class CareerMinimap
         const worldHeight = size * (this.game.mapBounds ? MAP_HEIGHT : this.game.terrain.size) / VIEW_METERS
         const player = this.game.map.worldToMap(this.game.player.position)
 
+        // View center: the player, but held back at the map edges so the circle never shows past the map (black)
+        const halfX = size * 0.5 / worldSize, halfY = size * 0.5 / worldHeight
+        const center = {
+            x: halfX >= 0.5 ? 0.5 : Math.min(Math.max(player.x, halfX), 1 - halfX),
+            y: halfY >= 0.5 ? 0.5 : Math.min(Math.max(player.y, halfY), 1 - halfY),
+        }
+
         // Picture moves under the player
         this.worldElement.style.width = `${worldSize}px`
         this.worldElement.style.height = `${worldHeight}px`
@@ -171,16 +178,16 @@ export class CareerMinimap
             this.worldElement.style.backgroundSize = `${pictureSize}px ${pictureSize}px, ${pictureSize}px ${pictureSize}px`
             this.worldElement.style.backgroundPosition = `${picturePosition}, ${picturePosition}`
         }
-        this.worldElement.style.transform = `translate(${size * 0.5 - player.x * worldSize}px, ${size * 0.5 - player.y * worldHeight}px)`
-        this.playerElement.style.transform = `translate(-50%, -50%) rotate(${Math.PI * 0.5 - this.game.physicalVehicle.yRotation}rad)`
+        this.worldElement.style.transform = `translate(${size * 0.5 - center.x * worldSize}px, ${size * 0.5 - center.y * worldHeight}px)`
+        this.playerElement.style.transform = `translate(calc(${(player.x - center.x) * worldSize}px - 50%), calc(${(player.y - center.y) * worldHeight}px - 50%)) rotate(${Math.PI * 0.5 - this.game.physicalVehicle.yRotation}rad)`
 
         // Leaders, kept on the rim when out of view
         const radius = size * 0.5 - 16
         for(const { npc, element } of this.markers)
         {
             const position = this.game.map.worldToMap(npc.character.group.position)
-            let x = (position.x - player.x) * worldSize
-            let y = (position.y - player.y) * worldHeight
+            let x = (position.x - center.x) * worldSize
+            let y = (position.y - center.y) * worldHeight
             const distance = Math.hypot(x, y)
             const outside = distance > radius
             if(outside)

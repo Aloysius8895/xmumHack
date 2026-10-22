@@ -183,6 +183,7 @@ def skin(mesh, armature, bones, character):
     thin arm bones don't steal the sides of the torso. Optional rigid head (chibi characters)."""
     rigid_head = getattr(character, 'RIGID_HEAD', None)  # (start height, blend height)
     arm_only_x = getattr(character, 'ARM_ONLY_X', None)  # further out than this is arm only
+    torso_only = getattr(character, 'TORSO_ONLY', None)  # function(point): long hair, bags... follow the torso, not the arms / legs
 
     segments = [(name, head, tail, radius) for name, head, tail, _, radius in bones]
     body_segments = [s for s in segments if not (rigid_head and s[0] == 'head')]
@@ -205,6 +206,8 @@ def skin(mesh, armature, bones, character):
             if arm_only_x and abs(p.x) > arm_only_x and p.z > 0.2:
                 side = '.R' if p.x > 0 else '.L'
                 candidates = [s for s in body_segments if s[0].endswith(side) and not s[0].startswith(LEG_BONES)]
+            if torso_only and torso_only(p):
+                candidates = [s for s in body_segments if not s[0].endswith(('.R', '.L'))]
             nearest = sorted((segment_distance(p, a, b) / radius, name) for name, a, b, radius in candidates)[:3]
             inverse = [(1 / max(d, 1e-4) ** 2, name) for d, name in nearest]
             total = sum(w for w, _ in inverse)

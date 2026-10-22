@@ -37,18 +37,6 @@ const GHOST = /* html */`
  */
 export class CareerTour
 {
-    static isSeen()
-    {
-        try
-        {
-            return localStorage.getItem(STORAGE_KEY) === '1'
-        }
-        catch
-        {
-            return false
-        }
-    }
-
     constructor(api, ui)
     {
         this.api = api
@@ -107,6 +95,11 @@ export class CareerTour
 
     setElement()
     {
+        // The world a shade darker for the whole tour, under every UI element (first child of the UI)
+        this.dim = document.createElement('div')
+        this.dim.className = 'career-tour-dim'
+        this.ui.root.prepend(this.dim)
+
         // Dimmed screen with a hole on the element to press (pointer events go through), and the tapping cursor
         this.spot = document.createElement('div')
         this.spot.className = 'career-tour-spot'
@@ -179,8 +172,12 @@ export class CareerTour
 
         this.active = true
         this.api.demo = true
+        // The world is frozen for the whole tour (no walking, no camera drag / zoom), the menu and panels still work
+        this.ui.touring = true
+        this.ui.takeInputs()
         this.panel = this.ui.panel?.name ?? null
         this.element.classList.add('is-visible')
+        this.dim.classList.add('is-visible')
         this.go(0)
         requestAnimationFrame(this.update)
     }
@@ -192,9 +189,12 @@ export class CareerTour
 
         this.active = false
         this.api.demo = false
+        this.ui.touring = false
+        this.ui.releaseInputs()
         this.stopTyping()
         delete this.ui.root.dataset.tourTarget
         this.element.classList.remove('is-visible', 'is-placed')
+        this.dim.classList.remove('is-visible')
         this.spot.classList.remove('is-visible')
         this.pointer.classList.remove('is-visible')
         this.focused = null

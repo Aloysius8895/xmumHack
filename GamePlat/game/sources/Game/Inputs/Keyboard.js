@@ -23,6 +23,10 @@ export default class Keyboard
             // On input, but not Escape key
             if(document.activeElement.matches('input, textarea, [contenteditable]') && _event.code !== 'Escape')
                 return
+
+            // IME composition (Chinese pinyin): Escape there cancels the candidate, it doesn't close menus
+            if(_event.isComposing || _event.keyCode === 229)
+                return
                 
             this.pressed.push(_event.code, _event.key)
             this.events.trigger('down', [ _event.code, _event.key ])

@@ -117,6 +117,44 @@ export class InteractivePoints
         mesh.position.z = 0.01
         mesh.visible = false
 
+        // "Enter" tag under the diamond (keyboard only), child of the icon so it pops in and out with it
+        const tagCanvas = document.createElement('canvas')
+        tagCanvas.width = 176
+        tagCanvas.height = 52
+        const tagTexture = new THREE.Texture(tagCanvas)
+        tagTexture.minFilter = THREE.LinearFilter
+        tagTexture.magFilter = THREE.LinearFilter
+        tagTexture.generateMipmaps = false
+        const drawTag = () =>
+        {
+            const context = tagCanvas.getContext('2d')
+            context.fillStyle = '#000000'
+            context.fillRect(0, 0, tagCanvas.width, tagCanvas.height)
+            context.font = '700 46px "Amatic SC"'
+            context.fillStyle = '#ffffff'
+            context.textAlign = 'center'
+            context.textBaseline = 'middle'
+            context.fillText('Enter', tagCanvas.width * 0.5, tagCanvas.height * 0.5 + 2)
+            tagTexture.needsUpdate = true
+        }
+        drawTag()
+        document.fonts?.load('700 46px "Amatic SC"').then(drawTag).catch(() => {}) // Redraw once the label font is in
+
+        const tagMaterial = new THREE.MeshLambertNodeMaterial({ transparent: true, depthTest: false })
+        tagMaterial.outputNode = Fn(() =>
+        {
+            const text = texture(tagTexture, uv()).r
+            const foggedBackColor = this.game.fog.strength.mix(this.backColor, this.game.fog.color)
+            return vec4(vec3(mix(foggedBackColor, this.frontColor, text)), 1)
+        })()
+        const tag = new THREE.Mesh(this.geometries.label, tagMaterial)
+        tag.renderOrder = 8
+        // Icon space (the icon is drawn at 0.25): the diamond's bottom tip is at ~ -2.8
+        tag.scale.set(4.4, 4.4 * tagCanvas.height / tagCanvas.width, 1)
+        tag.position.y = - 3.6
+        tag.visible = this.game.inputs.mode !== Inputs.MODE_GAMEPAD
+        mesh.add(tag)
+
         this.game.inputs.gamepad.events.on('typeChange', () =>
         {
             if(this.game.inputs.mode === Inputs.MODE_GAMEPAD)
@@ -133,6 +171,8 @@ export class InteractivePoints
 
         this.game.inputs.events.on('modeChange', () =>
         {
+            tag.visible = this.game.inputs.mode !== Inputs.MODE_GAMEPAD
+
             if(this.game.inputs.mode === Inputs.MODE_GAMEPAD)
             {
                 let iconTexture = this.game.resources.interactivePointsKeyIconCrossTexture

@@ -31,6 +31,19 @@ export class MapClickMove
         this.marker=new THREE.Mesh(new THREE.RingGeometry(.28,.4,32),new THREE.MeshBasicNodeMaterial({color:'#fff2a0',side:THREE.DoubleSide}))
         this.marker.rotation.x=-Math.PI/2;this.marker.visible=false
         game.scene.add(this.marker)
+        // Arrival burst: a ring that grows and fades where the click path ends
+        this.burst=new THREE.Mesh(new THREE.RingGeometry(.3,.42,40),new THREE.MeshBasicNodeMaterial({color:'#ffd23f',side:THREE.DoubleSide,transparent:true,depthWrite:false}))
+        this.burst.rotation.x=-Math.PI/2;this.burst.visible=false;this.burstTime=0
+        game.scene.add(this.burst)
+        game.ticker.events.on('tick',()=>
+        {
+            if(!this.burst.visible)return
+            this.burstTime+=game.ticker.delta
+            const t=Math.min(this.burstTime/.6,1)
+            this.burst.scale.setScalar(1+t*5)
+            this.burst.material.opacity=1-t
+            if(t>=1)this.burst.visible=false
+        })
         game.canvasElement.addEventListener('pointerdown',event=>{this.down=event.button===0?{x:event.clientX,y:event.clientY}:null})
         game.canvasElement.addEventListener('pointerup',event=>
         {
@@ -58,11 +71,18 @@ export class MapClickMove
         if(this.path.length)this.game.view.focusPoint.isTracking=true
         return this.path.length>0
     }
+    arrive()
+    {
+        this.burst.position.copy(this.marker.position)
+        this.burst.scale.setScalar(1);this.burst.material.opacity=1
+        this.burstTime=0;this.burst.visible=true
+    }
     update(player)
     {
         if(!this.enabled()||player.move.lengthSq()>.001||this.game.physicalVehicle.knockState!=='none'){this.cancel();return}
+        const hadPath=this.path.length>0
         while(this.path.length&&Math.hypot(this.path[0].x-player.position.x,this.path[0].z-player.position.z)<.32)this.path.shift()
-        if(!this.path.length){this.cancel();return}
+        if(!this.path.length){if(hadPath)this.arrive();this.cancel();return}
         player.move.set(this.path[0].x-player.position.x,this.path[0].z-player.position.z).normalize()
         this.stuck=this.lastPosition.distanceTo(player.position)<.002?this.stuck+this.game.ticker.delta:0
         this.lastPosition.copy(player.position)

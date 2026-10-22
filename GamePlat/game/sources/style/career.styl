@@ -47,6 +47,13 @@
     cursor: pointer;
 }
 
+/* Text cursor: the thin system I-beam disappears on the pale fields, this one has a white fill and a dark outline */
+.career-ui textarea,
+.career-ui input[type="text"],
+.career-ui input[type="search"] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M8 3h3l1 1 1-1h3v2.5h-2.5v13h2.5V21h-3l-1-1-1 1H8v-2.5h2.5v-13H8z' fill='%23ffffff' stroke='%232A1F6E' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") 12 12, text;
+}
+
 .career-ui :focus-visible {
     outline: 2px solid var(--career-accent);
     outline-offset: 2px;
@@ -2540,8 +2547,8 @@ button.career-points {
     transition: opacity 0.4s ease 0.6s, transform 0.4s ease 0.6s;
     left: calc(var(--career-gutter) + env(safe-area-inset-left));
     top: calc(var(--career-gutter) + env(safe-area-inset-top));
-    width: 190px;
-    height: 190px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     border: 4px solid rgba(255, 255, 255, 0.92);
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
@@ -2807,8 +2814,8 @@ html:not(.is-started) .career-ui {
     }
 
     .career-minimap {
-        width: 112px;
-        height: 112px;
+        width: 150px;
+        height: 150px;
         border-width: 3px;
     }
 

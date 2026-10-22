@@ -188,12 +188,6 @@ export default
         1
     ],
     [
-        'lightning',
-        '1.21 Gigawatts!',
-        'Get hit by a lightning.',
-        1
-    ],
-    [
         'waterfall',
         'Gamer instinct',
         'What did you expect? A treasure?',
