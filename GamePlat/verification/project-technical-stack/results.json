@@ -1,0 +1,46 @@
+{
+  "keys": [
+    "home",
+    "options",
+    "controls",
+    "achievements",
+    "behindTheScene"
+  ],
+  "whispersEnabled": false,
+  "circuitEnabled": false,
+  "world_interaction_passed": true,
+  "gamepad_cycle_passed": true,
+  "checks": [
+    {
+      "width": 1440,
+      "lang": "zh",
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "en",
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "lang": "ms",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "lang": "zh",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "lang": "en",
+      "passed": true
+    },
+    {
+      "width": 390,
+      "lang": "ms",
+      "passed": true
+    }
+  ],
+  "page_errors": []
+}

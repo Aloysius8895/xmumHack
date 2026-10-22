@@ -30,6 +30,7 @@ export class Options
 
         element.addEventListener('click', () =>
         {
+            this.game.quality.manual = true
             this.game.quality.changeLevel(this.game.quality.level === 0 ? 1 : 0)
         })
 

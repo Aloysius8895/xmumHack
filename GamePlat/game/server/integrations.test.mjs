@@ -39,7 +39,7 @@ test('market snapshots update the careers trend, change computed from postings',
     result = await call('/api/integrations/market', { period: '2026-11', careers: { 'data-analyst': { postings: 1100, note: 'More BI roles', topSkills: { sql: 700, unknown: 3 } } } })
     assert.equal(result.status, 200)
 
-    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.monthly
+    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.snapshot
     assert.equal(trend.live, true)
     assert.equal(trend.period, '2026-11')
     assert.equal(trend.change, 10)
@@ -47,6 +47,100 @@ test('market snapshots update the careers trend, change computed from postings',
     assert.deepEqual(trend.topSkills, { sql: 700 })
 
     assert.equal((await call('/api/integrations/market', { period: 'October', careers: {} })).status, 400)
+})
+
+test('weekly snapshots are kept as history, the same week is a correction', async () =>
+{
+    // Earlier monthly snapshots (previous test) are migrated into the history and sort before the weeks
+    for(const [ period, postings ] of [ [ '2026-12-07', 20 ], [ '2026-12-21', 30 ], [ '2026-12-14', 25 ], [ '2026-12-21', 24 ] ])
+        assert.equal((await call('/api/integrations/market', { period, careers: { 'data-analyst': { postings } } })).status, 200)
+
+    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.snapshot
+    assert.equal(trend.period, '2026-12-21')
+    assert.equal(trend.postings, 24, 'second push of the week replaced the first')
+    assert.deepEqual(trend.history.map((point) => point.period), [ '2026-10', '2026-11', '2026-12-07', '2026-12-14', '2026-12-21' ])
+    assert.deepEqual(trend.history.slice(2).map((point) => point.postings), [ 20, 25, 24 ])
+    assert.equal(trend.history.at(- 2).change, 25, 'week pushed late compares with the week before it: 25 vs 20')
+    assert.equal(trend.change, - 4, '24 vs 25 of the week before')
+
+    // Only the last 26 periods are kept
+    for(let week = 0; week < 30; week++)
+    {
+        const day = new Date(Date.UTC(2027, 0, 4 + week * 7)).toISOString().slice(0, 10)
+        await call('/api/integrations/market', { period: day, careers: { 'data-analyst': { postings: week } } })
+    }
+    const market = store.loadMarket()
+    assert.equal(market.history.length, 26)
+    assert.equal(market.latest.period, market.history.at(- 1).period)
+    assert.equal(market.previous.period, market.history.at(- 2).period)
+})
+
+test('backfilled weeks are kept but never compared', async () =>
+{
+    for(const [ period, postings, backfilled ] of [ [ '2028-01-03', 5, true ], [ '2028-01-10', 8, true ], [ '2028-01-17', 30, false ], [ '2028-01-24', 33, false ] ])
+        assert.equal((await call('/api/integrations/market', { period, backfilled, careers: { 'data-analyst': { postings } } })).status, 200)
+
+    const trend = game.view(store.load(), { mock: true }).careers.find((career) => career.id === 'data-analyst').market.snapshot
+    const weeks = trend.history.slice(- 4)
+    assert.deepEqual(weeks.map((point) => point.backfilled), [ true, true, false, false ])
+    assert.deepEqual(weeks.map((point) => point.change), [ null, null, null, 10 ], 'only live week vs live week is compared')
+    assert.equal(trend.change, 10)
+})
+
+test('skill popularity: share of postings per skill, change in points vs the previous week', async () =>
+{
+    await call('/api/integrations/market', { period: '2029-01-01', careers: { 'data-analyst': { postings: 20, topSkills: { sql: 10, excel: 5 } }, 'frontend-developer': { postings: 30, topSkills: { react: 15 } } } })
+    let state = game.view(store.load(), { mock: true })
+    let analyst = state.careers.find((career) => career.id === 'data-analyst').market.skills
+    assert.equal(analyst.previousPeriod, '2028-01-24', 'compared with the week pushed by the test before')
+
+    await call('/api/integrations/market', { period: '2029-01-08', careers: { 'data-analyst': { postings: 25, topSkills: { sql: 15, python: 5 } }, 'frontend-developer': { postings: 25, topSkills: { react: 15 } } } })
+    state = game.view(store.load(), { mock: true })
+    analyst = state.careers.find((career) => career.id === 'data-analyst').market.skills
+    assert.equal(analyst.period, '2029-01-08')
+    assert.equal(analyst.previousPeriod, '2029-01-01')
+    assert.equal(analyst.postings, 25)
+    assert.deepEqual(analyst.skills, [
+        { id: 'sql', share: 60, change: 10 },       // 15/25 vs 10/20
+        { id: 'python', share: 20, change: 20 },    // new this week
+        { id: 'excel', share: 0, change: - 25 },    // gone: 0 vs 5/20
+    ])
+
+    // Every career together: 50 postings each week
+    const market = state.marketSkills
+    assert.equal(market.postings, 50)
+    assert.deepEqual(market.skills.find((skill) => skill.id === 'react'), { id: 'react', share: 30, change: 0 })
+    assert.deepEqual(market.skills.find((skill) => skill.id === 'sql'), { id: 'sql', share: 30, change: 10 })
+})
+
+test('skill popularity of the first week has no change yet', async () =>
+{
+    const { skillTrend } = await import('./market-trends.js')
+    const week = { period: '2026-10-19', careers: { 'data-analyst': { postings: 15, topSkills: { 'data-visualization': 10, sql: 5 } } } }
+    assert.deepEqual(skillTrend('data-analyst', { latest: week, previous: null, history: [ week ] }), {
+        period: '2026-10-19', previousPeriod: null, postings: 15, live: true,
+        skills: [ { id: 'data-visualization', share: 67, change: null }, { id: 'sql', share: 33, change: null } ],
+    })
+    assert.equal(skillTrend('ml-engineer', { latest: week, previous: null, history: [ week ] }), null)
+    assert.equal(skillTrend(null, { latest: null, previous: null, history: [] }), null)
+})
+
+test('skill trends fall back to the reference data until the workflow pushes', async () =>
+{
+    const { skillTrendOrReference, skillMarket } = await import('./market-trends.js')
+    const empty = { latest: null, previous: null, history: [] }
+    const reference = skillTrendOrReference('data-analyst', [ 'sql', 'excel', 'python' ], empty)
+    assert.equal(reference.live, false)
+    assert.deepEqual(reference.skills.map((skill) => [ skill.id, skill.trend ]), [ [ 'python', 'rising' ], [ 'sql', 'stable' ], [ 'excel', 'falling' ] ])
+    assert.deepEqual(skillMarket([ 'python' ], empty).python, { live: false, trend: 'rising', period: '2026-10' })
+
+    const week = { period: '2026-10-19', careers: { 'data-analyst': { postings: 10, topSkills: { python: 4 } } } }
+    const market = { latest: week, previous: null, history: [ week ] }
+    assert.equal(skillTrendOrReference('data-analyst', [ 'python' ], market).live, true)
+    assert.deepEqual(skillMarket([ 'python', 'sql' ], market), {
+        python: { live: true, share: 40, change: null, period: '2026-10-19' },
+        sql: { live: true, share: 0, change: null, period: '2026-10-19' },
+    })
 })
 
 test('chat messages from the bots are filed as logs and get a reply', async () =>
@@ -85,7 +179,7 @@ test('saves from version 2 get the mastery fields', () =>
     delete old.digests
     fs.writeFileSync(file, JSON.stringify(old))
     const save = store.load()
-    assert.equal(save.version, 3)
+    assert.equal(save.version, store.SAVE_VERSION)
     assert.deepEqual(save.mastery, {})
     assert.deepEqual(save.digests, [])
 })

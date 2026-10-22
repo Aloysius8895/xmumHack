@@ -4,14 +4,14 @@
  * Loop (skills/game/game-design-theory, MDA): know your skills > pick a target > get the career pet > follow the roadmap
  * > log what you did and track preparation. Daily-report mastery growth is a separate, future feature.
  */
-import { CAREERS, SKILLS, getCareer, matchCareer } from './careers.js'
+import { DEFAULT_MAP, SKILLS, SKILL_IDS, allCareers, getCareer, matchCareer, useCustom } from './careers.js'
 import { SKILL_DETAILS } from './skill-details.js'
 import { friendCode, leaderboard } from './friends.js'
-import { monthlyTrend } from './market-trends.js'
+import { marketSnapshot, skillMarket, skillTrendOrReference } from './market-trends.js'
 import { loadMarket } from './store.js'
 
 export const RULES = {
-    affinityPerLevel: 20,      // retain existing pet levels; new affinity growth is deferred
+    affinityPerLevel: 20,      // affinity (affinityOf: profile match + learning progress) per pet level
     affinityMax: 100,
     // Points = task progress gained (percentage points) × weight of the skill difficulty (skill-details, 1-5)
     difficultyWeights: { high: 3, medium: 2, low: 1 },
@@ -67,21 +67,164 @@ export function setSkills(profile, skills)
 }
 
 /**
- * Target and pet
+ * Map: one career mentor per NPC spot. A target off the map takes the spot of the mentor with the lowest affinity
+ */
+export function mapSlots(save)
+{
+    return save.map ?? DEFAULT_MAP
+}
+
+export function isOnMap(save, careerId)
+{
+    return mapSlots(save).includes(careerId)
+}
+
+/**
+ * Preparation per required skill of a career: the best of the profile level against the required one, the roadmap
+ * tasks of that skill (this career's roadmap, current or saved) and the mastery of the daily digests (server/integrations.js)
+ */
+export function skillProgress(save, career)
+{
+    const roadmap = save.target?.careerId === career.id ? save.roadmap : save.careers?.[career.id]?.roadmap
+    const tasks = roadmap ? roadmap.stages.flatMap((stage) => stage.tasks) : []
+    return matchCareer(career, save.profile.skills).skills.map((skill) =>
+    {
+        const own = tasks.filter((task) => task.skillId === skill.id)
+        const roadmapProgress = own.length ? Math.round(own.reduce((sum, task) => sum + task.progress, 0) / own.length) : 0
+        const baseline = Math.round(Math.min(skill.current, skill.required) / skill.required * 100)
+        return { ...skill, progress: Math.max(baseline, roadmapProgress, save.mastery?.[skill.id] ?? 0) }
+    })
+}
+
+/**
+ * Affinity 0-100 = how ready the player is for the career: skill progress above, weighted like the career match
+ * (required level × weight). With no learning yet it equals the match of the profile; tasks and digests raise it.
+ */
+export function affinityOf(save, careerId)
+{
+    const career = getCareer(careerId)
+    if(!career)
+        return 0
+    const weights = new Map(career.skills.map((skill) => [ skill.id, skill.level * skill.weight ]))
+    let total = 0
+    let reached = 0
+    for(const skill of skillProgress(save, career))
+    {
+        total += weights.get(skill.id)
+        reached += weights.get(skill.id) * skill.progress
+    }
+    return total ? Math.round(reached / total) : 0
+}
+
+/**
+ * Mentor swapped out for a career that isn't on the map: lowest affinity, then the one left alone the longest
+ * (never targeted first, the current target last), then the first spot
+ */
+export function replaceCandidate(save)
+{
+    const lastActive = (careerId) => save.target?.careerId === careerId ? Infinity : Date.parse(save.careers?.[careerId]?.lastActiveAt ?? '') || 0
+    return mapSlots(save)
+        .map((careerId, index) => ({ careerId, index, affinity: affinityOf(save, careerId), lastActive: lastActive(careerId) }))
+        .sort((a, b) => a.affinity - b.affinity || a.lastActive - b.lastActive || a.index - b.index)[0].careerId
+}
+
+function placeOnMap(save, careerId)
+{
+    if(isOnMap(save, careerId))
+        return null
+    const replaced = replaceCandidate(save)
+    save.map = mapSlots(save).map((id) => id === replaced ? careerId : id)
+    return replaced
+}
+
+/**
+ * Target and pet: each career keeps its own pet, affinity and roadmap. Switching shelves the current ones
+ * (save.careers) and brings back the ones of the new career, so a swapped out career resumes where it was.
+ * Returns the career whose mentor left the map, or null.
  */
 export function setTarget(save, { careerId, mode, posting })
 {
     const career = getCareer(careerId)
     const changed = save.target?.careerId !== careerId
+    const now = new Date().toISOString()
+    const replaced = placeOnMap(save, careerId)
 
-    save.target = { careerId, mode, posting: posting ?? null, setAt: new Date().toISOString() }
-
-    // A new career means a new companion and a new plan, the previous ones are kept in history
-    if(changed || !save.pet)
+    if(changed)
     {
-        save.pet = { careerId, name: career.pet.name, species: career.pet.species, affinity: 0, createdAt: new Date().toISOString() }
+        save.careers ??= {}
+        if(save.target)
+            save.careers[save.target.careerId] = { target: save.target, pet: save.pet, roadmap: save.roadmap, lastActiveAt: now }
+        const shelved = save.careers[careerId]
+        delete save.careers[careerId]
+
+        save.pet = shelved?.pet ?? { careerId, name: career.pet.name, species: career.pet.species, affinity: 0, createdAt: now }
+        // A new posting changes the requirements: plan again. Otherwise the saved roadmap comes back
+        save.roadmap = posting ? null : shelved?.roadmap ?? null
+        const keptPosting = mode === 'customise' && shelved?.target?.mode === 'customise' ? shelved.target.posting : null
+        save.target = { careerId, mode, posting: posting ?? keptPosting, setAt: now }
     }
-    save.roadmap = null
+    else
+    {
+        save.target = { careerId, mode, posting: posting ?? null, setAt: now }
+        save.pet ??= { careerId, name: career.pet.name, species: career.pet.species, affinity: 0, createdAt: now }
+        save.roadmap = null
+    }
+    save.pendingTarget = null
+    return replaced
+}
+
+/**
+ * Career the AI generated (search or job posting), with its new skills, kept in the save
+ * spec: { name, summary, skills: [ { skillId | null, name, description, icon, difficulty, level, weight } ], demand, effortMonths, petName }
+ */
+const CUSTOM_COLORS = [ '#e76f51', '#2a9d8f', '#8338ec', '#f4a261', '#3a86ff', '#06a77d', '#c44569', '#6a4c93' ]
+const PET_SPECIES = [ 'owl', 'fox', 'turtle', 'bunny', 'axolotl', 'penguin' ]
+
+function slug(text)
+{
+    return String(text ?? '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 32) || 'career'
+}
+
+export function addCustomCareer(save, spec)
+{
+    save.customCareers ??= []
+    save.customSkills ??= {}
+    const index = save.customCareers.length
+    const id = `custom-${slug(spec.name.en)}-${Date.now().toString(36).slice(- 4)}`
+    const heat = { high: 80, medium: 60, low: 30 }
+
+    const skills = []
+    for(const skill of spec.skills.slice(0, 7))
+    {
+        let skillId = skill.skillId && SKILLS[skill.skillId] ? skill.skillId : null
+        if(!skillId)
+        {
+            skillId = `custom-${slug(skill.name.en)}`
+            if(!SKILLS[skillId] && !save.customSkills[skillId])
+                save.customSkills[skillId] = {
+                    name: skill.name,
+                    detail: { icon: skill.icon, demand: spec.demand, heat: heat[spec.demand] ?? 60, difficulty: Math.max(1, Math.min(5, skill.difficulty)), description: skill.description },
+                }
+        }
+        if(!skills.some((item) => item.id === skillId))
+            skills.push({ id: skillId, level: Math.max(1, Math.min(3, skill.level)), weight: Math.max(1, Math.min(3, skill.weight)) })
+    }
+
+    const career = {
+        id,
+        custom: true,
+        name: spec.name,
+        summary: spec.summary,
+        color: CUSTOM_COLORS[index % CUSTOM_COLORS.length],
+        skills,
+        market: { demand: spec.demand, heat: heat[spec.demand] ?? 60, trend: 'stable' },
+        effortMonths: [ Math.max(1, Math.min(spec.effortMonths[0], spec.effortMonths[1])), Math.max(spec.effortMonths[0], spec.effortMonths[1]) ],
+        pet: { name: spec.petName.slice(0, 20) || 'Nova', species: PET_SPECIES[index % PET_SPECIES.length] },
+        createdAt: new Date().toISOString(),
+    }
+    save.customCareers.push(career)
+    useCustom(save)
+    return career
 }
 
 export function gapsFor(save)
@@ -174,8 +317,11 @@ function findTask(roadmap, taskId)
  */
 export function applyLog(save, { text, source, classification })
 {
+    // Only a log judged as real learning moves the roadmap (features.classifyLog verdict)
+    const verdict = classification.verdict ?? 'learned'
+    const items = verdict === 'learned' ? classification.items : []
     const advanced = []
-    for(const item of classification.items)
+    for(const item of items)
     {
         const task = item.taskId !== 'none' && save.roadmap ? findTask(save.roadmap, item.taskId) : null
         const hours = Math.max(0, Math.min(24, Number(item.hours) || 0))
@@ -194,7 +340,8 @@ export function applyLog(save, { text, source, classification })
         source,
         text: text.slice(0, 2000),
         summary: classification.summary,
-        skillIds: [ ...new Set(classification.items.map((item) => item.skillId).filter((id) => SKILLS[id])) ],
+        verdict,
+        skillIds: [ ...new Set(items.map((item) => item.skillId).filter((id) => SKILLS[id])) ],
         advanced,
         points: advanced.reduce((sum, item) => sum + item.points, 0),
     }
@@ -219,38 +366,39 @@ export function setTaskDone(save, taskId, done)
 export function view(save, ai)
 {
     const market = loadMarket()
-    const careers = CAREERS.map((career) => ({
+    const careers = allCareers().map((career) => ({
         id: career.id,
         name: career.name,
         summary: career.summary,
         color: career.color,
-        market: { ...career.market, monthly: monthlyTrend(career.id, market) },
+        market: { ...career.market, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrReference(career.id, career.skills.map((skill) => skill.id), market) },
         effortMonths: career.effortMonths,
         pet: career.pet,
-        affinity: save.pet?.careerId === career.id ? save.pet.affinity : 0,
+        affinity: affinityOf(save, career.id),
         match: matchCareer(career, save.profile.skills),
+        onMap: isOnMap(save, career.id),
+        saved: Boolean(save.careers?.[career.id]),
+        custom: Boolean(career.custom),
     }))
+
+    const pending = save.pendingTarget && {
+        requestedCareerId: save.pendingTarget.requestedCareerId,
+        suggestedCareerId: save.pendingTarget.suggestedCareerId,
+        newCareerName: save.pendingTarget.newCareer?.name ?? null,
+        postingTitle: save.pendingTarget.posting.title,
+        // Taking the suggestion puts it on the map in place of this mentor (null: it is on the map already)
+        replaces: save.pendingTarget.suggestedCareerId && isOnMap(save, save.pendingTarget.suggestedCareerId) ? null : replaceCandidate(save),
+    }
 
     let pet = null
     if(save.pet)
     {
-        const career = getCareer(save.pet.careerId)
-        const match = matchCareer(career, save.profile.skills)
-        const roadmapTasks = save.roadmap ? save.roadmap.stages.flatMap((stage) => stage.tasks) : []
+        const affinity = affinityOf(save, save.pet.careerId)
         pet = {
             ...save.pet,
-            level: petLevel(save.pet.affinity),
-            skills: match.skills.map((skill) =>
-            {
-                const tasks = roadmapTasks.filter((task) => task.skillId === skill.id)
-                const roadmapProgress = tasks.length ? Math.round(tasks.reduce((sum, task) => sum + task.progress, 0) / tasks.length) : 0
-                const baseline = Math.round(Math.min(skill.current, skill.required) / skill.required * 100)
-                return {
-                    ...skill,
-                    // Daily digests of the chat agent (server/integrations.js) can raise it too
-                    progress: Math.max(baseline, roadmapProgress, save.mastery?.[skill.id] ?? 0),
-                }
-            }),
+            affinity,
+            level: petLevel(affinity),
+            skills: skillProgress(save, getCareer(save.pet.careerId)),
         }
     }
 
@@ -272,6 +420,10 @@ export function view(save, ai)
         skillDetails: SKILL_DETAILS,
         profile: save.profile,
         careers,
+        map: { slots: mapSlots(save), replaceCandidate: replaceCandidate(save) },
+        pending,
+        marketSkills: skillTrendOrReference(null, SKILL_IDS, market),
+        skillMarket: skillMarket(SKILL_IDS, market),
         target: save.target,
         pet,
         roadmap,

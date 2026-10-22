@@ -1,0 +1,32 @@
+{
+  "_note": "SYNTHETIC test data in the shape of JSearch /search responses. Not real postings: used by the tests and by run-local.mjs --fixture for offline runs.",
+  "data analyst in Malaysia": { "status": "OK", "data": [
+    { "job_id": "fx-da-1", "job_title": "Data Analyst", "employer_name": "Example Retail Sdn Bhd", "job_publisher": "LinkedIn", "job_city": "Kuala Lumpur", "job_description": "Build dashboards in Power BI, write SQL queries against PostgreSQL, clean data and present findings to stakeholders. Excel required." },
+    { "job_id": "fx-da-2", "job_title": "Junior Data Analyst", "employer_name": "Sample Logistics", "job_publisher": "JobStreet", "job_city": "Petaling Jaya", "job_description": "Python (pandas) and SQL. Data cleaning and validation of shipment records. Tableau is a plus." },
+    { "job_id": "fx-da-3", "job_title": "Sales Executive", "employer_name": "Demo Trading", "job_publisher": "Indeed", "job_description": "Meet sales targets. Excel." }
+  ] },
+  "business intelligence analyst in Malaysia": { "status": "OK", "data": [
+    { "job_id": "fx-da-1", "job_title": "Data Analyst", "employer_name": "Example Retail Sdn Bhd", "job_publisher": "LinkedIn", "job_description": "Duplicate of fx-da-1 returned by the second query." },
+    { "job_id": "fx-da-4", "job_title": "BI Analyst", "employer_name": "Placeholder Bank", "job_publisher": "Indeed", "job_description": "SQL, data visualization with Looker, statistics and regression analysis.", "job_highlights": { "Qualifications": [ "Strong communication skills" ] } }
+  ] },
+  "frontend developer in Malaysia": { "status": "OK", "data": [
+    { "job_id": "fx-fe-1", "job_title": "Frontend Developer", "employer_name": "Example Apps", "job_publisher": "LinkedIn", "job_description": "React, TypeScript, HTML/CSS, Git. Responsive design and WCAG accessibility." }
+  ] },
+  "front end engineer in Malaysia": { "status": "OK", "data": [] },
+  "backend developer in Malaysia": { "status": "OK", "data": [
+    { "job_id": "fx-be-1", "job_title": "Backend Engineer (Node.js)", "employer_name": "Sample Fintech", "job_publisher": "JobStreet", "job_description": "Node.js, RESTful APIs, MongoDB and Redis, Docker on AWS, unit testing with Jest." }
+  ] },
+  "backend engineer in Malaysia": { "status": "OK", "data": [] },
+  "UI UX designer in Malaysia": { "status": "OK", "data": [
+    { "job_id": "fx-ux-1", "job_title": "UI/UX Designer", "employer_name": "Demo Studio", "job_publisher": "LinkedIn", "job_description": "Figma prototypes and wireframes, user research interviews, usability testing, design systems." }
+  ] },
+  "product designer in Malaysia": { "status": "OK", "data": [] },
+  "machine learning engineer in Malaysia": { "status": "OK", "data": [
+    { "job_id": "fx-ml-1", "job_title": "Machine Learning Engineer", "employer_name": "Example AI Lab", "job_publisher": "LinkedIn", "job_description": "PyTorch, Python, MLflow model deployment on Kubernetes, linear algebra background." }
+  ] },
+  "AI engineer in Malaysia": { "status": "OK", "data": [] },
+  "product manager in Malaysia": { "status": "OK", "data": [
+    { "job_id": "fx-pm-1", "job_title": "Product Manager", "employer_name": "Sample Commerce", "job_publisher": "Indeed", "job_description": "Own the product roadmap, run Agile sprints in Jira, market research and stakeholder communication. SQL a plus." }
+  ] },
+  "product owner in Malaysia": { "status": "OK", "data": [] }
+}

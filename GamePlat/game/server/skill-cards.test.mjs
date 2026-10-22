@@ -38,16 +38,31 @@ test('every catalog skill has complete localized card metadata', () =>
         }
 })
 
-test('career affection uses saved affinity rather than skill matching', () =>
+test('affinity starts at the profile match and grows with learning progress', () =>
 {
-    const save = learner()
-    const state = game.view(save, ai)
-    const selected = state.careers.find(({ id }) => id === save.pet.careerId)
-    assert.equal(selected.affinity, 40)
-    assert.equal(selected.match.percent, 0)
-    assert.equal(state.pet.level, 3)
-    assert.ok(state.careers.filter(({ id }) => id !== save.pet.careerId).every(({ affinity }) => affinity === 0))
+    // Nothing learned and an empty profile: 0 everywhere
     assert.equal(game.view(createSave(), ai).careers.every(({ affinity }) => affinity === 0), true)
+
+    // Profile only: affinity equals the match of every career
+    const save = learner()
+    save.profile.skills = [ { id: 'data-visualization', name: 'Charts', level: 2, evidence: '', source: 'manual' } ]
+    let state = game.view(save, ai)
+    for(const career of state.careers)
+        assert.equal(career.affinity, career.match.percent, career.id)
+    const analyst = () => state.careers.find(({ id }) => id === 'data-analyst')
+    assert.equal(analyst().affinity, 11) // data-visualization: level 2 × weight 2 of 35
+
+    // The SQL task done: + level 3 × weight 3 of 35, the match itself doesn't move
+    game.setTaskDone(save, 's1t1', true)
+    state = game.view(save, ai)
+    assert.equal(analyst().affinity, 37)
+    assert.equal(analyst().match.percent, 11)
+    assert.equal(state.pet.affinity, 37)
+    assert.equal(state.pet.level, 2)
+
+    // Daily digest mastery counts too
+    save.mastery = { 'data-cleaning': 50 }
+    assert.equal(game.view(save, ai).careers.find(({ id }) => id === 'data-analyst').affinity, 50)
 })
 
 test('task completion unlocks the next stage without an exam, including legacy roadmaps', () =>

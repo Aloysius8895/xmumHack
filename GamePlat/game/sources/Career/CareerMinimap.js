@@ -1,7 +1,7 @@
 import { Game } from '../Game/Game.js'
 import { pick, t } from './i18n.js'
 import { MAP_WIDTH, MAP_HEIGHT } from '../Game/MapBounds.js'
-import { createAltarIslandMapElement, MAP_SEA_COLORS } from '../Game/World/AltarIsland.js'
+import { createAltarIslandMapElement, MAP_SEA_COLORS, MAP_SEA_GRADIENTS } from '../Game/World/AltarIsland.js'
 
 /**
  * Corner minimap centered on the player, gym leaders shown as head avatars (click one to teleport)
@@ -25,6 +25,7 @@ export class CareerMinimap
         this.setDom()
 
         this.world.events.on('npcs', () => this.setMarkers())
+        this.world.events.on('npcs-changed', () => this.rebindMarkers())
         this.api.events.on('state', () => this.refresh())
 
         this.game.ticker.events.on('tick', () =>
@@ -97,6 +98,22 @@ export class CareerMinimap
         this.refresh()
     }
 
+    // A mentor swapped for another career: its color and badge
+    rebindMarkers()
+    {
+        for(const { npc, element } of this.markers)
+        {
+            element.style.setProperty('--career', npc.career.color)
+            element.innerHTML = this.avatarHtml(npc)
+        }
+        for(const { npc, element } of this.mapMarkers)
+        {
+            element.style.setProperty('--career', npc.career.color)
+            element.innerHTML = `${this.avatarHtml(npc)}<em></em>`
+        }
+        this.refresh()
+    }
+
     // Labels, language and target highlight
     refresh()
     {
@@ -129,8 +146,9 @@ export class CareerMinimap
         if(picture !== this.mapPicture)
         {
             this.mapPicture = picture
-            this.worldElement.style.backgroundImage = `url(${picture})`
             const night = picture.includes('night')
+            this.worldElement.style.backgroundImage = this.game.mapBounds ? `url(${picture}), ${MAP_SEA_GRADIENTS[night ? 'night' : 'day']}` : `url(${picture})`
+            this.worldElement.style.backgroundRepeat = this.game.mapBounds ? 'no-repeat, repeat-x' : ''
             this.worldElement.style.backgroundColor = this.game.mapBounds ? MAP_SEA_COLORS[night ? 'night' : 'day'] : ''
             this.islandElement?.setNight(night)
         }
@@ -148,8 +166,10 @@ export class CareerMinimap
         if(this.game.mapBounds)
         {
             const scale = size / VIEW_METERS, b = this.game.mapBounds
-            this.worldElement.style.backgroundSize = `${this.game.terrain.size * scale}px ${this.game.terrain.size * scale}px`
-            this.worldElement.style.backgroundPosition = `${-(b.minX + this.game.terrain.size / 2) * scale}px ${-(b.minZ + this.game.terrain.size / 2) * scale}px`
+            const pictureSize = this.game.terrain.size * scale
+            const picturePosition = `${-(b.minX + this.game.terrain.size / 2) * scale}px ${-(b.minZ + this.game.terrain.size / 2) * scale}px`
+            this.worldElement.style.backgroundSize = `${pictureSize}px ${pictureSize}px, ${pictureSize}px ${pictureSize}px`
+            this.worldElement.style.backgroundPosition = `${picturePosition}, ${picturePosition}`
         }
         this.worldElement.style.transform = `translate(${size * 0.5 - player.x * worldSize}px, ${size * 0.5 - player.y * worldHeight}px)`
         this.playerElement.style.transform = `translate(-50%, -50%) rotate(${Math.PI * 0.5 - this.game.physicalVehicle.yRotation}rad)`

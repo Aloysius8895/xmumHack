@@ -1,6 +1,7 @@
 import * as THREE from 'three/webgpu'
 import { color, uniform, vec2 } from 'three/tsl'
 import { Game } from './Game.js'
+import { CareerTour } from '../Career/CareerTour.js'
 import gsap from 'gsap'
 
 export class Reveal
@@ -103,11 +104,14 @@ export class Reveal
                 }
                 else
                 {
-                    // Next function, called once the character is confirmed
+                    // Next function, called once the character is confirmed (Wisp's guided tour after the reveal, the first time only)
                     const next = () =>
                     {
                         this.updateStep(1)
                         this.game.rayCursor.removeIntersect(intersect)
+
+                        if(!CareerTour.isSeen())
+                            setTimeout(() => this.game.career.tour.start(), 2500)
                     }
 
                     // Character selection (A / D to browse, Enter or click on the circle to confirm)

@@ -2,6 +2,8 @@ import { Events } from './Events.js'
 import { Game } from './Game.js'
 import { Inputs } from './Inputs/Inputs.js'
 import { Tabs } from './Tabs.js'
+import { t } from '../Career/i18n.js'
+import { SOCIAL_TEAM_NAME } from '../data/social.js'
 
 export class Menu
 {
@@ -164,6 +166,16 @@ export class Menu
         // Not found
         if(!item)
             return
+
+        this.element.classList.toggle('is-project-home', item.name === 'home')
+        this.element.classList.toggle('is-project-stack', item.name === 'behindTheScene')
+        if(item.name === 'home' || item.name === 'behindTheScene')
+        {
+            for(const element of item.contentElement.querySelectorAll('[data-project-text]'))
+                element.textContent = t(element.dataset.projectText, { team: SOCIAL_TEAM_NAME })
+            item.navigationElement.setAttribute('aria-label', t(item.name === 'home' ? 'home.navigation' : 'stack.title'))
+            this.element.querySelector('.js-close').setAttribute('aria-label', t('common.close'))
+        }
 
         // Same
         if(

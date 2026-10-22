@@ -1,0 +1,52 @@
+.social-introduction
+    .container
+        width 560px
+        max-width calc(100vw - 32px)
+        max-height calc(100dvh - 32px)
+        overflow-y auto
+        border 1px solid rgba(255, 206, 202, 0.3)
+        border-radius 20px
+        box-shadow 0 20px 80px rgba(0, 0, 0, 0.4)
+
+    .content
+        padding 40px
+
+        @media only screen and (max-width 520px)
+            padding 28px 24px
+
+    .social-team
+        padding-right 48px
+        color #ffceca
+        font-size 0.85rem
+        font-weight 900
+        letter-spacing 0.05em
+        overflow-wrap anywhere
+
+    .social-platform
+        margin 12px 0 20px
+        font-family "Nunito", sans-serif
+        font-size 2rem
+        line-height 1.25
+
+    .social-description
+        color rgba(255, 255, 255, 0.8)
+        line-height 1.8
+        overflow-wrap anywhere
+
+    .social-link
+        margin-top 28px
+        max-width 100%
+        height auto
+        min-height 58px
+        line-height 1.5
+        padding 15px 20px
+        white-space normal
+        text-align center
+
+        &[hidden]
+            display none
+
+    a:focus-visible
+    button:focus-visible
+        outline 2px solid #ffceca
+        outline-offset 5px

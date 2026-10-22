@@ -2,13 +2,11 @@ import { Game } from '../../Game.js'
 import { AltarArea } from './AltarArea.js'
 import { CookieArea } from './CookieArea.js'
 import { LandingArea } from './LandingArea.js'
-import { ProjectsArea } from './ProjectsArea.js'
-import { LabArea } from './LabArea.js'
+import { StaticArea } from './StaticArea.js'
 import { CareerArea } from './CareerArea.js'
 import { SocialArea } from './SocialArea.js'
 import { ToiletArea } from './ToiletArea.js'
 import { BowlingArea } from './BowlingArea.js'
-import { CircuitArea } from './CircuitArea.js'
 import { BehindTheSceneArea } from './BehindTheSceneArea.js'
 import { AchievementsArea } from './AchievementsArea.js'
 import { TimeMachineArea } from './TimeMachineArea.js'
@@ -25,12 +23,11 @@ export class Areas
             [ 'altar', AltarArea ],
             [ 'behindTheScene', BehindTheSceneArea ],
             [ 'bowling', BowlingArea ],
-            [ 'career', CareerArea ],
-            [ 'circuit', CircuitArea ],
+            // [ 'career', CareerArea ], // Career timeline lines removed
             [ 'cookie', CookieArea ],
-            [ 'lab', LabArea ],
+            [ 'lab', StaticArea ], // Plain building for now (LabArea: the original interactive lab)
             [ 'landing', LandingArea ],
-            [ 'projects', ProjectsArea ],
+            [ 'projects', StaticArea ], // Plain building for now (ProjectsArea: the original interactive projects)
             [ 'social', SocialArea ],
             [ 'toilet', ToiletArea ],
             [ 'timeMachine', TimeMachineArea ],
@@ -42,7 +39,7 @@ export class Areas
         {
             for(const [ name, AreaClass ] of list)
             {
-                if(this.game.mapBounds && (name === 'circuit' || !this.game.respawns.items.has(name))) continue
+                if(this.game.mapBounds && !this.game.respawns.items.has(name)) continue
                 if(child.name.startsWith(name))
                     this[name] = new AreaClass(child)
             }
