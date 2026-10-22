@@ -22,16 +22,23 @@ const WANDER = {
     sampleStep: 0.5,
 }
 
-// Where each gym leader stands: an area of the map (respawn point) + offset in metres, picked by theme
+// Where the mentors stand, one per spot of the save's map (state.map.slots, server/careers.js DEFAULT_MAP gives the
+// first careers in this order): an area of the map (respawn point) + offset in metres, picked by theme.
+// A mentor swapped for another career keeps its spot and figure, and takes the new career's name and color.
 // model / animation: own rigged model (animation/build.py, shared clips), otherwise a placeholder figure in the career color
-// avatar: head portrait for the maps (animation/portrait.py), otherwise a colored badge
-export const NPCS = {
-    'product-manager':    { respawn: 'career', offset: { x: 2.5, z: 2.5 } },
-    'frontend-developer': { respawn: 'projects', offset: { x: 2.5, z: 2.5 }, model: 'characters/npcBoy1/npcBoy1.glb', animation: 'idle', avatar: 'ui/avatars/npcBoy1.png' },
-    'ml-engineer':        { respawn: 'lab', offset: { x: 2.5, z: 2.5 } },
-    'backend-developer':  { respawn: 'behindTheScene', offset: { x: 2.5, z: 2.5 } },
-    'ui-ux-designer':     { respawn: 'social', offset: { x: 2.5, z: 2.5 } },
-    'data-analyst':       { respawn: 'achievements', offset: { x: 2.5, z: 2.5 } },
+// avatar: head portrait of that figure for the maps (animation/portrait.py), otherwise a colored badge
+export const NPC_SPOTS = [
+    { respawn: 'career', offset: { x: 2.5, z: 2.5 } },
+    { respawn: 'projects', offset: { x: 2.5, z: 2.5 }, model: 'characters/npcBoy1/npcBoy1.glb', animation: 'idle', avatar: 'ui/avatars/npcBoy1.png' },
+    { respawn: 'lab', offset: { x: 2.5, z: 2.5 } },
+    { respawn: 'behindTheScene', offset: { x: 2.5, z: 2.5 } },
+    { respawn: 'social', offset: { x: 2.5, z: 2.5 } },
+    { respawn: 'achievements', offset: { x: 2.5, z: 2.5 } },
+]
+
+function placeholderColors(career)
+{
+    return { shirt: career.color, shorts: '#2b2b2b', shoes: '#f4f0e8', hair: '#2a2230' }
 }
 
 const PET_HEIGHT = 0.7
@@ -52,6 +59,8 @@ export class CareerWorld
         {
             if(!this.npcs.length)
                 this.setNpcs(state)
+            else
+                this.syncNpcs(state)
             this.syncPet(state)
         })
 
@@ -66,27 +75,61 @@ export class CareerWorld
      */
     setNpcs(state)
     {
-        for(const career of state.careers)
+        NPC_SPOTS.forEach((spot, slot) =>
         {
-            const spot = NPCS[career.id]
-            if(!spot)
-                continue
+            const career = state.careers.find((item) => item.id === state.map.slots[slot])
+            if(!career)
+                return
 
             const { avatar, ...description } = spot
             const character = this.game.world.characters.add({
-                name: `career-${career.id}`,
+                name: `career-npc-${slot}`,
                 rotation: 45, // facing the default camera
                 height: NPC_HEIGHT,
                 collider: true,
-                placeholder: { shirt: career.color, shorts: '#2b2b2b', shoes: '#f4f0e8', hair: '#2a2230' },
+                placeholder: placeholderColors(career),
                 ...description,
             })
 
             if(character)
-                this.npcs.push({ career, character, avatar: avatar ?? null, point: null, wander: { home: null, target: null, pause: 1 + Math.random() * 4, facing: THREE.MathUtils.degToRad(45) } })
-        }
+                this.npcs.push({ slot, career, character, avatar: avatar ?? null, point: null, wander: { home: null, target: null, pause: 1 + Math.random() * 4, facing: THREE.MathUtils.degToRad(45) } })
+        })
 
         this.events.trigger('npcs', [ this.npcs ])
+    }
+
+    /**
+     * Mentor swapped on the map (state.map.slots): same figure and spot, new career name, color and talk prompt
+     */
+    syncNpcs(state)
+    {
+        let changed = false
+        for(const npc of this.npcs)
+        {
+            const career = state.careers.find((item) => item.id === state.map.slots[npc.slot])
+            if(!career)
+                continue
+            if(career.id !== npc.career.id)
+            {
+                changed = true
+                if(this.ui.dialogue?.careerId === npc.career.id)
+                    this.ui.closeDialogue()
+                const characters = this.game.world.characters
+                const character = npc.character
+                if(character.placeholder)
+                {
+                    character.group.remove(character.placeholder)
+                    character.placeholder = characters.createPlaceholder(placeholderColors(career))
+                    characters.fitToHeight(character.placeholder, NPC_HEIGHT)
+                    character.group.add(character.placeholder)
+                }
+                npc.point?.hide()
+                npc.point = null
+            }
+            npc.career = career
+        }
+        if(changed)
+            this.events.trigger('npcs-changed', [ this.npcs ])
     }
 
     createPoints()

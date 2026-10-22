@@ -5,10 +5,19 @@
  * Claude Opus 5.5) and server-side refusal fallback. AI_MOCK=1 answers with canned data instead, for demos
  * without an API key.
  */
+import { AsyncLocalStorage } from 'node:async_hooks'
 import Anthropic from '@anthropic-ai/sdk'
 
 export const MODEL = process.env.CLAUDE_MODEL || 'claude-opus-5-5'
 export const MOCK = process.env.AI_MOCK === '1'
+
+// Requests flagged demo: true (the in-game guided tour) get the canned answers too, fast and the same every run
+export const demo = new AsyncLocalStorage()
+
+export function isMock()
+{
+    return MOCK || demo.getStore() === true
+}
 
 export class AiError extends Error
 {

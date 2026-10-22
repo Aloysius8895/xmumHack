@@ -137,7 +137,11 @@ export class Floor
             const index = indexZ + indexX * rowsCount
 
             const b = this.game.mapBounds
-            heights[index] = b && (x < b.minX || x > b.maxX || z < b.minZ || z > b.maxZ) ? -1.5 : y
+            // Rapier uses this exact regular grid. GLB Float32 drift (e.g. -18.000006)
+            // must not turn an on-boundary ground vertex into a -1.5 m seabed pit.
+            const gridX = indexX / (rowsCount - 1) * this.game.terrain.size - halfExtent
+            const gridZ = indexZ / (rowsCount - 1) * this.game.terrain.size - halfExtent
+            heights[index] = b && (gridX < b.minX || gridX > b.maxX || gridZ < b.minZ || gridZ > b.maxZ) ? -1.5 : y
         }
 
         const object = this.game.objects.add(

@@ -86,6 +86,25 @@ export const SKILL_PATTERNS = {
     'roadmapping':        /\b(roadmaps?|roadmapping|prioriti[sz]ation|product strategy|product vision|backlog)\b/i,
     'agile':              /\b(agile|scrum|kanban|sprints?|jira)\b/i,
     'market-analysis':    /\b(market (research|analysis)|competitive analysis|competitor analysis|market trends?|go-to-market|customer insights?)\b/i,
+    // Skills of the search catalog careers (server/careers.js EXTRA_CAREERS, not searched here), counted when a posting asks for them
+    'accounting':         /\b(accounting|bookkeeping|mfrs|ifrs|gaap|financial statements?|general ledger|acca|cpa)\b/i,
+    'auditing':           /\b(audit(s|ing|or)?|assurance|isa standards?)\b/i,
+    'internal-control':   /\b(internal controls?|risk assessment|sox|compliance testing|risk management)\b/i,
+    'legal-research':     /\b(legal research|case law|statutes?|westlaw|lexis)\b/i,
+    'legal-writing':      /\b(legal (drafting|writing)|draft(ing)? (contracts?|agreements?)|pleadings?)\b/i,
+    'negotiation':        /\b(negotiat\w+)\b/i,
+    'lesson-planning':    /\b(lesson plans?|lesson planning|curriculum (design|development)|syllabus)\b/i,
+    'classroom-management': /\b(classroom management|classroom routines?|behaviou?r management)\b/i,
+    'assessment':         /\b(student assessments?|formative assessments?|grading|rubrics?)\b/i,
+    'clinical-knowledge': /\b(clinical|diagnos\w+|mbbs|medical degree)\b/i,
+    'patient-care':       /\b(patient care|patient management|bedside manner)\b/i,
+    'medical-ethics':     /\b(medical ethics|informed consent|patient confidentiality)\b/i,
+    'cooking-technique':  /\b(culinary|cooking|knife skills|kitchen techniques?)\b/i,
+    'food-safety':        /\b(food (safety|hygiene|handling)|haccp|sanitation)\b/i,
+    'menu-planning':      /\b(menu (planning|development|design)|food cost(ing)?|recipe costing)\b/i,
+    'engineering-math':   /\b(structural (analysis|design)|engineering mechanics|load calculations?|finite element)\b/i,
+    'cad':                /\b(autocad|cad|revit|civil 3d|solidworks)\b/i,
+    'project-management': /\b(project management|pmp|project planning|project schedul\w+|prince2)\b/i,
 }
 
 /**

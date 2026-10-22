@@ -51,10 +51,7 @@ export class SocialArea extends Area
                 InteractivePoints.STATE_CONCEALED,
                 () =>
                 {
-                    if(link.url)
-                        window.open(link.url, '_blank')
-                    else(link.modal)
-                        this.game.modals.open(link.modal)
+                    this.game.modals.openSocial(link)
                 },
                 () =>
                 {

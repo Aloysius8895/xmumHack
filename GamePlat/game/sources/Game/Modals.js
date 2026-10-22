@@ -1,6 +1,7 @@
 import { Events } from './Events.js'
 import { Game } from './Game.js'
 import { Tabs } from './Tabs.js'
+import { SocialIntroduction } from './SocialIntroduction.js'
 
 export class Modals
 {
@@ -18,6 +19,7 @@ export class Modals
         this.pending = null
         this.default = null
         this.events = new Events()
+        this.socialIntroduction = new SocialIntroduction(this.element.querySelector('[data-name="social"]'))
 
         this.setClose()
         this.setItems()
@@ -109,6 +111,12 @@ export class Modals
             if(event.target === this.element)
                 this.close()
         })
+    }
+
+    openSocial(contact)
+    {
+        this.socialIntroduction.show(contact)
+        this.open('social')
     }
 
     open(name)

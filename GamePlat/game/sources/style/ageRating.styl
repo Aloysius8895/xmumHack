@@ -1,0 +1,41 @@
+/* 16+ age rating badge, bottom left of the start screen (index.html), fades out once the character is chosen */
+
+.age-rating {
+    position: absolute;
+    left: calc(24px + env(safe-area-inset-left));
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    z-index: 6;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    box-sizing: border-box;
+    border: 4px solid #FFFFFF;
+    border-radius: 14px;
+    background: #E8323C;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
+    color: #FFFFFF;
+    font-family: "Nunito", system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+    transition: opacity 0.4s, visibility 0s linear 0.4s;
+}
+
+html.is-character-selected .age-rating {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@media (max-width: 640px) {
+    .age-rating {
+        width: 48px;
+        height: 48px;
+        border-width: 3px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+}

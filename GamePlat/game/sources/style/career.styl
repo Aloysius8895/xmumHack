@@ -399,12 +399,12 @@ button.career-points {
     top: calc(18px + env(safe-area-inset-top));
     left: 50%;
     flex-direction: row;
-    gap: 4px;
+    gap: 6px;
     width: auto;
     max-width: calc(100vw - 2 * 230px);
     max-height: none;
     margin: 0;
-    padding: 6px;
+    padding: 8px;
     overflow: visible;
     border: 3px solid var(--outline);
     border-radius: 20px;
@@ -415,13 +415,14 @@ button.career-points {
     clip-path: none;
     transform: translateX(-50%);
     pointer-events: auto;
-    transition: left 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
+    transition: left 0.3s cubic-bezier(0.34, 1.3, 0.64, 1), transform 0.3s cubic-bezier(0.34, 1.3, 0.64, 1);
 }
 
 /* A side panel is open: the bar slides to the middle of the space between the minimap (~230px) and the panel
-   (18px + 520px + 16px gap), so it stays fully visible and works as tabs between the panels */
+   (--career-panel-width at the right edge): the bar sits right against the panel's left edge and works as tabs */
 .career-panel.is-open:not(.is-map) ~ .career-menu.is-bar .career-rail {
-    left: calc(50vw - 162px);
+    left: calc(100vw - var(--career-panel-width, 640px) - 36px);
+    transform: translateX(-100%);
 }
 
 @media (max-width: 1440px) {
@@ -434,6 +435,11 @@ button.career-points {
     }
 }
 
+.career-panel.is-open:not(.is-map) ~ .career-menu.is-bar .career-rail-item {
+    gap: 6px;
+    padding: 8px 11px;
+}
+
 /* The roadmap scroll takes the whole screen: the bar steps aside until it closes */
 .career-panel.is-map.is-open ~ .career-menu.is-bar .career-rail {
     visibility: hidden;
@@ -441,22 +447,22 @@ button.career-points {
 
 .career-menu.is-bar .career-rail-item {
     flex-direction: row;
-    gap: 6px;
+    gap: 8px;
     width: auto;
-    min-width: 44px;
-    min-height: 44px;
-    padding: 6px 12px;
-    border-radius: 14px;
+    min-width: 52px;
+    min-height: 54px;
+    padding: 8px 16px;
+    border-radius: 16px;
     color: var(--text);
-    font-size: 14px;
+    font-size: 17px;
     white-space: nowrap;
     overflow-wrap: normal;
     transition: var(--toy-press), background 0.12s ease;
 }
 
 .career-menu.is-bar .career-rail-item svg {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
     stroke: var(--outline);
     stroke-width: 2.2;
 }
@@ -477,13 +483,13 @@ button.career-points {
 }
 
 /* Not enough room between the minimap and the HUD: icons only (the label stays as title / accessible name) */
-@media (max-width: 1100px) {
+@media (max-width: 1280px) {
     .career-menu.is-bar .career-rail-item span {
         display: none;
     }
 
     .career-menu.is-bar .career-rail-item {
-        padding: 6px 10px;
+        padding: 8px 14px;
     }
 }
 
@@ -540,7 +546,7 @@ button.career-points {
     align-items: center;
     gap: 10px;
     margin: 0;
-    font-size: 22px;
+    font-size: 26px;
 }
 
 /* Pink bar before titles, like the menu button */
@@ -582,7 +588,11 @@ button.career-points {
     align-items: center;
     gap: 8px;
     margin: 22px 0 8px;
-    font-size: 16px;
+    font-size: 21px;
+}
+
+.career-panel-body {
+    font-size: 18px;
 }
 
 .career-panel-body p {
@@ -612,7 +622,7 @@ button.career-points {
 
 .career-muted {
     color: var(--career-muted);
-    font-size: 13px;
+    font-size: 16px;
 }
 
 .career-row {
@@ -699,6 +709,7 @@ button.career-points {
     border-radius: 10px;
     background: rgba(125, 216, 122, 0.15);
     border-left: 3px solid var(--career-good);
+    font-size: 15px;
 }
 
 .career-notice.is-error {
@@ -718,7 +729,7 @@ button.career-points {
     border-radius: 999px;
     background: var(--career-pink-soft);
     color: var(--career-pink-ink);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -825,6 +836,79 @@ button.career-points {
     white-space: nowrap;
 }
 
+/* Trends panel (CareerUI.renderMarket): career heat ranking and fastest risers */
+
+.career-ranks {
+    display: grid;
+    gap: 6px;
+    margin: 6px 0 8px;
+    padding: 0;
+    list-style: none;
+}
+
+.career-rank {
+    display: grid;
+    grid-template-columns: 34px minmax(120px, 1.4fr) 2fr 48px minmax(84px, auto);
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    border: 2px solid transparent;
+    border-left: 5px solid var(--career);
+    border-radius: 12px;
+    background: var(--face-white, var(--career-bg-strong));
+    font-size: 17px;
+    text-align: left;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.career-rank:hover {
+    border-color: var(--outline, var(--career));
+    transform: translateX(2px);
+}
+
+.career-rank-number {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--face-soft, #EDE6FF);
+    font-weight: 800;
+}
+
+.career-rank.is-top .career-rank-number {
+    background: var(--amber, #FFB547);
+    box-shadow: inset 0 0 0 2px var(--outline, #3B2E9E);
+}
+
+.career-rank-name {
+    font-weight: 700;
+}
+
+.career-risers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.career-riser {
+    display: grid;
+    gap: 4px;
+    padding: 12px 14px;
+    border: 3px solid var(--outline, #3B2E9E);
+    border-radius: 14px;
+    background: var(--face-white, var(--career-bg-strong));
+    box-shadow: 0 4px 0 var(--career);
+    text-align: left;
+}
+
+.career-riser span {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1F6B35;
+}
+
 /* Skill popularity (CareerUI.skillPopularity) */
 
 .career-skill-trends {
@@ -835,11 +919,11 @@ button.career-points {
 
 .career-skill-trend {
     display: grid;
-    grid-template-columns: minmax(90px, 1.4fr) 2fr 40px minmax(70px, auto);
+    grid-template-columns: minmax(120px, 1.4fr) 2fr 48px minmax(84px, auto);
     align-items: center;
-    gap: 8px;
-    padding: 3px 0;
-    font-size: 13px;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 18px;
 }
 
 .career-skill-trend-share {
@@ -848,7 +932,7 @@ button.career-points {
 }
 
 .career-skill-trend-change {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 700;
     white-space: nowrap;
 }
@@ -918,6 +1002,83 @@ button.career-points {
 .career-posting .is-partial .career-status { color: var(--career-warn); }
 .career-posting .is-gap .career-status { color: var(--career-bad); }
 
+/* Career search, careers off the map, choices to confirm */
+
+.career-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0 14px;
+}
+
+/* Search box: framed and always first in the Careers panel (CareerUI.renderCareers) */
+.career-search input {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    font-size: 18px;
+}
+
+.career-search small {
+    flex-shrink: 0;
+}
+
+.career-search-empty {
+    display: grid;
+    justify-items: start;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.career-search-empty p {
+    margin: 0;
+}
+
+.career-card.is-off-map {
+    opacity: 0.82;
+}
+
+.career-tag.is-on-map {
+    color: var(--career-good);
+}
+
+.career-tag.is-off-map {
+    color: var(--career-muted);
+}
+
+.career-choice {
+    display: grid;
+    gap: 6px;
+}
+
+.career-choice p {
+    margin: 0;
+}
+
+/* Posting requirements as skill cards (Customise mode) */
+
+.career-posting-cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.career-posting-card.is-met .career-status { color: var(--career-good); }
+.career-posting-card.is-partial .career-status { color: var(--career-warn); }
+.career-posting-card.is-gap .career-status { color: var(--career-bad); }
+
+.career-posting-card .career-status {
+    white-space: nowrap;
+}
+
+.career-panel-body .career-posting-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 0 0 8px;
+}
+
 /* Career cards */
 
 .career-cards {
@@ -946,16 +1107,25 @@ button.career-points {
     display: flex;
     justify-content: space-between;
     gap: 8px;
+    font-size: 20px;
 }
 
 .career-card small {
     color: var(--career-muted);
+    font-size: 16px;
 }
 
 .career-card-affinity {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.career-card-fit {
+    display: block;
+    margin-top: -2px;
+    color: var(--career-muted);
+    font-size: 14px;
 }
 
 .career-card-affinity em {
@@ -975,15 +1145,21 @@ button.career-points {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding: 12px;
+    padding: 14px;
     border: 2px solid var(--career-line);
     border-radius: 12px;
     background: var(--career-bg-strong);
     text-align: left;
 }
 
+.career-mode strong {
+    font-size: 18px;
+}
+
 .career-mode small {
     color: var(--career-muted);
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 .career-mode.is-selected {
@@ -993,7 +1169,7 @@ button.career-points {
 /* Pet */
 
 .career-skill-reference {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5;
 }
 
@@ -2477,21 +2653,52 @@ button.career-points {
 /* Busy */
 
 .career-busy {
-    position: absolute;
-    top: calc(14px + env(safe-area-inset-top));
+    position: fixed;
+    bottom: calc(28px + env(safe-area-inset-bottom));
     left: 50%;
-    transform: translate(-50%, -200%);
-    padding: 8px 18px;
+    z-index: 14;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border: 3px solid var(--outline, #3B2E9E);
     border-radius: 999px;
-    background: var(--career-paper);
-    color: var(--career-pink-ink);
-    box-shadow: var(--career-shadow);
+    background: var(--face-white, var(--career-paper));
+    box-shadow: 0 5px 0 var(--extrude, #6A55E0);
+    color: var(--text, var(--career-pink-ink));
+    font-size: 17px;
     font-weight: 700;
-    transition: transform 0.2s ease;
+    opacity: 0;
+    transform: translate(-50%, 24px);
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.25s ease, visibility 0s linear 0.25s;
 }
 
 .career-ui.is-busy .career-busy {
+    opacity: 1;
     transform: translate(-50%, 0);
+    visibility: visible;
+    transition: opacity 0.2s 0.6s, transform 0.25s ease 0.6s; /* Quick calls finish before it shows */
+}
+
+.career-busy-spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid var(--extrude-soft, #CFC4FF);
+    border-top-color: var(--outline, #3B2E9E);
+    border-radius: 50%;
+    animation: career-busy-spin 0.8s linear infinite;
+}
+
+.career-busy-time {
+    min-width: 2.5em;
+    color: var(--text-muted, inherit);
+    font-variant-numeric: tabular-nums;
+}
+
+@keyframes career-busy-spin {
+    to { transform: rotate(360deg); }
 }
 
 .career-ui.is-busy .career-panel-body button,
@@ -2587,6 +2794,8 @@ html:not(.is-started) .career-ui {
  * ------------------------------------------------------------------------------------------- */
 
 .career-ui {
+    /* Side panel: as wide as the screen allows, up to the menu bar (~1130px from the left on a wide screen) */
+    --career-panel-width: clamp(640px, calc(100vw - 1130px), 960px);
     --face: #F3EEFF;
     --face-white: #FFFFFF;
     --face-soft: #EDE6FF;
@@ -2636,17 +2845,21 @@ html:not(.is-started) .career-ui {
 /* Panel */
 
 .career-panel:not(.is-map) {
-    top: calc(18px + env(safe-area-inset-top));
-    right: calc(18px + env(safe-area-inset-right));
-    bottom: calc(28px + env(safe-area-inset-bottom));
-    width: calc(100% - 36px);
-    max-width: 520px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: var(--career-panel-width, 640px);
     padding: 0;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-right: env(safe-area-inset-right);
     border: var(--toy-border);
-    border-radius: 28px;
+    border-right: 0;
+    border-radius: 28px 0 0 28px;
     background: var(--face);
     color: var(--text);
-    box-shadow: 0 9px 0 var(--extrude);
+    box-shadow: -9px 0 0 var(--extrude);
     transform: translateX(calc(100% + 40px));
 }
 
@@ -2655,7 +2868,7 @@ html:not(.is-started) .career-ui {
 }
 
 .career-panel:not(.is-map) .career-panel-body {
-    border-radius: 0 0 26px 26px;
+    border-radius: 0 0 0 26px;
 }
 
 .career-panel-header h2 {
@@ -2822,6 +3035,7 @@ html:not(.is-started) .career-ui {
 
 .career-panel-body textarea,
 .career-panel-body input[type="text"],
+.career-panel-body input[type="search"],
 .career-panel-body select {
     border: var(--toy-border);
     border-radius: 14px;
@@ -2832,6 +3046,7 @@ html:not(.is-started) .career-ui {
 
 .career-panel-body textarea:focus,
 .career-panel-body input[type="text"]:focus,
+.career-panel-body input[type="search"]:focus,
 .career-panel-body select:focus {
     outline: 3px solid var(--extrude-soft);
     outline-offset: 1px;

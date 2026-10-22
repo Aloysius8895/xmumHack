@@ -5,6 +5,7 @@
  * Skill levels: 0 none, 1 basic, 2 working, 3 solid. Career skills give the required level and a weight (1-3).
  * Names are { zh, en, ms }.
  */
+import { SKILL_DETAILS } from './skill-details.js'
 
 export const SKILLS = {
     'sql':                { zh: 'SQL 查询', en: 'SQL', ms: 'SQL' },
@@ -36,6 +37,25 @@ export const SKILLS = {
     'roadmapping':        { zh: '产品规划', en: 'Product roadmapping', ms: 'Perancangan produk' },
     'agile':              { zh: '敏捷协作', en: 'Agile collaboration', ms: 'Kolaborasi Agile' },
     'market-analysis':    { zh: '市场分析', en: 'Market analysis', ms: 'Analisis pasaran' },
+    // Careers of the search catalog (EXTRA_CAREERS), not on the map by default
+    'accounting':         { zh: '财务会计', en: 'Financial accounting', ms: 'Perakaunan kewangan' },
+    'auditing':           { zh: '审计程序与准则', en: 'Audit procedures & standards', ms: 'Prosedur & piawaian audit' },
+    'internal-control':   { zh: '内部控制与风险', en: 'Internal control & risk', ms: 'Kawalan dalaman & risiko' },
+    'legal-research':     { zh: '法律检索', en: 'Legal research', ms: 'Penyelidikan undang-undang' },
+    'legal-writing':      { zh: '法律文书写作', en: 'Legal drafting', ms: 'Penggubalan dokumen undang-undang' },
+    'negotiation':        { zh: '谈判', en: 'Negotiation', ms: 'Rundingan' },
+    'lesson-planning':    { zh: '教学设计', en: 'Lesson planning', ms: 'Perancangan pengajaran' },
+    'classroom-management': { zh: '课堂管理', en: 'Classroom management', ms: 'Pengurusan bilik darjah' },
+    'assessment':         { zh: '学习评估', en: 'Learning assessment', ms: 'Penilaian pembelajaran' },
+    'clinical-knowledge': { zh: '临床医学知识', en: 'Clinical knowledge', ms: 'Pengetahuan klinikal' },
+    'patient-care':       { zh: '病患沟通与照护', en: 'Patient care', ms: 'Penjagaan pesakit' },
+    'medical-ethics':     { zh: '医学伦理', en: 'Medical ethics', ms: 'Etika perubatan' },
+    'cooking-technique':  { zh: '烹饪技法', en: 'Cooking technique', ms: 'Teknik masakan' },
+    'food-safety':        { zh: '食品安全与卫生', en: 'Food safety & hygiene', ms: 'Keselamatan & kebersihan makanan' },
+    'menu-planning':      { zh: '菜单设计与成本', en: 'Menu planning & costing', ms: 'Perancangan menu & kos' },
+    'engineering-math':   { zh: '工程数学与力学', en: 'Engineering math & mechanics', ms: 'Matematik & mekanik kejuruteraan' },
+    'cad':                { zh: 'CAD 制图', en: 'CAD drafting', ms: 'Lukisan CAD' },
+    'project-management': { zh: '项目管理', en: 'Project management', ms: 'Pengurusan projek' },
 }
 
 export const SKILL_IDS = Object.keys(SKILLS)
@@ -170,9 +190,162 @@ export const CAREERS = [
     },
 ]
 
+/**
+ * Search catalog: careers without a mentor on the map at first (a mentor can be swapped for one of them).
+ * CAREERS above are the map careers, the ones the job market workflow (n8n/market) tracks.
+ */
+export const EXTRA_CAREERS = [
+    {
+        id: 'data-scientist',
+        name: { zh: '数据科学家', en: 'Data Scientist', ms: 'Saintis Data' },
+        summary: { zh: '用统计和机器学习模型从数据中找出规律并做预测。', en: 'Finds patterns and makes predictions from data with statistics and models.', ms: 'Mencari corak dan membuat ramalan daripada data dengan statistik dan model.' },
+        color: '#17a2b8',
+        skills: [
+            { id: 'python', level: 3, weight: 3 },
+            { id: 'statistics', level: 3, weight: 3 },
+            { id: 'ml-frameworks', level: 2, weight: 3 },
+            { id: 'sql', level: 2, weight: 2 },
+            { id: 'data-visualization', level: 2, weight: 2 },
+            { id: 'communication', level: 2, weight: 2 },
+        ],
+        market: { demand: 'high', heat: 80, trend: 'rising' },
+        effortMonths: [ 8, 14 ],
+        pet: { name: 'Quanta', species: 'owl' },
+    },
+    {
+        id: 'auditor',
+        name: { zh: '审计师', en: 'Auditor', ms: 'Juruaudit' },
+        summary: { zh: '检查公司的账目和流程，确认财务报告真实可靠。', en: 'Checks a company\'s accounts and processes so its financial reports can be trusted.', ms: 'Menyemak akaun dan proses syarikat supaya laporan kewangan boleh dipercayai.' },
+        color: '#b8860b',
+        skills: [
+            { id: 'accounting', level: 3, weight: 3 },
+            { id: 'auditing', level: 3, weight: 3 },
+            { id: 'internal-control', level: 2, weight: 2 },
+            { id: 'excel', level: 2, weight: 2 },
+            { id: 'communication', level: 2, weight: 2 },
+        ],
+        market: { demand: 'medium', heat: 60, trend: 'stable' },
+        effortMonths: [ 6, 12 ],
+        pet: { name: 'Ledger', species: 'turtle' },
+    },
+    {
+        id: 'lawyer',
+        name: { zh: '律师', en: 'Lawyer', ms: 'Peguam' },
+        summary: { zh: '研究法律问题，起草文件，为客户争取权益。', en: 'Researches legal questions, drafts documents and argues for clients.', ms: 'Mengkaji isu undang-undang, menggubal dokumen dan membela pelanggan.' },
+        color: '#7b3f61',
+        skills: [
+            { id: 'legal-research', level: 3, weight: 3 },
+            { id: 'legal-writing', level: 3, weight: 3 },
+            { id: 'negotiation', level: 2, weight: 2 },
+            { id: 'communication', level: 3, weight: 3 },
+        ],
+        market: { demand: 'medium', heat: 60, trend: 'stable' },
+        effortMonths: [ 12, 36 ],
+        pet: { name: 'Gavel', species: 'owl' },
+    },
+    {
+        id: 'teacher',
+        name: { zh: '教师', en: 'Teacher', ms: 'Guru' },
+        summary: { zh: '设计课程、带好课堂，并帮助学生持续进步。', en: 'Plans lessons, runs the classroom and helps students keep improving.', ms: 'Merancang pelajaran, mengurus kelas dan membantu murid terus maju.' },
+        color: '#e07a5f',
+        skills: [
+            { id: 'lesson-planning', level: 3, weight: 3 },
+            { id: 'classroom-management', level: 2, weight: 3 },
+            { id: 'assessment', level: 2, weight: 2 },
+            { id: 'communication', level: 3, weight: 3 },
+        ],
+        market: { demand: 'medium', heat: 60, trend: 'stable' },
+        effortMonths: [ 6, 18 ],
+        pet: { name: 'Chalky', species: 'bunny' },
+    },
+    {
+        id: 'doctor',
+        name: { zh: '医生', en: 'Doctor', ms: 'Doktor' },
+        summary: { zh: '诊断和治疗病人，并向他们解释病情和方案。', en: 'Diagnoses and treats patients and explains their options to them.', ms: 'Mendiagnosis dan merawat pesakit serta menerangkan pilihan kepada mereka.' },
+        color: '#2e86ab',
+        skills: [
+            { id: 'clinical-knowledge', level: 3, weight: 3 },
+            { id: 'patient-care', level: 3, weight: 3 },
+            { id: 'medical-ethics', level: 2, weight: 2 },
+            { id: 'communication', level: 3, weight: 2 },
+        ],
+        market: { demand: 'high', heat: 80, trend: 'stable' },
+        effortMonths: [ 24, 72 ],
+        pet: { name: 'Pulse', species: 'penguin' },
+    },
+    {
+        id: 'chef',
+        name: { zh: '厨师', en: 'Chef', ms: 'Cef' },
+        summary: { zh: '设计菜单，做出稳定好吃的菜，并管好厨房。', en: 'Designs menus, cooks consistently good food and runs the kitchen.', ms: 'Mereka menu, memasak makanan yang sedap secara konsisten dan mengurus dapur.' },
+        color: '#d1495b',
+        skills: [
+            { id: 'cooking-technique', level: 3, weight: 3 },
+            { id: 'food-safety', level: 3, weight: 3 },
+            { id: 'menu-planning', level: 2, weight: 2 },
+            { id: 'project-management', level: 1, weight: 1 },
+            { id: 'communication', level: 2, weight: 1 },
+        ],
+        market: { demand: 'medium', heat: 60, trend: 'stable' },
+        effortMonths: [ 6, 24 ],
+        pet: { name: 'Saucy', species: 'fox' },
+    },
+    {
+        id: 'civil-engineer',
+        name: { zh: '土木工程师', en: 'Civil Engineer', ms: 'Jurutera Awam' },
+        summary: { zh: '设计并监督道路、桥梁和建筑等工程。', en: 'Designs and supervises roads, bridges and buildings.', ms: 'Mereka dan menyelia jalan raya, jambatan dan bangunan.' },
+        color: '#5c6b73',
+        skills: [
+            { id: 'engineering-math', level: 3, weight: 3 },
+            { id: 'cad', level: 3, weight: 3 },
+            { id: 'project-management', level: 2, weight: 2 },
+            { id: 'communication', level: 2, weight: 2 },
+        ],
+        market: { demand: 'medium', heat: 60, trend: 'stable' },
+        effortMonths: [ 12, 24 ],
+        pet: { name: 'Girder', species: 'turtle' },
+    },
+]
+
+// Mentors on the map, one per spot (sources/Career/CareerWorld.js NPC_SPOTS, same order). A save keeps its own list in save.map
+export const DEFAULT_MAP = [ 'product-manager', 'frontend-developer', 'ml-engineer', 'backend-developer', 'ui-ux-designer', 'data-analyst' ]
+
+/**
+ * Careers and skills the AI generated for this save (save.customCareers / save.customSkills), registered in the
+ * catalogs above while a request runs (server/app.js) so every SKILLS / getCareer lookup knows them
+ */
+let customCareers = []
+const customSkillIds = new Set()
+
+export function useCustom(save)
+{
+    for(const id of customSkillIds)
+    {
+        delete SKILLS[id]
+        delete SKILL_DETAILS[id]
+        SKILL_IDS.splice(SKILL_IDS.indexOf(id), 1)
+    }
+    customSkillIds.clear()
+
+    for(const [ id, skill ] of Object.entries(save.customSkills ?? {}))
+    {
+        if(SKILLS[id])
+            continue
+        SKILLS[id] = skill.name
+        SKILL_DETAILS[id] = skill.detail
+        SKILL_IDS.push(id)
+        customSkillIds.add(id)
+    }
+    customCareers = save.customCareers ?? []
+}
+
+export function allCareers()
+{
+    return [ ...CAREERS, ...EXTRA_CAREERS, ...customCareers ]
+}
+
 export function getCareer(id)
 {
-    return CAREERS.find((career) => career.id === id) ?? null
+    return allCareers().find((career) => career.id === id) ?? null
 }
 
 /**

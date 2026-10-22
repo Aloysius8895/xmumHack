@@ -1,4 +1,5 @@
 import { loadMarket } from './store.js'
+import { SKILL_DETAILS } from './skill-details.js'
 
 /**
  * Monthly market trend per career, shown next to the heat badges of the careers panel
@@ -64,6 +65,53 @@ export function marketSnapshot(careerId, market = loadMarket())
  */
 export const SKILL_TREND_WEEKS = 1 // 1 = this week vs last week, 4 = last 4 weeks vs the 4 before
 
+/**
+ * Reference skill trends (authored like MARKET_TRENDS, NOT live statistics) shown until the workflow has pushed data:
+ * direction of demand per skill, every other skill counts as stable. Heat comes from server/skill-details.js.
+ */
+export const SKILL_TRENDS = {
+    period: '2026-10',
+    rising: [ 'python', 'ml-frameworks', 'mlops', 'cloud-deploy', 'data-visualization', 'data-cleaning', 'react', 'api-integration', 'testing', 'accessibility', 'statistics', 'project-management', 'internal-control', 'patient-care' ],
+    falling: [ 'excel', 'visual-design' ],
+}
+
+function referenceTrend(skillId)
+{
+    return SKILL_TRENDS.rising.includes(skillId) ? 'rising' : SKILL_TRENDS.falling.includes(skillId) ? 'falling' : 'stable'
+}
+
+/**
+ * Skill trends of a career (careerId) or of every career (null): the live popularity when the workflow pushed data,
+ * otherwise { period, live: false, skills: [ { id, heat, trend } ] } from the reference above, rising first, then by heat
+ */
+export function skillTrendOrReference(careerId, skillIds, market = loadMarket())
+{
+    const live = skillTrend(careerId, market)
+    if(live)
+        return live
+    const order = { rising: 0, stable: 1, falling: 2 }
+    return {
+        period: SKILL_TRENDS.period,
+        live: false,
+        skills: skillIds
+            .map((id) => ({ id, heat: SKILL_DETAILS[id]?.heat ?? 0, trend: referenceTrend(id) }))
+            .sort((a, b) => order[a.trend] - order[b.trend] || b.heat - a.heat || a.id.localeCompare(b.id)),
+    }
+}
+
+/**
+ * Trend of each skill for the skill cards: its share of all postings and the change (live), or the reference direction
+ */
+export function skillMarket(skillIds, market = loadMarket())
+{
+    const live = skillTrend(null, market)
+    return Object.fromEntries(skillIds.map((id) =>
+    {
+        const entry = live?.skills.find((skill) => skill.id === id)
+        return [ id, live ? { live: true, share: entry?.share ?? 0, change: entry?.change ?? null, period: live.period } : { live: false, trend: referenceTrend(id), period: SKILL_TRENDS.period } ]
+    }))
+}
+
 export function skillTrend(careerId, market = loadMarket())
 {
     const history = (market.history ?? [ market.previous, market.latest ].filter(Boolean))
@@ -94,5 +142,5 @@ export function skillTrend(careerId, market = loadMarket())
     const skills = [ ...new Set([ ...Object.keys(now.counts), ...Object.keys(then?.counts ?? {}) ]) ]
         .map((id) => ({ id, share: share(now, id), change: then?.postings ? share(now, id) - share(then, id) : null }))
         .sort((a, b) => b.share - a.share || a.id.localeCompare(b.id))
-    return { period: recent.at(- 1).period, previousPeriod: then ? before.at(- 1).period : null, postings: now.postings, skills }
+    return { period: recent.at(- 1).period, previousPeriod: then ? before.at(- 1).period : null, postings: now.postings, live: true, skills }
 }

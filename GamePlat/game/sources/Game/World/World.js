@@ -10,7 +10,6 @@ import { WindLines } from './WindLines.js'
 import { Leaves } from './Leaves.js'
 import { Lightnings } from './Lightnings.js'
 import { Snow } from './Snow.js'
-import { Whispers } from './Whispers.js'
 import { VisualCharacter } from './VisualCharacter.js'
 import { VisualTornado } from './VisualTornado.js'
 import { Flowers } from './Flowers.js'
@@ -76,7 +75,8 @@ export class World
             this.bricks = new Bricks()
             this.fences = new Fences()
             this.benches = new Benches()
-            this.explosiveCrates = new ExplosiveCrates()
+            // Explosive crates removed
+            // this.explosiveCrates = new ExplosiveCrates()
             this.poleLights = new PoleLights()
             this.lanterns = new Lanterns()
             this.scenery = new Scenery()
@@ -84,10 +84,6 @@ export class World
             this.characters = new Characters()
             clipExtraMaterials(this.game.scene)
             if(!location.search.includes('noIsland')) this.altarIsland = new AltarIsland() // ?noIsland skips it, to compare performance
-        }
-        else if(step === 2)
-        {
-            this.whispers = new Whispers()
         }
     }
 

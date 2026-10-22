@@ -118,11 +118,29 @@ test('skill popularity of the first week has no change yet', async () =>
     const { skillTrend } = await import('./market-trends.js')
     const week = { period: '2026-10-19', careers: { 'data-analyst': { postings: 15, topSkills: { 'data-visualization': 10, sql: 5 } } } }
     assert.deepEqual(skillTrend('data-analyst', { latest: week, previous: null, history: [ week ] }), {
-        period: '2026-10-19', previousPeriod: null, postings: 15,
+        period: '2026-10-19', previousPeriod: null, postings: 15, live: true,
         skills: [ { id: 'data-visualization', share: 67, change: null }, { id: 'sql', share: 33, change: null } ],
     })
     assert.equal(skillTrend('ml-engineer', { latest: week, previous: null, history: [ week ] }), null)
     assert.equal(skillTrend(null, { latest: null, previous: null, history: [] }), null)
+})
+
+test('skill trends fall back to the reference data until the workflow pushes', async () =>
+{
+    const { skillTrendOrReference, skillMarket } = await import('./market-trends.js')
+    const empty = { latest: null, previous: null, history: [] }
+    const reference = skillTrendOrReference('data-analyst', [ 'sql', 'excel', 'python' ], empty)
+    assert.equal(reference.live, false)
+    assert.deepEqual(reference.skills.map((skill) => [ skill.id, skill.trend ]), [ [ 'python', 'rising' ], [ 'sql', 'stable' ], [ 'excel', 'falling' ] ])
+    assert.deepEqual(skillMarket([ 'python' ], empty).python, { live: false, trend: 'rising', period: '2026-10' })
+
+    const week = { period: '2026-10-19', careers: { 'data-analyst': { postings: 10, topSkills: { python: 4 } } } }
+    const market = { latest: week, previous: null, history: [ week ] }
+    assert.equal(skillTrendOrReference('data-analyst', [ 'python' ], market).live, true)
+    assert.deepEqual(skillMarket([ 'python', 'sql' ], market), {
+        python: { live: true, share: 40, change: null, period: '2026-10-19' },
+        sql: { live: true, share: 0, change: null, period: '2026-10-19' },
+    })
 })
 
 test('chat messages from the bots are filed as logs and get a reply', async () =>
@@ -161,7 +179,7 @@ test('saves from version 2 get the mastery fields', () =>
     delete old.digests
     fs.writeFileSync(file, JSON.stringify(old))
     const save = store.load()
-    assert.equal(save.version, 3)
+    assert.equal(save.version, store.SAVE_VERSION)
     assert.deepEqual(save.mastery, {})
     assert.deepEqual(save.digests, [])
 })

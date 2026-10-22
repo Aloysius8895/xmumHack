@@ -1,3 +1,104 @@
+// Project information uses the whole panel; other tabs retain their previews.
+.menu.is-project-home
+.menu.is-project-stack
+    .previews
+        display none
+
+    .contents
+        width 100%
+        height 100%
+
+        .home-content
+        .behindTheScene-content
+            width 100%
+            overflow-y auto
+
+            .content-inner
+                width 100%
+                max-width 840px
+                margin 0 auto
+                padding 40px 48px
+
+                @media only screen and (max-width 520px)
+                    padding 24px
+
+    .navigation
+        left 10px
+
+        @media only screen and (max-width 520px)
+            left 0
+
+    .project-team
+        color #ffceca
+        font-size 0.8rem
+        font-weight 900
+        margin-bottom 8px
+
+    .project-title
+        font-family "Nunito", sans-serif
+        font-size 2rem
+        line-height 1.25
+        overflow-wrap anywhere
+        outline none
+
+    .project-lead
+        color #ffceca
+        line-height 1.6
+        margin-bottom 20px
+
+    .text
+        line-height 1.7
+        font-size 0.9rem
+        color rgba(255, 255, 255, 0.85)
+
+    .project-journey
+        margin-top 24px
+        padding-top 18px
+        border-top 1px solid rgba(255, 206, 202, 0.25)
+        font-size 0.8rem
+        line-height 1.8
+        color #ffceca
+
+    .project-stack
+        display grid
+        grid-template-columns repeat(2, minmax(0, 1fr))
+        gap 14px
+        margin 24px 0
+
+        @media only screen and (max-width 680px)
+            grid-template-columns 1fr
+
+    .project-stack-card
+        padding 18px
+        border 1px solid rgba(255, 206, 202, 0.2)
+        border-radius 10px
+        background rgba(255, 255, 255, 0.025)
+
+        h2
+            margin-bottom 10px
+            color #ffceca
+            font-size 0.9rem
+            line-height 1.6
+            overflow-wrap anywhere
+
+        p
+            font-size 0.8rem
+            line-height 1.8
+            color rgba(255, 255, 255, 0.8)
+
+    .project-credits
+        padding-top 18px
+        border-top 1px solid rgba(255, 206, 202, 0.25)
+        font-size 0.75rem
+        line-height 1.8
+        color rgba(255, 255, 255, 0.7)
+
+        a
+            color #ffceca
+
+        p + p
+            margin-top 10px
+
 .menu-trigger
     display none
     position absolute
@@ -93,6 +194,7 @@
 
 .menu
     display none
+    z-index 11
     align-items center
     justify-content center
     color #ffffff

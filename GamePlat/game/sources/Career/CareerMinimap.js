@@ -25,6 +25,7 @@ export class CareerMinimap
         this.setDom()
 
         this.world.events.on('npcs', () => this.setMarkers())
+        this.world.events.on('npcs-changed', () => this.rebindMarkers())
         this.api.events.on('state', () => this.refresh())
 
         this.game.ticker.events.on('tick', () =>
@@ -93,6 +94,22 @@ export class CareerMinimap
             mapMarker.addEventListener('click', () => this.world.teleportTo(npc.career.id))
             this.game.map.element.appendChild(mapMarker)
             this.mapMarkers.push({ npc, element: mapMarker })
+        }
+        this.refresh()
+    }
+
+    // A mentor swapped for another career: its color and badge
+    rebindMarkers()
+    {
+        for(const { npc, element } of this.markers)
+        {
+            element.style.setProperty('--career', npc.career.color)
+            element.innerHTML = this.avatarHtml(npc)
+        }
+        for(const { npc, element } of this.mapMarkers)
+        {
+            element.style.setProperty('--career', npc.career.color)
+            element.innerHTML = `${this.avatarHtml(npc)}<em></em>`
         }
         this.refresh()
     }

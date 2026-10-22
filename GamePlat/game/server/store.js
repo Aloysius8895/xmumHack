@@ -12,7 +12,7 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 const DIRECTORY = process.env.SAVE_DIR ?? path.join(here, 'data')
 const FILE = path.join(DIRECTORY, 'save.json')
 
-export const SAVE_VERSION = 3
+export const SAVE_VERSION = 4
 
 function newPlayer()
 {
@@ -25,6 +25,8 @@ const MIGRATIONS = {
     1: (data) => ({ ...data, player: newPlayer(), friends: [] }),
     // Daily digests from the chat agent (server/integrations.js): skill mastery 0-100 and the digest history
     2: (data) => ({ ...data, mastery: {}, digests: [] }),
+    // Mentors on the map can be swapped: the map list, the progress kept per career, AI generated careers
+    3: (data) => ({ ...data, map: null, careers: {}, customCareers: [], customSkills: {}, pendingTarget: null }),
 }
 
 export function createSave()
@@ -43,6 +45,11 @@ export function createSave()
         mastery: {},    // { skillId: 0-100 } from the daily digests of the chat agent
         digests: [],    // [{ date, summary, skills, at }] latest first
         challenges: [], // legacy history retained for save compatibility; no new exams are created
+        map: null,      // [ careerId per NPC spot ], null = DEFAULT_MAP of server/careers.js
+        careers: {},    // { careerId: { target, pet, roadmap, lastActiveAt } } progress of the careers not targeted now
+        customCareers: [], // careers the AI generated (search, job postings), same shape as server/careers.js CAREERS
+        customSkills: {},  // { skillId: { name: { zh, en, ms }, detail } } new skills of those careers
+        pendingTarget: null, // { requestedCareerId, posting, suggestedCareerId, newCareer, at } posting fitting another career, waiting for the player
     }
 }
 
