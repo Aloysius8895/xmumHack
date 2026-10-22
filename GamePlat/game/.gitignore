@@ -1,0 +1,15 @@
+.DS_Store
+node_modules
+dist
+.vercel
+.VSCodeCounter
+.env*
+!.env.example
+.autosave
+.wav
+!static/sounds/music/*.wav
+# Not used by the game (the bundle loads the mp3 versions) and Blender backups
+static/sounds/musics/*.wav
+*.blend1
+# Player save of the career platform API
+server/data/

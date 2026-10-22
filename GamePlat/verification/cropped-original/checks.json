@@ -1,0 +1,117 @@
+{
+  "state": {
+    "island": false,
+    "bounds": {
+      "minX": -18,
+      "maxX": 96,
+      "minZ": -52,
+      "maxZ": 84
+    },
+    "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-wandering",
+    "position": [
+      39.52898025512695,
+      0.748871922492981,
+      37.82522964477539
+    ],
+    "npcs": [
+      {
+        "id": "data-analyst",
+        "p": [
+          72.49889373779297,
+          -3.814697265625e-05,
+          22.859607696533203
+        ],
+        "grounded": true
+      },
+      {
+        "id": "frontend-developer",
+        "p": [
+          38.283748626708984,
+          -0.09074783325195312,
+          20.06519889831543
+        ],
+        "grounded": true
+      },
+      {
+        "id": "backend-developer",
+        "p": [
+          51.32013702392578,
+          0,
+          -8.97010612487793
+        ],
+        "grounded": true
+      },
+      {
+        "id": "ui-ux-designer",
+        "p": [
+          28.167863845825195,
+          -3.814697265625e-06,
+          -11.969447135925293
+        ],
+        "grounded": true
+      },
+      {
+        "id": "ml-engineer",
+        "p": [
+          20.379549026489258,
+          -0.00368499755859375,
+          21.300867080688477
+        ],
+        "grounded": true
+      },
+      {
+        "id": "product-manager",
+        "p": [
+          28.77569007873535,
+          -0.0010528564453125,
+          12.130361557006836
+        ],
+        "grounded": true
+      }
+    ],
+    "areas": [
+      "game",
+      "landing",
+      "career",
+      "social",
+      "projects",
+      "lab",
+      "cookie",
+      "altar",
+      "toilet",
+      "bowling",
+      "behindTheScene",
+      "achievements"
+    ],
+    "trees": 13
+  },
+  "errors": [],
+  "movement": {
+    "start": [
+      39.52898025512695,
+      0.748871386051178,
+      37.82522964477539
+    ],
+    "target": {
+      "x": 34.52898025512695,
+      "z": 34.82522964477539
+    },
+    "path": 4,
+    "screen": {
+      "x": 633.2768117058974,
+      "y": 304.00297566986376
+    }
+  },
+  "clickStarted": true,
+  "afterMovement": {
+    "position": [
+      34.73366165161133,
+      0.7489076852798462,
+      34.52735137939453
+    ],
+    "remaining": 0
+  },
+  "keyboardCancels": true,
+  "boundaryClamps": true,
+  "passed": true
+}

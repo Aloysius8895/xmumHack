@@ -1,0 +1,618 @@
+{
+  "schema": "career-island-terrain/v1",
+  "units": "metres",
+  "coordinate_system": "Blender Z-up; (x,y,z) becomes (x,z,-y) in exported glTF",
+  "character_reference_height_m": 1.5,
+  "building_sites": [
+    {
+      "id": "data-analyst",
+      "label": "01 / DATA",
+      "position": [
+        -55,
+        -16,
+        3.2
+      ],
+      "size": [
+        13,
+        13
+      ]
+    },
+    {
+      "id": "frontend-developer",
+      "label": "02 / FRONTEND",
+      "position": [
+        -53,
+        17,
+        3.2
+      ],
+      "size": [
+        13,
+        13
+      ]
+    },
+    {
+      "id": "product-manager",
+      "label": "03 / PRODUCT",
+      "position": [
+        -48,
+        46,
+        3.2
+      ],
+      "size": [
+        13,
+        13
+      ]
+    },
+    {
+      "id": "backend-developer",
+      "label": "04 / BACKEND",
+      "position": [
+        34,
+        -17,
+        10.6
+      ],
+      "size": [
+        13,
+        13
+      ]
+    },
+    {
+      "id": "ui-ux-designer",
+      "label": "05 / DESIGN",
+      "position": [
+        14,
+        20,
+        20
+      ],
+      "size": [
+        13,
+        13
+      ]
+    },
+    {
+      "id": "ml-engineer",
+      "label": "06 / AI LAB",
+      "position": [
+        -3,
+        81,
+        29
+      ],
+      "size": [
+        13,
+        13
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "id": "town-loop",
+      "kind": "road",
+      "width": 6.4,
+      "points": [
+        [
+          -65,
+          -44,
+          3.2
+        ],
+        [
+          -65,
+          -16,
+          3.2
+        ],
+        [
+          -65,
+          17,
+          3.2
+        ],
+        [
+          -61,
+          42,
+          3.2
+        ],
+        [
+          -44,
+          56,
+          3.2
+        ],
+        [
+          -32,
+          41,
+          3.2
+        ],
+        [
+          -31,
+          12,
+          3.2
+        ],
+        [
+          -32,
+          -36,
+          3.2
+        ],
+        [
+          -42,
+          -44,
+          3.2
+        ],
+        [
+          -65,
+          -44,
+          3.2
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.13,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "port-link",
+      "kind": "road",
+      "width": 6.4,
+      "points": [
+        [
+          -65,
+          -44,
+          3.2
+        ],
+        [
+          -72,
+          -54,
+          3.2
+        ],
+        [
+          -80,
+          -64,
+          3.2
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.13,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "terrace-ramp-1",
+      "kind": "ramp",
+      "width": 4.2,
+      "points": [
+        [
+          -32,
+          -36,
+          3.2
+        ],
+        [
+          -22,
+          -37,
+          4.0
+        ],
+        [
+          -12,
+          -36,
+          6.2
+        ],
+        [
+          0,
+          -31,
+          8.4
+        ],
+        [
+          12,
+          -24,
+          10.6
+        ]
+      ],
+      "max_slope_degrees": 12.3477,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "east-garden-trail",
+      "kind": "path",
+      "width": 4.2,
+      "points": [
+        [
+          12,
+          -24,
+          10.6
+        ],
+        [
+          42,
+          -24,
+          10.6
+        ],
+        [
+          57,
+          -9,
+          10.6
+        ],
+        [
+          55,
+          8,
+          10.6
+        ],
+        [
+          64,
+          15,
+          10.6
+        ],
+        [
+          65,
+          30,
+          10.6
+        ],
+        [
+          58,
+          46,
+          10.6
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "terrace-ramp-2",
+      "kind": "ramp",
+      "width": 4.2,
+      "points": [
+        [
+          55,
+          8,
+          10.6
+        ],
+        [
+          45,
+          10,
+          12.0
+        ],
+        [
+          38,
+          21,
+          14.8
+        ],
+        [
+          32,
+          31,
+          17.4
+        ],
+        [
+          32,
+          38,
+          18.4
+        ],
+        [
+          24,
+          38,
+          20
+        ]
+      ],
+      "max_slope_degrees": 12.5684,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "central-garden-trail",
+      "kind": "path",
+      "width": 4.2,
+      "points": [
+        [
+          24,
+          38,
+          20
+        ],
+        [
+          17,
+          32,
+          20
+        ],
+        [
+          14,
+          20,
+          20
+        ],
+        [
+          0,
+          18,
+          20
+        ],
+        [
+          -11,
+          27,
+          20
+        ],
+        [
+          -4,
+          38,
+          20
+        ],
+        [
+          24,
+          38,
+          20
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "terrace-ramp-3",
+      "kind": "ramp",
+      "width": 4.2,
+      "points": [
+        [
+          -4,
+          38,
+          20
+        ],
+        [
+          -17,
+          44,
+          22
+        ],
+        [
+          -23,
+          54,
+          24
+        ],
+        [
+          -18,
+          64,
+          26.5
+        ],
+        [
+          -7,
+          70,
+          29
+        ]
+      ],
+      "max_slope_degrees": 12.6044,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "summit-garden-trail",
+      "kind": "path",
+      "width": 4.2,
+      "points": [
+        [
+          -7,
+          70,
+          29
+        ],
+        [
+          -3,
+          81,
+          29
+        ],
+        [
+          8,
+          86,
+          29
+        ],
+        [
+          15,
+          78,
+          29
+        ],
+        [
+          8,
+          68,
+          29
+        ],
+        [
+          -7,
+          70,
+          29
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "data-entry",
+      "kind": "path",
+      "width": 3.6,
+      "points": [
+        [
+          -65,
+          -16,
+          3.2
+        ],
+        [
+          -55,
+          -16,
+          3.2
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "frontend-entry",
+      "kind": "path",
+      "width": 3.6,
+      "points": [
+        [
+          -65,
+          17,
+          3.2
+        ],
+        [
+          -53,
+          17,
+          3.2
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "product-entry",
+      "kind": "path",
+      "width": 3.6,
+      "points": [
+        [
+          -44,
+          56,
+          3.2
+        ],
+        [
+          -48,
+          46,
+          3.2
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "backend-entry",
+      "kind": "path",
+      "width": 3.6,
+      "points": [
+        [
+          34,
+          -24,
+          10.6
+        ],
+        [
+          34,
+          -17,
+          10.6
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "bridge-approach",
+      "kind": "path",
+      "width": 4.2,
+      "points": [
+        [
+          57,
+          -9,
+          10.6
+        ],
+        [
+          65,
+          -12,
+          10.6
+        ],
+        [
+          69,
+          -24,
+          10.6
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "lookout-stairs",
+      "kind": "stairs",
+      "width": 4.2,
+      "points": [
+        [
+          24,
+          38,
+          20
+        ],
+        [
+          24,
+          48,
+          20
+        ],
+        [
+          31,
+          51,
+          20
+        ],
+        [
+          42,
+          58,
+          29
+        ]
+      ],
+      "max_slope_degrees": 34.6161,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": true
+    },
+    {
+      "id": "lookout-landing",
+      "kind": "path",
+      "width": 4.2,
+      "points": [
+        [
+          42,
+          58,
+          29
+        ],
+        [
+          43,
+          63,
+          29
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "tidal-bridge",
+      "kind": "bridge",
+      "width": 4.2,
+      "points": [
+        [
+          69,
+          -24,
+          10.6
+        ],
+        [
+          91,
+          -24,
+          10.6
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.12,
+      "requires_stair_navigation": false
+    },
+    {
+      "id": "islet-trail",
+      "kind": "path",
+      "width": 4.2,
+      "points": [
+        [
+          91,
+          -24,
+          10.6
+        ],
+        [
+          98,
+          -24,
+          10.6
+        ]
+      ],
+      "max_slope_degrees": 0.0,
+      "surface_offset_m": 0.11,
+      "requires_stair_navigation": false
+    }
+  ],
+  "spawn": {
+    "position": [
+      -80,
+      -64,
+      3.34
+    ],
+    "route": "port-link"
+  },
+  "primary_route_slope_limit_degrees": 18,
+  "note": "Route centerlines and nav strips prepare integration; no game collision or runtime pathfinding is installed."
+}

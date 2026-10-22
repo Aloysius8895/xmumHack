@@ -1,0 +1,146 @@
+{
+  "island": {
+    "state": {
+      "island": true,
+      "career": true,
+      "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-menu",
+      "position": [
+        -67,
+        1.1489458084106445,
+        1
+      ],
+      "terrainHeight": 0.4000000059604645,
+      "grounded": true,
+      "npcs": [
+        {
+          "id": "data-analyst",
+          "p": [
+            -59,
+            0.40000152587890625,
+            -27
+          ],
+          "grounded": true
+        },
+        {
+          "id": "frontend-developer",
+          "p": [
+            -33,
+            0.40000152587890625,
+            -5
+          ],
+          "grounded": true
+        },
+        {
+          "id": "backend-developer",
+          "p": [
+            -6,
+            0.40000152587890625,
+            21
+          ],
+          "grounded": true
+        },
+        {
+          "id": "ui-ux-designer",
+          "p": [
+            31,
+            5.200000762939453,
+            8
+          ],
+          "grounded": true
+        },
+        {
+          "id": "ml-engineer",
+          "p": [
+            2,
+            9.700000762939453,
+            -31
+          ],
+          "grounded": true
+        },
+        {
+          "id": "product-manager",
+          "p": [
+            -45,
+            0.40000152587890625,
+            -10
+          ],
+          "grounded": true
+        }
+      ],
+      "treeCount": 375
+    },
+    "errors": []
+  },
+  "original": {
+    "state": {
+      "island": false,
+      "career": true,
+      "classes": "is-started is-server-offline is-gamepad-default is-mode-mouse-keyboard input-filter-menu",
+      "position": [
+        39.52898025512695,
+        0.7488675713539124,
+        37.82522964477539
+      ],
+      "terrainHeight": null,
+      "grounded": true,
+      "npcs": [
+        {
+          "id": "data-analyst",
+          "p": [
+            72.49889373779297,
+            -3.814697265625e-05,
+            22.859607696533203
+          ],
+          "grounded": true
+        },
+        {
+          "id": "frontend-developer",
+          "p": [
+            38.283748626708984,
+            -0.09074783325195312,
+            20.06519889831543
+          ],
+          "grounded": true
+        },
+        {
+          "id": "backend-developer",
+          "p": [
+            51.32013702392578,
+            0,
+            -8.97010612487793
+          ],
+          "grounded": true
+        },
+        {
+          "id": "ui-ux-designer",
+          "p": [
+            28.167863845825195,
+            -3.814697265625e-06,
+            -11.969447135925293
+          ],
+          "grounded": true
+        },
+        {
+          "id": "ml-engineer",
+          "p": [
+            20.379549026489258,
+            -0.00368499755859375,
+            21.300867080688477
+          ],
+          "grounded": true
+        },
+        {
+          "id": "product-manager",
+          "p": [
+            28.77569007873535,
+            -0.0010528564453125,
+            12.130361557006836
+          ],
+          "grounded": true
+        }
+      ],
+      "treeCount": 24
+    },
+    "errors": []
+  }
+}

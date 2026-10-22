@@ -1,0 +1,156 @@
+/* Character selection on the intro circle (sources/Game/CharacterSelect.js), paper / ink / pink like the career menu */
+
+.character-select {
+    --select-paper: #fffbf8;
+    --select-ink: #383340;
+    --select-pink: #ff659b;
+    --select-pink-soft: #ffe9f0;
+    --select-pink-ink: #a22f5a;
+
+    position: absolute;
+    left: 50%;
+    bottom: 48px;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 420px;
+    max-width: calc(100% - 32px);
+    color: #ffffff;
+    font-family: "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, 20px);
+    transition: opacity 0.3s, transform 0.3s;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.character-select.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: auto;
+}
+
+.character-select-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.character-select-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.character-select-arrow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    padding: 10px 12px;
+    border: 1px solid rgba(56, 51, 64, 0.08);
+    border-radius: 16px;
+    background: var(--select-paper);
+    box-shadow: 0 4px 18px rgba(37, 31, 43, 0.25);
+    color: var(--select-ink);
+    font: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+}
+
+.character-select-arrow:hover {
+    background: var(--select-pink-soft);
+    color: var(--select-pink-ink);
+    transform: scale(1.05);
+}
+
+.character-select-key {
+    display: inline-block;
+    min-width: 22px;
+    padding: 1px 5px;
+    border: 1px solid rgba(56, 51, 64, 0.35);
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.character-select-card {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    padding: 12px 16px;
+    border: 1px solid rgba(56, 51, 64, 0.08);
+    border-radius: 22px;
+    background: var(--select-paper);
+    color: var(--select-ink);
+    box-shadow: 0 0 0 3px var(--select-pink), 0 10px 32px rgba(37, 31, 43, 0.3);
+}
+
+.character-select-card.is-empty {
+    box-shadow: 0 10px 32px rgba(37, 31, 43, 0.3);
+    opacity: 0.8;
+}
+
+.character-select-card.is-pop {
+    animation: character-select-pop 0.25s ease-out;
+}
+
+.character-select-card.is-shake {
+    animation: character-select-shake 0.35s ease-in-out;
+}
+
+.character-select-index {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--select-pink-ink);
+}
+
+.character-select-name {
+    overflow: hidden;
+    font-size: 22px;
+    font-weight: 800;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.character-select-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.character-select-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 251, 248, 0.45);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.character-select-dot.is-active {
+    background: var(--select-pink);
+    transform: scale(1.4);
+}
+
+.character-select-hint {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes character-select-pop {
+    0% { transform: scale(0.94); }
+    100% { transform: scale(1); }
+}
+
+@keyframes character-select-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}

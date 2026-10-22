@@ -1,0 +1,63 @@
+{
+  "fixture_only": true,
+  "checks": [
+    "Top three real fixture entries; no fourth row or old map mesh; paper and four side notices registered for visibility",
+    "Canvas texture stays unchanged between state updates",
+    "State event updates names, order and scores on the paper",
+    "Long Unicode names, compact large scores and localized empty slots in zh/en/ms",
+    "Changing the selected character refreshes the local player portrait",
+    "Kiosk opens the complete four-player leaderboard; M still opens and closes the map",
+    "Board hides and returns with area frustum; artwork remains correct at night",
+    "Mobile viewport renders without page errors"
+  ],
+  "page_errors": [],
+  "initial": {
+    "rows": [
+      {
+        "id": "c6e82b0efa8e",
+        "name": "Aloysius",
+        "points": 1280,
+        "me": true,
+        "sharedAt": null
+      },
+      {
+        "id": "edixon01",
+        "name": "Edixon",
+        "points": 960,
+        "me": false,
+        "sharedAt": "2026-10-21"
+      },
+      {
+        "id": "leekhim1",
+        "name": "Lee Khim",
+        "points": 840,
+        "me": false,
+        "sharedAt": "2026-10-21"
+      }
+    ],
+    "painted": [
+      {
+        "name": "Aloysius",
+        "score": "1,280",
+        "empty": false
+      },
+      {
+        "name": "Edixon",
+        "score": "960",
+        "empty": false
+      },
+      {
+        "name": "Lee Khim",
+        "score": "840",
+        "empty": false
+      }
+    ],
+    "visible": true,
+    "children": 5,
+    "frustum": true,
+    "version": 7,
+    "playerPortrait": "Aloysius",
+    "oldMapMaterial": false
+  },
+  "passed": true
+}

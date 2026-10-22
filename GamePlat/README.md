@@ -1,5 +1,8 @@
 # Bruno Simon Folio 2025 本地复刻
 
+> **要修改游戏（加人物、改地图）请用 [`game/`](game/)**，那是原作者 MIT 开源的源代码版本，说明见 [game/CUSTOMIZING.md](game/CUSTOMIZING.md)。
+> 下面的 `site/` 是编译后的原站镜像，只作对照用。
+
 本目录是 https://bruno-simon.com/ 的前端本地镜像。它直接使用原站编译后的
 HTML、JavaScript（Three.js WebGPU/WebGL、Rapier 物理、Howler 音频）、CSS、字体、
 3D 模型（GLB/Draco）、KTX 纹理和全部音效/音乐，保留原站的开场动画、驾驶、
