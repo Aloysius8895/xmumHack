@@ -1,6 +1,6 @@
 import pytest
 
-from app import career_api, db
+from app import career_api, classify, db
 from test_telegram import _capture_telegram, _text_message, _update, post_update, USER_ID, TOKEN, SECRET
 
 
@@ -59,6 +59,49 @@ def test_reset_and_start_leave_expert_mode(expert_client, monkeypatch, command):
     db.set_expert_session(f"tg:{USER_ID}", intro())
     post_update(expert_client, _update(_text_message(command)))
     assert db.get_expert_session(f"tg:{USER_ID}") is None
+
+
+def test_reset_with_bot_suffix_is_handled_before_classification(expert_client, monkeypatch, fake_ai):
+    sent = _capture_telegram(monkeypatch)
+    uid = f"tg:{USER_ID}"
+    db.set_expert_session(uid, intro())
+    db.set_pending(uid, "Possible report", "en")
+
+    def fail_if_classified(*_args, **_kwargs):
+        raise AssertionError("/reset must not reach the AI classifier")
+
+    monkeypatch.setattr(classify, "classify_message", fail_if_classified)
+    post_update(expert_client, _update(_text_message("/reset@CareerSphere_bot")))
+
+    assert db.get_expert_session(uid) is None
+    assert db.pop_pending(uid) is None
+    assert fake_ai == []
+    assert sent[-1]["payload"]["text"]
+
+
+@pytest.mark.parametrize("command", ["/expert", "/expert@KerjayaKu_bot", "/exit", "/exit@KerjayaKu_bot"])
+def test_expert_commands_are_handled_before_classification(expert_client, monkeypatch, fake_ai, command):
+    sent = _capture_telegram(monkeypatch)
+    calls = []
+
+    def expert(text, from_, action, session=None):
+        calls.append(action)
+        return intro()
+
+    def fail_if_classified(*_args, **_kwargs):
+        raise AssertionError(f"{command} must not reach the AI classifier")
+
+    monkeypatch.setattr(career_api, "expert", expert)
+    monkeypatch.setattr(classify, "classify_message", fail_if_classified)
+    post_update(expert_client, _update(_text_message(command)))
+
+    if command.startswith("/expert"):
+        assert calls == ["enter"]
+        assert "Hans Rosling" in sent[-1]["payload"]["text"]
+    else:
+        assert calls == []
+        assert "expert mode ended" in sent[-1]["payload"]["text"].lower()
+    assert fake_ai == []
 
 
 def test_single_owner_binding_is_required_and_other_users_cannot_read_the_web_target(expert_client, monkeypatch):
