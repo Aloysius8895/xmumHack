@@ -80,9 +80,14 @@ function migrate(data)
     return data
 }
 
+export function normalizeSave(data)
+{
+    return validate(migrate(data))
+}
+
 function read(file)
 {
-    return validate(migrate(JSON.parse(fs.readFileSync(file, 'utf8'))))
+    return normalizeSave(JSON.parse(fs.readFileSync(file, 'utf8')))
 }
 
 export function load()

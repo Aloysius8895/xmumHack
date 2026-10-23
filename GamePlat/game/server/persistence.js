@@ -6,19 +6,25 @@
 import * as aws from './aws-backend.js'
 import * as store from './store.js'
 
-export const cloudEnabled = aws.enabled
+export function cloudEnabled()
+{
+    return aws.enabled()
+}
 
 export async function loadSave()
 {
-    if(!cloudEnabled)
+    if(!cloudEnabled())
         return { state: store.load(), version: 0 }
     const saved = await aws.loadSave()
-    return { state: saved.state ?? store.createSave(), version: saved.version }
+    return {
+        state: saved.state === null ? store.createSave() : store.normalizeSave(saved.state),
+        version: saved.version,
+    }
 }
 
 export async function commitSave(state, expectedVersion, operation = 'save', metadata = {})
 {
-    if(!cloudEnabled)
+    if(!cloudEnabled())
     {
         store.save(state)
         return { result: metadata.result ?? {}, version: expectedVersion + 1 }
@@ -33,7 +39,7 @@ const defaults = {
 
 export async function loadDocument(documentId)
 {
-    if(!cloudEnabled)
+    if(!cloudEnabled())
         return { payload: documentId === 'market' ? store.loadMarket() : store.loadTrends(), version: 0 }
     const result = await aws.loadDocument(documentId)
     return { payload: result.payload ?? structuredClone(defaults[documentId]), version: result.version }
@@ -41,7 +47,7 @@ export async function loadDocument(documentId)
 
 export async function saveDocument(documentId, payload, expectedVersion)
 {
-    if(!cloudEnabled)
+    if(!cloudEnabled())
     {
         if(documentId === 'market')
             store.saveMarket(payload)

@@ -2,10 +2,14 @@
  * Server-only client for the authenticated AWS business API.
  * Never import this file into browser code: AWS_BACKEND_TOKEN is a server secret.
  */
-const BASE_URL = (process.env.AWS_BACKEND_URL ?? '').replace(/\/+$/, '')
-const TOKEN = process.env.AWS_BACKEND_TOKEN ?? ''
-
-export const enabled = Boolean(BASE_URL && TOKEN)
+export function enabled()
+{
+    const hasUrl = Boolean(process.env.AWS_BACKEND_URL)
+    const hasToken = Boolean(process.env.AWS_BACKEND_TOKEN)
+    if(hasUrl !== hasToken)
+        throw new AwsBackendError('aws-backend-config-incomplete', 503)
+    return hasUrl
+}
 
 export class AwsBackendError extends Error
 {
@@ -20,16 +24,18 @@ export class AwsBackendError extends Error
 
 export async function request(path, { method = 'GET', body, signal } = {})
 {
-    if(!enabled)
+    const baseUrl = (process.env.AWS_BACKEND_URL ?? '').replace(/\/+$/, '')
+    const token = process.env.AWS_BACKEND_TOKEN ?? ''
+    if(!enabled())
         throw new AwsBackendError('aws-backend-not-configured', 503)
 
     let response
     try
     {
-        response = await fetch(`${BASE_URL}${path}`, {
+        response = await fetch(`${baseUrl}${path}`, {
             method,
             headers: {
-                authorization: `Bearer ${TOKEN}`,
+                authorization: `Bearer ${token}`,
                 ...(body === undefined ? {} : { 'content-type': 'application/json' }),
             },
             body: body === undefined ? undefined : JSON.stringify(body),

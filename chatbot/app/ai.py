@@ -65,7 +65,13 @@ def provider() -> Optional[str]:
     chosen = os.getenv("AI_PROVIDER", "").strip().lower()
     if chosen in AWS_PROVIDERS | {"anthropic", "openai"}:
         return chosen
-    if os.getenv("AWS_BACKEND_URL") and os.getenv("AWS_BACKEND_TOKEN"):
+    if chosen:
+        return chosen
+    has_aws_url = bool(os.getenv("AWS_BACKEND_URL"))
+    has_aws_token = bool(os.getenv("AWS_BACKEND_TOKEN"))
+    if has_aws_url != has_aws_token:
+        raise RuntimeError("AWS_BACKEND_URL and AWS_BACKEND_TOKEN must be configured together")
+    if has_aws_url:
         return "bedrock"
     if _anthropic_creds():
         return "anthropic"

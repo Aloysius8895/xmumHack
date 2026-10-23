@@ -19,6 +19,7 @@ import urllib.request
 import uuid
 from datetime import datetime, timezone
 from typing import Any
+from urllib.parse import unquote
 
 
 _clients: dict[str, Any] = {}
@@ -39,11 +40,12 @@ class ApiError(Exception):
         self.code = code
 
 
-def _client(name: str):
-    if name not in _clients:
+def _client(name: str, region_name: str | None = None):
+    key = f"{name}:{region_name or os.getenv('AWS_REGION', '')}"
+    if key not in _clients:
         import boto3
-        _clients[name] = boto3.client(name, region_name=os.getenv("AWS_REGION"))
-    return _clients[name]
+        _clients[key] = boto3.client(name, region_name=region_name or os.getenv("AWS_REGION"))
+    return _clients[key]
 
 
 def _json(value: Any) -> str:
@@ -55,6 +57,12 @@ def _param(name: str, value: Any, *, json_value: bool = False) -> dict:
         return {"name": name, "value": {"isNull": True}}
     if json_value:
         return {"name": name, "value": {"stringValue": _json(value), "typeHint": "JSON"}}
+    if isinstance(value, bool):
+        return {"name": name, "value": {"booleanValue": value}}
+    if isinstance(value, int):
+        return {"name": name, "value": {"longValue": value}}
+    if isinstance(value, float):
+        return {"name": name, "value": {"doubleValue": value}}
     return {"name": name, "value": {"stringValue": str(value)}}
 
 
@@ -231,6 +239,30 @@ def _commit_save(body: dict) -> dict:
         digest_data = meta.get("digest") if operation == "digest" else None
         if digest_data:
             date = _required_text(digest_data.get("date"), "digest-date", 10)
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date):
+                raise ApiError(400, "bad-date")
+            skills = digest_data.get("skills") or []
+            if not isinstance(skills, list):
+                raise ApiError(400, "bad-skills")
+            if digest_data.get("summaryOnly") is True and skills:
+                raise ApiError(400, "summary-only-has-skills")
+            if skills and not _ALLOWED_SKILLS:
+                raise ApiError(503, "skill-catalog-not-configured")
+            for item in skills:
+                if not isinstance(item, dict) or item.get("skillId") not in _ALLOWED_SKILLS:
+                    raise ApiError(400, "unknown-skill-id")
+                if "delta" in item and (
+                    not isinstance(item["delta"], (int, float)) or
+                    isinstance(item["delta"], bool) or
+                    item["delta"] < -10 or item["delta"] > 15
+                ):
+                    raise ApiError(400, "bad-skill-delta")
+                if "mastery" in item and (
+                    not isinstance(item["mastery"], (int, float)) or
+                    isinstance(item["mastery"], bool) or
+                    item["mastery"] < 0 or item["mastery"] > 100
+                ):
+                    raise ApiError(400, "bad-skill-mastery")
             existing = _rows(
                 "SELECT digest_date, summary, skills, summary_only FROM daily_digests "
                 "WHERE digest_date = CAST(:digest_date AS date) FOR UPDATE",
@@ -256,13 +288,18 @@ def _commit_save(body: dict) -> dict:
                 return result
 
         current = _rows(
-            "SELECT version FROM game_saves WHERE player_id = :player_id FOR UPDATE",
+            "SELECT version, state FROM game_saves WHERE player_id = :player_id FOR UPDATE",
             {"player_id": player_id},
             tx,
         )
         actual = int(current[0]["version"]) if current else 0
         if actual != expected:
             raise ApiError(409, "save-version-conflict")
+        if digest_data and digest_data.get("summaryOnly") is True and current:
+            before = current[0]["state"].get("mastery", {})
+            after = state.get("mastery", {})
+            if before != after:
+                raise ApiError(409, "summary-only-mastery-change")
         next_version = actual + 1
         if current:
             _execute(
@@ -399,7 +436,7 @@ def _chat_operation(method: str, path: str, event: dict, body: dict) -> dict:
         )
         return {"seen": bool(rows)}
     if method == "DELETE" and path.startswith("/v1/chat/seen/"):
-        message_id = path.removeprefix("/v1/chat/seen/")
+        message_id = unquote(path.removeprefix("/v1/chat/seen/"))
         _execute("DELETE FROM seen_messages WHERE message_id = :message_id", {"message_id": message_id})
         return {"released": True}
     if method == "POST" and path == "/v1/chat/messages":
@@ -595,6 +632,8 @@ def handler(event: dict, _context: Any) -> dict:
 
 
 def _aws_error_code(exc: Exception) -> str:
+    if isinstance(exc, ApiError):
+        return exc.code
     code = ""
     response = getattr(exc, "response", None)
     if isinstance(response, dict):
@@ -655,7 +694,7 @@ def _bedrock_complete(request: dict) -> dict:
     model_id = os.getenv("BEDROCK_MODEL_ID")
     if not region or not model_id:
         raise ApiError(503, "bedrock-not-configured")
-    client = _client("bedrock-runtime")
+    client = _client("bedrock-runtime", region_name=region)
     mode = request["mode"]
     messages = request.get("messages") if mode == "text" else [
         {"role": "user", "content": [{"text": request.get("content", "")}]}
@@ -716,8 +755,10 @@ def _deepseek_complete(request: dict) -> dict:
     payload: dict[str, Any] = {
         "model": model,
         "max_tokens": max(1, min(int(request.get("maxTokens", 1200)), 8000)),
-        "messages": ([{"role": "system", "content": request["system"]}] if request.get("system") else []) + messages,
+        "messages": messages,
     }
+    if request.get("system"):
+        payload["system"] = request["system"]
     if request["mode"] == "json":
         payload["tools"] = [{
             "name": "submit_result",
@@ -769,6 +810,7 @@ def schema_handler(event: dict, context: Any) -> dict:
                 statements = [s.strip() for s in schema_file.read().split(";") if s.strip()]
             for statement in statements:
                 _execute(statement)
+            _ensure_runtime_database_role()
     except Exception as exc:
         status = "FAILED"
         reason = f"schema apply failed ({type(exc).__name__})"
@@ -801,13 +843,56 @@ def _send_cfn_response(event: dict, context: Any, status: str, reason: str, phys
         print(json.dumps({"event": "cfn-response-failed", "type": type(exc).__name__}))
 
 
+def _ensure_runtime_database_role() -> None:
+    """Provision application and AI-job-only database logins after tables exist."""
+    _ensure_database_login(
+        os.getenv("APPLICATION_DATABASE_SECRET_ARN", ""),
+        "careersphere_runtime",
+    )
+    _ensure_database_login(
+        os.getenv("WORKER_DATABASE_SECRET_ARN", ""),
+        "careersphere_ai_worker",
+    )
+    for statement in (
+        "GRANT CONNECT ON DATABASE careersphere TO careersphere_runtime",
+        "REVOKE CREATE ON SCHEMA public FROM PUBLIC",
+        "GRANT USAGE ON SCHEMA public TO careersphere_runtime",
+        "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO careersphere_runtime",
+        "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO careersphere_runtime",
+        "ALTER DEFAULT PRIVILEGES FOR ROLE careersphere_admin IN SCHEMA public "
+        "GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO careersphere_runtime",
+        "ALTER DEFAULT PRIVILEGES FOR ROLE careersphere_admin IN SCHEMA public "
+        "GRANT USAGE, SELECT ON SEQUENCES TO careersphere_runtime",
+        "GRANT CONNECT ON DATABASE careersphere TO careersphere_ai_worker",
+        "GRANT USAGE ON SCHEMA public TO careersphere_ai_worker",
+        "GRANT SELECT, UPDATE ON TABLE ai_jobs TO careersphere_ai_worker",
+    ):
+        _execute(statement)
+
+
+def _ensure_database_login(secret_arn: str, expected_username: str) -> None:
+    try:
+        credentials = json.loads(_secret(secret_arn))
+        username = credentials["username"]
+        password = credentials["password"]
+    except (json.JSONDecodeError, KeyError, TypeError) as exc:
+        raise ApiError(503, "database-runtime-secret-invalid") from exc
+    # Role names are fixed in code; secrets contribute only generated
+    # alphanumeric passwords, so they cannot inject SQL into CREATE/ALTER ROLE.
+    if username != expected_username or not isinstance(password, str) or not re.fullmatch(r"[A-Za-z0-9]{48}", password):
+        raise ApiError(503, "database-runtime-secret-invalid")
+    exists = _rows("SELECT 1 AS found FROM pg_roles WHERE rolname = :username", {"username": expected_username})
+    command = "ALTER ROLE" if exists else "CREATE ROLE"
+    _execute(f"{command} {expected_username} LOGIN PASSWORD '{password}'")
 def migration_handler(event: dict, _context: Any) -> dict:
     """Privileged direct-invoke importer. It is intentionally not an API route."""
     mode = event.get("mode")
-    if mode not in ("dry-run", "import", "rollback"):
-        raise ValueError("mode must be dry-run, import, or rollback")
+    if mode not in ("dry-run", "import", "rollback-preview", "rollback"):
+        raise ValueError("mode must be dry-run, import, rollback-preview, or rollback")
     if mode == "rollback":
         return _rollback_import(event)
+    if mode == "rollback-preview":
+        return _preview_rollback(event)
     bucket = _required_text(event.get("bucket"), "bucket", 255)
     key = _required_text(event.get("key"), "key", 1024)
     obj = _client("s3").get_object(Bucket=bucket, Key=key)
@@ -833,14 +918,79 @@ def _validate_bundle(bundle: dict) -> dict:
         raise ValueError("unsupported formatVersion")
     game = bundle.get("game") or {}
     bot = bundle.get("chatbot") or {}
-    if not isinstance(game.get("save"), dict):
+    if not isinstance(game, dict) or not isinstance(game.get("save"), dict):
         raise ValueError("game.save must be an object")
     if not isinstance(bot, dict):
         raise ValueError("chatbot must be an object")
+    if not isinstance(game.get("save", {}).get("version"), int) or isinstance(game["save"]["version"], bool):
+        raise ValueError("game.save.version must be an integer")
+    digests = game["save"].get("digests", [])
+    if not isinstance(digests, list):
+        raise ValueError("game.save.digests must be an array")
+    for digest in digests:
+        if not isinstance(digest, dict) or not isinstance(digest.get("date"), str):
+            raise ValueError("every digest requires a date")
+        _valid_date(digest["date"])
+        if not isinstance(digest.get("skills", []), list):
+            raise ValueError("digest.skills must be an array")
+    for name in ("market", "trends"):
+        if game.get(name) is not None and not isinstance(game[name], dict):
+            raise ValueError(f"game.{name} must be an object")
     list_names = ("messages", "seenMessages", "reports", "reportEvents", "pendingConfirmations")
     for name in list_names:
         if not isinstance(bot.get(name, []), list):
             raise ValueError(f"chatbot.{name} must be an array")
+    if sum(len(bot.get(name, [])) for name in list_names) > 40_000:
+        raise ValueError("migration bundle has too many rows")
+
+    def unique_values(items: list, key: str, label: str) -> set[str]:
+        found = set()
+        for item in items:
+            if not isinstance(item, dict):
+                raise ValueError(f"{label} row must be an object")
+            value = _required_text(item.get(key), f"{label}-{key}", 300)
+            if value in found:
+                raise ValueError(f"duplicate {label} {key}")
+            found.add(value)
+        return found
+
+    messages = bot.get("messages", [])
+    unique_values(messages, "id", "message")
+    for row in messages:
+        _required_text(row.get("userId"), "message-user-id", 200)
+        if row.get("role") not in ("user", "assistant"):
+            raise ValueError("message role must be user or assistant")
+        _required_text(row.get("content"), "message-content", 20_000)
+        _valid_timestamp(row.get("createdAt"), "message-created-at")
+
+    unique_values(bot.get("seenMessages", []), "messageId", "seen-message")
+    for row in bot.get("seenMessages", []):
+        _valid_timestamp(row.get("seenAt"), "seen-at")
+
+    reports = bot.get("reports", [])
+    unique_values(reports, "id", "report")
+    report_event_ids = [row.get("eventId") for row in reports if row.get("eventId") is not None]
+    if any(not isinstance(event_id, str) or not event_id.strip() for event_id in report_event_ids):
+        raise ValueError("report eventId must be a non-empty string or null")
+    if len(set(report_event_ids)) != len(report_event_ids):
+        raise ValueError("duplicate report eventId")
+    for row in reports:
+        _required_text(row.get("userId"), "report-user-id", 200)
+        _required_text(row.get("text"), "report-text", 2_000)
+        _valid_date(_required_text(row.get("date"), "report-date", 10))
+        _valid_timestamp(row.get("createdAt"), "report-created-at")
+        if not isinstance(row.get("skillIds", []), list) or not isinstance(row.get("advanced", []), list):
+            raise ValueError("report skillIds and advanced must be arrays")
+        if row.get("points") is not None and (not isinstance(row["points"], int) or isinstance(row["points"], bool)):
+            raise ValueError("report points must be an integer or null")
+
+    unique_values(bot.get("reportEvents", []), "eventId", "report-event")
+    unique_values(bot.get("pendingConfirmations", []), "userId", "pending-confirmation")
+    for row in bot.get("pendingConfirmations", []):
+        _required_text(row.get("text"), "pending-text", 2_000)
+        _required_text(row.get("lang"), "pending-lang", 10)
+        _valid_timestamp(row.get("createdAt"), "pending-created-at")
+
     return {
         "saves": 1,
         "documents": sum(isinstance(game.get(name), dict) for name in ("market", "trends")),
@@ -853,9 +1003,27 @@ def _validate_bundle(bundle: dict) -> dict:
     }
 
 
+def _valid_date(value: str) -> None:
+    try:
+        parsed = datetime.strptime(value, "%Y-%m-%d")
+        if parsed.strftime("%Y-%m-%d") != value:
+            raise ValueError("noncanonical date")
+    except (TypeError, ValueError) as exc:
+        raise ValueError("date must be YYYY-MM-DD") from exc
+
+
+def _valid_timestamp(value: Any, name: str) -> None:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{name} must be an ISO timestamp")
+    try:
+        datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValueError(f"{name} must be an ISO timestamp") from exc
+
+
 def _target_counts() -> dict:
     tables = ("game_saves", "app_documents", "chat_messages", "seen_messages", "learning_reports",
-              "pending_confirmations", "daily_digests", "api_idempotency")
+              "pending_confirmations", "daily_digests", "api_idempotency", "ai_jobs")
     return {table: int(_rows(f"SELECT count(*) AS count FROM {table}")[0]["count"]) for table in tables}
 
 
@@ -873,7 +1041,9 @@ def _import_bundle(bundle: dict, bundle_hash: str, counts: dict) -> dict:
         occupied = _rows(
             "SELECT (SELECT count(*) FROM game_saves) + (SELECT count(*) FROM app_documents) + "
             "(SELECT count(*) FROM chat_messages) + (SELECT count(*) FROM seen_messages) + "
-            "(SELECT count(*) FROM learning_reports) + (SELECT count(*) FROM daily_digests) AS count",
+            "(SELECT count(*) FROM learning_reports) + (SELECT count(*) FROM pending_confirmations) + "
+            "(SELECT count(*) FROM daily_digests) + (SELECT count(*) FROM api_idempotency) + "
+            "(SELECT count(*) FROM ai_jobs) AS count",
             transaction_id=tx,
         )[0]["count"]
         if int(occupied) > 0:
@@ -917,7 +1087,7 @@ def _import_bundle(bundle: dict, bundle_hash: str, counts: dict) -> dict:
 def _snapshot(tx: str) -> dict:
     snapshot = {}
     for table in ("game_saves", "app_documents", "chat_messages", "seen_messages",
-                  "learning_reports", "pending_confirmations", "daily_digests", "api_idempotency"):
+                  "learning_reports", "pending_confirmations", "daily_digests", "api_idempotency", "ai_jobs"):
         snapshot[table] = _rows(f"SELECT * FROM {table}", transaction_id=tx)
     return snapshot
 
@@ -1016,7 +1186,8 @@ def _rollback_import(event: dict) -> dict:
             ("game_saves", "updated_at"), ("app_documents", "updated_at"),
             ("chat_messages", "created_at"), ("seen_messages", "seen_at"),
             ("learning_reports", "created_at"), ("daily_digests", "created_at"),
-            ("pending_confirmations", "created_at"),
+            ("pending_confirmations", "created_at"), ("api_idempotency", "created_at"),
+            ("ai_jobs", "created_at"),
         )
         for table, column in checks:
             newer = _rows(
@@ -1028,7 +1199,7 @@ def _rollback_import(event: dict) -> dict:
 
         snapshot = backup[0]["snapshot"]
         tables = ("game_saves", "app_documents", "chat_messages", "seen_messages",
-                  "learning_reports", "pending_confirmations", "daily_digests", "api_idempotency")
+                  "learning_reports", "pending_confirmations", "daily_digests", "api_idempotency", "ai_jobs")
         for table in tables:
             _execute(f"DELETE FROM {table}", transaction_id=tx)
         _restore_snapshot(snapshot, tx)
@@ -1041,6 +1212,45 @@ def _rollback_import(event: dict) -> dict:
     except Exception:
         _rollback(tx)
         raise
+
+
+def _preview_rollback(event: dict) -> dict:
+    bundle_hash = _required_text(event.get("bundleSha256"), "bundle-sha256", 64)
+    if not re.fullmatch(r"[0-9a-f]{64}", bundle_hash):
+        raise ValueError("bundleSha256 must be a lowercase SHA-256 hex string")
+    run = _rows(
+        "SELECT status, finished_at FROM migration_runs WHERE bundle_sha256 = :hash",
+        {"hash": bundle_hash},
+    )
+    backup = _rows(
+        "SELECT created_at FROM migration_backups WHERE bundle_sha256 = :hash",
+        {"hash": bundle_hash},
+    )
+    if not run or run[0]["status"] != "succeeded" or not backup:
+        raise ApiError(404, "migration-backup-not-found")
+    newer = {}
+    checks = (
+        ("game_saves", "updated_at"), ("app_documents", "updated_at"),
+        ("chat_messages", "created_at"), ("seen_messages", "seen_at"),
+        ("learning_reports", "created_at"), ("daily_digests", "created_at"),
+        ("pending_confirmations", "created_at"), ("api_idempotency", "created_at"),
+        ("ai_jobs", "created_at"),
+    )
+    for table, column in checks:
+        count = _rows(
+            f"SELECT count(*) AS count FROM {table} WHERE {column} > CAST(:imported_at AS timestamptz)",
+            {"imported_at": run[0]["finished_at"]},
+        )[0]["count"]
+        if int(count):
+            newer[table] = int(count)
+    return {
+        "mode": "rollback-preview",
+        "bundleSha256": bundle_hash,
+        "status": run[0]["status"],
+        "safeToRollback": not newer,
+        "rowsWrittenAfterImport": newer,
+        "requiresConfirmRollback": True,
+    }
 
 
 def _restore_snapshot(snapshot: dict, tx: str) -> None:
@@ -1094,5 +1304,12 @@ def _restore_snapshot(snapshot: dict, tx: str) -> None:
         _execute(
             "INSERT INTO api_idempotency (idempotency_key, fingerprint, response, created_at) "
             "VALUES (:idempotency_key, :fingerprint, CAST(:response AS jsonb), CAST(:created_at AS timestamptz))",
+            row, tx,
+        )
+    for row in snapshot.get("ai_jobs", []):
+        _execute(
+            "INSERT INTO ai_jobs (id, status, request, result, error_code, created_at, updated_at) "
+            "VALUES (:id, :status, CAST(:request AS jsonb), CAST(:result AS jsonb), :error_code, "
+            "CAST(:created_at AS timestamptz), CAST(:updated_at AS timestamptz))",
             row, tx,
         )

@@ -2,6 +2,15 @@
 
 ![image info](./static/social/share-image.png)
 
+## CareerSphere persistence and AI
+
+The game can keep using its existing local JSON store during development. To route
+game saves, market/trend documents, and AI through the authenticated private Aurora
+backend, configure the server-only `AWS_BACKEND_URL` and `AWS_BACKEND_TOKEN`
+secrets. Deployment, migration, rollback, and cost guidance is in
+[the AWS backend guide](../../aws/README.md). Do not set either value as a `VITE_`
+variable.
+
 ## Setup
 
 Create `.env` file based on `.env.example`

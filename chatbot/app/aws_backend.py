@@ -22,7 +22,11 @@ class AwsBackendError(RuntimeError):
 
 def enabled() -> bool:
     st = get_settings()
-    return bool(st.aws_backend_url and st.aws_backend_token)
+    has_url = bool(st.aws_backend_url)
+    has_token = bool(st.aws_backend_token)
+    if has_url != has_token:
+        raise AwsBackendError("aws-backend-config-incomplete", 503)
+    return has_url
 
 
 def request(method: str, path: str, *, body: dict | None = None, params: dict | None = None) -> dict:

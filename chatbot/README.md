@@ -1,11 +1,18 @@
-# CareerSphere · chat bot (Replit AI)
+# CareerSphere · chat bot (Replit + AWS)
+
+With `AWS_BACKEND_URL` and `AWS_BACKEND_TOKEN` configured, game/chatbot state
+and AI calls use the authenticated AWS API and private Aurora database. Local
+development keeps the existing SQLite store and can use Replit/Anthropic AI
+when both AWS values are absent; a partial pair fails closed. See the [AWS backend guide](../aws/README.md)
+for deployment, data export/import, rollback, and cost details.
 
 > **n8n 接入已补齐**：见 [项目工作流说明](../GamePlat/game/n8n/README.md)。Telegram 可由 n8n 转发到同步接口 `POST /internal/n8n/telegram`（沿用 webhook secret）；消息分类、确认和回复继续由本服务处理。n8n 每天 00:05 调用 `/internal/digest/run?summary_only=true&telegram_user_id=<演示玩家 ID>&date=<昨天>`，只摘录真实汇报，不再增加 mastery。该模式要求 `TELEGRAM_ALLOWED_USER_IDS` 只填一个演示玩家，并关闭本服务的 `DIGEST_SCHEDULE_ENABLED`；下文的 23:30 AI digest 是原有独立运行模式。
 
 Users chat with the CareerSphere companion over **WhatsApp** or **Telegram**. Messages
 arrive at this service, get classified (a learning report? small talk? unclear?), and
 are routed either to the **CareerSphere game app's integration API** (progress logging)
-or to **Replit AI Integrations** (conversation). Replies go back through whichever
+or to the configured server-side AI provider. With the AWS backend enabled, that AI
+request is proxied through Lambda to Bedrock; replies go back through whichever
 channel the user wrote on.
 
 > **Why two channels:** the WhatsApp Business account is pending Meta's company
@@ -19,7 +26,7 @@ Telegram user ──► Telegram Bot API ──► POST /telegram/webhook ──
                                                                 │
                                    classify: report / chat / uncertain
                                       │              │               │
-                             CareerSphere /chat  Replit AI reply  confirm buttons
+                              CareerSphere /chat  AWS/Replit AI reply  confirm buttons
                              (saved for digest)  (Claude or GPT)  (then one of the above)
                                                                 │
 WhatsApp user ◄── Meta           ◄── WhatsApp Cloud API: send reply ──┤

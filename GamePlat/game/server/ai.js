@@ -17,9 +17,16 @@ import Anthropic from '@anthropic-ai/sdk'
 function pickProvider()
 {
     const chosen = (process.env.AI_PROVIDER ?? '').trim().toLowerCase()
-    if([ 'bedrock', 'deepseek_direct', 'replit', 'anthropic' ].includes(chosen))
+    const supported = [ 'bedrock', 'deepseek_direct', 'replit', 'anthropic' ]
+    if(chosen && !supported.includes(chosen))
+        throw new Error(`Unknown AI_PROVIDER: ${chosen}`)
+    const hasAwsUrl = Boolean(process.env.AWS_BACKEND_URL)
+    const hasAwsToken = Boolean(process.env.AWS_BACKEND_TOKEN)
+    if(hasAwsUrl !== hasAwsToken)
+        throw new Error('AWS_BACKEND_URL and AWS_BACKEND_TOKEN must be configured together')
+    if(chosen)
         return chosen
-    if(process.env.AWS_BACKEND_URL && process.env.AWS_BACKEND_TOKEN)
+    if(hasAwsUrl)
         return 'bedrock'
     if(process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY)
         return 'replit'
@@ -208,7 +215,7 @@ export function conformSlot(container, key, schema, path)
 
 /**
  * Plain text reply to a conversation (messages: [ { role: 'user' | 'assistant', content } ], ends with the user)
- * onText(delta): called with each piece of the answer as it streams in (the thinking itself is not passed on)
+ * onText(delta): local providers stream pieces; the AWS job backend emits its completed answer once.
  * signal: AbortSignal that cancels the call (player left the dialogue)
  */
 export async function reply({ system, messages, effort = 'low', maxTokens = 2000, onText = null, signal = null })

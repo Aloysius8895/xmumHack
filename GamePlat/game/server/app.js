@@ -432,7 +432,9 @@ async function stream(request, response, route)
         if(code === 'server')
             console.error('[api]', error)
         if(!started)
-            return send(response, error instanceof HttpError ? error.status : error instanceof AiError ? 502 : 500, { error: code })
+            return send(response,
+                error instanceof HttpError ? error.status : error instanceof AiError ? 502 : error?.name === 'AwsBackendError' ? error.status ?? 502 : 500,
+                { error: code })
         emit({ error: code })
         response.end()
     }
@@ -471,25 +473,25 @@ export async function handle(request, response)
         const body = request.method === 'POST' ? await readBody(request) : {}
         const payload = await exclusive(async () =>
         {
+            const loaded = await persistence.loadSave()
             if(url.pathname === '/api/reset')
             {
-            const save = store.createSave()
-            useCustom(save)
-            const result = { reset: true }
-            if(persistence.cloudEnabled)
-                await persistence.commitSave(save, loaded.version, 'save', { result })
-            else
-                store.reset()
-            return { result, save }
+                const save = store.createSave()
+                useCustom(save)
+                const result = { reset: true }
+                if(persistence.cloudEnabled())
+                    await persistence.commitSave(save, loaded.version, 'save', { result })
+                else
+                    store.reset()
+                return { result, save }
             }
 
-            const loaded = await persistence.loadSave()
             const save = loaded.state
             useCustom(save)
             let result = await ai.demo.run(!integration && body.demo === true, () => route(save, body)) ?? {}
             if(request.method === 'POST')
             {
-                if(persistence.cloudEnabled)
+                if(persistence.cloudEnabled())
                 {
                     const commit = cloudCommit(url.pathname, body, result, save)
                     const saved = await persistence.commitSave(save, loaded.version, commit.operation, commit.metadata)

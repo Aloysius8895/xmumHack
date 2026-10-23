@@ -2,97 +2,109 @@ import assert from 'node:assert/strict'
 import http from 'node:http'
 import test from 'node:test'
 
-// A local stand-in for DeepSeek's Anthropic-compatible endpoint: records the requests, answers from a queue
 const requests = []
 const answers = []
+const jobs = new Map()
 const server = http.createServer((request, response) =>
 {
-    let body = ''
-    request.on('data', (chunk) => body += chunk)
+    let raw = ''
+    request.on('data', (chunk) => raw += chunk)
     request.on('end', () =>
     {
-        requests.push({ url: request.url, headers: request.headers, body: JSON.parse(body) })
-        const answer = answers.shift()
-        response.writeHead(200, { 'content-type': 'application/json' })
-        response.end(JSON.stringify({ id: 'msg', type: 'message', role: 'assistant', model: 'deepseek-flash', stop_reason: answer.stop ?? 'end_turn', usage: { input_tokens: 1, output_tokens: 1 }, content: answer.content }))
+        if(request.method === 'POST' && request.url === '/v1/ai/jobs')
+        {
+            const body = JSON.parse(raw)
+            requests.push({ method: request.method, headers: request.headers, body })
+            const jobId = `job-${jobs.size + 1}`
+            jobs.set(jobId, answers.shift())
+            response.writeHead(202, { 'content-type': 'application/json' })
+            response.end(JSON.stringify({ jobId, status: 'queued' }))
+            return
+        }
+        const jobId = request.url.split('/').at(-1)
+        const answer = jobs.get(jobId)
+        response.writeHead(answer ? 200 : 404, { 'content-type': 'application/json' })
+        response.end(JSON.stringify(answer ? { jobId, status: 'succeeded', ...answer } : { error: 'not-found' }))
     })
 })
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
 
-process.env.AI_PROVIDER = 'deepseek'
-process.env.DEEPSEEK_BASE_URL = `http://127.0.0.1:${server.address().port}`
-process.env.ANTHROPIC_API_KEY = 'claude-key-must-not-leave'
-delete process.env.DEEPSEEK_API_KEY
-delete process.env.AI_MOCK
-const ai = await import('./ai.js')
+const KEYS = [
+    'AI_PROVIDER', 'AWS_BACKEND_URL', 'AWS_BACKEND_TOKEN', 'AWS_AI_MAX_WAIT_MS',
+    'ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN', 'DEEPSEEK_API_KEY', 'AI_MOCK',
+]
+let fresh = 0
 
+async function load(env)
+{
+    for(const key of KEYS)
+        delete process.env[key]
+    Object.assign(process.env, env)
+    return import(`./ai.js?aws-provider-test=${fresh++}`)
+}
+
+const backend = {
+    AI_PROVIDER: 'deepseek_direct',
+    AWS_BACKEND_URL: `http://127.0.0.1:${server.address().port}`,
+    AWS_BACKEND_TOKEN: 'server-only-token',
+    ANTHROPIC_API_KEY: 'must-not-be-used',
+}
 const schema = {
     type: 'object',
-    properties: {
-        verdict: { type: 'string', enum: [ 'learned', 'vague' ] },
-        hours: { type: 'integer' },
-    },
+    properties: { verdict: { type: 'string', enum: [ 'learned', 'vague' ] }, hours: { type: 'integer' } },
     required: [ 'verdict', 'hours' ],
     additionalProperties: false,
 }
-const call = (input, id = 'tool1') => ({ content: [ { type: 'tool_use', id, name: 'submit_result', input } ], stop: 'tool_use' })
 
 test.after(() => server.close())
 
-test('without DEEPSEEK_API_KEY nothing is sent, not even the Claude key', async () =>
+test('direct provider is explicit and never exposes the official API key to Replit', async () =>
 {
-    await assert.rejects(ai.ask({ system: 's', content: 'c', schema }), { code: 'ai-auth' })
+    const ai = await load({ AI_PROVIDER: 'deepseek_direct', DEEPSEEK_API_KEY: 'ignored-key' })
+    assert.equal(ai.PROVIDER, 'deepseek_direct')
+    assert.equal(ai.status().keyConfigured, false)
+    await assert.rejects(ai.reply({ system: 's', messages: [{ role: 'user', content: 'Hi' }] }), { code: 'aws-backend-not-configured' })
     assert.equal(requests.length, 0)
-    process.env.DEEPSEEK_API_KEY = 'deepseek-key'
 })
 
-test('status reports DeepSeek and its model', () =>
+test('structured output is requested through the AWS backend and validated locally', async () =>
 {
-    assert.deepEqual(ai.status(), { mock: false, provider: 'deepseek', model: 'deepseek-flash', keyConfigured: true })
+    const ai = await load(backend)
+    assert.deepEqual(ai.status(), {
+        mock: false, provider: 'deepseek_direct', model: 'configured-in-aws', keyConfigured: true,
+    })
+    answers.push({ value: { verdict: 'learned', hours: '2', extra: 'removed' } })
+    assert.deepEqual(await ai.ask({ system: 'Classify.', content: 'Studied SQL for 2h', schema }), {
+        verdict: 'learned', hours: 2,
+    })
+    const sent = requests.at(-1)
+    assert.equal(sent.body.provider, 'deepseek_direct')
+    assert.equal(sent.body.mode, 'json')
+    assert.deepEqual(sent.body.schema, schema)
+    assert.equal(sent.headers.authorization, 'Bearer server-only-token')
+    assert.equal(sent.headers['x-api-key'], undefined)
+    assert.equal(sent.body.DEEPSEEK_API_KEY, undefined)
 })
 
-test('structured answers come from a forced tool call, fixed and checked against the schema', async () =>
+test('invalid structured output gets one corrected attempt', async () =>
 {
-    answers.push(call({ verdict: 'learned', hours: '2', extra: 'dropped' }))
-    assert.deepEqual(await ai.ask({ system: 'Classify.', content: 'Studied SQL 2h', schema }), { verdict: 'learned', hours: 2 })
-
-    const sent = requests.at(- 1)
-    assert.equal(sent.url, '/v1/messages')
-    assert.equal(sent.headers['x-api-key'], 'deepseek-key')
-    assert.equal(sent.headers.authorization, undefined)
-    assert.equal(sent.body.model, 'deepseek-flash')
-    assert.deepEqual(sent.body.tool_choice, { type: 'tool', name: 'submit_result' })
-    assert.deepEqual(sent.body.tools[0].input_schema, schema)
-    assert.deepEqual(sent.body.thinking, { type: 'disabled' })
-    assert.equal(sent.body.output_config, undefined)
-})
-
-test('a result outside the schema is sent back once with the problem, then accepted', async () =>
-{
-    answers.push(call({ verdict: 'maybe', hours: 1 }, 'first'), call({ verdict: 'vague', hours: 0 }, 'second'))
+    const ai = await load(backend)
+    answers.push(
+        { value: { verdict: 'maybe', hours: 1 } },
+        { value: { verdict: 'vague', hours: 0 } },
+    )
     assert.deepEqual(await ai.ask({ system: 's', content: 'c', schema }), { verdict: 'vague', hours: 0 })
-    const retry = requests.at(- 1).body.messages
-    assert.equal(retry.length, 3)
-    assert.equal(retry[2].content[0].tool_use_id, 'first')
-    assert.match(retry[2].content[0].content, /result\.verdict must be one of learned, vague/)
+    assert.equal(requests.at(-1).body.provider, 'deepseek_direct')
+    assert.match(requests.at(-1).body.content, /previous result was rejected/)
 })
 
-test('two wrong results end in ai-error', async () =>
+test('plain responses use background jobs; files are refused without a silent provider switch', async () =>
 {
-    answers.push(call({ verdict: 'learned' }), call({ verdict: 'learned' }))
-    await assert.rejects(ai.ask({ system: 's', content: 'c', schema }), { code: 'ai-error', message: /result\.hours is missing/ })
-})
-
-test('plain replies and images work, PDF files are refused before any request', async () =>
-{
-    answers.push({ content: [ { type: 'text', text: '  Start with SQL.  ' } ] })
+    const ai = await load(backend)
+    answers.push({ text: 'Start with SQL.' })
+    assert.equal(await ai.reply({ system: 's', messages: [{ role: 'user', content: 'Hi' }] }), 'Start with SQL.')
+    const before = requests.length
     const image = { type: 'image', source: { type: 'base64', media_type: 'image/png', data: 'iVBORw0KGgo=' } }
-    assert.equal(await ai.reply({ system: 's', messages: [ { role: 'user', content: [ image, { type: 'text', text: 'What is this?' } ] } ] }), 'Start with SQL.')
-    assert.deepEqual(requests.at(- 1).body.messages[0].content[0], image)
-
-    const count = requests.length
-    const pdf = { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: 'JVBERi0=' } }
-    await assert.rejects(ai.reply({ system: 's', messages: [ { role: 'user', content: [ pdf, { type: 'text', text: 'CV' } ] } ] }), { code: 'ai-no-pdf' })
-    await assert.rejects(ai.ask({ system: 's', content: [ pdf ], schema }), { code: 'ai-no-pdf' })
-    assert.equal(requests.length, count)
+    await assert.rejects(ai.reply({ system: 's', messages: [{ role: 'user', content: [image] }] }), { code: 'ai-no-file' })
+    assert.equal(requests.length, before)
 })

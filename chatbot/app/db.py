@@ -86,6 +86,8 @@ def connect() -> Iterator[sqlite3.Connection]:
 
 
 def init_db() -> None:
+    if aws_backend.enabled():
+        return
     with connect() as conn:
         conn.executescript(SCHEMA)
 

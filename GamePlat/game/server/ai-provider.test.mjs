@@ -20,7 +20,7 @@ const server = http.createServer((request, response) =>
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
 test.after(() => server.close())
 
-const KEYS = [ 'AI_PROVIDER', 'DEEPSEEK_API_KEY', 'DEEPSEEK_MODEL', 'REPLIT_MODEL', 'CLAUDE_MODEL', 'AI_INTEGRATIONS_ANTHROPIC_API_KEY', 'AI_INTEGRATIONS_ANTHROPIC_BASE_URL', 'ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN', 'AI_MOCK' ]
+const KEYS = [ 'AI_PROVIDER', 'DEEPSEEK_API_KEY', 'DEEPSEEK_MODEL', 'REPLIT_MODEL', 'CLAUDE_MODEL', 'AI_INTEGRATIONS_ANTHROPIC_API_KEY', 'AI_INTEGRATIONS_ANTHROPIC_BASE_URL', 'ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN', 'AI_MOCK', 'AWS_BACKEND_URL', 'AWS_BACKEND_TOKEN' ]
 let fresh = 0
 
 // ai.js picks its provider when loaded: a new module instance per environment
@@ -34,12 +34,15 @@ async function load(env)
 
 const replit = { AI_INTEGRATIONS_ANTHROPIC_API_KEY: 'replit-key', AI_INTEGRATIONS_ANTHROPIC_BASE_URL: `http://127.0.0.1:${server.address().port}` }
 
-test('provider: a DeepSeek key wins, otherwise Replit, otherwise your own Claude key', async () =>
+test('provider: explicit AWS setting wins; direct DeepSeek key is never auto-selected', async () =>
 {
-    assert.equal((await load({ DEEPSEEK_API_KEY: 'd', ...replit, ANTHROPIC_API_KEY: 'a' })).PROVIDER, 'deepseek')
+    assert.equal((await load({ DEEPSEEK_API_KEY: 'd', ...replit, ANTHROPIC_API_KEY: 'a' })).PROVIDER, 'replit')
     assert.equal((await load({ DEEPSEEK_API_KEY: '', ...replit, ANTHROPIC_API_KEY: 'a' })).PROVIDER, 'replit')
     assert.equal((await load({ ANTHROPIC_API_KEY: 'a' })).PROVIDER, 'anthropic')
     assert.equal((await load({})).PROVIDER, 'anthropic')
+    assert.equal((await load({ AWS_BACKEND_URL: 'https://api.example', AWS_BACKEND_TOKEN: 'server-token' })).PROVIDER, 'bedrock')
+    assert.equal((await load({ AI_PROVIDER: 'deepseek_direct', AWS_BACKEND_URL: 'https://api.example', AWS_BACKEND_TOKEN: 'server-token' })).PROVIDER, 'deepseek_direct')
+    await assert.rejects(load({ AWS_BACKEND_URL: 'https://api.example', AWS_BACKEND_TOKEN: '' }), /must be configured together/)
     // Forced with AI_PROVIDER, whatever keys are there
     assert.equal((await load({ AI_PROVIDER: 'anthropic', DEEPSEEK_API_KEY: 'd' })).PROVIDER, 'anthropic')
     assert.equal((await load({ AI_PROVIDER: 'Replit', DEEPSEEK_API_KEY: 'd', ...replit })).PROVIDER, 'replit')
