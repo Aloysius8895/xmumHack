@@ -9,6 +9,10 @@ and the "reply" text that comes back from POST /api/integrations/chat
 
 MESSAGES = {
     "en": {
+        "expert_exit": "Expert mode ended. You can chat or log learning normally again. Send /expert to consult the expert for your web-game target.",
+        "expert_owner": "Expert mode reads the single web-game player's target. Ask the admin to bind exactly one Telegram owner in TELEGRAM_ALLOWED_USER_IDS.",
+        "expert_help": "Send your question to the expert, /expert to restart with your web-game target, or /exit to return to ordinary chat.",
+        "expert_unavailable": "I couldn't reach the expert right now. Please try again, or send /exit to return to ordinary chat.",
         "reset_reply": "Okay, fresh start!",
         "fallback": "Sorry, I can't reply right now. Please try again in a moment.",
         "non_text": "I can only read text messages for now.",
@@ -25,7 +29,9 @@ MESSAGES = {
             "Hi! I'm the CareerSphere companion bot.\n"
             "Your Telegram user id: {uid}\n"
             "(Please send this id to the admin to get whitelisted, so your study "
-            "progress can be logged.)"
+            "progress can be logged.)\n"
+            "/expert: meet the expert for your web-game target, then send questions.\n"
+            "/exit: leave expert mode. /reset: reset the conversation."
         ),
     },
 }

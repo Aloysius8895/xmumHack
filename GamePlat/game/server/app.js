@@ -14,6 +14,7 @@ import * as trends from './trends.js'
 import * as persistence from './persistence.js'
 import { getCareer, useCustom } from './careers.js'
 import { expertCard } from './experts.js'
+import { telegramExpert, expertReceipt } from './telegram-expert.js'
 import * as store from './store.js'
 import { createHash } from 'node:crypto'
 
@@ -109,6 +110,11 @@ function mytDate()
 
 function cloudCommit(path, body, result, save)
 {
+    if(path === '/api/integrations/expert')
+    {
+        const receipt = expertReceipt(save, body)
+        return { operation: 'save', metadata: { idempotencyKey: `expert:${receipt.key}`, fingerprint: receipt.fingerprint, result } }
+    }
     if(path === '/api/integrations/chat')
     {
         if(!body.messageId)
@@ -345,6 +351,8 @@ const routes = {
     {
         return trends.receiveTrends(body, IntegrationError)
     },
+
+    'POST /api/integrations/expert': (save, body) => telegramExpert(save, body),
 
     'POST /api/integrations/chat': async (save, body) =>
     {

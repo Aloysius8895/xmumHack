@@ -3,6 +3,7 @@
  * provider explicitly. AWS-backed providers are called only by this server and
  * never expose AWS_BACKEND_TOKEN to the browser.
  *
+ * DeepSeek (deepseek): official compatible API, local schema validation and streamed replies.
  * Claude (anthropic): one request per feature with a JSON schema output (output_config.format), adaptive thinking
  * (always on for Claude Opus 5.5) and server-side refusal fallback.
  * Replit AI Integrations (replit): Claude through Replit's proxy (AI_INTEGRATIONS_ANTHROPIC_*), whose model list stops
@@ -17,7 +18,7 @@ import Anthropic from '@anthropic-ai/sdk'
 function pickProvider()
 {
     const chosen = (process.env.AI_PROVIDER ?? '').trim().toLowerCase()
-    const supported = [ 'bedrock', 'deepseek_direct', 'replit', 'anthropic' ]
+    const supported = [ 'deepseek', 'bedrock', 'deepseek_direct', 'replit', 'anthropic' ]
     if(chosen && !supported.includes(chosen))
         throw new Error(`Unknown AI_PROVIDER: ${chosen}`)
     const hasAwsUrl = Boolean(process.env.AWS_BACKEND_URL)
@@ -36,8 +37,10 @@ function pickProvider()
 export const PROVIDER = pickProvider()
 const AWS_PROXY = PROVIDER === 'bedrock' || PROVIDER === 'deepseek_direct'
 const REPLIT = PROVIDER === 'replit'
-const COMPATIBLE = REPLIT // Plain Messages API, JSON through a forced tool call
+const DEEPSEEK = PROVIDER === 'deepseek'
+const COMPATIBLE = REPLIT || DEEPSEEK // Plain Messages API, JSON through a forced tool call
 export const MODEL = {
+    deepseek: process.env.DEEPSEEK_MODEL || 'deepseek-flash',
     bedrock: 'configured-in-aws',
     deepseek_direct: 'configured-in-aws',
     replit: process.env.REPLIT_MODEL || 'claude-opus-5', // Most capable Claude in Replit's list
@@ -71,6 +74,13 @@ function getClient()
 
     if(AWS_PROXY)
         throw new AiError('ai-auth', 'AWS-backed AI must use the AWS Lambda proxy')
+    else if(DEEPSEEK)
+    {
+        const apiKey = process.env.DEEPSEEK_API_KEY?.trim()
+        if(!apiKey)
+            throw new AiError('ai-auth', 'DeepSeek selected but DEEPSEEK_API_KEY is not configured')
+        client = new Anthropic({ apiKey, authToken: null, baseURL: 'https://api.deepseek.com/anthropic', timeout: 120000, maxRetries: 0 })
+    }
     else if(REPLIT)
     {
         // Set by Replit once AI Integrations are enabled for the Repl, both needed (no fallback to other keys)
@@ -97,6 +107,7 @@ export function status()
         provider: PROVIDER,
         model: MODEL,
         keyConfigured: Boolean(AWS_PROXY ? process.env.AWS_BACKEND_URL && process.env.AWS_BACKEND_TOKEN
+            : DEEPSEEK ? process.env.DEEPSEEK_API_KEY?.trim()
             : REPLIT ? process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY && process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL
             : process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN),
     }
@@ -220,6 +231,11 @@ export function conformSlot(container, key, schema, path)
  */
 export async function reply({ system, messages, effort = 'low', maxTokens = 2000, onText = null, signal = null })
 {
+    if(DEEPSEEK)
+    {
+        const { deepseekInput } = await import('./deepseek-input.js')
+        messages = await Promise.all(messages.map(async (message) => ({ ...message, content: await deepseekInput(message.content) })))
+    }
     if(AWS_PROXY)
     {
         try
@@ -289,6 +305,11 @@ export async function reply({ system, messages, effort = 'low', maxTokens = 2000
  */
 export async function ask({ system, content, schema, effort = 'medium', maxTokens = 16000 })
 {
+    if(DEEPSEEK)
+    {
+        const { deepseekInput } = await import('./deepseek-input.js')
+        content = await deepseekInput(content)
+    }
     if(AWS_PROXY)
         return askWithAws({ system, content, schema, maxTokens })
     if(COMPATIBLE)

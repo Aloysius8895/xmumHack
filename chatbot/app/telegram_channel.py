@@ -6,7 +6,7 @@ is answered directly (not routed through handlers) so we can show the user
 their numeric Telegram id for the allowlist."""
 import logging
 
-from . import db, handlers, messages
+from . import db, handlers, messages, expert
 from . import telegram_api as tg
 
 log = logging.getLogger("chatbot")
@@ -63,10 +63,16 @@ def _process_update(update: dict) -> None:
         tg.send_message(chat["id"], messages.t("non_text"))
         return
 
-    if text.strip() == "/start":
+    command = text.strip().split(maxsplit=1)[0].split("@", 1)[0].lower() if text.strip() else ""
+    if command == "/start":
+        db.clear_expert_session(_uid(user_id))
         tg.send_message(chat["id"], messages.t("welcome", uid=user_id))
         return
 
+    if command == "/reset":
+        text = "/reset"
+    if expert.handle_text(CHANNEL, _uid(user_id), str(user_id), text):
+        return
     handlers.handle_text(CHANNEL, _uid(user_id), str(user_id), text)
 
 

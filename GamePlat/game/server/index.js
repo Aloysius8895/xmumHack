@@ -50,5 +50,5 @@ http.createServer(async (request, response) =>
 }).listen(PORT, HOST, () =>
 {
     const ai = status()
-    console.log(`Career game on http://${HOST}:${PORT}  (AI: ${ai.mock ? 'mock' : ai.model}${!ai.mock && !ai.keyConfigured ? ', no ANTHROPIC_API_KEY set' : ''})`)
+    console.log(`Career game on http://${HOST}:${PORT}  (AI: ${ai.mock ? 'mock' : `${ai.provider}/${ai.model}`}${!ai.mock && !ai.keyConfigured ? ', provider credentials missing' : ''})`)
 })

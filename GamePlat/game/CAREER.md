@@ -16,10 +16,15 @@ npm run dev          # 游戏 + /api 一起启动（API 以 Vite 中间件的形
 
 | 变量 | 说明 |
 | --- | --- |
-| `ANTHROPIC_API_KEY` | Claude API key。也可以不填，改用 `ant auth login` 登录 |
-| `AI_MOCK` | `1` = 演示模式：不调用 Claude，返回示例结果，没有 key 也能把流程走完。接上真实 AI 时要删掉这一行 |
+| `AI_PROVIDER` | 设置为 `deepseek`，直接连接官方 DeepSeek API |
+| `DEEPSEEK_API_KEY` | 服务端 DeepSeek key；chatbot 使用同一个 key |
+| `DEEPSEEK_MODEL` | 默认 `deepseek-flash`，支持文字和图片 |
+| `ANTHROPIC_API_KEY` | 仅在明确选择 `AI_PROVIDER=anthropic` 时使用 |
+| `AI_MOCK` | `1` = 演示模式，不调用模型；接真实 AI 时设为 `0` |
 | `CLAUDE_MODEL` | 可选，默认 `claude-opus-5-5` |
 | `INTEGRATION_TOKEN` | 外部接口（见下方「外部接口」）的密钥；不填 = 外部接口关闭 |
+
+DeepSeek 的 PDF 上传会在服务器先提取文字：最多 10 MB、40 页、60,000 字符；扫描件请转成图片上传。`deepseek_direct` 是原有 AWS Lambda 通道，与本地直连 `deepseek` 不同。AWS 数据存储设置不会改变显式选择的 DeepSeek 模型路由。
 
 发布：`npm run build && npm run server`，然后打开 http://127.0.0.1:8787（同时提供 `dist/` 和 `/api`）。
 
@@ -27,7 +32,7 @@ npm run dev          # 游戏 + /api 一起启动（API 以 Vite 中间件的形
 
 - **左上角**：圆形小地图，点导师头像传送，点空白区域打开完整地图。
 - **右上角菜单**：点击向下展开档案、职业、宠物、路线、记录、设置；下方是宠物状态、积分和「下一步」。打开面板时人物会停下，按 `Esc` 关闭。
-- **职业导师**：地图上有 6 位导师。走近后按 `E` 对话，可以询问技能要求、准备差距和市场参考，也可以设为目标。选「我可以问你一些问题吗？」可以自己输入问题：后端（`POST /api/npc/ask`，`server/features.js` 的 `askMentor`）按这位导师的职业生成提示词，让 Claude 以该行业资深从业者的身份回答，同一次对话会记住前几轮。用的是 `.env` 里的 `ANTHROPIC_API_KEY`；`AI_MOCK=1` 时返回示例回答。回答是流式的（`POST /api/npc/ask/stream`，每行一个 JSON 事件）：等待第一个字时导师头上冒思考气泡、对话框显示「. .. ...」，之后逐字打出，一页满了按 Enter 翻页；离开对话会中止 AI 请求。DeepSeek 默认先思考再回答（`DEEPSEEK_THINKING=0` 关闭）。
+- **职业导师**：地图上有 6 位导师。走近后按 `E` 对话，可以询问技能要求、准备差距和市场参考，也可以设为目标。选「我可以问你一些问题吗？」可以自己输入问题：后端（`POST /api/npc/ask`，`server/features.js` 的 `askMentor`）按这位导师的职业生成提示词，让配置的 AI 以该行业资深从业者的身份回答，同一次对话会记住前几轮。设置 `AI_PROVIDER=deepseek` 时用 `.env` 里的 `DEEPSEEK_API_KEY`；`AI_MOCK=1` 时返回示例回答。回答是流式的（`POST /api/npc/ask/stream`，每行一个 JSON 事件）：等待第一个字时导师头上冒思考气泡、对话框显示「. .. ...」，之后逐字打出，一页满了按 Enter 翻页；离开对话会中止 AI 请求。DeepSeek 使用非思考模式以缩短等待时间。
 - **行业精英**：部分导师的对话里有「请教行业精英：XX」。精英是用女娲方法（`skills/Distillation/nuwa-skill`）从公开资料蒸馏出的思维框架：完整 skill 和调研底稿放在 `GamePlat/expert/<人物>-perspective/`，回答时把其中精简的 `card.md` 放进提示词（`server/experts.js` 维护职业与人物的对应；`features.js` 的 `askExpert`）。开场会先说明「基于公开资料，不是本人」。目前有：ML 工程师 → Andrej Karpathy，数据分析师 → Hans Rosling。新增精英：蒸馏到 `GamePlat/expert/`，写一份 `card.md`，再在 `server/experts.js` 的 `EXPERTS` 加一行。
 - **学习资源**：路线卡片上每个阶段有「从这里开始学」，链接到该技能的免费入门资源（`server/skill-details.js` 的 `RESOURCES`，优先开源 / 开放教材）。
 - **职业列表**：每个职业显示好感度和档案适配度。档案适配度只看你上传或填写的技能档案；好感度 = 档案适配度 + 学习进度，完成路线任务、发每日汇报会继续上升。上方有搜索框，地图上没有的职业也能搜索并设为目标（会替换好感度最低的导师，被替换的职业进度会保存）。
@@ -40,7 +45,7 @@ npm run dev          # 游戏 + /api 一起启动（API 以 Vite 中间件的形
 server/                     后端（Node，零额外框架）
   app.js                    /api 路由；会修改存档的请求逐个执行
   features.js               4 个 AI 功能：技能提取、岗位要求分析、路线规划、记录归类
-  ai.js                     Claude 调用：结构化 JSON 输出 + 拒答自动回退 + 错误分类；AI_MOCK 演示模式
+  ai.js                     AI 调用：工具结构化输出、校验重试、流式回答与错误分类；AI_MOCK 演示模式
   game.js                   游戏规则：任务进度、阶段解锁、积分、好感度展示
   careers.js                职业目录：技能要求（等级 + 权重）、市场参考、预计投入、对应宠物
   skill-details.js          29 项技能的三语说明、图标类别、参考热度和 1–5 难度
@@ -141,6 +146,8 @@ animation/pets/build.py     用 Blender 生成 6 只职业宠物 → static/pets
 - 数据存在 `server/data/trends.json`，所有玩家共用。
 
 ### 2. WhatsApp / Telegram AI agent
+
+Telegram 私聊支持 `/expert`。游戏通过带 `INTEGRATION_TOKEN` 的 `POST /api/integrations/expert`，从存档中的 target 选择专家并自我介绍，随后使用同一份 `GamePlat/expert/` 资料卡回答问题。网页换 target 时重置专家历史。`/exit`、`/reset`、`/start` 返回普通模式。此接口不会创建学习日志或积分；Telegram 绑定和独立会话记录由 chatbot 管理，参见 [chatbot 说明](../../chatbot/README.md)。
 
 **每条消息**：`POST /api/integrations/chat`
 

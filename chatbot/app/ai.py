@@ -7,7 +7,8 @@ automatically once enabled for the app, so no personal API key is needed:
   OpenAI (GPT):        AI_INTEGRATIONS_OPENAI_API_KEY,    AI_INTEGRATIONS_OPENAI_BASE_URL
 
 Your own keys (ANTHROPIC_API_KEY / OPENAI_API_KEY) also work and take priority.
-Pick the provider with AI_PROVIDER and the model with AI_MODEL; otherwise the
+Direct DeepSeek: AI_PROVIDER=deepseek, DEEPSEEK_API_KEY, DEEPSEEK_MODEL.
+Pick other providers with AI_PROVIDER and their model with AI_MODEL; otherwise the
 first configured provider is used.
 """
 import os
@@ -40,7 +41,7 @@ def strip_markdown(text: str) -> str:
     text = text.replace("**", "").replace("__", "")
     return _HEADING_PREFIX.sub("", text)
 
-DEFAULT_MODELS = {"anthropic": "claude-haiku-4-5", "openai": "gpt-5-mini"}
+DEFAULT_MODELS = {"deepseek": "deepseek-flash", "anthropic": "claude-haiku-4-5", "openai": "gpt-5-mini"}
 AWS_PROVIDERS = {"bedrock", "deepseek_direct"}
 
 
@@ -63,7 +64,7 @@ def _openai_creds() -> Optional[tuple[str, Optional[str]]]:
 def provider() -> Optional[str]:
     """Which provider will answer: AI_PROVIDER if set, else the first one with credentials."""
     chosen = os.getenv("AI_PROVIDER", "").strip().lower()
-    if chosen in AWS_PROVIDERS | {"anthropic", "openai"}:
+    if chosen in AWS_PROVIDERS | {"deepseek", "anthropic", "openai"}:
         return chosen
     if chosen:
         return chosen
@@ -84,6 +85,8 @@ def model_name() -> Optional[str]:
     p = provider()
     if p in AWS_PROVIDERS:
         return "configured-in-aws"
+    if p == "deepseek":
+        return os.getenv("DEEPSEEK_MODEL") or DEFAULT_MODELS[p]
     return os.getenv("AI_MODEL") or (DEFAULT_MODELS[p] if p else None)
 
 
@@ -114,6 +117,23 @@ def complete(prompt: str) -> str:
 def _complete(messages: list[dict], system: Optional[str]) -> str:
     p = provider()
     model = model_name()
+
+    if p == "deepseek":
+        key = os.getenv("DEEPSEEK_API_KEY", "").strip()
+        if not key:
+            raise RuntimeError("DeepSeek selected but DEEPSEEK_API_KEY is not configured")
+        from anthropic import Anthropic
+        with Anthropic(api_key=key, auth_token=None, base_url="https://api.deepseek.com/anthropic", timeout=120.0, max_retries=0) as client:
+            kwargs = {"model": model, "max_tokens": 2000, "messages": messages, "thinking": {"type": "disabled"}}
+            if system:
+                kwargs["system"] = system
+            resp = client.messages.create(**kwargs)
+        if resp.stop_reason == "max_tokens":
+            raise RuntimeError("DeepSeek response was truncated")
+        text = "".join(b.text for b in resp.content if getattr(b, "type", "") == "text").strip()
+        if not text:
+            raise RuntimeError("DeepSeek returned an empty response")
+        return text
 
     if p in AWS_PROVIDERS:
         from . import aws_backend

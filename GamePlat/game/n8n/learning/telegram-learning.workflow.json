@@ -13,7 +13,7 @@
       "parameters": {
         "width": 1480,
         "height": 260,
-        "content": "## Telegram → existing CareerSphere chatbot\nInspired by template #9254. This game has ONE local player. Set `ownerTelegramId` in Normalize private update and the SAME single ID in chatbot `TELEGRAM_ALLOWED_USER_IDS`.\n\n1. Select a Telegram credential in Telegram updates. 2. Set chatbotBaseUrl. 3. Select Header Auth in Forward to existing chatbot: `X-Telegram-Bot-Api-Secret-Token` = chatbot `TELEGRAM_WEBHOOK_SECRET`.\n\nChatbot handles classification, confirmation buttons, POST /api/integrations/chat, persistence and replies. n8n does not send a second reply. Attachments receive the existing text-only response. Only one Telegram webhook per bot: activating this workflow replaces the direct Python webhook. Keep chatbot TELEGRAM_BOT_TOKEN set for replies. Public HTTPS WEBHOOK_URL required for n8n."
+        "content": "## Telegram → existing CareerSphere chatbot\nInspired by template #9254. This game has ONE local player. Set `ownerTelegramId` in Normalize private update and the SAME single ID in chatbot `TELEGRAM_ALLOWED_USER_IDS`.\n\n1. Select a Telegram credential in Telegram updates. 2. Set chatbotBaseUrl. 3. Select Header Auth in Forward to existing chatbot: `X-Telegram-Bot-Api-Secret-Token` = chatbot `TELEGRAM_WEBHOOK_SECRET`.\n\nSet AI_PROVIDER=deepseek, DEEPSEEK_API_KEY and DEEPSEEK_MODEL=deepseek-flash in BOTH chatbot and game server Secrets (same key); restart both services. The key never belongs in workflow JSON.\n\nChatbot handles classification, confirmation buttons, POST /api/integrations/chat, persistence and replies. n8n does not send a second reply. Attachments receive the existing text-only response. Only one Telegram webhook per bot: activating this workflow replaces the direct Python webhook. Keep chatbot TELEGRAM_BOT_TOKEN set for replies. Public HTTPS WEBHOOK_URL required for n8n."
       }
     },
     {
@@ -164,7 +164,7 @@
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json.update) }}",
         "options": {
-          "timeout": 180000
+          "timeout": 300000
         }
       },
       "retryOnFail": true,

@@ -13,7 +13,8 @@ from . import db
 
 log = logging.getLogger("chatbot")
 
-TIMEOUT = 15.0
+# A learning report may wait for the game's model call (120 seconds).
+TIMEOUT = 135.0
 
 
 class CareerAPIError(Exception):
@@ -70,3 +71,13 @@ def digest(date: str, summary: str, skills: list[dict]) -> dict:
 def digest_summary(date: str, summary: str) -> dict:
     """Logs already award progress; n8n's daily summary never awards mastery."""
     return _post("/api/integrations/digest", {"date": date, "summary": summary, "skills": [], "summaryOnly": True})
+
+
+def expert(text: str, from_: str, action: str, session: Optional[dict] = None) -> dict:
+    """The game derives the expert from its saved web target on every request."""
+    session = session or {}
+    return _post("/api/integrations/expert", {
+        "channel": "telegram", "from": from_, "messageId": db.CURRENT_EVENT.get(),
+        "action": action, "text": text, "careerId": session.get("careerId"),
+        "history": session.get("history", []),
+    })

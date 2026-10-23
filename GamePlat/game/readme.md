@@ -4,12 +4,16 @@
 
 ## CareerSphere persistence and AI
 
-The game can keep using its existing local JSON store during development. To route
-game saves, market/trend documents, and AI through the authenticated private Aurora
-backend, configure the server-only `AWS_BACKEND_URL` and `AWS_BACKEND_TOKEN`
-secrets. Deployment, migration, rollback, and cost guidance is in
-[the AWS backend guide](../../aws/README.md). Do not set either value as a `VITE_`
-variable.
+Use `AI_PROVIDER=deepseek`, `DEEPSEEK_API_KEY` and `DEEPSEEK_MODEL=deepseek-flash`
+in the server-only `.env` or deployment Secrets. All game AI features use that key,
+including structured extraction, roadmaps, learning reports, mentors and experts.
+See [CAREER.md](CAREER.md) for upload support and setup.
+
+The game can keep using its local JSON store. Optional server-only
+`AWS_BACKEND_URL` and `AWS_BACKEND_TOKEN` route persistence through the AWS backend;
+with `AI_PROVIDER=deepseek`, AI requests still go directly to DeepSeek. The
+`deepseek_direct` provider is the separate AWS Lambda route. See the
+[AWS backend guide](../../aws/README.md). Never prefix credentials with `VITE_`.
 
 ## Setup
 

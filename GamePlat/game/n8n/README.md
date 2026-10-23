@@ -10,6 +10,20 @@
 
 三个流程均使用 `Asia/Kuala_Lumpur`，导入文件均默认未激活。借鉴 [模板 #10918](https://n8n.io/workflows/10918-fetch-daily-job-postings-from-jsearch-to-google-sheets-and-telegram/) 的历史去重、通知和 [模板 #9254](https://n8n.io/workflows/9254-automate-telegram-message-processing-separate-text-and-files/) 的消息分流；按项目接口重新生成，不是原模板的原样副本。
 
+## DeepSeek AI 配置
+
+游戏和 chatbot 的服务端各设置以下变量，使用同一个 key：
+
+```dotenv
+AI_PROVIDER=deepseek
+DEEPSEEK_API_KEY=
+DEEPSEEK_MODEL=deepseek-flash
+```
+
+把真实 key 填入各自未提交的 `.env` 或部署 Secrets，然后重启两套服务。`python run.py` 会读取 chatbot 的 `.env`。n8n 不保存 DeepSeek key：Telegram 流程把消息交给 chatbot，消息分类和闲聊调用 DeepSeek；学习汇报通过游戏后端调用同一模型。标准 AI digest 也调用该适配器。
+
+当前招聘流程用规则提取技能、计算统计；n8n 的 `summary_only=true` 每日总结摘录原文，这两步无需模型调用。JSON 由源码生成；更新后重新导入，现有 n8n 实例不会自动更新。保留原有 Telegram、Header Auth 凭证及 owner 设置。
+
 ## 在 n8n 里打开
 
 Windows / PowerShell 运行：
@@ -42,6 +56,8 @@ C:\maven\GameEmployee (XmumHack)\GamePlat\game\n8n\
 **招聘流程**：打开 `Build queries`，改顶部 `SETTINGS.apiBaseUrl` 为游戏后端地址。默认 `http://localhost:8787` 对应 `npm.cmd run server`；用 Vite 开发服务则填 `http://localhost:5173`。`notificationChatId` 留空不发送通知；填写后给两个通知节点选择 Telegram credential。
 
 **Telegram 流程**：打开 `Normalize private update`，改 `chatbotBaseUrl` 和 `ownerTelegramId`。
+
+更新后的 chatbot 支持 `/expert`：按网页当前 target 介绍对应的蒸馏专家，后续文字进入专家问答，`/exit` 返回普通聊天。现有流程会原样转发命令，无需为这个命令重新导入或增加节点。`TELEGRAM_ALLOWED_USER_IDS` 必须只绑定同一个玩家；游戏与 chatbot 都要更新并重启。
 
 **每日总结**：打开 `Yesterday and owner`，填写相同的 chatbot 地址和 owner ID。
 

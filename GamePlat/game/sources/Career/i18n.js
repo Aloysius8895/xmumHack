@@ -418,7 +418,7 @@ const STRINGS = {
     'error.ai-busy': { zh: 'AI 现在比较忙，请稍后再试。', en: 'The AI is busy, try again shortly.', ms: 'AI sibuk, cuba lagi sebentar.' },
     'error.ai-offline': { zh: '连不上 AI 服务，请检查网络。', en: 'Cannot reach the AI service, check the network.', ms: 'Tidak dapat menghubungi AI, semak rangkaian.' },
     'error.ai-refused': { zh: 'AI 拒绝处理这段内容，请换个说法。', en: 'The AI declined this content, try rephrasing.', ms: 'AI menolak kandungan ini, cuba ubah ayat.' },
-    'error.ai-no-pdf': { zh: '当前使用的 AI（DeepSeek）读不了 PDF，请上传截图或直接贴文字。', en: 'The AI in use (DeepSeek) cannot read PDF files. Upload a screenshot or paste the text instead.', ms: 'AI yang digunakan (DeepSeek) tidak boleh membaca PDF. Muat naik tangkapan skrin atau tampal teks.' },
+    'error.ai-no-pdf': { zh: '无法提取 PDF 文字。请使用未加密的文字版 PDF（最多 40 页、6 万字），或上传截图、直接贴文字。', en: 'Could not extract PDF text. Use an unencrypted text PDF (up to 40 pages and 60,000 characters), upload screenshots, or paste text.', ms: 'Teks PDF tidak dapat diekstrak. Gunakan PDF teks tanpa penyulitan (sehingga 40 halaman dan 60,000 aksara), muat naik tangkapan skrin atau tampal teks.' },
     'error.file-type': { zh: '只支持 PDF、图片（PNG/JPG/WebP）和纯文本文件。', en: 'Only PDF, images (PNG/JPG/WebP) and text files are supported.', ms: 'Hanya PDF, imej (PNG/JPG/WebP) dan fail teks disokong.' },
     'error.file-too-large': { zh: '文件太大（上限 10 MB）。', en: 'The file is too large (10 MB max).', ms: 'Fail terlalu besar (maks 10 MB).' },
     'error.empty': { zh: '请先输入内容。', en: 'Please write something first.', ms: 'Sila tulis sesuatu dahulu.' },

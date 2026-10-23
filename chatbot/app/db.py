@@ -60,6 +60,11 @@ CREATE TABLE IF NOT EXISTS pending_confirmations (
     lang        TEXT NOT NULL,
     created_at  TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS expert_sessions (
+    user_id TEXT PRIMARY KEY,
+    state TEXT NOT NULL
+);
 """
 
 
@@ -220,3 +225,28 @@ def pop_pending(wa_id: str) -> Optional[dict]:
             return None
         conn.execute("DELETE FROM pending_confirmations WHERE wa_id = ?", (wa_id,))
         return {"text": row["text"], "lang": row["lang"]}
+
+
+def get_expert_session(uid: str) -> Optional[dict]:
+    if aws_backend.enabled():
+        return aws_backend.data_call("GET", "/v1/chat/expert-session", params={"userId": uid}).get("session")
+    with connect() as conn:
+        row = conn.execute("SELECT state FROM expert_sessions WHERE user_id = ?", (uid,)).fetchone()
+    return json.loads(row["state"]) if row else None
+
+
+def set_expert_session(uid: str, state: dict) -> None:
+    state = {"careerId": state["careerId"], "lang": state.get("lang", "en"), "history": state.get("history", [])[-6:]}
+    if aws_backend.enabled():
+        aws_backend.data_call("PUT", "/v1/chat/expert-session", body={"userId": uid, "session": state})
+        return
+    with connect() as conn:
+        conn.execute("INSERT INTO expert_sessions (user_id, state) VALUES (?, ?) ON CONFLICT(user_id) DO UPDATE SET state = excluded.state", (uid, json.dumps(state)))
+
+
+def clear_expert_session(uid: str) -> None:
+    if aws_backend.enabled():
+        aws_backend.data_call("DELETE", "/v1/chat/expert-session", params={"userId": uid})
+        return
+    with connect() as conn:
+        conn.execute("DELETE FROM expert_sessions WHERE user_id = ?", (uid,))
