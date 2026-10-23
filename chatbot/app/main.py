@@ -87,11 +87,33 @@ async def telegram_webhook(
 
 
 @app.post("/internal/digest/run")
-def run_digest(x_cron_token: Optional[str] = Header(default=None), date: Optional[str] = None) -> dict:
+def run_digest(x_cron_token: Optional[str] = Header(default=None), date: Optional[str] = None,
+               summary_only: bool = False, telegram_user_id: Optional[str] = None) -> dict:
     st = get_settings()
     if not st.cron_token:
         raise HTTPException(status_code=503, detail="CRON_TOKEN not configured")
     if x_cron_token != st.cron_token:
         raise HTTPException(status_code=401, detail="bad cron token")
-    result = digest.run(date)
+    try:
+        result = digest.run(date, summary_only=summary_only, telegram_user_id=telegram_user_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     return {"ran": result is not None, "result": result}
+
+
+@app.post("/internal/n8n/telegram")
+def n8n_telegram(update: dict, x_telegram_bot_api_secret_token: Optional[str] = Header(default=None)) -> dict:
+    """Synchronous bridge: n8n sees processing failures; the chatbot sends all replies."""
+    st = get_settings()
+    if not st.telegram_webhook_secret or x_telegram_bot_api_secret_token != st.telegram_webhook_secret:
+        raise HTTPException(status_code=401, detail="bad secret token")
+    if len(st.allowed_tg_ids) != 1:
+        raise HTTPException(status_code=503, detail="configure exactly one demo owner in TELEGRAM_ALLOWED_USER_IDS")
+    message = update.get("message") or (update.get("callback_query") or {}).get("message") or {}
+    sender = (update.get("message") or update.get("callback_query") or {}).get("from") or {}
+    if str(sender.get("id")) not in st.allowed_tg_ids or (message.get("chat") or {}).get("type") != "private":
+        return {"status": "ignored"}
+    if not isinstance(update.get("update_id"), int):
+        raise HTTPException(status_code=400, detail="missing update_id")
+    telegram_channel.handle_update(update)
+    return {"status": "handled", "replyHandledBy": "chatbot"}

@@ -9,6 +9,7 @@ from typing import Optional
 import httpx
 
 from .config import get_settings
+from . import db
 
 log = logging.getLogger("chatbot")
 
@@ -55,9 +56,17 @@ def _post(path: str, payload: dict) -> dict:
 
 def chat(text: str, lang: str, from_: str, channel: str = "whatsapp") -> dict:
     """POST /api/integrations/chat. Returns {"log": {...} | None, "reply": str}."""
-    return _post("/api/integrations/chat", {"channel": channel, "text": text, "lang": lang, "from": from_})
+    payload = {"channel": channel, "text": text, "lang": lang, "from": from_}
+    if db.CURRENT_EVENT.get():
+        payload["messageId"] = db.CURRENT_EVENT.get()
+    return _post("/api/integrations/chat", payload)
 
 
 def digest(date: str, summary: str, skills: list[dict]) -> dict:
     """POST /api/integrations/digest. Each skill: {"skillId", "delta"} (mastery not used here)."""
     return _post("/api/integrations/digest", {"date": date, "summary": summary, "skills": skills})
+
+
+def digest_summary(date: str, summary: str) -> dict:
+    """Logs already award progress; n8n's daily summary never awards mastery."""
+    return _post("/api/integrations/digest", {"date": date, "summary": summary, "skills": [], "summaryOnly": True})

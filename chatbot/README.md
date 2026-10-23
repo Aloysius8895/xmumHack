@@ -1,5 +1,7 @@
 # CareerSphere · chat bot (Replit AI)
 
+> **n8n 接入已补齐**：见 [项目工作流说明](../GamePlat/game/n8n/README.md)。Telegram 可由 n8n 转发到同步接口 `POST /internal/n8n/telegram`（沿用 webhook secret）；消息分类、确认和回复继续由本服务处理。n8n 每天 00:05 调用 `/internal/digest/run?summary_only=true&telegram_user_id=<演示玩家 ID>&date=<昨天>`，只摘录真实汇报，不再增加 mastery。该模式要求 `TELEGRAM_ALLOWED_USER_IDS` 只填一个演示玩家，并关闭本服务的 `DIGEST_SCHEDULE_ENABLED`；下文的 23:30 AI digest 是原有独立运行模式。
+
 Users chat with the CareerSphere companion over **WhatsApp** or **Telegram**. Messages
 arrive at this service, get classified (a learning report? small talk? unclear?), and
 are routed either to the **CareerSphere game app's integration API** (progress logging)

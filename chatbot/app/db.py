@@ -3,6 +3,7 @@ and pending report confirmations."""
 import json
 import sqlite3
 import threading
+from contextvars import ContextVar
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
@@ -13,6 +14,7 @@ from .config import get_settings
 
 _lock = threading.Lock()
 MYT = ZoneInfo("Asia/Kuala_Lumpur")
+CURRENT_EVENT = ContextVar("chatbot_delivery_event", default=None)
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS messages (
@@ -45,6 +47,10 @@ CREATE TABLE IF NOT EXISTS reports (
     created_at  TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_reports_date ON reports(wa_date);
+
+CREATE TABLE IF NOT EXISTS report_events (
+    event_id TEXT PRIMARY KEY
+);
 
 -- "Is this a learning report?" waiting on the user's button tap. One per number.
 CREATE TABLE IF NOT EXISTS pending_confirmations (
@@ -90,6 +96,12 @@ def mark_seen(wa_message_id: str) -> bool:
         return cur.rowcount == 1
 
 
+def forget_seen(message_id: str) -> None:
+    """Release a failed delivery so an n8n retry can attempt processing again."""
+    with connect() as conn:
+        conn.execute("DELETE FROM seen_messages WHERE wa_message_id = ?", (message_id,))
+
+
 def add_message(wa_id: str, role: str, content: str) -> None:
     with connect() as conn:
         conn.execute("INSERT INTO messages (wa_id, role, content, created_at) VALUES (?, ?, ?, ?)",
@@ -113,6 +125,9 @@ def clear_history(wa_id: str) -> None:
 def save_report(wa_id: str, text: str, summary: Optional[str], skill_ids: list[str],
                  advanced: list[dict], points: Optional[int]) -> None:
     with connect() as conn:
+        event_id = CURRENT_EVENT.get()
+        if event_id and conn.execute("INSERT OR IGNORE INTO report_events VALUES (?)", (event_id,)).rowcount == 0:
+            return
         conn.execute(
             "INSERT INTO reports (wa_date, wa_id, text, summary, skill_ids, advanced, points, created_at) "
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
