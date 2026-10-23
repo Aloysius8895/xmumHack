@@ -5,6 +5,7 @@ import sqlite3
 import sys
 import tempfile
 import unittest
+from contextlib import closing
 from pathlib import Path
 from unittest.mock import patch
 
@@ -25,7 +26,9 @@ class LegacyExportTests(unittest.TestCase):
         (save_dir / "market.json").write_text('{"history":[]}', encoding="utf-8")
         (save_dir / "trends.json").write_text('{"months":[]}', encoding="utf-8")
         chat_db = root / "chat.db"
-        with sqlite3.connect(chat_db) as connection:
+        # closing(): sqlite3's own context manager commits but leaves the file open,
+        # which Windows then refuses to delete with the temporary directory.
+        with closing(sqlite3.connect(chat_db)) as connection, connection:
             connection.executescript("""
                 CREATE TABLE messages (id INTEGER PRIMARY KEY, wa_id TEXT, role TEXT, content TEXT, created_at TEXT);
                 CREATE TABLE seen_messages (wa_message_id TEXT PRIMARY KEY, seen_at TEXT);
@@ -35,6 +38,7 @@ class LegacyExportTests(unittest.TestCase):
                 );
                 CREATE TABLE report_events (event_id TEXT PRIMARY KEY);
                 CREATE TABLE pending_confirmations (wa_id TEXT PRIMARY KEY, text TEXT, lang TEXT, created_at TEXT);
+                CREATE TABLE expert_sessions (user_id TEXT PRIMARY KEY, state TEXT NOT NULL);
                 INSERT INTO messages VALUES (1, 'tg:1', 'user', 'Studied SQL', '2026-10-20T10:00:00+08:00');
                 INSERT INTO seen_messages VALUES ('wamid.1', '2026-10-20T10:01:00+08:00');
                 INSERT INTO reports VALUES
@@ -43,6 +47,8 @@ class LegacyExportTests(unittest.TestCase):
                 INSERT INTO report_events VALUES ('event.1');
                 INSERT INTO pending_confirmations VALUES
                     ('tg:1', 'confirm', 'en', '2026-10-20T10:03:00+08:00');
+                INSERT INTO expert_sessions VALUES
+                    ('tg:1', '{"careerId":"data-analyst","lang":"en","history":[]}');
             """)
         return save_dir, chat_db
 
@@ -63,10 +69,14 @@ class LegacyExportTests(unittest.TestCase):
             self.assertEqual(bundle["chatbot"]["messages"][0]["id"], "legacy-message:1")
             self.assertEqual(bundle["chatbot"]["reports"][0]["skillIds"], ["sql"])
             self.assertEqual(bundle["chatbot"]["reportEvents"], [{"eventId": "event.1"}])
+            self.assertEqual(bundle["chatbot"]["expertSessions"], [
+                {"userId": "tg:1", "state": {"careerId": "data-analyst", "lang": "en", "history": []}},
+            ])
             self.assertTrue((backups / "chatbot.sqlite").is_file())
             self.assertTrue((backups / "game-save.json").is_file())
-            self.assertEqual(output.stat().st_mode & 0o777, 0o600)
-            self.assertEqual(backups.stat().st_mode & 0o777, 0o700)
+            if os.name == "posix":  # Windows chmod only toggles read-only
+                self.assertEqual(output.stat().st_mode & 0o777, 0o600)
+                self.assertEqual(backups.stat().st_mode & 0o777, 0o700)
 
     def test_export_refuses_overwrite(self):
         with tempfile.TemporaryDirectory() as tmp:

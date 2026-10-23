@@ -36,6 +36,13 @@ def valid_bundle():
                 "userId": "tg:1", "text": "confirm", "lang": "en",
                 "createdAt": "2026-10-20T10:03:00+08:00",
             }],
+            "expertSessions": [{
+                "userId": "tg:1",
+                "state": {"careerId": "data-analyst", "lang": "en", "history": [
+                    {"role": "user", "content": "How do I start?"},
+                    {"role": "assistant", "content": "Learn SQL first."},
+                ]},
+            }],
         },
     }
 
@@ -45,8 +52,35 @@ class MigrationValidationTests(unittest.TestCase):
         counts = backend._validate_bundle(valid_bundle())
         self.assertEqual(counts, {
             "saves": 1, "documents": 2, "messages": 1, "seenMessages": 1,
-            "reports": 1, "reportEvents": 1, "pendingConfirmations": 1, "digests": 0,
+            "reports": 1, "reportEvents": 1, "pendingConfirmations": 1,
+            "expertSessions": 1, "digests": 0,
         })
+
+    def test_bundles_from_older_exports_have_no_expert_sessions(self):
+        bundle = valid_bundle()
+        del bundle["chatbot"]["expertSessions"]
+        self.assertEqual(backend._validate_bundle(bundle)["expertSessions"], 0)
+
+    def test_rejects_expert_sessions_the_live_api_could_not_read(self):
+        bundle = valid_bundle()
+        bundle["chatbot"]["expertSessions"][0]["userId"] = "wa:60123"
+        with self.assertRaisesRegex(ValueError, "tg:<number>"):
+            backend._validate_bundle(bundle)
+
+        bundle = valid_bundle()
+        bundle["chatbot"]["expertSessions"][0]["state"]["history"].pop()
+        with self.assertRaisesRegex(ValueError, "bad-expert-history"):
+            backend._validate_bundle(bundle)
+
+    def test_import_writes_expert_sessions(self):
+        bundle = valid_bundle()
+        backend._validate_bundle(bundle)
+        with patch.object(backend, "_execute") as execute:
+            backend._insert_bundle(bundle, "a" * 64, "tx-1")
+        inserts = [call for call in execute.call_args_list if "INSERT INTO expert_sessions" in call.args[0]]
+        self.assertEqual(len(inserts), 1)
+        self.assertEqual(inserts[0].args[1]["user_id"], "tg:1")
+        self.assertEqual(inserts[0].args[1]["state"]["careerId"], "data-analyst")
 
     def test_rejects_duplicate_ids_and_invalid_dates(self):
         bundle = valid_bundle()
@@ -98,6 +132,48 @@ class ApiSecurityTests(unittest.TestCase):
             }, None)
         self.assertEqual(response["statusCode"], 404)
         self.assertEqual(response["body"], '{"error":"not-found"}')
+
+    def test_malformed_report_date_is_a_client_error_not_a_database_error(self):
+        with patch.dict(os.environ, {"AWS_BACKEND_TOKEN_SECRET_ARN": "secret"}, clear=False), \
+             patch.object(backend, "_secret", return_value="expected-token"), \
+             patch.object(backend, "_execute") as execute, \
+             patch.object(backend, "_rows") as rows:
+            posted = backend.handler({
+                "requestContext": {"http": {"method": "POST"}},
+                "rawPath": "/v1/chat/reports",
+                "headers": {"authorization": "Bearer expected-token"},
+                "body": json.dumps({"userId": "tg:1", "date": "21/10/2026", "text": "SQL"}),
+            }, None)
+            listed = backend.handler({
+                "requestContext": {"http": {"method": "GET"}},
+                "rawPath": "/v1/chat/reports",
+                "queryStringParameters": {"date": "2026-02-30"},
+                "headers": {"authorization": "Bearer expected-token"},
+            }, None)
+        self.assertEqual((posted["statusCode"], posted["body"]), (400, '{"error":"bad-date"}'))
+        self.assertEqual((listed["statusCode"], listed["body"]), (400, '{"error":"bad-date"}'))
+        execute.assert_not_called()
+        rows.assert_not_called()
+
+
+class CleanupTests(unittest.TestCase):
+    def test_cleanup_fails_stuck_jobs_and_expires_only_operational_rows(self):
+        results = iter([[{"id": "job-1"}], [{"id": "a"}, {"id": "b"}], [], [{"message_id": "m"}]])
+        with patch.dict(os.environ, {"AI_JOB_RETENTION_DAYS": "3", "MARKER_RETENTION_DAYS": "bad"}, clear=False), \
+             patch.object(backend, "_rows", side_effect=lambda *args, **kwargs: next(results)) as rows:
+            summary = backend.cleanup_handler({}, None)
+        self.assertEqual(summary, {
+            "staleAiJobsFailed": 1, "aiJobsDeleted": 2,
+            "idempotencyKeysDeleted": 0, "seenMessagesDeleted": 1,
+        })
+        statements = [(call.args[0], call.args[1] if len(call.args) > 1 else None) for call in rows.call_args_list]
+        self.assertIn("status IN ('queued', 'running')", statements[0][0])
+        self.assertEqual(statements[1][1], {"days": 3})
+        self.assertIn("NOT LIKE 'legacy:%'", statements[2][0])
+        self.assertEqual(statements[2][1], {"days": 30}, "unparseable retention falls back to the default")
+        touched = " ".join(sql for sql, _ in statements)
+        for kept in ("game_saves", "chat_messages", "learning_reports", "daily_digests", "expert_sessions"):
+            self.assertNotIn(kept, touched)
 
 
 class ProvisioningTests(unittest.TestCase):

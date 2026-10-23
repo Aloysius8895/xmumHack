@@ -147,10 +147,12 @@ function cloudCommit(path, body, result, save)
                 idempotencyKey: `digest:${date}`,
                 fingerprint: createHash('sha256').update(date).digest('hex'),
                 result,
+                // The changes applyDigest kept (known skills, clamped 0-100), not the raw
+                // agent input: AWS rejects unknown ids and large deltas that local mode skips or clamps
                 digest: {
                     date,
                     summary: String(body.summary ?? ''),
-                    skills: body.summaryOnly === true ? [] : (Array.isArray(body.skills) ? body.skills : []),
+                    skills: (result.digest?.skills ?? []).map((item) => ({ skillId: item.skillId, mastery: item.to })),
                     summaryOnly: body.summaryOnly === true,
                 },
             },

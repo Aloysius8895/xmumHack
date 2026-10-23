@@ -53,7 +53,7 @@ def rows(connection: sqlite3.Connection, sql: str) -> list[sqlite3.Row]:
 def read_chatbot(path: Path) -> dict:
     empty = {
         "messages": [], "seenMessages": [], "reports": [],
-        "reportEvents": [], "pendingConfirmations": [],
+        "reportEvents": [], "pendingConfirmations": [], "expertSessions": [],
     }
     if not path.exists():
         return empty
@@ -109,6 +109,11 @@ def read_chatbot(path: Path) -> dict:
                 }
                 for row in rows(connection, "SELECT wa_id, text, lang, created_at FROM pending_confirmations ORDER BY wa_id")
             ]
+        if table_exists(connection, "expert_sessions"):
+            data["expertSessions"] = [
+                {"userId": row["user_id"], "state": json.loads(row["state"])}
+                for row in rows(connection, "SELECT user_id, state FROM expert_sessions ORDER BY user_id")
+            ]
         return data
     finally:
         connection.close()
@@ -156,6 +161,7 @@ def main() -> int:
         "reports": len(chatbot["reports"]),
         "reportEvents": len(chatbot["reportEvents"]),
         "pendingConfirmations": len(chatbot["pendingConfirmations"]),
+        "expertSessions": len(chatbot["expertSessions"]),
         "digests": len(save.get("digests", [])),
     }
     rendered = json.dumps(bundle, ensure_ascii=False, separators=(",", ":")).encode("utf-8")

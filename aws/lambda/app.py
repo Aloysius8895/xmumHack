@@ -185,6 +185,15 @@ def _required_text(value: Any, name: str, limit: int = 1000) -> str:
     return value
 
 
+def _required_date(value: Any, name: str) -> str:
+    text = _required_text(value, name, 10)
+    try:
+        _valid_date(text)
+    except ValueError as exc:
+        raise ApiError(400, f"bad-{name}") from exc
+    return text
+
+
 def _request_path(event: dict) -> str:
     return event.get("rawPath") or event.get("path") or "/"
 
@@ -425,8 +434,43 @@ def _put_document(body: dict) -> dict:
         raise
 
 
+def _expert_session_state(value: Any) -> dict:
+    if not isinstance(value, dict):
+        raise ApiError(400, "bad-expert-session")
+    career_id = _required_text(value.get("careerId"), "expert-career", 100)
+    history = value.get("history", [])
+    lang = value.get("lang", "en")
+    if not re.fullmatch(r"[a-z0-9-]+", career_id) or lang not in ("zh", "en", "ms"):
+        raise ApiError(400, "bad-expert-session")
+    if not isinstance(history, list) or len(history) > 6 or len(history) % 2:
+        raise ApiError(400, "bad-expert-history")
+    clean = []
+    for index, turn in enumerate(history):
+        if not isinstance(turn, dict) or turn.get("role") != ("user" if index % 2 == 0 else "assistant"):
+            raise ApiError(400, "bad-expert-history")
+        clean.append({"role": turn["role"], "content": _required_text(turn.get("content"), "expert-content", 1200)})
+    return {"careerId": career_id, "lang": lang, "history": clean}
+
+
 def _chat_operation(method: str, path: str, event: dict, body: dict) -> dict:
     query = _query(event)
+    if path == "/v1/chat/expert-session" and method in ("GET", "PUT", "DELETE"):
+        user_id = _required_text((body if method == "PUT" else query).get("userId"), "user-id", 200)
+        if not re.fullmatch(r"tg:[0-9]{1,30}", user_id):
+            raise ApiError(400, "bad-expert-user")
+        if method == "GET":
+            rows = _rows("SELECT state FROM expert_sessions WHERE user_id = :user_id", {"user_id": user_id})
+            return {"session": rows[0]["state"] if rows else None}
+        if method == "DELETE":
+            _execute("DELETE FROM expert_sessions WHERE user_id = :user_id", {"user_id": user_id})
+            return {"cleared": True}
+        state = _expert_session_state(body.get("session"))
+        _execute(
+            "INSERT INTO expert_sessions (user_id, state) VALUES (:user_id, CAST(:state AS jsonb)) "
+            "ON CONFLICT (user_id) DO UPDATE SET state = EXCLUDED.state, updated_at = now()",
+            {"user_id": user_id, "state": state},
+        )
+        return {"saved": True}
     if method == "POST" and path == "/v1/chat/seen":
         message_id = _required_text(body.get("messageId"), "message-id", 300)
         rows = _rows(
@@ -480,7 +524,7 @@ def _chat_operation(method: str, path: str, event: dict, body: dict) -> dict:
             "ON CONFLICT (event_id) DO NOTHING",
             {
                 "id": str(uuid.uuid4()), "event_id": event_id,
-                "user_id": user_id, "report_date": _required_text(body.get("date"), "date", 10),
+                "user_id": user_id, "report_date": _required_date(body.get("date"), "date"),
                 "text": _required_text(body.get("text"), "text", 2000),
                 "summary": body.get("summary"),
                 "skill_ids": body.get("skillIds") or [], "advanced": body.get("advanced") or [],
@@ -489,7 +533,7 @@ def _chat_operation(method: str, path: str, event: dict, body: dict) -> dict:
         )
         return {"saved": True}
     if method == "GET" and path == "/v1/chat/reports":
-        report_date = _required_text(query.get("date"), "date", 10)
+        report_date = _required_date(query.get("date"), "date")
         rows = _rows(
             "SELECT user_id AS wa_id, text, summary, skill_ids, advanced, points "
             "FROM learning_reports WHERE report_date = CAST(:report_date AS date) ORDER BY created_at, id",
@@ -797,6 +841,52 @@ def _deepseek_complete(request: dict) -> dict:
     return {"text": text}
 
 
+def _retention_days(name: str, default: int) -> int:
+    try:
+        days = int(os.getenv(name, str(default)))
+    except ValueError:
+        return default
+    return max(1, days)
+
+
+def cleanup_handler(_event: dict, _context: Any) -> dict:
+    """Scheduled housekeeping: fail stuck AI jobs and drop expired operational rows.
+
+    AI job requests hold users' chat text, so finished jobs are not kept forever.
+    Game saves, chat history, reports and digests are never touched here.
+    """
+    ai_days = _retention_days("AI_JOB_RETENTION_DAYS", 7)
+    marker_days = _retention_days("MARKER_RETENTION_DAYS", 30)
+    stale = _rows(
+        "UPDATE ai_jobs SET status = 'failed', error_code = 'ai-timeout', updated_at = now() "
+        "WHERE status IN ('queued', 'running') AND updated_at < now() - interval '15 minutes' "
+        "RETURNING id",
+    )
+    expired_jobs = _rows(
+        "DELETE FROM ai_jobs WHERE status IN ('succeeded', 'failed') "
+        "AND updated_at < now() - make_interval(days => :days) RETURNING id",
+        {"days": ai_days},
+    )
+    # Retried webhooks and n8n jobs arrive within hours; legacy import markers are kept.
+    expired_keys = _rows(
+        "DELETE FROM api_idempotency WHERE idempotency_key NOT LIKE 'legacy:%' "
+        "AND created_at < now() - make_interval(days => :days) RETURNING idempotency_key",
+        {"days": marker_days},
+    )
+    expired_seen = _rows(
+        "DELETE FROM seen_messages WHERE seen_at < now() - make_interval(days => :days) RETURNING message_id",
+        {"days": marker_days},
+    )
+    summary = {
+        "staleAiJobsFailed": len(stale),
+        "aiJobsDeleted": len(expired_jobs),
+        "idempotencyKeysDeleted": len(expired_keys),
+        "seenMessagesDeleted": len(expired_seen),
+    }
+    print(json.dumps({"event": "cleanup", **summary}))
+    return summary
+
+
 def schema_handler(event: dict, context: Any) -> dict:
     """CloudFormation custom-resource provider; applies the reviewed schema once."""
     request_type = event.get("RequestType")
@@ -936,7 +1026,7 @@ def _validate_bundle(bundle: dict) -> dict:
     for name in ("market", "trends"):
         if game.get(name) is not None and not isinstance(game[name], dict):
             raise ValueError(f"game.{name} must be an object")
-    list_names = ("messages", "seenMessages", "reports", "reportEvents", "pendingConfirmations")
+    list_names = ("messages", "seenMessages", "reports", "reportEvents", "pendingConfirmations", "expertSessions")
     for name in list_names:
         if not isinstance(bot.get(name, []), list):
             raise ValueError(f"chatbot.{name} must be an array")
@@ -991,6 +1081,16 @@ def _validate_bundle(bundle: dict) -> dict:
         _required_text(row.get("lang"), "pending-lang", 10)
         _valid_timestamp(row.get("createdAt"), "pending-created-at")
 
+    unique_values(bot.get("expertSessions", []), "userId", "expert-session")
+    for row in bot.get("expertSessions", []):
+        # Same rules as the live API, so imported sessions stay readable by it.
+        if not re.fullmatch(r"tg:[0-9]{1,30}", row["userId"]):
+            raise ValueError("expert session userId must be tg:<number>")
+        try:
+            row["state"] = _expert_session_state(row.get("state"))
+        except ApiError as exc:
+            raise ValueError(f"invalid expert session ({exc.code})") from exc
+
     return {
         "saves": 1,
         "documents": sum(isinstance(game.get(name), dict) for name in ("market", "trends")),
@@ -999,6 +1099,7 @@ def _validate_bundle(bundle: dict) -> dict:
         "reports": len(bot.get("reports", [])),
         "reportEvents": len(bot.get("reportEvents", [])),
         "pendingConfirmations": len(bot.get("pendingConfirmations", [])),
+        "expertSessions": len(bot.get("expertSessions", [])),
         "digests": len(game["save"].get("digests", [])),
     }
 
@@ -1023,7 +1124,7 @@ def _valid_timestamp(value: Any, name: str) -> None:
 
 def _target_counts() -> dict:
     tables = ("game_saves", "app_documents", "chat_messages", "seen_messages", "learning_reports",
-              "pending_confirmations", "daily_digests", "api_idempotency", "ai_jobs")
+              "pending_confirmations", "daily_digests", "api_idempotency", "ai_jobs", "expert_sessions")
     return {table: int(_rows(f"SELECT count(*) AS count FROM {table}")[0]["count"]) for table in tables}
 
 
@@ -1043,7 +1144,7 @@ def _import_bundle(bundle: dict, bundle_hash: str, counts: dict) -> dict:
             "(SELECT count(*) FROM chat_messages) + (SELECT count(*) FROM seen_messages) + "
             "(SELECT count(*) FROM learning_reports) + (SELECT count(*) FROM pending_confirmations) + "
             "(SELECT count(*) FROM daily_digests) + (SELECT count(*) FROM api_idempotency) + "
-            "(SELECT count(*) FROM ai_jobs) AS count",
+            "(SELECT count(*) FROM ai_jobs) + (SELECT count(*) FROM expert_sessions) AS count",
             transaction_id=tx,
         )[0]["count"]
         if int(occupied) > 0:
@@ -1087,7 +1188,7 @@ def _import_bundle(bundle: dict, bundle_hash: str, counts: dict) -> dict:
 def _snapshot(tx: str) -> dict:
     snapshot = {}
     for table in ("game_saves", "app_documents", "chat_messages", "seen_messages",
-                  "learning_reports", "pending_confirmations", "daily_digests", "api_idempotency", "ai_jobs"):
+                  "learning_reports", "pending_confirmations", "daily_digests", "api_idempotency", "ai_jobs", "expert_sessions"):
         snapshot[table] = _rows(f"SELECT * FROM {table}", transaction_id=tx)
     return snapshot
 
@@ -1160,6 +1261,11 @@ def _insert_bundle(bundle: dict, bundle_hash: str, tx: str) -> None:
                 "lang": str(row["lang"]), "created_at": str(row["createdAt"]),
             }, tx,
         )
+    for row in bot.get("expertSessions", []):
+        _execute(
+            "INSERT INTO expert_sessions (user_id, state) VALUES (:user_id, CAST(:state AS jsonb))",
+            {"user_id": str(row["userId"]), "state": row["state"]}, tx,
+        )
 
 
 def _rollback_import(event: dict) -> dict:
@@ -1185,6 +1291,7 @@ def _rollback_import(event: dict) -> dict:
         checks = (
             ("game_saves", "updated_at"), ("app_documents", "updated_at"),
             ("chat_messages", "created_at"), ("seen_messages", "seen_at"),
+            ("expert_sessions", "updated_at"),
             ("learning_reports", "created_at"), ("daily_digests", "created_at"),
             ("pending_confirmations", "created_at"), ("api_idempotency", "created_at"),
             ("ai_jobs", "created_at"),
@@ -1199,7 +1306,7 @@ def _rollback_import(event: dict) -> dict:
 
         snapshot = backup[0]["snapshot"]
         tables = ("game_saves", "app_documents", "chat_messages", "seen_messages",
-                  "learning_reports", "pending_confirmations", "daily_digests", "api_idempotency", "ai_jobs")
+                  "learning_reports", "pending_confirmations", "daily_digests", "api_idempotency", "ai_jobs", "expert_sessions")
         for table in tables:
             _execute(f"DELETE FROM {table}", transaction_id=tx)
         _restore_snapshot(snapshot, tx)
@@ -1232,6 +1339,7 @@ def _preview_rollback(event: dict) -> dict:
     checks = (
         ("game_saves", "updated_at"), ("app_documents", "updated_at"),
         ("chat_messages", "created_at"), ("seen_messages", "seen_at"),
+        ("expert_sessions", "updated_at"),
         ("learning_reports", "created_at"), ("daily_digests", "created_at"),
         ("pending_confirmations", "created_at"), ("api_idempotency", "created_at"),
         ("ai_jobs", "created_at"),
@@ -1291,6 +1399,12 @@ def _restore_snapshot(snapshot: dict, tx: str) -> None:
         _execute(
             "INSERT INTO pending_confirmations (user_id, text, lang, created_at) "
             "VALUES (:user_id, :text, :lang, CAST(:created_at AS timestamptz))",
+            row, tx,
+        )
+    for row in snapshot.get("expert_sessions", []):
+        _execute(
+            "INSERT INTO expert_sessions (user_id, state, updated_at) "
+            "VALUES (:user_id, CAST(:state AS jsonb), CAST(:updated_at AS timestamptz))",
             row, tx,
         )
     for row in snapshot.get("daily_digests", []):

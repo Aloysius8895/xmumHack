@@ -53,6 +53,12 @@ CREATE TABLE IF NOT EXISTS pending_confirmations (
     created_at timestamptz NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS expert_sessions (
+    user_id text PRIMARY KEY,
+    state jsonb NOT NULL,
+    updated_at timestamptz NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS daily_digests (
     digest_date date PRIMARY KEY,
     summary text NOT NULL DEFAULT '',
@@ -96,4 +102,7 @@ CREATE TABLE IF NOT EXISTS migration_backups (
 );
 
 INSERT INTO schema_migrations (version) VALUES (1)
+ON CONFLICT (version) DO NOTHING;
+
+INSERT INTO schema_migrations (version) VALUES (2)
 ON CONFLICT (version) DO NOTHING;

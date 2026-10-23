@@ -8,13 +8,16 @@ Parameters:
     Description: Exact Aurora PostgreSQL engine version supported in the deployment Region.
   BedrockRegion:
     Type: String
-    Description: Region where the selected DeepSeek model or inference profile is enabled.
+    Default: ""
+    Description: Optional. Region where the selected model or inference profile is enabled. Leave the three Bedrock parameters empty when the app calls DeepSeek directly (AI_PROVIDER=deepseek).
   BedrockModelId:
     Type: String
-    Description: Exact model or inference profile ID confirmed in this AWS account and Region.
+    Default: ""
+    Description: Optional. Exact model or inference profile ID confirmed in this AWS account and Region.
   BedrockInvokeResourceArns:
     Type: String
-    Description: Comma-separated exact model/profile ARNs for IAM. Include each ARN required by a cross-Region inference profile.
+    Default: ""
+    Description: Optional. Comma-separated exact model/profile ARNs for IAM. Include each ARN required by a cross-Region inference profile.
   CareersphereSkillIds:
     Type: String
     Default: sql,excel,statistics,python,data-cleaning,data-visualization,communication,html-css,javascript,react,git,accessibility,api-integration,backend-language,databases,rest-api,cloud-deploy,testing,user-research,prototyping,figma,visual-design,usability-testing,ml-math,ml-frameworks,mlops,roadmapping,agile,market-analysis,accounting,auditing,internal-control,legal-research,legal-writing,negotiation,lesson-planning,classroom-management,assessment,clinical-knowledge,patient-care,medical-ethics,cooking-technique,food-safety,menu-planning,engineering-math,cad,project-management
@@ -47,8 +50,20 @@ Conditions:
   DirectDeepSeekEnabled: !And
     - !Equals [!Ref EnableDeepSeekDirect, "true"]
     - !Not [!Equals [!Ref DeepSeekSecretArn, ""]]
+  BedrockEnabled: !Not [!Equals [!Ref BedrockModelId, ""]]
 
 Rules:
+  BedrockParametersComeTogether:
+    RuleCondition: !Or
+      - !Not [!Equals [!Ref BedrockRegion, ""]]
+      - !Not [!Equals [!Ref BedrockModelId, ""]]
+      - !Not [!Equals [!Ref BedrockInvokeResourceArns, ""]]
+    Assertions:
+      - Assert: !And
+          - !Not [!Equals [!Ref BedrockRegion, ""]]
+          - !Not [!Equals [!Ref BedrockModelId, ""]]
+          - !Not [!Equals [!Ref BedrockInvokeResourceArns, ""]]
+        AssertDescription: Bedrock needs BedrockRegion, BedrockModelId and BedrockInvokeResourceArns together, or all three empty.
   DirectDeepSeekNeedsSecretAndModel:
     RuleCondition: !Equals [!Ref EnableDeepSeekDirect, "true"]
     Assertions:
@@ -74,6 +89,8 @@ Globals:
         DEEPSEEK_SECRET_ARN: !Ref DeepSeekSecretArn
         DEEPSEEK_MODEL_ID: !Ref DeepSeekModelId
         ALLOW_DEEPSEEK_DIRECT: !If [DirectDeepSeekEnabled, "true", "false"]
+        # Read by the API when a caller names no provider; must be one this stack can serve.
+        DEFAULT_AI_PROVIDER: !If [BedrockEnabled, bedrock, !If [DirectDeepSeekEnabled, deepseek_direct, bedrock]]
         CAREERSPHERE_SKILL_IDS: !Ref CareersphereSkillIds
 
 Resources:
@@ -290,9 +307,12 @@ Resources:
               - Effect: Allow
                 Action: secretsmanager:GetSecretValue
                 Resource: !Ref WorkerDatabaseSecret
-              - Effect: Allow
-                Action: bedrock:InvokeModel
-                Resource: !Split [",", !Ref BedrockInvokeResourceArns]
+              - !If
+                - BedrockEnabled
+                - Effect: Allow
+                  Action: bedrock:InvokeModel
+                  Resource: !Split [",", !Ref BedrockInvokeResourceArns]
+                - !Ref AWS::NoValue
               - !If
                 - DirectDeepSeekEnabled
                 - Effect: Allow
@@ -330,6 +350,30 @@ Resources:
               - Effect: Allow
                 Action: s3:GetObject
                 Resource: !Sub ${LegacyImportBucket.Arn}/*
+
+  CleanupRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: ScheduledRetention
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: rds-data:ExecuteStatement
+                Resource: !GetAtt AuroraCluster.DBClusterArn
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Ref ApplicationDatabaseSecret
 
   SchemaRole:
     Type: AWS::IAM::Role
@@ -401,7 +445,6 @@ Resources:
       MemorySize: 1024
       Environment:
         Variables:
-          DEFAULT_AI_PROVIDER: bedrock
           AURORA_SECRET_ARN: !Ref WorkerDatabaseSecret
 
   MigrationFunction:
@@ -413,6 +456,26 @@ Resources:
       Timeout: 300
       MemorySize: 1024
       ReservedConcurrentExecutions: 1
+
+  CleanupFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: AuroraInstance
+    Properties:
+      Handler: app.cleanup_handler
+      Role: !GetAtt CleanupRole.Arn
+      Timeout: 120
+      MemorySize: 256
+      ReservedConcurrentExecutions: 1
+      Environment:
+        Variables:
+          AI_JOB_RETENTION_DAYS: "7"
+          MARKER_RETENTION_DAYS: "30"
+      Events:
+        Daily:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 19 * * ? *)
+            Description: Daily CareerSphere retention at 03:00 Asia/Kuala_Lumpur.
 
   SchemaFunction:
     Type: AWS::Serverless::Function
@@ -430,10 +493,10 @@ Resources:
 
   ApplyDatabaseSchema:
     Type: Custom::ApplyCareerSphereSchema
-    DependsOn: [AuroraInstance, ApiFunction, AiWorkerFunction, MigrationFunction, SchemaFunction]
+    DependsOn: [AuroraInstance, ApiFunction, AiWorkerFunction, MigrationFunction, CleanupFunction, SchemaFunction]
     Properties:
       ServiceToken: !GetAtt SchemaFunction.Arn
-      SchemaVersion: 1
+      SchemaVersion: 2
       StackName: !Ref AWS::StackName
 
 Outputs:
@@ -458,6 +521,8 @@ Outputs:
   MigrationFunctionName:
     Value: !Ref MigrationFunction
   BedrockRegion:
+    Condition: BedrockEnabled
     Value: !Ref BedrockRegion
   BedrockModelId:
+    Condition: BedrockEnabled
     Value: !Ref BedrockModelId

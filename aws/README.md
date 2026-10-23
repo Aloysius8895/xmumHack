@@ -22,11 +22,20 @@ Chatbot ───────> Replit chatbot ──────┘             
 - The API and importer use a generated application DML login. The AI worker gets a separate database login limited to reading/updating `ai_jobs`. Only the schema custom-resource function reads the Aurora-managed administrator secret and applies DDL; runtime code does not receive the administrator password.
 - Replit calls AWS only from server-side code. `AWS_BACKEND_TOKEN` must never use a `VITE_` prefix or be put in browser code.
 - `AWS_BACKEND_URL` and `AWS_BACKEND_TOKEN` are a pair. Leaving both unset selects local development storage/providers; configuring only one fails closed instead of silently splitting data between local and AWS.
-- Bedrock is the default provider once both AWS backend settings are configured. The user-facing app does not call Bedrock directly. Bedrock model selection, Region, and permission must be verified by the AWS account owner before deployment.
+- Bedrock is optional and **off by default**: leave `BedrockRegion`, `BedrockModelId` and `BedrockInvokeResourceArns` empty and the stack is storage-only, the AI worker gets no Bedrock permission, and the apps keep calling DeepSeek directly with `AI_PROVIDER=deepseek`. Keep `AI_PROVIDER` set explicitly: when it is empty and the AWS settings are present, the apps fall back to `bedrock`, which then fails with `bedrock-not-configured`. To turn Bedrock on later, verify the model, Region and permission, fill all three parameters (a partial set is rejected), redeploy, and set `AI_PROVIDER=bedrock`.
 - `deepseek_direct` is an optional, explicit provider. It is disabled in the stack by default; if enabled, its official API key remains in AWS Secrets Manager and is read only by the AI worker. There is no automatic fallback between providers.
 - `schema.sql` reflects the current game JSON save/market/trends and chatbot SQLite tables. It is not a recovered copy of an earlier PostgreSQL schema.
 
 ## Current coverage and boundaries
+
+Telegram expert mode uses a typed `/v1/chat/expert-session` endpoint and the
+`expert_sessions` table (schema version 2) when AWS storage is selected. Deploy
+the updated Lambda and schema before running the updated chatbot. The existing
+schema custom resource applies the new table and runtime grants on stack update.
+Sessions are separate from learning reports and ordinary chat; backup/rollback
+checks include them. The legacy migration bundle carries local expert sessions
+(`chatbot.expertSessions`); a session the live API could not read is rejected by
+the dry-run instead of being imported.
 
 | Existing source | AWS destination |
 | --- | --- |
@@ -37,11 +46,27 @@ Chatbot ───────> Replit chatbot ──────┘             
 | `reports` | `learning_reports` |
 | `report_events` | `api_idempotency` legacy markers |
 | `pending_confirmations` | `pending_confirmations` |
+| `expert_sessions` (Telegram `/expert` mode) | `expert_sessions` |
 | Save's recorded digests | `daily_digests` |
 
 Game save and document writes use version checks. A cloud-loaded legacy save is normalized through the same versioned migration and validation used by the local JSON store. Chat/report/digest operations use idempotency keys, and the game save plus its report/digest records are committed in one Aurora transaction. Chatbot SQLite remains the local-development fallback when AWS settings are absent; when AWS is configured, startup does not initialize a new local SQLite database.
 
 The public API does not provide arbitrary table access. The migration function is not attached to API Gateway and must be invoked directly by an operator with Lambda invoke permission.
+
+Daily digests record the changes the game actually applied (known skill IDs, final mastery clamped to 0–100), so an agent digest that mentions an unknown skill or a large delta behaves the same in AWS and local mode. The `CareersphereSkillIds` default must match `SKILL_IDS` in `GamePlat/game/server/careers.js`; `server/aws-commit.test.mjs` fails when they drift.
+
+### Data retention
+
+`CleanupFunction` runs daily at 03:00 Asia/Kuala_Lumpur (19:00 UTC) with the runtime database login:
+
+| Data | Rule |
+| --- | --- |
+| `ai_jobs` still `queued`/`running` after 15 minutes | marked `failed` with `ai-timeout` (the worker limit is 5 minutes) |
+| Finished `ai_jobs` (their requests contain chat text) | deleted after `AI_JOB_RETENTION_DAYS` (default 7) |
+| `api_idempotency` keys, except `legacy:` import markers | deleted after `MARKER_RETENTION_DAYS` (default 30) |
+| `seen_messages` webhook de-duplication ids | deleted after `MARKER_RETENTION_DAYS` (default 30) |
+
+Game saves, documents, chat history, learning reports, digests, pending confirmations and expert sessions are never deleted by it. Each run logs its counts to CloudWatch as a `cleanup` event.
 
 ## Before deployment: verify the account and Region
 
@@ -49,15 +74,15 @@ Do not copy a model ID or Aurora engine version from an example. Verify each val
 
 1. Choose the deployment Region and check that it has at least two Availability Zones.
 2. Check that the chosen Aurora PostgreSQL engine version supports Serverless v2 and the RDS Data API in that Region. See [Aurora Data API Region and engine support](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.Aurora_Fea_Regions_DB-eng.Feature.Data_API.html).
-3. In Amazon Bedrock, verify the exact DeepSeek model/inference-profile ID, model ARN, Region availability, model access, and quota. The Lambda currently uses the Bedrock `Converse` API, which only works with models that support messages; verify that for the chosen DeepSeek target in [the Converse API reference](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Converse.html). If it does not support Converse, the worker needs a model-specific `InvokeModel` adapter before deployment.
-4. Supply `AuroraPostgresEngineVersion`, `BedrockRegion`, `BedrockModelId`, and `BedrockInvokeResourceArns` as explicit stack parameters. For a cross-Region inference profile, include every exact ARN required by that profile's IAM guidance. The template intentionally has no guessed engine or model values.
+3. Only if Bedrock is wanted (skip while it is off): in Amazon Bedrock, verify the exact DeepSeek model/inference-profile ID, model ARN, Region availability, model access, and quota. The Lambda currently uses the Bedrock `Converse` API, which only works with models that support messages; verify that for the chosen DeepSeek target in [the Converse API reference](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_Converse.html). If it does not support Converse, the worker needs a model-specific `InvokeModel` adapter before deployment.
+4. Supply `AuroraPostgresEngineVersion` as an explicit stack parameter. With Bedrock on, also supply `BedrockRegion`, `BedrockModelId`, and `BedrockInvokeResourceArns`; for a cross-Region inference profile, include every exact ARN required by that profile's IAM guidance. The template intentionally has no guessed engine or model values.
 5. If direct DeepSeek is required, create a Secrets Manager secret named `careersphere/deepseek` with a JSON field named `DEEPSEEK_API_KEY`; verify the official API model identifier and provide its exact value. Leave `EnableDeepSeekDirect=false` otherwise.
 
 The connected Replit AWS integration available to this project exposes Cognito identity metadata only. It cannot inspect this account's Aurora resources, Region, Bedrock access, or model quotas. Those checks have not been performed here.
 
 ## Deploy the AWS stack
 
-Use an AWS role for the intended account, with permissions limited to the stack's CloudFormation, SAM/CloudFormation artifacts, Lambda, API Gateway, RDS, EC2 VPC/subnet/security-group creation, Secrets Manager, S3, CloudWatch Logs, X-Ray, and `iam:PassRole` for the four roles in this template. Do not use long-lived AWS access keys in Replit. The deploying identity should be able to create/update the stack and pass only the stack's Lambda roles.
+Use an AWS role for the intended account, with permissions limited to the stack's CloudFormation, SAM/CloudFormation artifacts, Lambda, API Gateway, RDS, EC2 VPC/subnet/security-group creation, Secrets Manager, S3, CloudWatch Logs, X-Ray, and `iam:PassRole` for the five roles in this template. Do not use long-lived AWS access keys in Replit. The deploying identity should be able to create/update the stack and pass only the stack's Lambda roles.
 
 Install/use AWS SAM CLI in an operator-controlled environment, then:
 
@@ -80,7 +105,7 @@ After the stack is ready:
 
 1. In AWS Secrets Manager, retrieve the generated value for the `careersphere/aws-backend-token` secret.
 2. Add the stack's `AwsBackendUrl` as Replit secret `AWS_BACKEND_URL`, and add the retrieved secret value as Replit secret `AWS_BACKEND_TOKEN`. Set these on both the game server and chatbot runtime if they run in separate Replit deployments. Do not put the token in source files, browser variables, logs, or chat.
-3. Set `AI_PROVIDER=bedrock` only after the backend and model are verified. With AWS settings unset, the app keeps its existing local persistence and configured local AI-provider behavior.
+3. Keep `AI_PROVIDER=deepseek` while Bedrock is off. Set `AI_PROVIDER=bedrock` only after Bedrock is enabled in the stack and the model is verified. With AWS settings unset, the app keeps its existing local persistence and configured local AI-provider behavior.
 4. Restart the Replit services and check their health/CloudWatch logs. A failed AWS call is surfaced; it does not silently switch storage or AI provider.
 
 For future database changes, add an idempotent migration to `schema.sql` and increment `SchemaVersion` on `ApplyDatabaseSchema`. Validate the change in a disposable stack before applying it to production data.
@@ -109,7 +134,16 @@ python aws/lambda/scripts/export_legacy.py \
 
 The command refuses to overwrite an existing output or backup directory. Keep the source backup until the imported records have been verified. The bundle is capped at 8 MB by the Lambda importer; larger exports need a separately reviewed batched migration, not an increased timeout alone.
 
-Upload the bundle to the stack's private, versioned `LegacyImportBucketName` bucket over TLS. Use a unique key, and keep its SHA-256:
+`upload_legacy.py` performs the upload, dry-run and import steps below in one command (requires `pip install boto3` and AWS credentials). It reads the bucket and function from the stack outputs, and without `--import` it stops after the dry-run:
+
+```sh
+python aws/lambda/scripts/upload_legacy.py --bundle "$HOME/careersphere-migration/legacy-bundle.json" --stack-name careersphere
+python aws/lambda/scripts/upload_legacy.py --bundle "$HOME/careersphere-migration/legacy-bundle.json" --stack-name careersphere --import
+```
+
+After setting the Replit secrets, `python aws/lambda/scripts/check_backend.py --env-file chatbot/.env` (or with the variables in the environment) confirms the URL is reachable, the token is accepted, and the database answers. It only reads.
+
+The equivalent manual steps: upload the bundle to the stack's private, versioned `LegacyImportBucketName` bucket over TLS. Use a unique key, and keep its SHA-256:
 
 ```sh
 sha256sum "$HOME/careersphere-migration/legacy-bundle.json"
