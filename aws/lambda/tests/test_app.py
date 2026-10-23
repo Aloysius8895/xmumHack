@@ -156,6 +156,35 @@ class ApiSecurityTests(unittest.TestCase):
         rows.assert_not_called()
 
 
+class DigestSkillTests(unittest.TestCase):
+    def commit_digest(self, skill_id):
+        reads = iter([[], [], []])
+        with patch.dict(os.environ, {"CAREERSPHERE_SKILL_IDS": "sql"}, clear=False), \
+             patch.object(backend, "_ALLOWED_SKILLS", frozenset({"sql"})), \
+             patch.object(backend, "_begin", return_value="tx-1"), \
+             patch.object(backend, "_rows", side_effect=lambda *args, **kwargs: next(reads)), \
+             patch.object(backend, "_execute"), \
+             patch.object(backend, "_commit"), \
+             patch.object(backend, "_rollback"):
+            return backend._commit_save({
+                "expectedVersion": 0, "state": {"mastery": {}}, "operation": "digest",
+                "metadata": {
+                    "idempotencyKey": "digest-1", "fingerprint": "fp",
+                    "digest": {"date": "2026-10-24", "skills": [{"skillId": skill_id, "mastery": 40}]},
+                },
+            })
+
+    def test_custom_skills_of_the_save_are_accepted(self):
+        self.assertEqual(self.commit_digest("custom-accounting-standards")["version"], 1)
+        self.assertEqual(self.commit_digest("custom-1a2b3c4d")["version"], 1)
+
+    def test_unknown_and_malformed_skill_ids_are_still_rejected(self):
+        for skill_id in ("nope", "custom-", "custom-Bad Id", 7):
+            with self.assertRaises(backend.ApiError) as caught:
+                self.commit_digest(skill_id)
+            self.assertEqual(caught.exception.code, "unknown-skill-id", skill_id)
+
+
 class CleanupTests(unittest.TestCase):
     def test_cleanup_fails_stuck_jobs_and_expires_only_operational_rows(self):
         results = iter([[{"id": "job-1"}], [{"id": "a"}, {"id": "b"}], [], [{"message_id": "m"}]])

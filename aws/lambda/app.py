@@ -258,7 +258,11 @@ def _commit_save(body: dict) -> dict:
             if skills and not _ALLOWED_SKILLS:
                 raise ApiError(503, "skill-catalog-not-configured")
             for item in skills:
-                if not isinstance(item, dict) or item.get("skillId") not in _ALLOWED_SKILLS:
+                # Catalog skills, or the save's own custom skills (AI careers, posting requirements)
+                skill_id = item.get("skillId") if isinstance(item, dict) else None
+                if skill_id not in _ALLOWED_SKILLS and not (
+                    isinstance(skill_id, str) and re.fullmatch(r"custom-[a-z0-9-]{1,48}", skill_id)
+                ):
                     raise ApiError(400, "unknown-skill-id")
                 if "delta" in item and (
                     not isinstance(item["delta"], (int, float)) or

@@ -217,6 +217,7 @@ export async function analyzePosting({ text, file, careerId, profile, lang })
                     priority: skill.weight >= 3 ? 'must' : 'nice',
                     status: current >= skill.level ? 'met' : current > 0 ? 'partial' : 'gap',
                     note: '',
+                    kind: 'skill',
                 }
             }),
         }
@@ -238,6 +239,8 @@ ${skillCatalog()}
 
 For each requirement give: the requirement in a short sentence, the matching skill id, the level it implies (1-3),
 must (required / "you have") or nice (preferred / "bonus"), and the player's status: met, partial or gap, with a short note.
+Also its kind: "education" for a degree, diploma or field of study; "experience" for years of work or proven experience in a role;
+"skill" for anything the player can learn (including "experience with <a tool or technique>").
 Also say which career fits this posting best:
 ${allCareers().map((item) => `- ${item.id}: ${item.name.en}`).join('\n')}
 Answer "none" only when the role is clearly a different occupation from every career listed (not merely a variant or a seniority level of one).
@@ -264,8 +267,10 @@ ${text ?? ''}
                             priority: { type: 'string', enum: [ 'must', 'nice' ] },
                             status: { type: 'string', enum: [ 'met', 'partial', 'gap' ] },
                             note: { type: 'string' },
+                            // Education and experience stay on the posting, they never become pet skills (game.requirementKind)
+                            kind: { type: 'string', enum: [ 'skill', 'education', 'experience' ] },
                         },
-                        required: [ 'text', 'skillId', 'level', 'priority', 'status', 'note' ],
+                        required: [ 'text', 'skillId', 'level', 'priority', 'status', 'note', 'kind' ],
                         additionalProperties: false,
                     },
                 },

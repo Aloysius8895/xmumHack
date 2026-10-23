@@ -12,6 +12,7 @@ import { marketSnapshot, skillMarket, skillTrendOrReference } from './market-tre
 import { GOALS, PLATFORM_TARGETS, SKILL_TARGETS, SOURCE as SDG_SOURCE, TARGETS, TARGET_IDS, careerSdgs, contribution } from './sdg.js'
 import { loadMarket } from './store.js'
 import { trendsView } from './trends.js'
+import { createHash } from 'node:crypto'
 
 export const RULES = {
     affinityPerLevel: 20,      // affinity (affinityOf: profile match + learning progress) per pet level
@@ -82,12 +83,124 @@ export function isOnMap(save, careerId)
     return mapSlots(save).includes(careerId)
 }
 
+// Degrees and years of experience are hiring conditions, not skills to learn (zh, en, ms)
+const EDUCATION = /\b(degree|diploma|bachelor'?s?|master'?s degree|ph\.?\s?d|graduate of|ijazah|sarjana)\b|学位|学历|本科|硕士|博士|大专|文凭|毕业/i
+const EXPERIENCE = /\d+\s*\+?\s*(years?|yrs?|tahun)\b|\byears? of\b|\b(proven|prior|previous|work|working|professional|industry) experience\b|\bexperience as\b|\bpengalaman (sebagai|kerja|bekerja)\b|\d+\s*年|[一二三四五六七八九十两]+年|工作经验|从业经验|相关经验|(岗位|职位|工作)的?.{0,12}经验/i
+
 /**
- * Preparation per required skill of a career: the best of the profile level against the required one, the roadmap
- * tasks of that skill (this career's roadmap, current or saved) and the mastery of the daily digests (server/integrations.js)
+ * What a posting requirement asks for: 'skill', 'education' or 'experience'. The AI labels it (features.analyzePosting);
+ * postings analysed before that are guessed from the words, only when outside the catalog (a catalog skill stays a skill).
+ */
+export function requirementKind(requirement)
+{
+    if([ 'skill', 'education', 'experience' ].includes(requirement?.kind))
+        return requirement.kind
+    const skillId = String(requirement?.skillId ?? '')
+    if(SKILLS[skillId] && !skillId.startsWith('custom-'))
+        return 'skill'
+    const text = String(requirement?.text ?? '')
+    return EDUCATION.test(text) ? 'education' : EXPERIENCE.test(text) ? 'experience' : 'skill'
+}
+
+/**
+ * The career as the player targets it. Customised to a job posting (current or shelved target), the posting's skill
+ * requirements replace the career's default skills: the highest level asked, must weighs 3 and nice 1. Requirements
+ * outside the catalog count once adoptPostingSkills made them custom skills; education and experience never count.
+ * No skill left keeps the defaults.
+ */
+export function targetedCareer(save, career)
+{
+    const target = save.target?.careerId === career.id ? save.target : save.careers?.[career.id]?.target
+    if(target?.mode !== 'customise' || !Array.isArray(target.posting?.requirements))
+        return career
+    const skills = new Map()
+    for(const requirement of target.posting.requirements)
+    {
+        if(!SKILLS[requirement?.skillId] || requirementKind(requirement) !== 'skill')
+            continue
+        const level = Math.max(1, Math.min(3, Math.round(Number(requirement.level) || 1)))
+        const weight = requirement.priority === 'must' ? 3 : 1
+        const known = skills.get(requirement.skillId)
+        skills.set(requirement.skillId, { id: requirement.skillId, level: Math.max(known?.level ?? 0, level), weight: Math.max(known?.weight ?? 0, weight) })
+    }
+    return skills.size ? { ...career, skills: [ ...skills.values() ] } : career
+}
+
+/**
+ * Posting skill requirements matching no known skill ("other") become custom skills of the save, so the pet, the
+ * affinity and the roadmap can follow them too. The requirement then points at its skill. Education and experience
+ * requirements stay "other", and a custom skill made from one earlier is released. Ids come from the requirement text,
+ * so running it again (every request, app.js) changes nothing; returns whether the custom skills changed.
+ */
+export function adoptPostingSkills(save)
+{
+    const targets = [ save.target, ...Object.values(save.careers ?? {}).map((entry) => entry?.target) ]
+        .filter((target) => target?.mode === 'customise' && Array.isArray(target.posting?.requirements))
+    let changed = false
+    const released = new Set()
+    for(const target of targets)
+    {
+        for(const requirement of target.posting.requirements)
+        {
+            const text = String(requirement?.text ?? '').trim()
+            const current = String(requirement?.skillId ?? '')
+            if(requirementKind(requirement) !== 'skill')
+            {
+                // A catalog skill id stays (targetedCareer skips the requirement); one made from it goes back to "other"
+                if(current.startsWith('custom-'))
+                {
+                    released.add(current)
+                    requirement.skillId = 'other'
+                }
+                continue
+            }
+            // Already a catalog skill, or a custom skill this save has
+            if(!text || (current.startsWith('custom-') ? save.customSkills?.[current] : SKILLS[current]))
+                continue
+            const base = text.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 32)
+            const id = `custom-${base || createHash('sha256').update(text).digest('hex').slice(0, 8)}`
+            save.customSkills ??= {}
+            // Only this save counts: the SKILLS registry may still hold another save's custom skills
+            if(!save.customSkills[id])
+            {
+                // The posting is in one language: the same words in all three
+                const name = text.slice(0, 60)
+                const description = String(requirement.note || text).slice(0, 300)
+                save.customSkills[id] = {
+                    name: { zh: name, en: name, ms: name },
+                    detail: { icon: 'compass', demand: 'medium', heat: 60, difficulty: 3, description: { zh: description, en: description, ms: description } },
+                }
+                changed = true
+            }
+            requirement.skillId = id
+        }
+    }
+
+    // Released skills nothing else uses (another requirement, an AI-generated career) leave the save
+    const used = new Set([
+        ...targets.flatMap((target) => target.posting.requirements.map((requirement) => requirement?.skillId)),
+        ...(save.customCareers ?? []).flatMap((career) => career.skills.map((skill) => skill.id)),
+    ])
+    for(const id of released)
+        if(!used.has(id) && save.customSkills?.[id])
+        {
+            delete save.customSkills[id]
+            changed = true
+        }
+
+    if(changed)
+        useCustom(save)
+    return changed
+}
+
+/**
+ * Preparation per required skill of a career (as targeted, targetedCareer): the best of the profile level against the
+ * required one, the roadmap tasks of that skill (this career's roadmap, current or saved) and the mastery of the daily
+ * digests (server/integrations.js)
  */
 export function skillProgress(save, career)
 {
+    career = targetedCareer(save, career)
     const roadmap = save.target?.careerId === career.id ? save.roadmap : save.careers?.[career.id]?.roadmap
     const tasks = roadmap ? roadmap.stages.flatMap((stage) => stage.tasks) : []
     return matchCareer(career, save.profile.skills).skills.map((skill) =>
@@ -105,9 +218,10 @@ export function skillProgress(save, career)
  */
 export function affinityOf(save, careerId)
 {
-    const career = getCareer(careerId)
-    if(!career)
+    const found = getCareer(careerId)
+    if(!found)
         return 0
+    const career = targetedCareer(save, found)
     const weights = new Map(career.skills.map((skill) => [ skill.id, skill.level * skill.weight ]))
     let total = 0
     let reached = 0
@@ -173,6 +287,7 @@ export function setTarget(save, { careerId, mode, posting })
         save.roadmap = null
     }
     save.pendingTarget = null
+    adoptPostingSkills(save)
     return replaced
 }
 

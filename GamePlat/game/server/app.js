@@ -498,6 +498,8 @@ export async function handle(request, response)
 
             const save = loaded.state
             useCustom(save)
+            // Postings customised before their "other" requirements became pet skills
+            game.adoptPostingSkills(save)
             let result = await ai.demo.run(!integration && body.demo === true, () => route(save, body)) ?? {}
             if(request.method === 'POST')
             {
