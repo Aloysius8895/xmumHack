@@ -12,6 +12,78 @@ export class CareerApi
         this.state = null
         this.busy = 0
         this.demo = false // Guided tour running: the server answers AI features with demo data (server/ai.js isMock)
+        // This tab, so the server's change events (server/live.js) can tell our own saves from Telegram's
+        this.clientId = globalThis.crypto?.randomUUID?.() ?? `tab-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
+        this.refreshing = null
+        this.refreshAgain = false
+    }
+
+    /**
+     * Live updates: reload the state when it changes elsewhere (a Telegram progress report, n8n, another tab), when
+     * the stream reconnects after a drop, and when the tab comes back into view (changes on another server instance)
+     */
+    listen()
+    {
+        if(this.source || typeof EventSource === 'undefined')
+            return
+        this.source = new EventSource('./api/events')
+        this.source.addEventListener('change', (event) =>
+        {
+            let origin = null
+            try { origin = JSON.parse(event.data).origin } catch {}
+            if(origin !== this.clientId)
+                this.refresh()
+        })
+        let connected = false
+        this.source.addEventListener('hello', () =>
+        {
+            // The first hello comes right after load(); a later one means we were offline and may have missed changes
+            if(connected)
+                this.refresh()
+            connected = true
+        })
+        document.addEventListener('visibilitychange', () =>
+        {
+            if(document.visibilityState === 'visible')
+                this.refresh()
+        })
+    }
+
+    /**
+     * Quiet reload of the state (no busy indicator, errors ignored: the next change or visit tries again). Waits for
+     * the tab's own requests, whose answers carry a state too, and folds bursts of changes into one more reload.
+     */
+    async refresh()
+    {
+        if(!this.state)
+            return
+        if(this.refreshing || this.busy > 0)
+        {
+            this.refreshAgain = true
+            if(!this.refreshing)
+                setTimeout(() => this.refresh(), 400)
+            return
+        }
+        this.refreshAgain = false
+        this.refreshing = fetch('./api/state', { headers: { 'X-Career-Client': this.clientId }, cache: 'no-store' })
+            .then((response) => response.ok ? response.json() : null)
+            .then((payload) =>
+            {
+                // A request of the tab started meanwhile: its answer may be newer, try again after it
+                if(this.busy > 0)
+                    this.refreshAgain = true
+                else if(payload?.state)
+                {
+                    const previous = this.state
+                    this.state = payload.state
+                    this.events.trigger('state', [ this.state, previous ])
+                }
+            })
+            .catch(() => {})
+        await this.refreshing
+        this.refreshing = null
+        if(this.refreshAgain)
+            this.refresh()
     }
 
     async request(method, path, body)
@@ -22,7 +94,7 @@ export class CareerApi
         {
             const response = await fetch(`./api/${path}`, {
                 method,
-                headers: body ? { 'Content-Type': 'application/json' } : {},
+                headers: { 'X-Career-Client': this.clientId, ...(body ? { 'Content-Type': 'application/json' } : {}) },
                 body: body ? JSON.stringify({ lang: getLang(), ...(this.demo ? { demo: true } : {}), ...body }) : undefined,
             })
             const payload = await response.json().catch(() => ({ error: 'generic' }))

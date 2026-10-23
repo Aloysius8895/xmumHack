@@ -16,6 +16,7 @@ import { getCareer, useCustom } from './careers.js'
 import { expertCard } from './experts.js'
 import { telegramExpert, expertReceipt } from './telegram-expert.js'
 import * as store from './store.js'
+import * as live from './live.js'
 import { createHash } from 'node:crypto'
 
 const MAX_BODY = 15 * 1024 * 1024 // base64 of a 10 MB file
@@ -459,6 +460,13 @@ export async function handle(request, response)
     if(!url.pathname.startsWith('/api/'))
         return false
 
+    // The web client listens here for changes made elsewhere (live.js)
+    if(request.method === 'GET' && url.pathname === '/api/events')
+    {
+        live.subscribe(request, response)
+        return true
+    }
+
     const streamed = streams[`${request.method} ${url.pathname}`]
     if(streamed)
     {
@@ -514,6 +522,13 @@ export async function handle(request, response)
             }
             return { result, save }
         })
+        // Every saved change reaches the open game tabs; the tab that made it (its X-Career-Client id) skips the reload
+        if(request.method === 'POST')
+        {
+            const origin = String(request.headers['x-career-client'] ?? '')
+            live.changed(!integration && /^[A-Za-z0-9-]{1,64}$/.test(origin) ? origin : null)
+        }
+
         // Workflows and bots only need the result, the game client gets the whole state
         if(integration)
             send(response, 200, payload.result)

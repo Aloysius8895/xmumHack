@@ -29,7 +29,8 @@ export class Career
             }
         })
 
-        this.api.load().catch((error) =>
+        // Then follow changes made elsewhere (Telegram progress reports) without a refresh
+        this.api.load().then(() => this.api.listen()).catch((error) =>
         {
             console.warn('Career > API unreachable, is the dev server running with server/?', error)
         })
