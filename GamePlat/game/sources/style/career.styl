@@ -3983,3 +3983,179 @@ button.career-trend-row:hover {
 .career-dialogue-ask input.is-error::placeholder {
     color: var(--career-bad);
 }
+
+/* SDG (CareerUI renderSdg, renderCareerSdgs, sdgBadge) */
+.career-sdg {
+    display: inline-block;
+    min-width: 26px;
+    padding: 1px 7px;
+    margin: 2px 4px 2px 0;
+    border-radius: 6px;
+    background: var(--sdg);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    text-align: center;
+    white-space: nowrap;
+    cursor: help;
+}
+
+.career-card-sdgs {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.career-sdg-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    margin: 10px 0 4px;
+}
+
+.career-sdg-filter small {
+    width: 100%;
+    font-weight: 700;
+}
+
+.career-sdg-chip {
+    padding: 4px 10px;
+    border: 2px solid var(--sdg);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--sdg);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.career-sdg-chip.is-selected,
+.career-sdg-chip:hover,
+.career-sdg-chip:focus-visible {
+    background: var(--sdg);
+    color: #fff;
+}
+
+.career-sdg-list,
+.career-sdg-progress {
+    display: grid;
+    gap: 8px;
+    padding: 0;
+    margin: 8px 0;
+    list-style: none;
+}
+
+.career-sdg-list li,
+.career-sdg-progress li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px;
+    border: 2px solid var(--sdg);
+    border-radius: 14px;
+}
+
+.career-sdg-goal {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--sdg);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.career-sdg-text {
+    display: grid;
+    flex: 1;
+    gap: 3px;
+    min-width: 0;
+}
+
+.career-sdg-text small {
+    opacity: 0.75;
+}
+
+.career-sdg-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.career-sdg-bar > :first-child {
+    flex: 1;
+}
+
+.career-sdg-bar em {
+    font-style: normal;
+    font-weight: 800;
+}
+
+.career-sdg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.career-sdg-tile {
+    display: grid;
+    gap: 2px;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    background: var(--sdg);
+    color: #fff;
+    font: inherit;
+    text-align: left;
+    opacity: 0.45;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.career-sdg-tile b {
+    font-size: 20px;
+}
+
+.career-sdg-tile span {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.career-sdg-tile small {
+    font-size: 11px;
+    opacity: 0.85;
+}
+
+.career-sdg-tile.is-touched {
+    opacity: 1;
+    box-shadow: 0 0 0 3px var(--outline);
+}
+
+.career-sdg-tile:not(:disabled):hover,
+.career-sdg-tile:not(:disabled):focus-visible {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.career-sdg-tile:disabled {
+    cursor: default;
+    opacity: 0.2;
+}
+
+.career-map-sdgs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    align-items: center;
+    margin: 6px 0;
+}
+
+.career-map-sdgs b {
+    margin-right: 4px;
+}
