@@ -1940,7 +1940,10 @@ export class CareerUI
             { text: t('npc.ask.fit'), to: 'fit' },
             { text: t('npc.ask.market'), to: 'market' },
             { text: t('npc.ask.question'), action: () => this.startAsk(false) },
-            { text: t('npc.ask.expert', { name: expert?.name }), action: () => this.startAsk(true), if: Boolean(expert) },
+            // Every career offers its elite; one not distilled yet (server/experts.js) is explained instead of hidden
+            expert
+                ? { text: t('npc.ask.expert', { name: expert.name }), action: () => this.startAsk(true) }
+                : { text: t('npc.ask.expertNone'), to: 'noExpert' },
             { text: t('npc.ask.target'), action: () => this.setTargetFromDialogue(careerId), if: !isTarget },
             { text: t('npc.ask.bye'), to: 'bye' },
         ]
@@ -1962,6 +1965,10 @@ export class CareerUI
             },
             market: {
                 lines: [ t('npc.market', { p: career.market.heat, trend: t(`careers.trend.${career.market.trend}`), range }) ],
+                choices: menu,
+            },
+            noExpert: {
+                lines: [ t('npc.expertMissing', { career: name }) ],
                 choices: menu,
             },
             // Target just set from the dialogue: tailor it to a posting, plan the roadmap, or leave

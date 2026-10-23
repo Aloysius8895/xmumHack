@@ -388,6 +388,8 @@ const STRINGS = {
     'npc.ask.bye': { zh: '下次再聊', en: 'See you later', ms: 'Jumpa lagi' },
     'npc.ask.question': { zh: '我可以问你一些问题吗？', en: 'Can I ask you some questions?', ms: 'Boleh saya tanya beberapa soalan?' },
     'npc.ask.expert': { zh: '请教行业精英：{name}', en: 'Consult an industry elite: {name}', ms: 'Rujuk pakar industri: {name}' },
+    'npc.ask.expertNone': { zh: '请教行业精英', en: 'Consult an industry elite', ms: 'Rujuk pakar industri' },
+    'npc.expertMissing': { zh: '抱歉，我们还没有蒸馏到「{career}」这个职业的行业精英，敬请期待！在那之前，你可以直接问我。', en: "Sorry, we haven't distilled an industry elite for {career} yet. Stay tuned! Until then, feel free to ask me directly.", ms: 'Maaf, kami belum menyuling pakar industri untuk {career}. Nantikan! Sementara itu, tanya saya terus.' },
     'npc.expertName': { zh: '{name}（精英视角）', en: '{name} (elite perspective)', ms: '{name} (perspektif pakar)' },
     'npc.expertIntro': { zh: '我帮你请来了 {name}——{tagline}。接下来由这位精英的视角来回答你。', en: 'I have brought in {name}, {tagline}. From here on, you get answers from their perspective.', ms: 'Saya bawakan {name}, {tagline}. Mulai sekarang, jawapan datang dari perspektif mereka.' },
     'npc.expertNote': { zh: '先说明一下：这是根据 {name} 公开的著作、演讲和访谈蒸馏出的思维方式，不是本人，也不代表本人观点。想问什么就直接写下来吧。', en: "A quick note: this is {name}'s way of thinking, distilled from public books, talks and interviews. It is not the real person and does not speak for them. Type whatever you'd like to ask.", ms: 'Nota ringkas: ini cara berfikir {name}, disuling daripada buku, ceramah dan temu bual awam. Ia bukan orang sebenar dan tidak mewakili pandangan mereka. Taip apa sahaja yang anda ingin tanya.' },
