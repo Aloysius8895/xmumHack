@@ -95,6 +95,30 @@ function lang(save, body)
     return LANGS.includes(body.lang) ? body.lang : save.lang
 }
 
+/**
+ * The mentor question of a request, checked: career, question, earlier turns, attached file, elite or mentor
+ */
+function mentorQuestion(save, body)
+{
+    const career = getCareer(String(body.careerId ?? ''))
+    if(!career)
+        throw new HttpError(404, 'no-career')
+    if(body.elite && !expertCard(career.id))
+        throw new HttpError(404, 'no-expert')
+    const question = text(body.question, 500).trim()
+    if(!question)
+        throw new HttpError(400, 'no-question')
+    // Earlier turns of this conversation: user / assistant alternating, starting with the user
+    const history = (Array.isArray(body.history) ? body.history : [])
+        .filter((turn) => [ 'user', 'assistant' ].includes(turn?.role) && typeof turn.content === 'string' && turn.content.trim())
+        .slice(- 6)
+    while(history.length && history[0].role !== 'user')
+        history.shift()
+    const file = checkFile(body.file) // A screenshot, PDF or text file the player attached or pasted
+    // elite: the question goes to the career's distilled industry elite instead of the mentor (experts.js)
+    return { career, question, file, history, elite: Boolean(body.elite), profile: save.profile, target: save.target, lang: lang(save, body) }
+}
+
 const routes = {
     'GET /api/state': async () =>
     {
@@ -197,26 +221,10 @@ const routes = {
     },
 
     // A career mentor NPC answers the player's own question as a professional of that field, or hands over to the
-    // field's distilled industry elite (features.askMentor)
+    // field's distilled industry elite (features.askMentor). The game dialogue uses the streamed version (streams below)
     'POST /api/npc/ask': async (save, body) =>
     {
-        const career = getCareer(String(body.careerId ?? ''))
-        if(!career)
-            throw new HttpError(404, 'no-career')
-        if(body.elite && !expertCard(career.id))
-            throw new HttpError(404, 'no-expert')
-        const question = text(body.question, 500).trim()
-        if(!question)
-            throw new HttpError(400, 'no-question')
-        // Earlier turns of this conversation: user / assistant alternating, starting with the user
-        const history = (Array.isArray(body.history) ? body.history : [])
-            .filter((turn) => [ 'user', 'assistant' ].includes(turn?.role) && typeof turn.content === 'string' && turn.content.trim())
-            .slice(- 6)
-        while(history.length && history[0].role !== 'user')
-            history.shift()
-        const file = checkFile(body.file) // A screenshot, PDF or text file the player attached or pasted
-        // elite: the question goes to the career's distilled industry elite instead of the mentor (experts.js)
-        const answer = await features.askMentor({ career, question, file, history, elite: Boolean(body.elite), profile: save.profile, target: save.target, lang: lang(save, body) })
+        const answer = await features.askMentor(mentorQuestion(save, body))
         return { answer }
     },
 
@@ -287,11 +295,14 @@ const routes = {
         const content = text(body.text, 2000).trim()
         if(!content)
             throw new HttpError(400, 'empty')
+        const receipt = integrations.chatReceipt(save, body, content)
+        if(receipt?.previous)
+            return { ...receipt.previous, duplicate: true }
         if(!save.roadmap)
             return { log: null, reply: { zh: '先在游戏里生成学习路线，我才能把汇报对应到任务。', en: 'Plan a roadmap in the game first so I can match your reports to tasks.', ms: 'Rancang peta laluan dalam permainan dahulu supaya laporan boleh dipadankan dengan tugasan.' }[lang(save, body)] }
         const classification = await features.classifyLog({ text: content, roadmap: save.roadmap, lang: lang(save, body) })
         const log = game.applyLog(save, { text: content, source: body.channel, classification })
-        return { log, reply: classification.reply }
+        return integrations.rememberChat(save, receipt, { log, reply: classification.reply })
     },
 
     'POST /api/integrations/digest': async (save, body) =>
@@ -315,6 +326,60 @@ function send(response, status, payload)
 }
 
 /**
+ * Streamed routes: newline-delimited JSON events while the answer comes, { text } pieces then { answer } or { error }.
+ * They only read the save, so they run outside the save queue (a long answer doesn't hold the other requests)
+ */
+const streams = {
+    'POST /api/npc/ask/stream': (save, body, emit, signal) => features.askMentor({ ...mentorQuestion(save, body), onText: (text) => emit({ text }), signal }),
+}
+
+async function stream(request, response, route)
+{
+    let started = false
+    const emit = (event) =>
+    {
+        if(!started)
+        {
+            started = true
+            response.statusCode = 200
+            response.setHeader('Content-Type', 'application/x-ndjson; charset=utf-8')
+            response.setHeader('Cache-Control', 'no-store')
+            response.setHeader('X-Accel-Buffering', 'no') // Proxies pass each line on at once
+        }
+        response.write(JSON.stringify(event) + '\n')
+    }
+    // Dialogue closed meanwhile: stop the AI call instead of paying for an answer nobody reads
+    const aborter = new AbortController()
+    response.on('close', () =>
+    {
+        if(!response.writableEnded)
+            aborter.abort()
+    })
+
+    try
+    {
+        const body = await readBody(request)
+        const save = store.load()
+        useCustom(save)
+        const answer = await ai.demo.run(body.demo === true, () => route(save, body, emit, aborter.signal))
+        emit({ answer })
+        response.end()
+    }
+    catch(error)
+    {
+        if(aborter.signal.aborted)
+            return
+        const code = error instanceof HttpError || error instanceof AiError ? error.code : 'server'
+        if(code === 'server')
+            console.error('[api]', error)
+        if(!started)
+            return send(response, error instanceof HttpError ? error.status : error instanceof AiError ? 502 : 500, { error: code })
+        emit({ error: code })
+        response.end()
+    }
+}
+
+/**
  * Returns true when the request was an /api route (handled), false to let the caller continue
  */
 export async function handle(request, response)
@@ -322,6 +387,13 @@ export async function handle(request, response)
     const url = new URL(request.url, 'http://localhost')
     if(!url.pathname.startsWith('/api/'))
         return false
+
+    const streamed = streams[`${request.method} ${url.pathname}`]
+    if(streamed)
+    {
+        await stream(request, response, streamed)
+        return true
+    }
 
     const route = routes[`${request.method} ${url.pathname}`]
     if(!route)

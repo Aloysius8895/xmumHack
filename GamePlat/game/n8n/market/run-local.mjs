@@ -17,6 +17,7 @@
 import 'dotenv/config'
 import fs from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { catalog } from './build-workflow.mjs'
 import { aggregate, backfill, buildQueries, DEFAULT_SETTINGS } from './pipeline.js'
 
@@ -41,7 +42,7 @@ const maxCost = Number(option('--max-cost') ?? (isBackfill ? 3 : Infinity))
 const minLeft = Number(option('--min-left') ?? (isBackfill ? 60 : 0))   // quota kept for demos: the backfill doesn't start below it
 let quotaLeft = null
 let stopReason = null
-const CACHE = path.join(path.dirname(new URL(import.meta.url).pathname), 'cache')
+const CACHE = path.join(path.dirname(fileURLToPath(import.meta.url)), 'cache')
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 async function search(query, params = {})
@@ -115,6 +116,12 @@ if(!responses)
 const results = isBackfill ? backfill(responses, settings, catalog(), now) : [ aggregate(responses, settings, catalog(), now) ]
 for(const { report } of results)
     console.error(JSON.stringify(report, null, 1))
+
+if(results.some(({ report }) => !report.complete))
+{
+    console.error('Incomplete collection: failed or missing queries. Nothing pushed; previous data retained.')
+    process.exit(2)
+}
 
 const payloads = results.map(({ payload }) => payload).filter((payload) => Object.keys(payload.careers).length)
 if(!payloads.length)

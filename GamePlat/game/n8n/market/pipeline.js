@@ -6,8 +6,8 @@
  *   - run-local.mjs (fallback runner without n8n)
  *   - pipeline.test.mjs
  *
- * Only counts leave this pipeline: job descriptions are read to count skill keywords and are never stored,
- * so no recruiter names, emails or phone numbers reach the game server.
+ * Counts and minimal job identities leave this pipeline; the game hashes identities for history.
+ * Descriptions are read only to count skill keywords and are never stored in the game.
  *
  * catalog = { careers: [ 'data-analyst', ... ], skills: { sql: { zh, en, ms }, ... } }, generated from server/careers.js
  */
@@ -16,9 +16,10 @@ export const DEFAULT_SETTINGS = {
     apiBaseUrl: 'http://localhost:8787',   // game server (Replit deployment URL in production), no trailing slash
     country: 'my',                         // JSearch country code
     datePosted: 'week',                    // JSearch date_posted: all | today | 3days | week | month
-    numPages: 2,                           // pages per query (~10 jobs per page)
+    numPages: 1,                           // bounded sample; increase only after checking provider quota
     timezone: 'Asia/Kuala_Lumpur',
     topSkills: 0,                          // skills kept per career in the push, 0 = every skill found (the skill trend compares them all)
+    notificationChatId: '',                // optional Telegram destination; blank skips notifications
 }
 
 /**
@@ -133,6 +134,11 @@ export function jobsFrom(body)
     return []
 }
 
+function validResponse(body)
+{
+    return body && !body.error && (!body.status || body.status === 'OK') && (Array.isArray(body.data) || Array.isArray(body.data?.jobs))
+}
+
 /**
  * Short reason of a failed search: n8n error items ({ error: { message, stack } }), API errors or odd shapes
  */
@@ -220,14 +226,16 @@ export function aggregate(responses, settings, catalog, now = new Date())
     const perPageCap = 10 * settings.numPages
     const state = {}
     const publishers = {}
+    const completed = new Set()
+    const identity = (query) => `${query.careerId}:${query.query}`
 
     for(const { query, body } of responses)
     {
         if(!query || !known.has(query.careerId) || !CAREER_SEARCH[query.careerId])
             continue
-        const career = state[query.careerId] ??= { jobs: new Map(), fetched: 0, filtered: 0, failedQueries: [], okQueries: 0, saturated: false }
+        const career = state[query.careerId] ??= { jobs: new Map(), fetched: 0, filtered: 0, foreign: 0, unknownCountry: 0, failedQueries: [], okQueries: 0, saturated: false }
 
-        const valid = body && !body.error && (Array.isArray(body.data) || Array.isArray(body.data?.jobs))
+        const valid = validResponse(body)
         if(!valid)
         {
             career.failedQueries.push({ query: query.query, error: errorText(body) })
@@ -235,6 +243,7 @@ export function aggregate(responses, settings, catalog, now = new Date())
         }
 
         const jobs = jobsFrom(body)
+        completed.add(identity(query))
         career.okQueries++
         career.fetched += jobs.length
         if(jobs.length >= perPageCap)
@@ -242,6 +251,16 @@ export function aggregate(responses, settings, catalog, now = new Date())
 
         for(const job of jobs)
         {
+            if(!job || typeof job !== 'object')
+                continue
+            const country = String(job.job_country ?? '').trim().toLowerCase()
+            if(country && ![ String(settings.country).toLowerCase(), ...(settings.country === 'my' ? [ 'malaysia', 'mys' ] : []) ].includes(country))
+            {
+                career.foreign++
+                continue
+            }
+            if(!country)
+                career.unknownCountry++
             if(!CAREER_SEARCH[query.careerId].title.test(String(job.job_title ?? '')))
             {
                 career.filtered++
@@ -254,7 +273,10 @@ export function aggregate(responses, settings, catalog, now = new Date())
     }
 
     const careers = {}
-    const report = { period: periodOf(now, settings.timezone), careers: {}, failedCareers: [] }
+    const expected = buildQueries(settings)
+    const missingQueries = expected.filter((query) => !completed.has(identity(query))).map(({ careerId, query }) => ({ careerId, query }))
+    const report = { period: periodOf(now, settings.timezone), complete: missingQueries.length === 0 && Object.values(state).every((career) => !career.failedQueries.length), expectedQueries: expected.length, successfulQueries: completed.size, missingQueries, careers: {}, failedCareers: [] }
+    const records = []
 
     for(const [ careerId, career ] of Object.entries(state))
     {
@@ -268,7 +290,9 @@ export function aggregate(responses, settings, catalog, now = new Date())
         const skillCounts = {}
         for(const job of career.jobs.values())
         {
-            for(const skillId of extractSkills(textOf(job)))
+            const skillIds = extractSkills(textOf(job)).filter((id) => catalog.skills[id])
+            records.push({ careerId, id: String(job.job_id || `${job.employer_name}|${job.job_title}|${job.job_city ?? ''}`.toLowerCase()), skillIds })
+            for(const skillId of skillIds)
                 if(catalog.skills[skillId])
                     skillCounts[skillId] = (skillCounts[skillId] ?? 0) + 1
             const publisher = String(job.job_publisher ?? 'other').trim() || 'other'
@@ -282,7 +306,7 @@ export function aggregate(responses, settings, catalog, now = new Date())
         )
         const summary = { postings: career.jobs.size, topSkills, saturated: career.saturated }
         careers[careerId] = { postings: summary.postings, topSkills, note: noteFor(summary, catalog, settings) }
-        report.careers[careerId] = { fetched: career.fetched, kept: career.jobs.size, filteredByTitle: career.filtered, saturated: career.saturated, failedQueries: career.failedQueries }
+        report.careers[careerId] = { fetched: career.fetched, kept: career.jobs.size, filteredByTitle: career.filtered, filteredByCountry: career.foreign, unknownCountry: career.unknownCountry, saturated: career.saturated, failedQueries: career.failedQueries }
     }
 
     const topPublishers = Object.entries(publishers).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([ name, count ]) => `${name} ${count}`).join(', ')
@@ -291,6 +315,7 @@ export function aggregate(responses, settings, catalog, now = new Date())
         source: `JSearch/Google for Jobs ${settings.country.toUpperCase()} ${settings.datePosted}${topPublishers ? `: ${topPublishers}` : ''}`.slice(0, 120),
         collectedAt: now.toISOString(),
         careers,
+        collection: { source: 'jsearch', country: settings.country, window: settings.datePosted, numPages: settings.numPages, complete: report.complete, expectedQueries: expected.length, successfulQueries: completed.size, records },
     }
     report.publishers = publishers
     return { payload, report }

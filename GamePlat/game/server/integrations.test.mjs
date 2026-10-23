@@ -238,6 +238,30 @@ test('a mentor hands over to the career industry elite, distilled card read from
     assert.equal((await call('/api/npc/ask', { careerId: 'frontend-developer', question: 'Hi', elite: true })).status, 404)
 })
 
+test('the dialogue gets the answer streamed: text pieces, then the whole answer; errors before streaming as JSON', async () =>
+{
+    async function stream(body)
+    {
+        const request = Readable.from([ Buffer.from(JSON.stringify(body)) ])
+        Object.assign(request, { method: 'POST', url: '/api/npc/ask/stream', headers: {} })
+        let payload = ''
+        const response = { statusCode: 0, writableEnded: false, setHeader() {}, on() {}, write(text) { payload += text }, end(text = '') { payload += text; this.writableEnded = true } }
+        await handle(request, response)
+        return { status: response.statusCode, lines: payload.trim().split('\n').map((line) => JSON.parse(line)) }
+    }
+
+    const result = await stream({ careerId: 'data-analyst', question: 'How do I start?', lang: 'en', elite: true })
+    assert.equal(result.status, 200)
+    const pieces = result.lines.filter((event) => event.text)
+    assert.ok(pieces.length > 5)
+    assert.equal(pieces.map((event) => event.text).join(''), result.lines.at(- 1).answer)
+    assert.match(result.lines.at(- 1).answer, /Hans Rosling/)
+
+    const missing = await stream({ careerId: 'astronaut', question: 'Hi' })
+    assert.equal(missing.status, 404)
+    assert.deepEqual(missing.lines, [ { error: 'no-career' } ])
+})
+
 test('a file attached to a mentor question is checked and read', async () =>
 {
     const file = { name: 'notes.txt', mediaType: 'text/plain', data: Buffer.from('SELECT * FROM jobs').toString('base64') }

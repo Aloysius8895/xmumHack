@@ -501,6 +501,38 @@ export class CareerWorld
         }
     }
 
+    /**
+     * Thought bubble over a mentor while the AI thinks about the player's question (CareerUI.askMentor), null: none.
+     * An HTML bubble placed at the head on screen each frame, crisp at any zoom
+     */
+    setThinking(careerId)
+    {
+        if(!this.thought)
+        {
+            this.thought = document.createElement('div')
+            this.thought.className = 'career-thought'
+            this.thought.setAttribute('aria-hidden', 'true')
+            this.thought.innerHTML = '<span class="career-thought-cloud"><i></i><i></i><i></i></span><span class="career-thought-puff"></span><span class="career-thought-puff is-small"></span>'
+            this.ui.root.append(this.thought)
+        }
+        this.thinkingNpc = careerId ? this.npcs.find((npc) => npc.career.id === careerId) ?? null : null
+        this.thought.classList.toggle('is-visible', Boolean(this.thinkingNpc))
+        this.updateThought()
+    }
+
+    updateThought()
+    {
+        const npc = this.thinkingNpc
+        if(!npc)
+            return
+        const position = npc.character.group.position
+        const head = new THREE.Vector3(position.x, position.y + NPC_HEIGHT + 0.2, position.z).project(this.game.view.camera)
+        const x = (head.x * 0.5 + 0.5) * this.game.viewport.width
+        const y = (head.y * - 0.5 + 0.5) * this.game.viewport.height
+        this.thought.style.transform = `translate(${x}px, ${y}px)`
+        this.thought.style.visibility = head.z > 1 ? 'hidden' : '' // Behind the camera
+    }
+
     turnNpc(npc, angle, delta)
     {
         let difference = angle - npc.wander.facing
@@ -515,6 +547,7 @@ export class CareerWorld
         {
             this.createPoints()
             this.updateNpcs(this.game.ticker.deltaScaled / this.game.time.defaultScale)
+            this.updateThought()
         }
         this.updatePet()
     }

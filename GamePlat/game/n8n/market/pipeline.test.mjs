@@ -152,10 +152,38 @@ test('the generated n8n workflow runs the same pipeline', () =>
     assert.equal(aggregated.json.apiBaseUrl, 'http://localhost:8787')
 
     const failing = queries.map((item, index) => ({ json: { error: { message: 'down' } }, pairedItem: { item: index } }))
-    assert.throws(() => runCodeNode(code('Aggregate skills'), { input: failing, nodes: { 'Build queries': queries } }), /Every JSearch query failed/)
+    const [ rejected ] = runCodeNode(code('Aggregate skills'), { input: failing, nodes: { 'Build queries': queries } })
+    assert.equal(rejected.json.canPush, false, 'failure branch must retain old game data')
 
     const [ summary ] = runCodeNode(code('Run summary'), { input: [ { json: { period: '2026-10-19', careers: [ 'data-analyst' ] } } ], nodes: { 'Aggregate skills': [ aggregated ] } })
     assert.equal(summary.json.postings['data-analyst'], 3)
+})
+
+test('partial or missing searches block the push; successful empty queries remain valid', () =>
+{
+    const responses = fixtureResponses()
+    responses[0] = { ...responses[0], body: { error: 'quota exhausted' } }
+    const partial = aggregate(responses, DEFAULT_SETTINGS, catalog(), NOW)
+    assert.equal(partial.report.complete, false)
+    assert.equal(partial.report.successfulQueries, 11)
+    assert.equal(partial.report.missingQueries.length, 1)
+    assert.equal(partial.payload.collection.complete, false)
+    assert.equal(aggregate(fixtureResponses().slice(1), DEFAULT_SETTINGS, catalog(), NOW).report.complete, false)
+    assert.equal(aggregate(fixtureResponses(), DEFAULT_SETTINGS, catalog(), NOW).report.complete, true)
+})
+
+test('country metadata excludes foreign jobs and archived records never contain descriptions', () =>
+{
+    const responses = fixtureResponses()
+    responses[0] = { ...responses[0], body: { status: 'OK', data: [
+        { job_id: 'my', job_title: 'Data Analyst', job_country: 'Malaysia', job_description: 'SQL SQL SQL' },
+        { job_id: 'foreign', job_title: 'Data Analyst', job_country: 'SG', job_description: 'SQL' },
+    ] } }
+    const { payload, report } = aggregate(responses, DEFAULT_SETTINGS, catalog(), NOW)
+    assert.equal(report.careers['data-analyst'].filteredByCountry, 1)
+    assert.ok(!payload.collection.records.some((record) => record.id === 'foreign'))
+    assert.deepEqual(payload.collection.records.find((record) => record.id === 'my').skillIds, [ 'sql' ])
+    assert.ok(payload.collection.records.every((record) => !('job_description' in record)))
 })
 
 test('the committed workflow file is up to date', () =>

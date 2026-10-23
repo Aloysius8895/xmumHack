@@ -596,11 +596,18 @@ export class InteractivePoints
                 item.showAfterReveal = true
             }
 
-            // Points already revealed => Activate
+            // Points revealed but temporarily hidden (an area takes the screen) => stays hidden, recover() shows it
+            else if(this.temporaryHidden)
+            {
+                item.state = InteractivePoints.STATE_HIDDEN
+            }
+
+            // Points already revealed => Activate (tested at once, the player may already stand within reach)
             else
             {
                 item.state = state
                 item.intersect.active = false
+                this.needsTest = true
                 diamond.visible = true
                 // key.visible = true
                 threshold.value = 0.25
@@ -645,9 +652,11 @@ export class InteractivePoints
                 
                 if(isIn)
                 {
+                    // Closest one wins (a mentor standing next to an area point)
                     if(itemDistance < distance && item.state !== InteractivePoints.STATE_HIDDEN)
                     {
                         activeItem = item
+                        distance = itemDistance
                     }
                 }
                 else
@@ -702,6 +711,9 @@ export class InteractivePoints
 
     recover()
     {
+        // The first recover is the end of the intro (Reveal step 2): points created from now on show right away
+        // (career NPC labels redrawn after a language change or a mentor swap)
+        this.revealed = true
         this.temporaryHidden = false
 
         for(const item of this.items)

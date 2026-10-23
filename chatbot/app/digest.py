@@ -9,8 +9,10 @@ import json
 import logging
 import re
 from typing import Optional
+from datetime import date as calendar_date
 
 from . import ai, career_api, db
+from .config import get_settings
 
 log = logging.getLogger("chatbot")
 
@@ -43,14 +45,28 @@ def _draft(reports: list[dict]) -> dict:
     return _parse(raw)
 
 
-def run(date: Optional[str] = None) -> Optional[dict]:
+def run(date: Optional[str] = None, *, summary_only: bool = False, telegram_user_id: Optional[str] = None) -> Optional[dict]:
     """Builds and sends the digest for `date` (YYYY-MM-DD, MYT; default today).
     Returns the CareerSphere API response, or None if there was nothing to report."""
     date = date or db.today_myt()
+    if calendar_date.fromisoformat(date).isoformat() != date:
+        raise ValueError("date must be YYYY-MM-DD")
     reports = db.reports_for_date(date)
+    if summary_only:
+        # This game has one local player: do not merge multiple people's reports.
+        if not telegram_user_id or get_settings().allowed_tg_ids != frozenset({telegram_user_id}):
+            raise ValueError("summary-only requires the single demo owner's TELEGRAM_ALLOWED_USER_IDS")
+        reports = [report for report in reports if report["wa_id"] == f"tg:{telegram_user_id}"]
     if not reports:
         log.info("digest %s: no reports, skipping", date)
         return None
+
+    if summary_only:
+        # Extractive summary: original accepted reports only, no generated evidence or skill deltas.
+        summary = "用户已提交的学习汇报 / Submitted learning reports:\n" + "\n".join(
+            f"- {report['text']}" for report in reports
+        )
+        return career_api.digest_summary(date, summary[:1000])
 
     allowed_skill_ids = {sid for r in reports for sid in r["skill_ids"]}
 

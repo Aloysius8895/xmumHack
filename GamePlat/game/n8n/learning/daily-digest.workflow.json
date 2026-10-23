@@ -1,0 +1,172 @@
+{
+  "name": "CareerSphere: yesterday learning digest (summary only)",
+  "nodes": [
+    {
+      "id": "91b15583bc24c3aa715f9e18af08c973",
+      "name": "Setup: daily digest",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -300
+      ],
+      "parameters": {
+        "width": 1260,
+        "height": 260,
+        "content": "## Yesterday's real reports → daily summary\nDaily 00:05 Asia/Kuala_Lumpur, or manually. Set chatbotBaseUrl and ownerTelegramId in Yesterday and owner.\n\nSelect Header Auth in Build summary from accepted reports: `X-Cron-Token` = chatbot `CRON_TOKEN`. Set chatbot `DIGEST_SCHEDULE_ENABLED=false` so only n8n schedules digests. The SAME single Telegram owner must be in chatbot TELEGRAM_ALLOWED_USER_IDS.\n\nUses the EXISTING /internal/digest/run endpoint with summary_only=true. It selects this owner's accepted reports from yesterday, quotes the actual text, and sends POST /api/integrations/digest with skills: []. No second AI, invented evidence, mastery delta or extra points. Empty days skip. Game deduplicates each date."
+      }
+    },
+    {
+      "id": "79c21a4f33ef5db3ccd9e0edc8b3a675",
+      "name": "Every day 00:05 MYT",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "5 0 * * *"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "9847f6cb62cbf39db21f1fc7e19742e4",
+      "name": "Run yesterday now",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "4386325dd589a7bce6b144e39979b5f8",
+      "name": "Yesterday and owner",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        260,
+        80
+      ],
+      "parameters": {
+        "jsCode": "const SETTINGS = {\n    \"chatbotBaseUrl\": \"http://localhost:8000\",\n    \"ownerTelegramId\": \"\"\n}\n// Pure helpers shared by the generated n8n Code nodes and local tests.\nconst LEARNING_SETTINGS = {\n    chatbotBaseUrl: 'http://localhost:8000',\n    ownerTelegramId: '', // numeric Telegram from.id of the ONE player of this local demo\n}\n\nfunction normalizeTelegram(update, settings)\n{\n    if(!/^\\d+$/.test(String(settings.ownerTelegramId)))\n        throw new Error('Set ownerTelegramId to the single demo owner. Match chatbot TELEGRAM_ALLOWED_USER_IDS.')\n    if(!Number.isInteger(update.update_id) || update.edited_message)\n        return null\n    const event = update.message ?? update.callback_query\n    const message = update.message ?? update.callback_query?.message\n    if(!event || !message || message.chat?.type !== 'private' || String(event.from?.id) !== String(settings.ownerTelegramId))\n        return null\n    return {\n        chatbotBaseUrl: String(settings.chatbotBaseUrl).replace(/\\/+$/, ''),\n        kind: update.callback_query ? 'callback' : typeof message.text === 'string' ? 'text' : 'attachment',\n        senderId: String(event.from.id),\n        chatId: String(message.chat.id),\n        eventId: `tg:${update.update_id}`,\n        update, // forward unchanged: confirmation buttons, IDs and routing belong to the existing chatbot\n    }\n}\n\nfunction yesterdayInMalaysia(now = new Date())\n{\n    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kuala_Lumpur', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now).map(({ type, value }) => [ type, value ]))\n    return new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day) - 1)).toISOString().slice(0, 10)\n}\n\nif(!/^\\d+$/.test(String(SETTINGS.ownerTelegramId))) throw new Error('Set ownerTelegramId to the single demo owner.');\nreturn [{json: {...SETTINGS, chatbotBaseUrl: SETTINGS.chatbotBaseUrl.replace(/\\/+$/, ''), date: yesterdayInMalaysia()}}];"
+      }
+    },
+    {
+      "id": "5f2b8e12a21f3efce22586305948bff4",
+      "name": "Build summary from accepted reports",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        520,
+        80
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.chatbotBaseUrl }}/internal/digest/run",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "date",
+              "value": "={{ $json.date }}"
+            },
+            {
+              "name": "summary_only",
+              "value": "true"
+            },
+            {
+              "name": "telegram_user_id",
+              "value": "={{ $json.ownerTelegramId }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "9e2204a25d103ddb8c889a4869df689d",
+      "name": "Digest run summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        780,
+        80
+      ],
+      "parameters": {
+        "jsCode": "const response = $input.first().json; return [{json: {date: $('Yesterday and owner').first().json.date, status: response.ran ? 'saved-or-already-saved' : 'skipped-no-reports', summaryOnly: true, result: response.result}}];"
+      }
+    }
+  ],
+  "connections": {
+    "Every day 00:05 MYT": {
+      "main": [
+        [
+          {
+            "node": "Yesterday and owner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run yesterday now": {
+      "main": [
+        [
+          {
+            "node": "Yesterday and owner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yesterday and owner": {
+      "main": [
+        [
+          {
+            "node": "Build summary from accepted reports",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build summary from accepted reports": {
+      "main": [
+        [
+          {
+            "node": "Digest run summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kuala_Lumpur"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

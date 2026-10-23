@@ -3,6 +3,7 @@ import { AltarArea } from './AltarArea.js'
 import { CookieArea } from './CookieArea.js'
 import { LandingArea } from './LandingArea.js'
 import { StaticArea } from './StaticArea.js'
+import { TrendsArea } from './TrendsArea.js'
 import { CareerArea } from './CareerArea.js'
 import { SocialArea } from './SocialArea.js'
 import { ToiletArea } from './ToiletArea.js'
@@ -27,7 +28,7 @@ export class Areas
             [ 'cookie', CookieArea ],
             [ 'lab', StaticArea ], // Plain building for now (LabArea: the original interactive lab)
             [ 'landing', LandingArea ],
-            [ 'projects', StaticArea ], // Plain building for now (ProjectsArea: the original interactive projects)
+            [ 'projects', TrendsArea ], // Plain building that opens the job market trends (ProjectsArea: the original interactive projects)
             [ 'social', SocialArea ],
             [ 'toilet', ToiletArea ],
             [ 'timeMachine', TimeMachineArea ],

@@ -99,10 +99,7 @@ const responses = $input.all().map((item, index) =>
 })
 
 const { payload, report } = aggregate(responses, settings, CATALOG, new Date())
-if(!Object.keys(payload.careers).length)
-    throw new Error('Every JSearch query failed, nothing pushed: ' + JSON.stringify(report.failedCareers).slice(0, 800))
-
-return [ { json: { apiBaseUrl: String(settings.apiBaseUrl).replace(/\\/+$/, ''), payload, report } } ]
+return [ { json: { apiBaseUrl: String(settings.apiBaseUrl).replace(/\\/+$/, ''), notificationChatId: settings.notificationChatId, canPush: report.complete && Object.keys(payload.careers).length > 0, payload, report } } ]
 `
 
     const summaryCode = `${banner}
@@ -116,6 +113,9 @@ return [ {
         postings: Object.fromEntries(Object.entries(payload.careers).map(([ id, career ]) => [ id, career.postings ])),
         topSkills: Object.fromEntries(Object.entries(payload.careers).map(([ id, career ]) => [ id, career.topSkills ])),
         report,
+        archive: result.collection,
+        notificationChatId: $('Aggregate skills').first().json.notificationChatId,
+        notification: 'CareerSphere market ' + result.period + ': saved ' + Object.values(payload.careers).reduce((sum, career) => sum + career.postings, 0) + ' career samples. New IDs: ' + (result.collection?.newJobs ?? 'n/a') + '. This is a bounded sample, not national totals.',
     },
 } ]
 `
@@ -125,7 +125,7 @@ return [ {
             '## Job market trends → game\n' +
             'Weekly (Mon 08:00 MYT) or by hand: JSearch (Google for Jobs: LinkedIn, Indeed, JobStreet…) postings per career → keyword count of the skills of `server/careers.js` → `POST /api/integrations/market`.\n\n' +
             '**Setup**: 1) credential *JSearch (RapidAPI key)*: Header Auth, name `X-RapidAPI-Key`. 2) credential *Career platform token*: Header Auth, name `Authorization`, value `Bearer <INTEGRATION_TOKEN>`. 3) `apiBaseUrl` in **Build queries**.\n\n' +
-            'Only counts are sent: descriptions are read for keywords and never stored. Logic lives in `n8n/market/pipeline.js`.'),
+            'Based on template #10918: use the existing game save instead of Google Sheets for history and job identity fingerprints. Descriptions are never stored. Failed/missing queries block the entire push; existing weekly data is kept. Weekly totals include previously seen jobs. Optional Telegram notifications: set `notificationChatId` in Build queries and select a Telegram credential. Default sample: 1 requested page per query.'),
         node('Every Monday 08:00', 'n8n-nodes-base.scheduleTrigger', 1.2, [ 0, 0 ], {
             rule: { interval: [ { field: 'cronExpression', expression: '0 8 * * 1' } ] },
         }),
@@ -147,7 +147,10 @@ return [ {
             options: { batching: { batch: { batchSize: 1, batchInterval: 1500 } }, timeout: 60000 },
         }, { onError: 'continueRegularOutput' }), // a failed search becomes an { error } item, Aggregate skills skips it
         node('Aggregate skills', 'n8n-nodes-base.code', 2, [ 720, 80 ], { jsCode: aggregateCode }),
-        node('Push to game server', 'n8n-nodes-base.httpRequest', 4.2, [ 960, 80 ], {
+        node('Collection complete?', 'n8n-nodes-base.if', 2.2, [ 960, 80 ], {
+            conditions: { options: { caseSensitive: true, leftValue: '', typeValidation: 'strict', version: 2 }, conditions: [ { id: stableId('complete-condition'), leftValue: '={{ $json.canPush }}', rightValue: true, operator: { type: 'boolean', operation: 'true', singleValue: true } } ], combinator: 'and' },
+        }),
+        node('Push to game server', 'n8n-nodes-base.httpRequest', 4.2, [ 1200, 0 ], {
             method: 'POST',
             url: '={{ $json.apiBaseUrl }}/api/integrations/market',
             authentication: 'genericCredentialType',
@@ -157,7 +160,15 @@ return [ {
             jsonBody: '={{ JSON.stringify($json.payload) }}',
             options: { timeout: 30000 },
         }, { retryOnFail: true, maxTries: 3, waitBetweenTries: 5000 }),
-        node('Run summary', 'n8n-nodes-base.code', 2, [ 1200, 80 ], { jsCode: summaryCode }),
+        node('Run summary', 'n8n-nodes-base.code', 2, [ 1440, 0 ], { jsCode: summaryCode }),
+        node('Rejected collection', 'n8n-nodes-base.code', 2, [ 1200, 240 ], { jsCode: "const data = $input.first().json; return [{json: {...data, notification: 'CareerSphere: market collection incomplete. Kept previous data. Successful queries: ' + data.report.successfulQueries + '/' + data.report.expectedQueries + '. Check this n8n execution.'}}];" }),
+        ...[ [ 'Success', 0 ], [ 'Failure', 240 ] ].flatMap(([ label, y ]) => [
+            node(`${label} notification enabled?`, 'n8n-nodes-base.if', 2.2, [ 1680, y ], {
+                conditions: { options: { caseSensitive: true, leftValue: '', typeValidation: 'strict', version: 2 }, conditions: [ { id: stableId(`${label}-notify-condition`), leftValue: '={{ Boolean($json.notificationChatId) }}', rightValue: true, operator: { type: 'boolean', operation: 'true', singleValue: true } } ], combinator: 'and' },
+            }),
+            node(`${label} Telegram notification`, 'n8n-nodes-base.telegram', 1.2, [ 1920, y ], { resource: 'message', operation: 'sendMessage', chatId: '={{ $json.notificationChatId }}', text: '={{ $json.notification }}', additionalFields: { appendAttribution: false, parse_mode: 'HTML' } }, { onError: 'continueRegularOutput' }),
+        ]),
+        node('Stop incomplete collection', 'n8n-nodes-base.stopAndError', 1, [ 2160, 340 ], { errorMessage: 'Incomplete JSearch collection. Nothing pushed; previous game data retained. Inspect Aggregate skills.' }),
     ]
 
     const link = (to) => ({ main: [ [ { node: to, type: 'main', index: 0 } ] ] })
@@ -166,8 +177,14 @@ return [ {
         'Run now (demo)': link('Build queries'),
         'Build queries': link('JSearch search'),
         'JSearch search': link('Aggregate skills'),
-        'Aggregate skills': link('Push to game server'),
+        'Aggregate skills': link('Collection complete?'),
+        'Collection complete?': { main: [ [ { node: 'Push to game server', type: 'main', index: 0 } ], [ { node: 'Rejected collection', type: 'main', index: 0 } ] ] },
         'Push to game server': link('Run summary'),
+        'Run summary': link('Success notification enabled?'),
+        'Success notification enabled?': { main: [ [ { node: 'Success Telegram notification', type: 'main', index: 0 } ], [] ] },
+        'Rejected collection': link('Failure notification enabled?'),
+        'Failure notification enabled?': { main: [ [ { node: 'Failure Telegram notification', type: 'main', index: 0 } ], [ { node: 'Stop incomplete collection', type: 'main', index: 0 } ] ] },
+        'Failure Telegram notification': link('Stop incomplete collection'),
     }
 
     return {

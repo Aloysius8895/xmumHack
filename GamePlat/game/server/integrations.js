@@ -61,6 +61,8 @@ export function authorize(request)
  */
 export function receiveMarket(body)
 {
+    if(body.collection && body.collection.complete !== true)
+        throw new IntegrationError(400, 'incomplete-collection')
     const period = String(body.period ?? '')
     if(!/^\d{4}-\d{2}(-\d{2})?$/.test(period))
         throw new IntegrationError(400, 'bad-period')
@@ -91,13 +93,75 @@ export function receiveMarket(body)
     if(!Object.keys(careers).length)
         throw new IntegrationError(400, 'no-known-career')
 
-    const snapshot = { period, backfilled: body.backfilled === true, source: String(body.source ?? '').slice(0, 120), collectedAt: String(body.collectedAt ?? new Date().toISOString()), receivedAt: new Date().toISOString(), careers }
+    const collectedAt = String(body.collectedAt ?? new Date().toISOString())
+    const collection = recordCollection(market, body.collection, careers, collectedAt)
+    const snapshot = { period, backfilled: body.backfilled === true, source: String(body.source ?? '').slice(0, 120), collectedAt, receivedAt: new Date().toISOString(), careers, ...(collection ? { collection } : {}) }
     history.push(snapshot)
     history.sort((a, b) => a.period.localeCompare(b.period))
     history.splice(0, Math.max(0, history.length - MARKET_HISTORY))
     computeChanges(history)
-    store.saveMarket({ latest: history.at(- 1), previous: history.at(- 2) ?? null, history })
-    return { period, careers: Object.keys(careers) }
+    store.saveMarket({ latest: history.at(- 1), previous: history.at(- 2) ?? null, history, ...(market.jobArchive ? { jobArchive: market.jobArchive } : {}) })
+    return { period, careers: Object.keys(careers), ...(collection ? { collection } : {}) }
+}
+
+// Template #10918's historical identity comparison, without removing known jobs from weekly samples.
+// Persist fingerprints and counts, never descriptions or recruiter details. Keep the last 50,000 identities.
+function recordCollection(market, collection, careers, collectedAt)
+{
+    if(!collection)
+        return null
+    if(collection.source !== 'jsearch' || !Array.isArray(collection.records) || collection.records.length > 20000 || !Number.isInteger(collection.expectedQueries) || collection.expectedQueries < 1 || collection.successfulQueries !== collection.expectedQueries)
+        throw new IntegrationError(400, 'bad-collection')
+    const archive = { ...(market.jobArchive ?? {}) }
+    const unique = new Set()
+    const perCareer = {}
+    let newJobs = 0
+    for(const record of collection.records)
+    {
+        if(!record || !careers[record.careerId] || typeof record.id !== 'string' || !record.id || record.id.length > 2000)
+            throw new IntegrationError(400, 'bad-collection-record')
+        const fingerprint = crypto.createHash('sha256').update(`${collection.source}:${record.id}`).digest('hex')
+        const sampleKey = `${record.careerId}:${fingerprint}`
+        if(perCareer[sampleKey])
+            throw new IntegrationError(400, 'duplicate-collection-record')
+        perCareer[sampleKey] = true
+        perCareer[record.careerId] = (perCareer[record.careerId] ?? 0) + 1
+        if(!unique.has(fingerprint))
+        {
+            if(!archive[fingerprint])
+                newJobs++
+            archive[fingerprint] = { firstSeen: archive[fingerprint]?.firstSeen ?? collectedAt, lastSeen: collectedAt }
+            unique.add(fingerprint)
+        }
+    }
+    if(Object.entries(careers).some(([ id, career ]) => career.postings !== (perCareer[id] ?? 0)))
+        throw new IntegrationError(400, 'collection-count-mismatch')
+    market.jobArchive = Object.fromEntries(Object.entries(archive).sort((a, b) => a[1].lastSeen.localeCompare(b[1].lastSeen)).slice(-50000))
+    return { source: collection.source, country: String(collection.country ?? '').slice(0, 10), window: String(collection.window ?? '').slice(0, 20), numPages: collection.numPages, complete: true, expectedQueries: collection.expectedQueries, successfulQueries: collection.successfulQueries, uniqueJobs: unique.size, newJobs, seenJobs: unique.size - newJobs }
+}
+
+export function chatReceipt(save, body, content)
+{
+    if(!body.messageId)
+        return null // compatibility for existing direct integrations
+    if(typeof body.from !== 'string' || !body.from || typeof body.messageId !== 'string' || body.messageId.length > 200)
+        throw new IntegrationError(400, 'bad-message-id')
+    const key = crypto.createHash('sha256').update(JSON.stringify([ body.channel, body.from, body.messageId ])).digest('hex')
+    const fingerprint = crypto.createHash('sha256').update(content).digest('hex')
+    const previous = save.integrationReceipts?.[key]
+    if(previous && previous.fingerprint !== fingerprint)
+        throw new IntegrationError(409, 'message-id-conflict')
+    return { key, fingerprint, previous: previous?.result }
+}
+
+export function rememberChat(save, receipt, result)
+{
+    if(receipt)
+    {
+        const entries = Object.entries(save.integrationReceipts ?? {})
+        save.integrationReceipts = Object.fromEntries([ ...entries.slice(-4999), [ receipt.key, { fingerprint: receipt.fingerprint, result } ] ])
+    }
+    return result
 }
 
 /**
@@ -137,8 +201,14 @@ export function applyDigest(save, body)
     if(!Array.isArray(body.skills))
         throw new IntegrationError(400, 'bad-skills')
 
+    const existing = save.digests.find((digest) => digest.date === date)
+    if(existing)
+        return existing // retried daily jobs must not apply delta twice
+    if(save.digestAppliedDates?.includes(date))
+        return { date, summary: '', skills: [], duplicate: true }
+
     const changes = []
-    for(const item of body.skills)
+    for(const item of body.summaryOnly === true ? [] : body.skills)
     {
         if(!item || !SKILLS[item.skillId])
             continue
@@ -154,6 +224,7 @@ export function applyDigest(save, body)
     }
 
     const digest = { date, summary: String(body.summary ?? '').slice(0, 1000), skills: changes, at: new Date().toISOString() }
+    save.digestAppliedDates = [ ...new Set([ ...(save.digestAppliedDates ?? []), ...save.digests.map((item) => item.date), date ]) ]
     save.digests = [ digest, ...save.digests.filter((other) => other.date !== date) ].slice(0, MAX_DIGESTS)
     return digest
 }

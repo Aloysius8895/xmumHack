@@ -62,6 +62,9 @@ def handle_text(channel: Channel, uid: str, raw_id: str, text: str) -> None:
 def handle_button(channel: Channel, uid: str, button_id: str) -> None:
     if button_id not in {"report_yes", "report_no"}:
         return
+    if not _is_allowed(channel, uid.removeprefix("tg:")):
+        channel.send_text(uid, messages.t("demo_note"))
+        return
     pending = db.pop_pending(uid)
     if not pending:
         channel.send_text(uid, messages.t("no_pending"))
@@ -91,7 +94,7 @@ def _submit_report(channel: Channel, uid: str, text: str, lang: str) -> None:
 
     log_entry = result.get("log")
     reply_text = result.get("reply") or messages.t("fallback")
-    if log_entry:
+    if log_entry and log_entry.get("verdict", "learned") == "learned":
         db.save_report(uid, text, log_entry.get("summary"), log_entry.get("skillIds") or [],
                         log_entry.get("advanced") or [], log_entry.get("points"))
     db.add_message(uid, "user", text)

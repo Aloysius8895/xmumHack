@@ -9,8 +9,8 @@
     "preview": "vite preview",
     "compress": "node scripts/compress.js static/",
     "server": "node server/index.js",
-    "n8n:build": "node n8n/market/build-workflow.mjs",
-    "n8n:test": "node --test n8n/market/pipeline.test.mjs",
+    "n8n:build": "node n8n/build-all.mjs",
+    "n8n:test": "node --test n8n/market/pipeline.test.mjs n8n/learning/pipeline.test.mjs server/workflow-integrations.test.mjs",
     "n8n:run": "node n8n/market/run-local.mjs"
   },
   "author": "",

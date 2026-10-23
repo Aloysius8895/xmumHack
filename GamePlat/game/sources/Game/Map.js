@@ -60,7 +60,7 @@ export class Map
             { name: 'Cookie', respawnName: 'cookie', offset: { x: -0.02, y: -0.01 } },
             { name: 'Lab', respawnName: 'lab', offset: { x: -0.03, y: 0 } },
             { name: 'Landing', respawnName: 'landing', offset: { x: 0.02, y: 0 } },
-            { name: 'Projects', respawnName: 'projects', offset: { x: 0, y: -0.02 } },
+            { name: 'Trends', respawnName: 'projects', offset: { x: 0, y: -0.02 } },
             { name: SOCIAL_TEAM_NAME, respawnName: 'social', offset: { x: -0.01, y: -0.04 } },
             { name: 'Time Machine', respawnName: 'timeMachine', offset: { x: 0, y: 0 } },
         ]

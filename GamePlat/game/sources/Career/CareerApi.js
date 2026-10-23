@@ -60,6 +60,49 @@ export class CareerApi
     log(text) { return this.request('POST', 'log', { text, source: 'web' }) }
     // expert: ask the career's distilled industry elite instead of the mentor (server/experts.js)
     askMentor(careerId, question, history, file, expert = false) { return this.request('POST', 'npc/ask', { careerId, question, history, file, elite: expert }) }
+
+    /**
+     * Same question, the answer streamed (server/app.js streams, one JSON event per line): onText(piece) as it comes,
+     * resolves with the whole answer. No busy lock: the dialogue shows its own thinking. signal: abort when leaving
+     */
+    async askMentorStream(careerId, question, history, file, expert, onText, signal)
+    {
+        const fail = (code) => Object.assign(new Error(code), { code })
+        const response = await fetch('./api/npc/ask/stream', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ lang: getLang(), ...(this.demo ? { demo: true } : {}), careerId, question, history, file, elite: expert }),
+            signal,
+        })
+        if(!response.ok)
+            throw fail((await response.json().catch(() => ({}))).error ?? 'generic')
+
+        const reader = response.body.pipeThrough(new TextDecoderStream()).getReader()
+        let buffer = ''
+        let answer = null
+        while(true)
+        {
+            const { value, done } = await reader.read()
+            if(done)
+                break
+            buffer += value
+            const lines = buffer.split('\n')
+            buffer = lines.pop()
+            for(const line of lines.filter((item) => item.trim()))
+            {
+                const event = JSON.parse(line)
+                if(event.error)
+                    throw fail(event.error)
+                if(event.text)
+                    onText(event.text)
+                if(typeof event.answer === 'string')
+                    answer = event.answer
+            }
+        }
+        if(answer === null)
+            throw fail('generic')
+        return answer
+    }
     setPlayerName(name) { return this.request('POST', 'player', { name }) }
     addFriend(code) { return this.request('POST', 'friends', { code }) }
     removeFriend(id) { return this.request('POST', 'friends/remove', { id }) }

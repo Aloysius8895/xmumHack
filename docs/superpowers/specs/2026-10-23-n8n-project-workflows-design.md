@@ -1,0 +1,13 @@
+# CareerSphere n8n workflow adaptation
+
+The user's supplied recommendation and request to implement it authorize this adaptation. Reuse the ideas of n8n templates 10918 and 9254, with the project's actual Node.js API and existing Python chatbot as the integration boundaries.
+
+Three independently importable, inactive workflows use Asia/Kuala_Lumpur: weekly market collection; Telegram ingress forwarding to the existing chatbot; yesterday's digest at 00:05. Avoid Google Sheets because the game already persists weekly history, and avoid rebuilding the chatbot's AI, buttons, and replies. The existing game has a single local player, so explicitly require the demo owner's Telegram ID in the ingress allowlist; this is not a multi-user account binding system.
+
+Market queries keep the six project career IDs and catalog skill mappings. Default to one requested page per query. Check every expected query and country metadata, reject incomplete collections without replacing a successful snapshot, preserve per-week samples, archive minimal job identity fingerprints, and distinguish newly observed IDs from weekly sample totals. Telegram success/failure notifications are optional. No raw job descriptions go into the game save. The monthly trends endpoint remains separate: weekly rolling samples must never be added up as monthly ads.
+
+Telegram receives message and callback_query updates, ignores groups and edits, separates text/attachments/callbacks visibly, then forwards the original update using the existing webhook secret to the chatbot. The chatbot remains responsible for its existing replies and confirmation behavior. Provide a synchronous n8n ingress endpoint so processing exceptions are visible to n8n. Backend message idempotency prevents duplicate task progress on HTTP retries; the existing SQLite delivery deduplication is retained.
+
+The daily workflow calls the chatbot's authenticated internal digest endpoint for yesterday. A summary-only option extracts actual saved report text, sends skills: [], and does not ask an AI to award mastery or invent evidence. The game's digest endpoint deduplicates a date. Empty days skip. Existing direct chatbot and legacy digest behavior remain available, with instructions to disable its internal scheduler when using n8n.
+
+Verification: generated Code nodes execute against fixtures, JSON exports stay in sync with builders, incomplete/country filtering and cross-period identity behavior are tested, backend retry/idempotency tests run with an isolated SAVE_DIR, and Python tests mock every external service. Deliver a local HTML overview plus exact import, credential, host, and webhook setup instructions. No live bot registration or paid API call is part of local validation.

@@ -214,30 +214,52 @@ export function conformSlot(container, key, schema, path)
     return conform(value, schema, path)
 }
 
+// DeepSeek thinks before answering the dialogue (reply) unless DEEPSEEK_THINKING=0: thinking tokens bill as output and
+// take seconds, effort low keeps both small. JSON features (ask) can't think there: they need a forced tool call
+const DEEPSEEK_THINKING = DEEPSEEK && process.env.DEEPSEEK_THINKING !== '0'
+
 /**
  * Plain text reply to a conversation (messages: [ { role: 'user' | 'assistant', content } ], ends with the user)
+ * onText(delta): called with each piece of the answer as it streams in (the thinking itself is not passed on)
+ * signal: AbortSignal that cancels the call (player left the dialogue)
  */
-export async function reply({ system, messages, effort = 'low', maxTokens = 2000 })
+export async function reply({ system, messages, effort = 'low', maxTokens = 2000, onText = null, signal = null })
 {
+    let params
+    if(COMPATIBLE)
+    {
+        checkContent(messages)
+        params = DEEPSEEK_THINKING
+            // budget_tokens is ignored by DeepSeek, the Anthropic API needs it; the thinking counts in max_tokens
+            ? { model: MODEL, max_tokens: maxTokens + 6000, system, messages, thinking: { type: 'enabled', budget_tokens: 4000 }, output_config: { effort } }
+            : { model: MODEL, max_tokens: maxTokens, system, messages, thinking: { type: 'disabled' } }
+    }
+    else
+    {
+        params = {
+            model: MODEL,
+            max_tokens: maxTokens,
+            betas: [ 'server-side-fallback-2026-07-01' ],
+            fallbacks: 'default',
+            system,
+            messages,
+            output_config: { effort },
+        }
+    }
+
     let response
     try
     {
-        if(COMPATIBLE)
+        const messagesApi = COMPATIBLE ? getClient().messages : getClient().beta.messages
+        if(onText)
         {
-            checkContent(messages)
-            response = await getClient().messages.create({ model: MODEL, max_tokens: maxTokens, system, messages, thinking: { type: 'disabled' } })
+            const stream = messagesApi.stream(params, { signal: signal ?? undefined })
+            stream.on('text', (delta) => onText(delta))
+            response = await stream.finalMessage()
         }
         else
         {
-            response = await getClient().beta.messages.create({
-                model: MODEL,
-                max_tokens: maxTokens,
-                betas: [ 'server-side-fallback-2026-07-01' ],
-                fallbacks: 'default',
-                system,
-                messages,
-                output_config: { effort },
-            })
+            response = await messagesApi.create(params, { signal: signal ?? undefined })
         }
     }
     catch(error)

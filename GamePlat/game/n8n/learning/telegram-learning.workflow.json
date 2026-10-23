@@ -1,0 +1,302 @@
+{
+  "name": "CareerSphere: Telegram learning reports (existing chatbot)",
+  "nodes": [
+    {
+      "id": "f090f8f254c6278e4bc8238e8bb6e7c3",
+      "name": "Setup: Telegram bridge",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        -300
+      ],
+      "parameters": {
+        "width": 1480,
+        "height": 260,
+        "content": "## Telegram → existing CareerSphere chatbot\nInspired by template #9254. This game has ONE local player. Set `ownerTelegramId` in Normalize private update and the SAME single ID in chatbot `TELEGRAM_ALLOWED_USER_IDS`.\n\n1. Select a Telegram credential in Telegram updates. 2. Set chatbotBaseUrl. 3. Select Header Auth in Forward to existing chatbot: `X-Telegram-Bot-Api-Secret-Token` = chatbot `TELEGRAM_WEBHOOK_SECRET`.\n\nChatbot handles classification, confirmation buttons, POST /api/integrations/chat, persistence and replies. n8n does not send a second reply. Attachments receive the existing text-only response. Only one Telegram webhook per bot: activating this workflow replaces the direct Python webhook. Keep chatbot TELEGRAM_BOT_TOKEN set for replies. Public HTTPS WEBHOOK_URL required for n8n."
+      }
+    },
+    {
+      "id": "b73836128ae880cd77fac21f9d6a26f7",
+      "name": "Telegram updates",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        40
+      ],
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "webhookId": "3dc004280f0a929531f2fb3cf2dcbffa"
+    },
+    {
+      "id": "c3dedbfc409ee6d5bd4e6cc611e92e33",
+      "name": "Normalize private update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        40
+      ],
+      "parameters": {
+        "jsCode": "const SETTINGS = {\n    \"chatbotBaseUrl\": \"http://localhost:8000\",\n    \"ownerTelegramId\": \"\"\n}\n// Pure helpers shared by the generated n8n Code nodes and local tests.\nconst LEARNING_SETTINGS = {\n    chatbotBaseUrl: 'http://localhost:8000',\n    ownerTelegramId: '', // numeric Telegram from.id of the ONE player of this local demo\n}\n\nfunction normalizeTelegram(update, settings)\n{\n    if(!/^\\d+$/.test(String(settings.ownerTelegramId)))\n        throw new Error('Set ownerTelegramId to the single demo owner. Match chatbot TELEGRAM_ALLOWED_USER_IDS.')\n    if(!Number.isInteger(update.update_id) || update.edited_message)\n        return null\n    const event = update.message ?? update.callback_query\n    const message = update.message ?? update.callback_query?.message\n    if(!event || !message || message.chat?.type !== 'private' || String(event.from?.id) !== String(settings.ownerTelegramId))\n        return null\n    return {\n        chatbotBaseUrl: String(settings.chatbotBaseUrl).replace(/\\/+$/, ''),\n        kind: update.callback_query ? 'callback' : typeof message.text === 'string' ? 'text' : 'attachment',\n        senderId: String(event.from.id),\n        chatId: String(message.chat.id),\n        eventId: `tg:${update.update_id}`,\n        update, // forward unchanged: confirmation buttons, IDs and routing belong to the existing chatbot\n    }\n}\n\nfunction yesterdayInMalaysia(now = new Date())\n{\n    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kuala_Lumpur', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now).map(({ type, value }) => [ type, value ]))\n    return new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day) - 1)).toISOString().slice(0, 10)\n}\n\nreturn $input.all().flatMap(item => { const data = normalizeTelegram(item.json, SETTINGS); return data ? [{json: data}] : []; });"
+      }
+    },
+    {
+      "id": "761106039116c8b835954ba0ac72b9c0",
+      "name": "Text report?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        40
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "82a09951db4d033486fa1189ffbfe866",
+              "leftValue": "={{ $json.kind === 'text' }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "8d7e96145792a6630a78db23cf75fb32",
+      "name": "Text and commands",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        720,
+        -60
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "8c00687c25a3d552f497847c7c499232",
+      "name": "Confirmation callback?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        160
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d48b603d1b3ae3c619523c047122f931",
+              "leftValue": "={{ $json.kind === 'callback' }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "c8f13e4983330854d243423738337428",
+      "name": "Confirmation buttons",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        960,
+        100
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "428eb4fdf8dad1d77ee8d6fb2a745220",
+      "name": "Attachment: text-only reply",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        960,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "4667d4005fe23be5f5bce7dcff61d219",
+      "name": "Forward to existing chatbot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        40
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.chatbotBaseUrl }}/internal/n8n/telegram",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.update) }}",
+        "options": {
+          "timeout": 180000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "id": "276231ea8a31ce68c5c9b85d6792bf11",
+      "name": "Bridge result (chatbot sends reply)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        40
+      ],
+      "parameters": {
+        "jsCode": "return $input.all().map(item => ({json: {status: item.json.status, replyHandledBy: item.json.replyHandledBy, note: 'The existing chatbot classifies messages, calls the game API and sends Telegram replies.'}}));"
+      }
+    }
+  ],
+  "connections": {
+    "Telegram updates": {
+      "main": [
+        [
+          {
+            "node": "Normalize private update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize private update": {
+      "main": [
+        [
+          {
+            "node": "Text report?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text report?": {
+      "main": [
+        [
+          {
+            "node": "Text and commands",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Confirmation callback?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text and commands": {
+      "main": [
+        [
+          {
+            "node": "Forward to existing chatbot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmation callback?": {
+      "main": [
+        [
+          {
+            "node": "Confirmation buttons",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Attachment: text-only reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmation buttons": {
+      "main": [
+        [
+          {
+            "node": "Forward to existing chatbot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attachment: text-only reply": {
+      "main": [
+        [
+          {
+            "node": "Forward to existing chatbot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Forward to existing chatbot": {
+      "main": [
+        [
+          {
+            "node": "Bridge result (chatbot sends reply)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kuala_Lumpur"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

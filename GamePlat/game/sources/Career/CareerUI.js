@@ -1798,6 +1798,10 @@ export class CareerUI
         if(!this.dialogue)
             return
         clearInterval(this.typingInterval)
+        this.stopStreamTimers()
+        // A question still being answered: stop it (the server stops the AI call) and the thought bubble
+        this.dialogue.aborter?.abort()
+        this.game.career.world.setThinking(null)
         this.dialogue = null
         this.dialogueElement.classList.remove('is-open')
         this.dialogueElement.setAttribute('aria-hidden', 'true')
@@ -1863,13 +1867,17 @@ export class CareerUI
                 input: true,
                 choices: [],
             },
+            // Waiting for the first words: ". .. ..." in the box, a thought bubble over the mentor (CareerWorld.setThinking)
             thinking: {
-                lines: [ t('npc.thinking') ],
+                lines: [ '' ],
+                dots: true,
                 waiting: true,
                 choices: [],
             },
+            // Typed out as it streams in, paged on sentence ends (typeStream)
             answer: {
-                lines: this.dialogue?.answerPages ?? [ '' ],
+                lines: [ '' ],
+                streamed: true,
                 choices: [
                     { text: t('npc.ask.more'), to: 'ask' },
                     { text: t('npc.ask.menu'), to: 'greet' },
@@ -1928,7 +1936,8 @@ export class CareerUI
     }
 
     /**
-     * Send the typed question, the mentor "thinks" meanwhile, then the answer is paged in the dialogue box
+     * Send the typed question: the mentor thinks (". .. ..." and a thought bubble) until the first words arrive,
+     * then the answer is typed out as it streams in (typeStream)
      */
     async askMentor(question)
     {
@@ -1939,15 +1948,32 @@ export class CareerUI
             return
 
         dialogue.history ??= []
-        dialogue.node = 'thinking'
-        dialogue.page = 0
-        this.renderDialogue()
+        const stream = dialogue.stream = { text: '', done: false, at: 0, page: 0, full: false }
+        dialogue.aborter = new AbortController()
+        this.showDialogueNode('thinking')
+        this.game.career.world.setThinking(dialogue.careerId)
 
-        let answer
+        // First words: the thought bubble pops, the answer box takes over
+        const onText = (piece) =>
+        {
+            if(this.dialogue !== dialogue)
+                return
+            stream.text += piece
+            if(dialogue.node === 'thinking')
+            {
+                this.game.career.world.setThinking(null)
+                this.showDialogueNode('answer')
+            }
+            else
+                this.typeStream()
+        }
+
         try
         {
             const file = attachment ? await readFile(attachment) : null
-            answer = (await this.api.askMentor(dialogue.careerId, question, dialogue.history, file, Boolean(dialogue.expert))).answer
+            const answer = await this.api.askMentorStream(dialogue.careerId, question, dialogue.history, file, Boolean(dialogue.expert), onText, dialogue.aborter.signal)
+            if(!stream.text.trim())
+                stream.text = answer
             // Later turns only keep the file name, the file itself is sent once
             dialogue.history.push({ role: 'user', content: attachment ? `${question}\n[${attachment.name}]` : question }, { role: 'assistant', content: answer })
             dialogue.file = null
@@ -1957,19 +1983,115 @@ export class CareerUI
         }
         catch(error)
         {
+            // Left meanwhile (the request was aborted)
+            if(this.dialogue !== dialogue)
+                return
             const key = `error.${error.code}`
-            answer = t('npc.askError', { reason: t(key) === key ? t('error.generic') : t(key) })
+            const message = t('npc.askError', { reason: t(key) === key ? t('error.generic') : t(key) })
+            stream.text = stream.text.trim() ? `${stream.text}\n${message}` : message
         }
 
-        // Left meanwhile
         if(this.dialogue !== dialogue)
             return
-        dialogue.answerPages = this.pageText(answer)
+        this.game.career.world.setThinking(null)
+        stream.done = true
+        if(dialogue.node === 'thinking')
+            this.showDialogueNode('answer')
+        else
+            this.typeStream()
+    }
+
+    showDialogueNode(node)
+    {
+        const dialogue = this.dialogue
         dialogue.turn = (dialogue.turn ?? 0) + 1
-        dialogue.node = 'answer'
-        dialogue.page = 0
-        dialogue.selected = 0
+        Object.assign(dialogue, { node, page: 0, selected: 0 })
         this.renderDialogue()
+    }
+
+    /**
+     * Streamed answer typed out quickly as it arrives, like a chat assistant. A page ends at the first sentence end
+     * once it is long enough (a paragraph break earlier, any space when a sentence runs on): the typing waits there
+     * for Enter while the rest keeps arriving
+     */
+    typeStream()
+    {
+        const dialogue = this.dialogue
+        if(!dialogue?.stream || dialogue.node !== 'answer' || this.streamInterval)
+            return
+        this.dialogueElement.classList.remove('is-typed', 'has-choices')
+        dialogue.typing = true
+        this.streamInterval = setInterval(() => this.streamStep(), getLang() === 'zh' ? 28 : 12)
+        this.streamStep()
+    }
+
+    // fast: Enter while typing, everything received up to the page end at once
+    streamStep(fast = false)
+    {
+        const dialogue = this.dialogue
+        const stream = dialogue?.stream
+        const line = this.dialogueElement.querySelector('.career-dialogue-line')
+        if(!stream || dialogue.node !== 'answer' || !line)
+            return this.stopStreamTimers()
+
+        let steps = fast ? Infinity : getLang() === 'zh' ? 1 : 2
+        while(steps > 0 && !stream.full && stream.at < stream.text.length)
+        {
+            // No blank at the top of a page
+            if(stream.at === stream.page && /\s/.test(stream.text[stream.at]))
+            {
+                stream.page = ++stream.at
+                continue
+            }
+            stream.at++
+            stream.full = this.pageEnds(stream)
+            steps--
+        }
+        line.textContent = stream.text.slice(stream.page, stream.at)
+
+        // Page full, or all received: stop until Enter or more text
+        if(stream.full || stream.at >= stream.text.length)
+        {
+            this.stopStreamTimers()
+            // Only blanks left after a full page of a finished answer: that page is the last
+            if(stream.full && stream.done && !stream.text.slice(stream.at).trim())
+            {
+                stream.full = false
+                stream.at = stream.text.length
+            }
+            const finished = stream.done && !stream.full && stream.at >= stream.text.length
+            dialogue.typing = !finished
+            this.dialogueElement.classList.toggle('is-typed', stream.full || finished)
+            this.dialogueElement.classList.toggle('has-choices', finished)
+            if(finished)
+                this.highlightChoice()
+        }
+    }
+
+    pageEnds(stream)
+    {
+        const limit = getLang() === 'zh' ? 90 : 230
+        const length = stream.at - stream.page
+        const last = stream.text[stream.at - 1]
+        const next = stream.text[stream.at]
+        // Not received yet: can't tell whether "3." ends a sentence
+        if(next === undefined)
+            return false
+        if(next === '\n')
+            return length >= limit * 0.3
+        // After 。！？ or after . ! ? followed by a space (keeps "Node.js", "3.5", "e.g.x" whole)
+        const sentenceEnd = /[。！？]/.test(last) || (/[.!?]/.test(last) && /\s/.test(next))
+        if(sentenceEnd && length >= limit * 0.6)
+            return true
+        return length >= limit * 1.3 && (getLang() === 'zh' || /\s/.test(next))
+    }
+
+    stopStreamTimers()
+    {
+        clearInterval(this.streamInterval)
+        clearInterval(this.dotsInterval)
+        this.streamInterval = null
+        this.dotsInterval = null
     }
 
     // The file attached to the next question: a chip with its name (a thumbnail for images) and a remove button
@@ -2020,24 +2142,6 @@ export class CareerUI
         }, 3000)
     }
 
-    // Long answers split into dialogue box pages, on sentence ends
-    pageText(text)
-    {
-        const limit = getLang() === 'zh' ? 90 : 230
-        // After 。！？ or after . ! ? followed by a space (keeps "Node.js", "3.5", "e.g.x" whole)
-        const sentences = text.split(/\n+/).flatMap((paragraph) => paragraph.split(/(?<=[。！？])|(?<=[.!?])\s+/)).map((sentence) => sentence.trim()).filter(Boolean)
-        const pages = []
-        for(const sentence of sentences)
-        {
-            const lastPage = pages[pages.length - 1]
-            if(lastPage !== undefined && (lastPage + ' ' + sentence).length <= limit)
-                pages[pages.length - 1] = getLang() === 'zh' ? lastPage + sentence : `${lastPage} ${sentence}`
-            else
-                pages.push(sentence)
-        }
-        return pages.length ? pages : [ text ]
-    }
-
     currentNode()
     {
         return this.dialogueGraph(this.dialogue.careerId)[this.dialogue.node]
@@ -2073,6 +2177,20 @@ export class CareerUI
     {
         const dialogue = this.dialogue
         if(!dialogue || performance.now() - dialogue.openedAt < 250) // ignore the key press that opened it
+            return
+
+        // Streamed answer: next page, or the rest received so far at once; the choices once all is shown
+        const stream = dialogue.node === 'answer' && dialogue.stream
+        if(stream && stream.full)
+        {
+            stream.full = false
+            stream.page = stream.at
+            this.dialogueElement.querySelector('.career-dialogue-line').textContent = ''
+            return this.typeStream()
+        }
+        if(stream && stream.at < stream.text.length)
+            return this.streamStep(true)
+        if(stream && !stream.done)
             return
 
         if(dialogue.typing)
@@ -2174,11 +2292,36 @@ export class CareerUI
             </div>
         `
 
-        // Type the line out
         clearInterval(this.typingInterval)
+        this.stopStreamTimers()
+        const line = this.dialogueElement.querySelector('.career-dialogue-line')
+
+        // Thinking: dots counting up in the box until the first words arrive
+        if(node.dots)
+        {
+            let count = 0
+            line.setAttribute('aria-label', t('npc.thinking'))
+            line.textContent = '.'
+            this.dialogue.typing = false
+            this.dotsInterval = setInterval(() =>
+            {
+                count = (count + 1) % 3
+                line.textContent = '.'.repeat(count + 1)
+            }, 380)
+            return
+        }
+
+        // Streamed answer: typed out as it comes in
+        if(node.streamed && this.dialogue.stream)
+        {
+            const stream = this.dialogue.stream
+            line.textContent = stream.text.slice(stream.page, stream.at)
+            return this.typeStream()
+        }
+
+        // Type the line out
         this.typingText = node.lines[this.dialogue.page]
         const characters = [ ...this.typingText ]
-        const line = this.dialogueElement.querySelector('.career-dialogue-line')
         let index = 0
         this.dialogue.typing = true
         this.typingInterval = setInterval(() =>

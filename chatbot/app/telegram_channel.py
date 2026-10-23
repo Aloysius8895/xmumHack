@@ -32,6 +32,18 @@ def handle_update(update: dict) -> None:
     if update_id is None or not db.mark_seen(f"tg:{update_id}"):
         return  # malformed or a duplicate delivery
 
+    event = db.CURRENT_EVENT.set(f"tg:{update_id}")
+    try:
+        _process_update(update)
+    except Exception:
+        db.forget_seen(f"tg:{update_id}")
+        raise
+    finally:
+        db.CURRENT_EVENT.reset(event)
+
+
+def _process_update(update: dict) -> None:
+
     callback_query = update.get("callback_query")
     if callback_query is not None:
         _handle_callback(callback_query)
@@ -61,6 +73,9 @@ def handle_update(update: dict) -> None:
 def _handle_callback(cq: dict) -> None:
     tg.answer_callback_query(cq.get("id", ""))
     user_id = (cq.get("from") or {}).get("id")
+    chat = (cq.get("message") or {}).get("chat")
+    if chat and chat.get("type") != "private":
+        return
     data = cq.get("data")
     if user_id is None or not data:
         return
