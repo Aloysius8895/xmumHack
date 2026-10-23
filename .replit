@@ -10,7 +10,6 @@ externalPort = 80
 run = ["sh", "-c", "cd chatbot && python run.py"]
 deploymentTarget = "gce"
 ignorePorts = false
-build = ["sh", "-c", "cd chatbot && pip install -r requirements.txt"]
 
 [workflows]
 runButton = "Project"
@@ -30,7 +29,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd chatbot && pip install -r requirements.txt && python run.py"
+args = "cd chatbot && python run.py"
 waitForPort = 8000
 
 [workflows.workflow.metadata]
@@ -39,3 +38,7 @@ outputType = "console"
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 180000
+
+[nix]
+channel = "stable-25_05"
+packages = ["cacert"]
