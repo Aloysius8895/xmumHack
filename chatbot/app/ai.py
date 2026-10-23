@@ -1,4 +1,4 @@
-"""The chat AI, served through Replit AI Integrations.
+"""The chat AI with an explicit provider selection.
 
 Replit AI Integrations (paid Replit plans) sets these environment variables
 automatically once enabled for the app, so no personal API key is needed:
@@ -41,6 +41,7 @@ def strip_markdown(text: str) -> str:
     return _HEADING_PREFIX.sub("", text)
 
 DEFAULT_MODELS = {"anthropic": "claude-haiku-4-5", "openai": "gpt-5-mini"}
+AWS_PROVIDERS = {"bedrock", "deepseek_direct"}
 
 
 def _anthropic_creds() -> Optional[tuple[str, Optional[str]]]:
@@ -62,8 +63,10 @@ def _openai_creds() -> Optional[tuple[str, Optional[str]]]:
 def provider() -> Optional[str]:
     """Which provider will answer: AI_PROVIDER if set, else the first one with credentials."""
     chosen = os.getenv("AI_PROVIDER", "").strip().lower()
-    if chosen in {"anthropic", "openai"}:
+    if chosen in AWS_PROVIDERS | {"anthropic", "openai"}:
         return chosen
+    if os.getenv("AWS_BACKEND_URL") and os.getenv("AWS_BACKEND_TOKEN"):
+        return "bedrock"
     if _anthropic_creds():
         return "anthropic"
     if _openai_creds():
@@ -73,6 +76,8 @@ def provider() -> Optional[str]:
 
 def model_name() -> Optional[str]:
     p = provider()
+    if p in AWS_PROVIDERS:
+        return "configured-in-aws"
     return os.getenv("AI_MODEL") or (DEFAULT_MODELS[p] if p else None)
 
 
@@ -103,6 +108,13 @@ def complete(prompt: str) -> str:
 def _complete(messages: list[dict], system: Optional[str]) -> str:
     p = provider()
     model = model_name()
+
+    if p in AWS_PROVIDERS:
+        from . import aws_backend
+        try:
+            return aws_backend.complete(p, messages, system, max_tokens=600)
+        except aws_backend.AwsBackendError as exc:
+            raise RuntimeError(exc.code) from exc
 
     if p == "anthropic":
         creds = _anthropic_creds()

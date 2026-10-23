@@ -13,6 +13,7 @@
 import crypto from 'node:crypto'
 import { CAREERS, SKILLS } from './careers.js'
 import * as store from './store.js'
+import * as persistence from './persistence.js'
 
 export const CHANNELS = [ 'whatsapp', 'telegram' ]
 const MAX_DIGESTS = 60
@@ -59,7 +60,7 @@ export function authorize(request)
  * backfilled: true marks a week rebuilt from posting dates (n8n/market/run-local.mjs --backfill), never compared.
  * Every period is kept as history (the last MARKET_HISTORY), the careers panel draws it as the weekly trend.
  */
-export function receiveMarket(body)
+export async function receiveMarket(body)
 {
     if(body.collection && body.collection.complete !== true)
         throw new IntegrationError(400, 'incomplete-collection')
@@ -70,7 +71,8 @@ export function receiveMarket(body)
         throw new IntegrationError(400, 'bad-careers')
 
     const known = new Set(CAREERS.map((career) => career.id))
-    const market = store.loadMarket()
+    const savedMarket = await persistence.loadDocument('market')
+    const market = savedMarket.payload
     // One snapshot per period, oldest first: a new period is appended, the same period is a correction
     const history = (market.history ?? [ market.previous, market.latest ].filter(Boolean)).filter((snapshot) => snapshot.period !== period)
 
@@ -100,7 +102,11 @@ export function receiveMarket(body)
     history.sort((a, b) => a.period.localeCompare(b.period))
     history.splice(0, Math.max(0, history.length - MARKET_HISTORY))
     computeChanges(history)
-    store.saveMarket({ latest: history.at(- 1), previous: history.at(- 2) ?? null, history, ...(market.jobArchive ? { jobArchive: market.jobArchive } : {}) })
+    await persistence.saveDocument(
+        'market',
+        { latest: history.at(- 1), previous: history.at(- 2) ?? null, history, ...(market.jobArchive ? { jobArchive: market.jobArchive } : {}) },
+        savedMarket.version,
+    )
     return { period, careers: Object.keys(careers), ...(collection ? { collection } : {}) }
 }
 

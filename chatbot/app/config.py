@@ -33,6 +33,8 @@ class Settings:
     telegram_bot_token: str
     telegram_webhook_secret: str
     allowed_tg_ids: frozenset[str]   # empty = no restriction (local testing)
+    aws_backend_url: str
+    aws_backend_token: str
 
 
 def get_settings() -> Settings:
@@ -54,4 +56,6 @@ def get_settings() -> Settings:
         telegram_bot_token=os.getenv("TELEGRAM_BOT_TOKEN", ""),
         telegram_webhook_secret=os.getenv("TELEGRAM_WEBHOOK_SECRET", ""),
         allowed_tg_ids=_id_set("TELEGRAM_ALLOWED_USER_IDS"),
+        aws_backend_url=os.getenv("AWS_BACKEND_URL", "").rstrip("/"),
+        aws_backend_token=os.getenv("AWS_BACKEND_TOKEN", ""),
     )

@@ -11,6 +11,7 @@ from typing import Iterator, Optional
 from zoneinfo import ZoneInfo
 
 from .config import get_settings
+from . import aws_backend
 
 _lock = threading.Lock()
 MYT = ZoneInfo("Asia/Kuala_Lumpur")
@@ -91,6 +92,10 @@ def init_db() -> None:
 
 def mark_seen(wa_message_id: str) -> bool:
     """Returns False if this message id was already handled."""
+    if aws_backend.enabled():
+        return bool(aws_backend.data_call(
+            "POST", "/v1/chat/seen", body={"messageId": wa_message_id}
+        ).get("seen"))
     with connect() as conn:
         cur = conn.execute("INSERT OR IGNORE INTO seen_messages VALUES (?, ?)", (wa_message_id, _now()))
         return cur.rowcount == 1
@@ -98,11 +103,20 @@ def mark_seen(wa_message_id: str) -> bool:
 
 def forget_seen(message_id: str) -> None:
     """Release a failed delivery so an n8n retry can attempt processing again."""
+    if aws_backend.enabled():
+        from urllib.parse import quote
+        aws_backend.data_call("DELETE", f"/v1/chat/seen/{quote(message_id, safe='')}")
+        return
     with connect() as conn:
         conn.execute("DELETE FROM seen_messages WHERE wa_message_id = ?", (message_id,))
 
 
 def add_message(wa_id: str, role: str, content: str) -> None:
+    if aws_backend.enabled():
+        aws_backend.data_call("POST", "/v1/chat/messages", body={
+            "userId": wa_id, "role": role, "content": content, "createdAt": _now()
+        })
+        return
     with connect() as conn:
         conn.execute("INSERT INTO messages (wa_id, role, content, created_at) VALUES (?, ?, ?, ?)",
                      (wa_id, role, content, _now()))
@@ -110,6 +124,10 @@ def add_message(wa_id: str, role: str, content: str) -> None:
 
 def history(wa_id: str, limit: int) -> list[dict]:
     """Last `limit` messages for this number, oldest first."""
+    if aws_backend.enabled():
+        return aws_backend.data_call(
+            "GET", "/v1/chat/messages", params={"userId": wa_id, "limit": limit}
+        ).get("messages", [])
     with connect() as conn:
         rows = conn.execute(
             "SELECT role, content FROM messages WHERE wa_id = ? ORDER BY id DESC LIMIT ?", (wa_id, limit)
@@ -118,12 +136,29 @@ def history(wa_id: str, limit: int) -> list[dict]:
 
 
 def clear_history(wa_id: str) -> None:
+    if aws_backend.enabled():
+        aws_backend.data_call("DELETE", "/v1/chat/history", params={"userId": wa_id})
+        return
     with connect() as conn:
         conn.execute("DELETE FROM messages WHERE wa_id = ?", (wa_id,))
 
 
 def save_report(wa_id: str, text: str, summary: Optional[str], skill_ids: list[str],
                  advanced: list[dict], points: Optional[int]) -> None:
+    if aws_backend.enabled():
+        event_id = CURRENT_EVENT.get()
+        aws_backend.data_call("POST", "/v1/chat/reports", body={
+            "userId": wa_id,
+            "eventId": event_id,
+            "date": today_myt(),
+            "text": text,
+            "summary": summary,
+            "skillIds": skill_ids,
+            "advanced": advanced,
+            "points": points,
+            "createdAt": _now(),
+        })
+        return
     with connect() as conn:
         event_id = CURRENT_EVENT.get()
         if event_id and conn.execute("INSERT OR IGNORE INTO report_events VALUES (?)", (event_id,)).rowcount == 0:
@@ -136,6 +171,10 @@ def save_report(wa_id: str, text: str, summary: Optional[str], skill_ids: list[s
 
 
 def reports_for_date(wa_date: str) -> list[dict]:
+    if aws_backend.enabled():
+        return aws_backend.data_call(
+            "GET", "/v1/chat/reports", params={"date": wa_date}
+        ).get("reports", [])
     with connect() as conn:
         rows = conn.execute(
             "SELECT wa_id, text, summary, skill_ids, advanced, points FROM reports WHERE wa_date = ? ORDER BY id",
@@ -151,6 +190,11 @@ def reports_for_date(wa_date: str) -> list[dict]:
 
 
 def set_pending(wa_id: str, text: str, lang: str) -> None:
+    if aws_backend.enabled():
+        aws_backend.data_call("PUT", "/v1/chat/pending", body={
+            "userId": wa_id, "text": text, "lang": lang, "createdAt": _now()
+        })
+        return
     with connect() as conn:
         conn.execute(
             "INSERT INTO pending_confirmations (wa_id, text, lang, created_at) VALUES (?, ?, ?, ?) "
@@ -162,6 +206,10 @@ def set_pending(wa_id: str, text: str, lang: str) -> None:
 
 def pop_pending(wa_id: str) -> Optional[dict]:
     """Returns and deletes the pending confirmation for this number, if any."""
+    if aws_backend.enabled():
+        return aws_backend.data_call(
+            "POST", "/v1/chat/pending/pop", body={"userId": wa_id}
+        ).get("pending")
     with connect() as conn:
         row = conn.execute(
             "SELECT text, lang FROM pending_confirmations WHERE wa_id = ?", (wa_id,)

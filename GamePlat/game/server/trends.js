@@ -1,5 +1,6 @@
 import { CAREERS, SKILLS } from './careers.js'
 import * as store from './store.js'
+import * as persistence from './persistence.js'
 
 /**
  * Trends panel data: new job ads per career and month, and the share of ads asking for each skill
@@ -66,7 +67,7 @@ const titleCase = (id) => id.split('-').map((word) => word.charAt(0).toUpperCase
  * Any career id is accepted (careers outside the catalog are shown, catalog ones link to their card).
  * The same period again replaces it (a correction), the last MAX_MONTHS months are kept.
  */
-export function receiveTrends(body, IntegrationError)
+export async function receiveTrends(body, IntegrationError)
 {
     const period = String(body?.period ?? '')
     if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(period))
@@ -92,7 +93,8 @@ export function receiveTrends(body, IntegrationError)
             skills.push({ id, name: localized(value.name, null), share: Math.round(share * 10) / 10 })
     }
 
-    const data = store.loadTrends()
+    const savedTrends = await persistence.loadDocument('trends')
+    const data = savedTrends.payload
     const months = data.months.filter((month) => month.period !== period)
     months.push({
         period,
@@ -102,7 +104,7 @@ export function receiveTrends(body, IntegrationError)
         skills,
     })
     months.sort((a, b) => a.period.localeCompare(b.period))
-    store.saveTrends({ months: months.slice(- MAX_MONTHS) })
+    await persistence.saveDocument('trends', { months: months.slice(- MAX_MONTHS) }, savedTrends.version)
 
     return { period, careers: careers.map((career) => career.id), skills: skills.map((skill) => skill.id), months: Math.min(months.length, MAX_MONTHS) }
 }

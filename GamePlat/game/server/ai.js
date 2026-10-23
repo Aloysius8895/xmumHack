@@ -1,15 +1,14 @@
 /**
- * AI access for every AI feature (see features.js). Provider, unless AI_PROVIDER names one:
- * DEEPSEEK_API_KEY set > DeepSeek, otherwise Replit AI Integrations if Replit provisioned them, otherwise Claude
- * with your own ANTHROPIC_API_KEY.
+ * AI access for every AI feature (see features.js). AI_PROVIDER selects a
+ * provider explicitly. AWS-backed providers are called only by this server and
+ * never expose AWS_BACKEND_TOKEN to the browser.
  *
  * Claude (anthropic): one request per feature with a JSON schema output (output_config.format), adaptive thinking
  * (always on for Claude Opus 5.5) and server-side refusal fallback.
  * Replit AI Integrations (replit): Claude through Replit's proxy (AI_INTEGRATIONS_ANTHROPIC_*), whose model list stops
  * at Claude Opus 5 and whose support of beta features isn't documented, so it takes the plain Messages API path below.
- * DeepSeek (deepseek): its Anthropic-compatible endpoint (https://api.deepseek.com/anthropic), no schema output, no PDF.
- * Both: the JSON comes from a forced tool call (thinking off) checked against the schema here, with one corrected
- * retry; on DeepSeek a PDF is refused with ai-no-pdf (images and text files work).
+ * Bedrock (bedrock) and optional DeepSeek direct (deepseek_direct) run through
+ * the authenticated AWS Lambda API. Failures never fall back to another vendor.
  * AI_MOCK=1 answers with canned data instead, for demos without an API key.
  */
 import { AsyncLocalStorage } from 'node:async_hooks'
@@ -18,21 +17,22 @@ import Anthropic from '@anthropic-ai/sdk'
 function pickProvider()
 {
     const chosen = (process.env.AI_PROVIDER ?? '').trim().toLowerCase()
-    if([ 'deepseek', 'replit', 'anthropic' ].includes(chosen))
+    if([ 'bedrock', 'deepseek_direct', 'replit', 'anthropic' ].includes(chosen))
         return chosen
-    if(process.env.DEEPSEEK_API_KEY)
-        return 'deepseek'
+    if(process.env.AWS_BACKEND_URL && process.env.AWS_BACKEND_TOKEN)
+        return 'bedrock'
     if(process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY)
         return 'replit'
     return 'anthropic'
 }
 
 export const PROVIDER = pickProvider()
-const DEEPSEEK = PROVIDER === 'deepseek'
+const AWS_PROXY = PROVIDER === 'bedrock' || PROVIDER === 'deepseek_direct'
 const REPLIT = PROVIDER === 'replit'
-const COMPATIBLE = DEEPSEEK || REPLIT // Plain Messages API, JSON through a forced tool call
+const COMPATIBLE = REPLIT // Plain Messages API, JSON through a forced tool call
 export const MODEL = {
-    deepseek: process.env.DEEPSEEK_MODEL || 'deepseek-flash',
+    bedrock: 'configured-in-aws',
+    deepseek_direct: 'configured-in-aws',
     replit: process.env.REPLIT_MODEL || 'claude-opus-5', // Most capable Claude in Replit's list
     anthropic: process.env.CLAUDE_MODEL || 'claude-opus-5-5',
 }[PROVIDER]
@@ -62,17 +62,8 @@ function getClient()
     if(client)
         return client
 
-    if(DEEPSEEK)
-    {
-        // Its own key only: without it the SDK would fall back to ANTHROPIC_API_KEY and send the Claude key to DeepSeek
-        if(!process.env.DEEPSEEK_API_KEY)
-            throw new AiError('ai-auth', 'DEEPSEEK_API_KEY is not set')
-        client = new Anthropic({
-            apiKey: process.env.DEEPSEEK_API_KEY,
-            authToken: null,
-            baseURL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com/anthropic',
-        })
-    }
+    if(AWS_PROXY)
+        throw new AiError('ai-auth', 'AWS-backed AI must use the AWS Lambda proxy')
     else if(REPLIT)
     {
         // Set by Replit once AI Integrations are enabled for the Repl, both needed (no fallback to other keys)
@@ -98,7 +89,7 @@ export function status()
         mock: MOCK,
         provider: PROVIDER,
         model: MODEL,
-        keyConfigured: Boolean(DEEPSEEK ? process.env.DEEPSEEK_API_KEY
+        keyConfigured: Boolean(AWS_PROXY ? process.env.AWS_BACKEND_URL && process.env.AWS_BACKEND_TOKEN
             : REPLIT ? process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY && process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL
             : process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN),
     }
@@ -115,6 +106,8 @@ function classify(error)
 {
     if(error instanceof AiError)
         return error
+    if(error?.code && error?.name === 'AwsBackendError')
+        return new AiError(error.code, error.message)
     if(error instanceof Anthropic.AuthenticationError || error instanceof Anthropic.PermissionDeniedError)
         return new AiError('ai-auth', error.message)
     if(error instanceof Anthropic.RateLimitError)
@@ -142,14 +135,13 @@ function responseText(response)
     return response.content.filter((block) => block.type === 'text').map((block) => block.text).join('')
 }
 
-// DeepSeek reads text and images, not documents: a PDF is refused up front with a clear code (Claude reads them)
-function checkContent(messages)
+function awsText(value)
 {
-    if(!DEEPSEEK)
-        return
-    for(const message of messages)
-        if(Array.isArray(message.content) && message.content.some((block) => block.type === 'document'))
-            throw new AiError('ai-no-pdf', `${MODEL} cannot read PDF files`)
+    if(typeof value === 'string')
+        return value
+    if(Array.isArray(value) && value.every((block) => block?.type === 'text' && typeof block.text === 'string'))
+        return value.map((block) => block.text).join('\n')
+    throw new AiError('ai-no-file', 'AWS AI currently accepts text-only inputs')
 }
 
 /**
@@ -214,10 +206,6 @@ export function conformSlot(container, key, schema, path)
     return conform(value, schema, path)
 }
 
-// DeepSeek thinks before answering the dialogue (reply) unless DEEPSEEK_THINKING=0: thinking tokens bill as output and
-// take seconds, effort low keeps both small. JSON features (ask) can't think there: they need a forced tool call
-const DEEPSEEK_THINKING = DEEPSEEK && process.env.DEEPSEEK_THINKING !== '0'
-
 /**
  * Plain text reply to a conversation (messages: [ { role: 'user' | 'assistant', content } ], ends with the user)
  * onText(delta): called with each piece of the answer as it streams in (the thinking itself is not passed on)
@@ -225,14 +213,33 @@ const DEEPSEEK_THINKING = DEEPSEEK && process.env.DEEPSEEK_THINKING !== '0'
  */
 export async function reply({ system, messages, effort = 'low', maxTokens = 2000, onText = null, signal = null })
 {
+    if(AWS_PROXY)
+    {
+        try
+        {
+            const { completeAI } = await import('./aws-backend.js')
+            const response = await completeAI({
+                provider: PROVIDER,
+                mode: 'text',
+                system,
+                messages: messages.map((message) => ({ role: message.role, content: awsText(message.content) })),
+                maxTokens,
+                signal,
+            })
+            if(onText)
+                onText(response.text)
+            return response.text
+        }
+        catch(error)
+        {
+            throw classify(error)
+        }
+    }
+
     let params
     if(COMPATIBLE)
     {
-        checkContent(messages)
-        params = DEEPSEEK_THINKING
-            // budget_tokens is ignored by DeepSeek, the Anthropic API needs it; the thinking counts in max_tokens
-            ? { model: MODEL, max_tokens: maxTokens + 6000, system, messages, thinking: { type: 'enabled', budget_tokens: 4000 }, output_config: { effort } }
-            : { model: MODEL, max_tokens: maxTokens, system, messages, thinking: { type: 'disabled' } }
+        params = { model: MODEL, max_tokens: maxTokens, system, messages, thinking: { type: 'disabled' } }
     }
     else
     {
@@ -275,6 +282,8 @@ export async function reply({ system, messages, effort = 'low', maxTokens = 2000
  */
 export async function ask({ system, content, schema, effort = 'medium', maxTokens = 16000 })
 {
+    if(AWS_PROXY)
+        return askWithAws({ system, content, schema, maxTokens })
     if(COMPATIBLE)
         return askWithTool({ system, content, schema, maxTokens })
 
@@ -310,6 +319,36 @@ export async function ask({ system, content, schema, effort = 'medium', maxToken
     }
 }
 
+async function askWithAws({ system, content, schema, maxTokens })
+{
+    const prompt = awsText(content)
+    let lastProblem = 'no structured result'
+    for(let attempt = 0; attempt < 2; attempt++)
+    {
+        try
+        {
+            const { completeAI } = await import('./aws-backend.js')
+            const response = await completeAI({
+                provider: PROVIDER,
+                mode: 'json',
+                system: `${system}\n\nReturn one result that matches the supplied schema.`,
+                content: attempt === 0 ? prompt : `${prompt}\n\nThe previous result was rejected: ${lastProblem}. Return a corrected result.`,
+                schema,
+                maxTokens,
+            })
+            const holder = { result: response.value }
+            lastProblem = conformSlot(holder, 'result', schema, 'result')
+            if(!lastProblem)
+                return holder.result
+        }
+        catch(error)
+        {
+            throw classify(error)
+        }
+    }
+    throw new AiError('ai-error', `structured output rejected: ${lastProblem}`)
+}
+
 /**
  * DeepSeek and Replit: the schema as the input of a tool the model must call (strict on Claude, which then keeps to it),
  * the call checked here; a wrong result is sent back once with what is wrong so it can correct it
@@ -322,7 +361,6 @@ async function askWithTool({ system, content, schema, maxTokens })
     let problem = null
     try
     {
-        checkContent(messages)
         for(let attempt = 0; attempt < 2; attempt++)
         {
             const response = await getClient().messages.create({

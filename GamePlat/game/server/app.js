@@ -11,9 +11,11 @@ import * as game from './game.js'
 import * as integrations from './integrations.js'
 import { IntegrationError } from './integrations.js'
 import * as trends from './trends.js'
+import * as persistence from './persistence.js'
 import { getCareer, useCustom } from './careers.js'
 import { expertCard } from './experts.js'
 import * as store from './store.js'
+import { createHash } from 'node:crypto'
 
 const MAX_BODY = 15 * 1024 * 1024 // base64 of a 10 MB file
 const MAX_FILE = 10 * 1024 * 1024
@@ -93,6 +95,62 @@ function text(value, max = 8000)
 function lang(save, body)
 {
     return LANGS.includes(body.lang) ? body.lang : save.lang
+}
+
+function mytDate()
+{
+    return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Kuala_Lumpur',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }).format(new Date())
+}
+
+function cloudCommit(path, body, result, save)
+{
+    if(path === '/api/integrations/chat')
+    {
+        if(!body.messageId)
+            throw new HttpError(400, 'bad-message-id')
+        const content = text(body.text, 2000).trim()
+        const receipt = integrations.chatReceipt(save, body, content)
+        return {
+            operation: 'chat',
+            metadata: {
+                idempotencyKey: `chat:${receipt.key}`,
+                fingerprint: receipt.fingerprint,
+                result,
+                report: {
+                    eventId: body.messageId,
+                    userId: body.from,
+                    channel: body.channel,
+                    date: mytDate(),
+                    text: content,
+                    log: result.log,
+                },
+            },
+        }
+    }
+    if(path === '/api/integrations/digest')
+    {
+        const date = String(body.date ?? mytDate()).slice(0, 10)
+        return {
+            operation: 'digest',
+            metadata: {
+                idempotencyKey: `digest:${date}`,
+                fingerprint: createHash('sha256').update(date).digest('hex'),
+                result,
+                digest: {
+                    date,
+                    summary: String(body.summary ?? ''),
+                    skills: body.summaryOnly === true ? [] : (Array.isArray(body.skills) ? body.skills : []),
+                    summaryOnly: body.summaryOnly === true,
+                },
+            },
+        }
+    }
+    return { operation: 'save', metadata: { result } }
 }
 
 /**
@@ -359,7 +417,8 @@ async function stream(request, response, route)
     try
     {
         const body = await readBody(request)
-        const save = store.load()
+        const loaded = await persistence.loadSave()
+        const save = loaded.state
         useCustom(save)
         const answer = await ai.demo.run(body.demo === true, () => route(save, body, emit, aborter.signal))
         emit({ answer })
@@ -414,21 +473,44 @@ export async function handle(request, response)
         {
             if(url.pathname === '/api/reset')
             {
-                const result = await route()
-                const save = store.load()
-                useCustom(save)
-                return { result, save }
+            const save = store.createSave()
+            useCustom(save)
+            const result = { reset: true }
+            if(persistence.cloudEnabled)
+                await persistence.commitSave(save, loaded.version, 'save', { result })
+            else
+                store.reset()
+            return { result, save }
             }
 
-            const save = store.load()
+            const loaded = await persistence.loadSave()
+            const save = loaded.state
             useCustom(save)
-            const result = await ai.demo.run(!integration && body.demo === true, () => route(save, body)) ?? {}
+            let result = await ai.demo.run(!integration && body.demo === true, () => route(save, body)) ?? {}
             if(request.method === 'POST')
-                store.save(save)
+            {
+                if(persistence.cloudEnabled)
+                {
+                    const commit = cloudCommit(url.pathname, body, result, save)
+                    const saved = await persistence.commitSave(save, loaded.version, commit.operation, commit.metadata)
+                    result = saved.result ?? result
+                }
+                else
+                    store.save(save)
+            }
             return { result, save }
         })
         // Workflows and bots only need the result, the game client gets the whole state
-        send(response, 200, integration ? payload.result : { ...payload.result, state: game.view(payload.save, ai.status()) })
+        if(integration)
+            send(response, 200, payload.result)
+        else
+        {
+            const [ market, trends ] = await Promise.all([
+                persistence.loadDocument('market'),
+                persistence.loadDocument('trends'),
+            ])
+            send(response, 200, { ...payload.result, state: game.view(payload.save, ai.status(), { market: market.payload, trends: trends.payload }) })
+        }
     }
     catch(error)
     {
@@ -436,6 +518,8 @@ export async function handle(request, response)
             send(response, error.status, { error: error.code })
         else if(error instanceof AiError)
             send(response, 502, { error: error.code, detail: error.message.slice(0, 300) })
+        else if(error?.name === 'AwsBackendError')
+            send(response, error.status ?? 502, { error: error.code })
         else
         {
             console.error('[api]', error)

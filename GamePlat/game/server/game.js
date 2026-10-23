@@ -378,9 +378,9 @@ export function setTaskDone(save, taskId, done)
 /**
  * What the client sees (hidden rubric removed, derived values computed)
  */
-export function view(save, ai)
+export function view(save, ai, documents = {})
 {
-    const market = loadMarket()
+    const market = documents.market ?? loadMarket()
     const careers = allCareers().map((career) => ({
         id: career.id,
         name: career.name,
@@ -440,7 +440,7 @@ export function view(save, ai)
         pending,
         marketSkills: skillTrendOrReference(null, SKILL_IDS, market),
         skillMarket: skillMarket(SKILL_IDS, market),
-        trends: trendsView(),
+        trends: trendsView(documents.trends),
         target: save.target,
         pet,
         roadmap,
