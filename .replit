@@ -7,9 +7,10 @@ localPort = 8000
 externalPort = 80
 
 [deployment]
-run = ["sh", "-c", "cd chatbot && pip install -q -r requirements.txt && python run.py"]
+run = ["sh", "-c", "cd chatbot && python run.py"]
 deploymentTarget = "gce"
 ignorePorts = false
+build = ["sh", "-c", "cd chatbot && pip install -r requirements.txt"]
 
 [workflows]
 runButton = "Project"
