@@ -5,8 +5,9 @@
  * Claude classifies and plans; the server computes task progress and points.
  */
 import { ask, reply, LANGUAGES, isMock } from './ai.js'
-import { SKILLS, SKILL_IDS, allCareers, getCareer } from './careers.js'
+import { SKILLS, SKILL_IDS, allCareers, getCareer, localText } from './careers.js'
 import { expertCard } from './experts.js'
+import { TARGETS, TARGET_IDS } from './sdg.js'
 
 // Read per request: AI generated careers add skills to the catalog (careers.js useCustom)
 const skillEnum = () => [ ...SKILL_IDS, 'other' ]
@@ -302,6 +303,7 @@ export async function generateCareer({ query, posting, lang })
             demand: 'medium',
             effortMonths: [ 6, 12 ],
             petName: 'Nova',
+            sdgs: [], // sdg.careerSdgs falls back to the skills' targets
         }
     }
 
@@ -320,7 +322,10 @@ ${skillCatalog()}
 For each skill: skillId (a known id, or "new" for a skill not in the list), its name and a one-sentence description (zh, en, ms),
 an icon among ${ICONS.join(', ')}, difficulty 1-5, the level the job needs (1 basic, 2 working, 3 solid) and its weight (1-3).
 Also: a short summary of the job, market demand (high, medium, low), a realistic preparation range in months for a motivated beginner,
-and a short, friendly name for the career's pet companion. If the request is not a real occupation, describe the closest real one.`,
+and a short, friendly name for the career's pet companion. If the request is not a real occupation, describe the closest real one.
+Finally 1 to 3 UN SDG targets this job directly moves, only from this list (id: target), each with one sentence on how the job moves it
+(zh, en, ms). Pick only targets the daily work really contributes to, not loose associations:
+${TARGET_IDS.map((id) => `${id}: ${TARGETS[id].en}`).join('\n')}`,
         schema: {
             type: 'object',
             properties: {
@@ -346,8 +351,20 @@ and a short, friendly name for the career's pet companion. If the request is not
                 demand: { type: 'string', enum: [ 'high', 'medium', 'low' ] },
                 effortMonths: { type: 'array', items: { type: 'integer' } },
                 petName: { type: 'string' },
+                sdgs: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            target: { type: 'string', enum: TARGET_IDS },
+                            why: localized,
+                        },
+                        required: [ 'target', 'why' ],
+                        additionalProperties: false,
+                    },
+                },
             },
-            required: [ 'name', 'summary', 'skills', 'demand', 'effortMonths', 'petName' ],
+            required: [ 'name', 'summary', 'skills', 'demand', 'effortMonths', 'petName', 'sdgs' ],
             additionalProperties: false,
         },
         effort: 'medium',
@@ -357,6 +374,9 @@ and a short, friendly name for the career's pet companion. If the request is not
 /**
  * 3. Ordered roadmap toward the target
  */
+// Roadmap texts in the three languages, the client shows the player's current one (game.view)
+const TRILINGUAL = { type: 'object', properties: { zh: { type: 'string' }, en: { type: 'string' }, ms: { type: 'string' } }, required: [ 'zh', 'en', 'ms' ], additionalProperties: false }
+
 export async function generateRoadmap({ target, profile, gaps, lang })
 {
     const career = getCareer(target.careerId)
@@ -366,20 +386,20 @@ export async function generateRoadmap({ target, profile, gaps, lang })
         const todo = gaps.filter((gap) => gap.gap > 0)
         const list = (todo.length ? todo : gaps).slice(0, 4)
         return {
-            overview: mockText(lang, '（演示模式）按差距从大到小安排阶段。', '(Demo mode) Stages ordered from the biggest gap.', '(Mod demo) Peringkat disusun dari jurang terbesar.'),
+            overview: { zh: '（演示模式）按差距从大到小安排阶段。', en: '(Demo mode) Stages ordered from the biggest gap.', ms: '(Mod demo) Peringkat disusun dari jurang terbesar.' },
             stages: list.map((gap, index) =>
             {
-                const name = SKILLS[gap.id][lang] ?? SKILLS[gap.id].en
+                const name = SKILLS[gap.id]
                 return {
                     title: name,
-                    why: mockText(lang, `${career.name.zh}需要${name}达到 ${gap.required} 级。`, `${career.name.en} needs ${name} at level ${gap.required}.`, `${career.name.ms} memerlukan ${name} pada tahap ${gap.required}.`),
+                    why: { zh: `${career.name.zh}需要${name.zh}达到 ${gap.required} 级。`, en: `${career.name.en} needs ${name.en} at level ${gap.required}.`, ms: `${career.name.ms} memerlukan ${name.ms} pada tahap ${gap.required}.` },
                     skillIds: [ gap.id ],
                     requirementRefs: [],
                     prerequisiteIndexes: index > 0 ? [ index - 1 ] : [],
                     tasks: [
-                        { title: mockText(lang, `自学 ${name} 的核心概念`, `Study the core concepts of ${name}`, `Kaji konsep teras ${name}`), why: mockText(lang, '打基础', 'Foundation', 'Asas'), effortHours: 6, skillId: gap.id },
-                        { title: mockText(lang, `完成 5 道 ${name} 练习`, `Do 5 ${name} exercises`, `Siapkan 5 latihan ${name}`), why: mockText(lang, '通过练习巩固', 'Practice', 'Latihan'), effortHours: 5, skillId: gap.id },
-                        { title: mockText(lang, `用 ${name} 做一个小作品`, `Build a small piece of work with ${name}`, `Bina hasil kerja kecil dengan ${name}`), why: mockText(lang, '能放进作品集', 'Portfolio evidence', 'Bukti portfolio'), effortHours: 8, skillId: gap.id },
+                        { title: { zh: `自学 ${name.zh} 的核心概念`, en: `Study the core concepts of ${name.en}`, ms: `Kaji konsep teras ${name.ms}` }, why: { zh: '打基础', en: 'Foundation', ms: 'Asas' }, effortHours: 6, skillId: gap.id },
+                        { title: { zh: `完成 5 道 ${name.zh} 练习`, en: `Do 5 ${name.en} exercises`, ms: `Siapkan 5 latihan ${name.ms}` }, why: { zh: '通过练习巩固', en: 'Practice', ms: 'Latihan' }, effortHours: 5, skillId: gap.id },
+                        { title: { zh: `用 ${name.zh} 做一个小作品`, en: `Build a small piece of work with ${name.en}`, ms: `Bina hasil kerja kecil dengan ${name.ms}` }, why: { zh: '能放进作品集', en: 'Portfolio evidence', ms: 'Bukti portfolio' }, effortHours: 8, skillId: gap.id },
                     ],
                 }
             }),
@@ -405,18 +425,19 @@ Gaps (required vs current level): ${gaps.map((gap) => `${gap.id} ${gap.current}/
 Plan 3 to 6 stages, foundations first, biggest and must-have gaps early, skills the player already meets skipped or only reviewed.
 For each stage: a title, why it matters for this career${target.mode === 'customise' ? ' and which posting requirements (R1, R2...) it covers' : ''},
 the skill ids it covers, the indexes of the stages it needs first, 2 to 4 self-directed tasks (research, exercises, mini projects; say what to do,
-not how to do it step by step) each with an honest estimate of hours and its main skill id. Stages finish when their tasks are complete; do not add exams or challenges.`,
+not how to do it step by step) each with an honest estimate of hours and its main skill id. Stages finish when their tasks are complete; do not add exams or challenges.
+Write the overview and every title and why in Chinese (zh), English (en) and Malay (ms): the player can switch language at any time.`,
         schema: {
             type: 'object',
             properties: {
-                overview: { type: 'string' },
+                overview: TRILINGUAL,
                 stages: {
                     type: 'array',
                     items: {
                         type: 'object',
                         properties: {
-                            title: { type: 'string' },
-                            why: { type: 'string' },
+                            title: TRILINGUAL,
+                            why: TRILINGUAL,
                             skillIds: { type: 'array', items: { type: 'string', enum: skillEnum() } },
                             requirementRefs: { type: 'array', items: { type: 'string' } },
                             prerequisiteIndexes: { type: 'array', items: { type: 'integer' } },
@@ -425,8 +446,8 @@ not how to do it step by step) each with an honest estimate of hours and its mai
                                 items: {
                                     type: 'object',
                                     properties: {
-                                        title: { type: 'string' },
-                                        why: { type: 'string' },
+                                        title: TRILINGUAL,
+                                        why: TRILINGUAL,
                                         effortHours: { type: 'integer' },
                                         skillId: { type: 'string', enum: skillEnum() },
                                     },
@@ -474,7 +495,7 @@ function isNoise(text)
  */
 export async function classifyLog({ text, roadmap, lang })
 {
-    const tasks = roadmap.stages.flatMap((stage) => stage.tasks.map((task) => ({ ...task, stageTitle: stage.title })))
+    const tasks = roadmap.stages.flatMap((stage) => stage.tasks.map((task) => ({ ...task, title: localText(task.title, lang), stageTitle: localText(stage.title, lang) })))
     const example = (() =>
     {
         const task = tasks.find((item) => item.progress < 100) ?? tasks[0]

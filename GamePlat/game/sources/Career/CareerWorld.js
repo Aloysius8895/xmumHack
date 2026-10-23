@@ -18,6 +18,7 @@ const WANDER = {
     speed: 1.1,         // metres per second
     pause: [ 2, 6 ],    // seconds standing between two walks
     stopDistance: 3.2,  // stop and face the player this close
+    leaveDistance: 6,   // the player walked (or teleported) this far from the mentor they talk to: the dialogue closes
     maxStep: 0.35,      // ground height change allowed between two samples (benches, trees, cliffs are higher)
     sampleStep: 0.5,
 }
@@ -432,7 +433,12 @@ export class CareerWorld
 
             // Talking or player close: stand still and look at the player
             const toPlayer = Math.hypot(player.x - position.x, player.z - position.z)
-            const talking = this.ui.dialogue?.careerId === npc.career.id
+            let talking = this.ui.dialogue?.careerId === npc.career.id
+            if(talking && toPlayer > WANDER.leaveDistance)
+            {
+                this.ui.closeDialogue()
+                talking = false
+            }
             let moving = false
             if(talking || toPlayer < WANDER.stopDistance)
             {

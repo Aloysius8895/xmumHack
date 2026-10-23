@@ -4,11 +4,12 @@
  * Loop (skills/game/game-design-theory, MDA): know your skills > pick a target > get the career pet > follow the roadmap
  * > log what you did and track preparation. Daily-report mastery growth is a separate, future feature.
  */
-import { DEFAULT_MAP, SKILLS, SKILL_IDS, allCareers, getCareer, matchCareer, useCustom } from './careers.js'
+import { DEFAULT_MAP, SKILLS, SKILL_IDS, allCareers, getCareer, localText, matchCareer, useCustom } from './careers.js'
 import { SKILL_DETAILS } from './skill-details.js'
 import { expertOf } from './experts.js'
 import { friendCode, leaderboard } from './friends.js'
 import { marketSnapshot, skillMarket, skillTrendOrReference } from './market-trends.js'
+import { GOALS, PLATFORM_TARGETS, SKILL_TARGETS, SOURCE as SDG_SOURCE, TARGETS, TARGET_IDS, careerSdgs, contribution } from './sdg.js'
 import { loadMarket } from './store.js'
 import { trendsView } from './trends.js'
 
@@ -222,6 +223,8 @@ export function addCustomCareer(save, spec)
         market: { demand: spec.demand, heat: heat[spec.demand] ?? 60, trend: 'stable' },
         effortMonths: [ Math.max(1, Math.min(spec.effortMonths[0], spec.effortMonths[1])), Math.max(spec.effortMonths[0], spec.effortMonths[1]) ],
         pet: { name: spec.petName.slice(0, 20) || 'Nova', species: PET_SPECIES[index % PET_SPECIES.length] },
+        // SDG targets the AI picked from sdg.js TARGETS (anything else dropped), none: sdg.careerSdgs uses the skills
+        sdgs: (spec.sdgs ?? []).filter((tag) => TARGET_IDS.includes(tag.target)).slice(0, 3),
         createdAt: new Date().toISOString(),
     }
     save.customCareers.push(career)
@@ -395,6 +398,7 @@ export function view(save, ai)
         saved: Boolean(save.careers?.[career.id]),
         custom: Boolean(career.custom),
         expert: expertOf(career.id), // Industry elite the mentor can hand over to (experts.js), null if none
+        sdgs: careerSdgs(career),
     }))
 
     const pending = save.pendingTarget && {
@@ -418,10 +422,16 @@ export function view(save, ai)
         }
     }
 
+    // Texts saved in the three languages (features.generateRoadmap), shown in the player's current one
     const roadmap = save.roadmap && {
         ...save.roadmap,
+        overview: localText(save.roadmap.overview, save.lang),
+        oneLanguage: typeof save.roadmap.overview === 'string', // Planned before roadmaps were trilingual: re-plan to translate
         stages: save.roadmap.stages.map(({ challenge: _legacyChallenge, ...stage }) => ({
             ...stage,
+            title: localText(stage.title, save.lang),
+            why: localText(stage.why, save.lang),
+            tasks: stage.tasks.map((task) => ({ ...task, title: localText(task.title, save.lang), why: localText(task.why, save.lang) })),
             status: stageStatus(save.roadmap, stage),
             progress: stageProgress(stage),
             mp: stage.tasks.reduce((sum, task) => sum + task.mp, 0),
@@ -450,5 +460,23 @@ export function view(save, ai)
         mastery: save.mastery ?? {},
         digests: (save.digests ?? []).slice(0, 7),
         leaderboard: leaderboard(save),
+        sdg: sdgView(save),
+    }
+}
+
+/**
+ * SDG panel data: the goals and targets (sdg.js), each skill's targets and the player's contribution to the goals of the
+ * target career (null without a target)
+ */
+function sdgView(save)
+{
+    const career = save.target && getCareer(save.target.careerId)
+    return {
+        source: SDG_SOURCE,
+        goals: GOALS,
+        targets: TARGETS,
+        skills: SKILL_TARGETS,
+        platform: PLATFORM_TARGETS,
+        contribution: career ? { careerId: career.id, goals: contribution(career, skillProgress(save, career), affinityOf(save, career.id)) } : null,
     }
 }

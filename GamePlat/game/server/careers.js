@@ -60,6 +60,14 @@ export const SKILLS = {
 
 export const SKILL_IDS = Object.keys(SKILLS)
 
+/**
+ * Text of a { zh, en, ms } object in one language. Plain strings (roadmaps saved before they were trilingual) as they are
+ */
+export function localText(value, lang)
+{
+    return typeof value === 'string' ? value : value?.[lang] ?? value?.en ?? ''
+}
+
 export const CAREERS = [
     {
         id: 'data-analyst',

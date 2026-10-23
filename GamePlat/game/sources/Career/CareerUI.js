@@ -21,6 +21,7 @@ const ICONS = {
     log: '<path d="M5 19h4L19 9l-4-4L5 15v4ZM13 7l4 4"/>',
     leaderboard: '<path d="M8 4h8v5a4 4 0 0 1-8 0V4ZM8 6H4a3 3 0 0 0 4 4m8-4h4a3 3 0 0 1-4 4m-4 3v4m-4 3h8"/>',
     lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+    sdg: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v5m0 8v5M3 12h5m8 0h5M5.6 5.6l3.6 3.6m5.6 5.6 3.6 3.6m0-12.8-3.6 3.6m-5.6 5.6-3.6 3.6"/>',
     target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
     compass: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5Z"/>',
     market: '<path d="M12 21a6 6 0 0 0 6-6c0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-4-2 2-3 5-3 8a6 6 0 0 0 6 6Z"/><path d="M12 21a2.5 2.5 0 0 1-2.5-2.5c0-1.6 1.2-2.4 2.5-4 1.3 1.6 2.5 2.4 2.5 4A2.5 2.5 0 0 1 12 21Z"/>',
@@ -28,7 +29,7 @@ const ICONS = {
     magnifier: '<circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/>',
 }
 
-const MENU = [ 'profile', 'careers', 'market', 'pet', 'roadmap', 'log', 'leaderboard', 'settings' ]
+const MENU = [ 'profile', 'careers', 'market', 'pet', 'roadmap', 'sdg', 'log', 'leaderboard', 'settings' ]
 
 // Files a mentor question can carry (the server checks them again, server/app.js FILE_TYPES, 10 MB)
 const ASK_FILE_TYPES = 'image/png,image/jpeg,image/webp,image/gif,application/pdf,text/plain,text/markdown'
@@ -575,6 +576,8 @@ export class CareerUI
             case 'market-tab': this.panel.marketTab = data.tab; return this.renderPanel()
             case 'market-rising': Object.assign(this.panel, { marketTab: 'ranking', marketFilter: 'rising' }); return this.renderPanel()
             case 'mode': this.panel.mode = data.mode; return this.renderPanel()
+            case 'sdg-filter': this.panel.sdgFilter = this.panel.sdgFilter === Number(data.goal) ? null : Number(data.goal); return this.renderPanel()
+            case 'sdg-explore': return this.openPanel('careers', { sdgFilter: Number(data.goal) })
             case 'stage-toggle': this.panel.openStage = this.panel.openStage === data.stage ? null : data.stage; return this.renderPanel()
             case 'stage-force': this.panel.forceConfirm = data.stage; this.panel.openStage = data.stage; return this.renderPanel()
             case 'stage-force-cancel': this.panel.forceConfirm = null; return this.renderPanel()
@@ -903,6 +906,7 @@ export class CareerUI
             market: () => this.renderMarket(),
             pet: () => this.renderPet(),
             roadmap: () => this.renderRoadmap(),
+            sdg: () => this.renderSdg(),
             log: () => this.renderLog(),
             leaderboard: () => this.renderLeaderboard(),
             settings: () => this.renderSettings(),
@@ -1081,7 +1085,10 @@ export class CareerUI
     renderCareers()
     {
         const query = (this.drafts.careerSearch ?? '').trim()
-        const careers = this.searchCareers(query).sort((a, b) => (b.affinity ?? 0) - (a.affinity ?? 0) || Number(b.onMap) - Number(a.onMap))
+        const sdgFilter = this.panel.sdgFilter ?? null
+        const careers = this.searchCareers(query)
+            .filter((career) => !sdgFilter || career.sdgs.some((tag) => tag.goal === sdgFilter))
+            .sort((a, b) => (b.affinity ?? 0) - (a.affinity ?? 0) || Number(b.onMap) - Number(a.onMap))
         return [ t('careers.title'), `
             <div class="career-search">
                 <input type="search" data-draft="careerSearch" placeholder="${esc(t('careers.search.placeholder'))}" aria-label="${esc(t('careers.search.placeholder'))}" value="${esc(this.drafts.careerSearch ?? '')}">
@@ -1094,6 +1101,7 @@ export class CareerUI
                 </div>`}
             <p>${esc(t('careers.intro'))}</p>
             <button class="career-link" data-action="menu" data-panel="market">${esc(t('market.open'))}</button>
+            ${this.renderSdgFilter(sdgFilter)}
             <div class="career-cards">
                 ${careers.map((career) => `
                     <button class="career-card ${career.onMap ? '' : 'is-off-map'}" data-action="career" data-career="${career.id}" style="--career:${career.color}">
@@ -1104,6 +1112,7 @@ export class CareerUI
                         <small>${esc(pick(career.summary))}</small>
                         <span class="career-card-affinity" title="${esc(t('careers.affinityHelp'))}">${bar(career.affinity ?? 0, 'is-heart')}<em>♡ ${esc(t('careers.affinity', { p: career.affinity ?? 0 }))}</em></span>
                         <small class="career-card-fit">${esc(t('careers.fit', { p: career.match.percent }))}</small>
+                        <span class="career-card-sdgs">${[ ...new Set(career.sdgs.map((tag) => tag.goal)) ].map((goal) => this.sdgBadge(goal)).join('')}</span>
                         <span>
                             <span class="career-tag ${career.onMap ? 'is-on-map' : 'is-off-map'}">${esc(t(career.onMap ? 'careers.onMap' : 'careers.offMapTag'))}</span>
                             ${career.custom ? `<span class="career-tag">${esc(t('careers.custom'))}</span>` : ''}
@@ -1391,6 +1400,7 @@ export class CareerUI
             ${career.onMap ? '' : `<p class="career-notice is-warning">${esc(t('careers.offMap'))}</p>`}
             <p>${this.marketBadges(career)} <span class="career-tag">${esc(t('careers.pet', { name: career.pet.name }))}</span></p>
             <p class="career-muted">${esc(t('careers.effort', { range }))} · ${esc(t('careers.marketNote'))}</p>
+            ${this.renderCareerSdgs(career)}
             <h3>${esc(t('careers.chooseMode'))}</h3>
             <div class="career-modes">
                 ${[ 'general', 'customise' ].map((item) => `
@@ -1411,6 +1421,98 @@ export class CareerUI
             <p class="career-muted career-skill-reference">${esc(t('skill.reference'))}</p>
             <ul class="career-skill-grid career-requirements" style="--skill-accent:${career.color}">${requirements}</ul>
             ${posting}
+        ` ]
+    }
+
+    /**
+     * SDG badge: the goal colour, the goal (or target) number, the names in the tooltip
+     */
+    sdgBadge(goal, target = null)
+    {
+        const info = this.state.sdg.goals[goal]
+        const title = `SDG ${goal} · ${pick(info.name)}${target ? ` — ${target} ${pick(this.state.sdg.targets[target])}` : ''}`
+        return `<span class="career-sdg" style="--sdg:${info.color}" title="${esc(title)}">${esc(target ?? goal)}</span>`
+    }
+
+    renderSdgFilter(selected)
+    {
+        const goals = [ ...new Set(this.state.careers.flatMap((career) => career.sdgs.map((tag) => tag.goal))) ].sort((a, b) => a - b)
+        return `
+            <div class="career-sdg-filter" role="group" aria-label="${esc(t('sdg.filter'))}">
+                <small>${esc(t('sdg.filter'))}</small>
+                ${goals.map((goal) => `
+                    <button class="career-sdg-chip ${selected === goal ? 'is-selected' : ''}" data-action="sdg-filter" data-goal="${goal}" aria-pressed="${selected === goal}" style="--sdg:${this.state.sdg.goals[goal].color}" title="${esc(pick(this.state.sdg.goals[goal].name))}">
+                        SDG ${goal}
+                    </button>`).join('')}
+            </div>
+            ${selected ? `<p class="career-muted">${esc(t('sdg.filtered', { goal: selected, name: pick(this.state.sdg.goals[selected].name) }))}</p>` : ''}`
+    }
+
+    /**
+     * Career page: the targets the job moves and why (server/sdg.js CAREER_SDGS)
+     */
+    renderCareerSdgs(career)
+    {
+        const sdg = this.state.sdg
+        return `
+            <h3>${esc(t('sdg.careerTitle'))}</h3>
+            <ul class="career-sdg-list">
+                ${career.sdgs.map((tag) => `
+                <li style="--sdg:${sdg.goals[tag.goal].color}">
+                    <span class="career-sdg-goal">${tag.goal}</span>
+                    <span class="career-sdg-text">
+                        <strong>${esc(tag.target)} · ${esc(pick(sdg.targets[tag.target]))}</strong>
+                        <small>SDG ${tag.goal} ${esc(pick(sdg.goals[tag.goal].name))}</small>
+                        <span>${esc(tag.why ? pick(tag.why) : t('sdg.fromSkills'))}</span>
+                    </span>
+                </li>`).join('')}
+            </ul>
+            <p class="career-muted">${esc(t('sdg.careerNote'))} <a href="${esc(sdg.source.url)}" target="_blank" rel="noopener noreferrer">${esc(t('sdg.source'))} ↗</a></p>`
+    }
+
+    /**
+     * SDG panel: how far the player's preparation for the target career moves each goal, and the 17 goals to explore
+     */
+    renderSdg()
+    {
+        const sdg = this.state.sdg
+        const contribution = sdg.contribution
+        const career = contribution && this.state.careers.find((item) => item.id === contribution.careerId)
+        const touched = new Set(contribution?.goals.map((item) => item.goal) ?? [])
+
+        const goals = career ? `
+            <p>${esc(t('sdg.path', { career: pick(career.name) }))}</p>
+            <ul class="career-sdg-progress">
+                ${contribution.goals.map((item) => `
+                <li style="--sdg:${sdg.goals[item.goal].color}">
+                    <span class="career-sdg-goal">${item.goal}</span>
+                    <span class="career-sdg-text">
+                        <strong>${esc(pick(sdg.goals[item.goal].name))}</strong>
+                        <small>${item.targets.map((target) => `${esc(target)} ${esc(pick(sdg.targets[target]))}`).join(' · ')}</small>
+                        <span class="career-sdg-bar">${bar(item.progress)}<em>${item.progress}%</em></span>
+                        <small>${esc(t(item.career ? 'sdg.byCareer' : item.skillIds.length ? 'sdg.bySkills' : 'sdg.byLearning'))}${item.skillIds.length ? ` · ${esc(item.skillIds.map((id) => this.skillName(id, id)).join('、'))}` : ''}</small>
+                    </span>
+                </li>`).join('')}
+            </ul>
+            <p class="career-muted">${esc(t('sdg.progressNote'))}</p>` : `
+            <p>${esc(t('sdg.none'))}</p>
+            <button class="career-button" data-action="menu" data-panel="careers">${esc(t('menu.careers'))}</button>`
+
+        return [ t('sdg.title'), `
+            <p>${esc(t('sdg.intro'))}</p>
+            ${goals}
+            <h3>${esc(t('sdg.allTitle'))}</h3>
+            <p class="career-muted">${esc(t('sdg.allHelp'))}</p>
+            <div class="career-sdg-grid">
+                ${Object.entries(sdg.goals).map(([ goal, info ]) => {
+                    const count = this.state.careers.filter((item) => item.sdgs.some((tag) => tag.goal === Number(goal))).length
+                    return `
+                    <button class="career-sdg-tile ${touched.has(Number(goal)) ? 'is-touched' : ''}" style="--sdg:${info.color}" data-action="sdg-explore" data-goal="${goal}" ${count ? '' : 'disabled'}>
+                        <b>${goal}</b><span>${esc(pick(info.name))}</span><small>${esc(t('sdg.careerCount', { n: count }))}</small>
+                    </button>`
+                }).join('')}
+            </div>
+            <p class="career-muted">${esc(t('sdg.note'))} <a href="${esc(sdg.source.url)}" target="_blank" rel="noopener noreferrer">${esc(t('sdg.source'))} ↗</a></p>
         ` ]
     }
 
@@ -1592,6 +1694,7 @@ export class CareerUI
                         </div>
                         <div class="career-map-progress">${bar(stage.progress)}<small>${esc(t('roadmap.tasksDone', { done, total: stage.tasks.length }))}</small></div>
                         <p class="career-map-why">${icon('target')}<span><b>${esc(t('roadmap.why'))}</b>${esc(stage.why)}</span></p>
+                        ${this.renderStageSdgs(stage)}
                         ${this.renderStageResources(stage)}
                         ${stage.requirementRefs.length ? `<p class="career-muted">${esc(t('roadmap.covers', { refs: stage.requirementRefs.join(', ') }))}</p>` : ''}
                         ${locked ? this.renderStageLock(stage, stage.prerequisites.map(stageTitle).join(', ')) : `
@@ -1643,10 +1746,22 @@ export class CareerUI
                     </div>
                 </div>
                 <footer class="career-map-footer">
-                    <p><span>${esc(state.roadmap.overview)}</span><small>${esc(t('roadmap.intro'))} ${esc(t('roadmap.mpNote'))}</small></p>
+                    <p><span>${esc(state.roadmap.overview)}</span><small>${esc(t('roadmap.intro'))} ${esc(t('roadmap.mpNote'))}${state.roadmap.oneLanguage ? ` ${esc(t('roadmap.oneLanguage'))}` : ''}</small></p>
                     <button class="career-button is-secondary" data-action="roadmap" data-confirm="1">${esc(t('roadmap.regenerate'))}</button>
                 </footer>
             </div>`
+    }
+
+    /**
+     * SDG targets the stage skills move (server/sdg.js SKILL_TARGETS)
+     */
+    renderStageSdgs(stage)
+    {
+        const skillIds = [ ...new Set([ ...stage.skillIds, ...stage.tasks.map((task) => task.skillId) ]) ]
+        const targets = [ ...new Set(skillIds.flatMap((id) => this.state.sdg.skills[id] ?? [])) ]
+        if(!targets.length)
+            return ''
+        return `<p class="career-map-sdgs"><b>${esc(t('sdg.stage'))}</b>${targets.map((target) => this.sdgBadge(Number(target.split('.')[0]), target)).join('')}</p>`
     }
 
     /**
