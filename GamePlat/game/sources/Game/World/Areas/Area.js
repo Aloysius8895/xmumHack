@@ -49,6 +49,7 @@ export class Area
                         rotation: child.quaternion,
                         sleeping: true,
                         mass: child.userData.mass,
+                        movable: /^ref(Letters|Ball)/i.test(child.name), // CHILL CHILL letters and the bowling ball, every other prop is fixed (Objects.js)
                     }
                 )
 

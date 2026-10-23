@@ -22,6 +22,11 @@ const WANDER = {
     sampleStep: 0.5,
 }
 
+// The mentor of the player's target career moves to the open paving by the controls keyboard (next to the landing)
+// and strolls there, keeping this far (metres, centre to centre) from the CHILL CHILL letters so it never pushes them
+const GOAL_SPOT = { respawn: 'controls', offset: { x: 1.2, z: - 3 } }
+const LETTER_CLEARANCE = 1.2
+
 // Where the mentors stand, one per spot of the save's map (state.map.slots, server/careers.js DEFAULT_MAP gives the
 // first careers in this order): an area of the map (respawn point) + offset in metres, picked by theme.
 // A mentor swapped for another career keeps its spot and figure, and takes the new career's name and color.
@@ -62,6 +67,7 @@ export class CareerWorld
             else
                 this.syncNpcs(state)
             this.syncPet(state)
+            this.targetId = state.target?.careerId ?? null
         })
 
         this.game.ticker.events.on('tick', () =>
@@ -92,7 +98,7 @@ export class CareerWorld
             })
 
             if(character)
-                this.npcs.push({ slot, career, character, avatar: avatar ?? null, point: null, wander: { home: null, target: null, pause: 1 + Math.random() * 4, facing: THREE.MathUtils.degToRad(45) } })
+                this.npcs.push({ slot, career, character, avatar: avatar ?? null, point: null, wander: { spot: null, home: null, target: null, pause: 1 + Math.random() * 4, facing: THREE.MathUtils.degToRad(45) } })
         })
 
         this.events.trigger('npcs', [ this.npcs ])
@@ -341,6 +347,47 @@ export class CareerWorld
     /**
      * Wandering: pick a reachable spot around home, walk there, pause, repeat. Stops to face the player close by or in dialogue.
      */
+    // Where the mentor strolls: the landing for the target career, its own spot otherwise
+    homeOf(npc)
+    {
+        if(npc.career.id !== this.targetId)
+            return npc.wander.spot
+        if(!this.goalHome)
+        {
+            const base = this.game.respawns.getByName(GOAL_SPOT.respawn)?.position
+            if(!base)
+                return npc.wander.spot
+            this.goalHome = new THREE.Vector3(base.x + GOAL_SPOT.offset.x, 0, base.z + GOAL_SPOT.offset.z)
+        }
+        return this.goalHome
+    }
+
+    // Home changed (new target, or no longer the target): appear there at once, the dialogue is closed by then
+    relocate(npc, home)
+    {
+        npc.wander.home = home
+        npc.wander.target = null
+        npc.wander.pause = 1
+        const y = this.groundAt(home.x, home.z, npc)
+        if(y === null)
+            return
+        const position = npc.character.group.position
+        position.set(home.x, y, home.z)
+        npc.character.object?.physical.body.setTranslation(position, true)
+        npc.point?.setPosition(new THREE.Vector3(position.x, position.y + NPC_HEIGHT + 0.6, position.z))
+    }
+
+    // Far enough from every CHILL CHILL letter (they are pushable, so where they are now)
+    clearOfLetters(x, z)
+    {
+        const letters = this.game.world.areas?.landing?.chillLetters ?? []
+        return letters.every((letter) =>
+        {
+            const at = letter.physical.body.translation()
+            return Math.hypot(at.x - x, at.z - z) > LETTER_CLEARANCE
+        })
+    }
+
     groundAt(x, z, npc)
     {
         const RAPIER = this.game.RAPIER
@@ -360,7 +407,7 @@ export class CareerWorld
             const x = from.x + (to.x - from.x) * i / steps
             const z = from.z + (to.z - from.z) * i / steps
             const y = this.groundAt(x, z, npc)
-            if(y === null || y < waterLevel || Math.abs(y - previous) > WANDER.maxStep || (this.game.mapBounds && !insideMap({ x, z }, 1)))
+            if(y === null || y < waterLevel || Math.abs(y - previous) > WANDER.maxStep || (this.game.mapBounds && !insideMap({ x, z }, 1)) || !this.clearOfLetters(x, z))
                 return false
             previous = y
         }
@@ -377,8 +424,11 @@ export class CareerWorld
                 continue
 
             const position = character.group.position
-            if(!wander.home)
-                wander.home = position.clone()
+            if(!wander.spot)
+                wander.spot = wander.home = position.clone()
+            const home = this.homeOf(npc)
+            if(home !== wander.home && this.ui.dialogue?.careerId !== npc.career.id)
+                this.relocate(npc, home)
 
             // Talking or player close: stand still and look at the player
             const toPlayer = Math.hypot(player.x - position.x, player.z - position.z)
@@ -418,8 +468,8 @@ export class CareerWorld
                 const nextZ = position.z + dz / remaining * step
                 const y = this.groundAt(nextX, nextZ, npc)
 
-                // Something moved in the way (player crate, other NPC): stop here
-                if(y === null || y < this.game.water.surfaceElevation + 0.18 || Math.abs(y - position.y) > WANDER.maxStep)
+                // Something moved in the way (player crate, other NPC, a pushed letter): stop here
+                if(y === null || y < this.game.water.surfaceElevation + 0.18 || Math.abs(y - position.y) > WANDER.maxStep || !this.clearOfLetters(nextX, nextZ))
                 {
                     wander.target = null
                     wander.pause = WANDER.pause[0]

@@ -100,6 +100,7 @@ export class PhysicsCharacter
         const capsuleHalfLength = this.halfHeight - this.radius
         const object = this.game.objects.add(null, {
             type: 'dynamic',
+            movable: true,
             position: this.position,
             friction: 0,
             frictionRule: 'min',

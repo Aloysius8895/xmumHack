@@ -234,6 +234,7 @@ export class CookieArea extends Area
                 },
                 {
                     type: 'dynamic',
+                    movable: true,
                     position: reference.position,
                     rotation: reference.quaternion,
                     friction: 0.7,

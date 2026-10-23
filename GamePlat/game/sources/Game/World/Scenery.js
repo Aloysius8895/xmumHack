@@ -3,6 +3,10 @@ import { Game } from '../Game.js'
 import { References } from '../References.js'
 import { MeshDefaultMaterial } from '../Materials/MeshDefaultMaterial.js'
 
+// The race track is gone (the kept island has no circuit): its road and flat red / white curbs aren't added.
+// The model file stays untouched; the map pictures were repainted to match (static/ui/map/map-day|night.webp)
+const CIRCUIT = new Set([ 'refRoad', 'Cube049', 'Cube059', 'Cube064', 'Cube066', 'Cube067', 'Cube071', 'Cube072', 'Cube074', 'Cube075', 'Cube076', 'Cube078', 'Cube079' ])
+
 export class Scenery
 {
     constructor()
@@ -14,7 +18,7 @@ export class Scenery
         for(const child of model)
         {
             // Add
-            if(typeof child.userData.prevent === 'undefined' || child.userData.prevent === false)
+            if((typeof child.userData.prevent === 'undefined' || child.userData.prevent === false) && !CIRCUIT.has(child.name))
             {
                 // Objects
                 this.game.objects.addFromModel(

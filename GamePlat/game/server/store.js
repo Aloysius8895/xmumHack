@@ -149,6 +149,33 @@ export function saveMarket(data)
     fs.renameSync(temporary, MARKET_FILE)
 }
 
+/**
+ * Monthly job ads per career and skill shares for the trends panel (server/trends.js), shared by every player
+ * { months: [ { period: 'YYYY-MM', source, collectedAt, careers: [ { id, name, ads } ], skills: [ { id, name, share } ] } ] oldest first }
+ */
+const TRENDS_FILE = path.join(DIRECTORY, 'trends.json')
+
+export function loadTrends()
+{
+    try
+    {
+        const data = JSON.parse(fs.readFileSync(TRENDS_FILE, 'utf8'))
+        return Array.isArray(data.months) ? data : { months: [] }
+    }
+    catch
+    {
+        return { months: [] }
+    }
+}
+
+export function saveTrends(data)
+{
+    fs.mkdirSync(DIRECTORY, { recursive: true })
+    const temporary = TRENDS_FILE + '.tmp'
+    fs.writeFileSync(temporary, JSON.stringify(data, null, 1), 'utf8')
+    fs.renameSync(temporary, TRENDS_FILE)
+}
+
 export function reset()
 {
     const fresh = createSave()

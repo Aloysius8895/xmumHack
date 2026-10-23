@@ -58,6 +58,8 @@ export class CareerApi
     setTaskDone(taskId, done) { return this.request('POST', 'task', { taskId, done }) }
     unlockStage(stageId) { return this.request('POST', 'stage/unlock', { stageId }) }
     log(text) { return this.request('POST', 'log', { text, source: 'web' }) }
+    // expert: ask the career's distilled industry elite instead of the mentor (server/experts.js)
+    askMentor(careerId, question, history, file, expert = false) { return this.request('POST', 'npc/ask', { careerId, question, history, file, elite: expert }) }
     setPlayerName(name) { return this.request('POST', 'player', { name }) }
     addFriend(code) { return this.request('POST', 'friends', { code }) }
     removeFriend(id) { return this.request('POST', 'friends/remove', { id }) }

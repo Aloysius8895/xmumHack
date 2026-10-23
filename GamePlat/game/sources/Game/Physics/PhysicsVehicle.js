@@ -89,6 +89,7 @@ export class PhysicsVehicle
         this.chassis = {}
         const object = this.game.objects.add(null, {
             type: 'dynamic',
+            movable: true,
             position: this.position,
             friction: 0.4,
             rotation: new THREE.Quaternion().setFromAxisAngle(new THREE.Euler(0, 1, 0), Math.PI * 0),

@@ -65,6 +65,7 @@ export class LandingArea extends Area
         }
 
         const objects = references.map((reference) => reference.userData.object)
+        this.chillLetters = objects // Mentors walking on the landing keep away from them (Career/CareerWorld.js)
         const rotation = new THREE.Quaternion().copy(objects[0].physical.body.rotation())
         const direction = new THREE.Vector3(1, 0, 0).applyQuaternion(rotation) // Reading direction, letters local +X
         const along = (object) => new THREE.Vector3().copy(object.physical.body.translation()).dot(direction)

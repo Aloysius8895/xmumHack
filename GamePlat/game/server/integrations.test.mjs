@@ -183,3 +183,67 @@ test('saves from version 2 get the mastery fields', () =>
     assert.deepEqual(save.mastery, {})
     assert.deepEqual(save.digests, [])
 })
+
+test('trends show demo data until the workflow pushes a month, then the pushed months', async () =>
+{
+    const { trendsView } = await import('./trends.js')
+    assert.equal(trendsView().demo, true)
+    assert.equal(trendsView().careers.length, 8)
+
+    assert.equal((await call('/api/integrations/trends', { period: '2026-9', careers: { 'data-analyst': { ads: 1 } } })).status, 400)
+    assert.equal((await call('/api/integrations/trends', { period: '2026-09', careers: { 'Bad Id': { ads: 1 } } })).status, 400)
+
+    let result = await call('/api/integrations/trends', { period: '2026-09', source: 'n8n', careers: { 'data-analyst': { ads: 450 }, 'cloud-engineer': { ads: 365, name: 'Cloud Engineer' } }, skills: { sql: { share: 38 }, rust: { share: 4 } } })
+    assert.equal(result.status, 200)
+    assert.deepEqual(result.body.careers, [ 'data-analyst', 'cloud-engineer' ])
+    result = await call('/api/integrations/trends', { period: '2026-08', careers: { 'data-analyst': { ads: 410 } } })
+    assert.equal(result.body.months, 2)
+
+    const view = trendsView()
+    assert.equal(view.demo, false)
+    assert.deepEqual(view.periods, [ '2026-08', '2026-09' ])
+    const analyst = view.careers.find((career) => career.id === 'data-analyst')
+    assert.deepEqual(analyst.ads, [ 410, 450 ])
+    assert.equal(analyst.careerId, 'data-analyst')
+    assert.equal(analyst.name.en, 'Data Analyst')
+    const cloud = view.careers.find((career) => career.id === 'cloud-engineer')
+    assert.deepEqual(cloud.ads, [ null, 365 ])
+    assert.equal(cloud.careerId, null)
+    assert.equal(view.skills.find((skill) => skill.id === 'rust').name.en, 'Rust')
+})
+
+test('career mentors answer the player question (demo answer without an API key)', async () =>
+{
+    let result = await call('/api/npc/ask', { careerId: 'data-analyst', question: 'How do I start?', lang: 'en', history: [ { role: 'assistant', content: 'dropped, not a user turn first' } ] })
+    assert.equal(result.status, 200)
+    assert.match(result.body.answer, /Data Analyst/)
+    assert.equal((await call('/api/npc/ask', { careerId: 'data-analyst', question: '   ' })).status, 400)
+    assert.equal((await call('/api/npc/ask', { careerId: 'astronaut', question: 'Hi' })).status, 404)
+})
+
+test('a mentor hands over to the career industry elite, distilled card read from GamePlat/expert', async () =>
+{
+    const { expertCard } = await import('./experts.js')
+    assert.match(expertCard('data-analyst').card, /Hans Rosling/)
+    assert.match(expertCard('ml-engineer').card, /Andrej Karpathy/)
+    assert.equal(expertCard('frontend-developer'), null)
+
+    const careers = game.view(store.load(), { mock: true }).careers
+    assert.equal(careers.find((career) => career.id === 'data-analyst').expert.name, 'Hans Rosling')
+    assert.equal(careers.find((career) => career.id === 'frontend-developer').expert, null)
+
+    const result = await call('/api/npc/ask', { careerId: 'data-analyst', question: 'How do I start?', lang: 'en', elite: true })
+    assert.equal(result.status, 200)
+    assert.match(result.body.answer, /Hans Rosling/)
+    assert.equal((await call('/api/npc/ask', { careerId: 'frontend-developer', question: 'Hi', elite: true })).status, 404)
+})
+
+test('a file attached to a mentor question is checked and read', async () =>
+{
+    const file = { name: 'notes.txt', mediaType: 'text/plain', data: Buffer.from('SELECT * FROM jobs').toString('base64') }
+    let result = await call('/api/npc/ask', { careerId: 'data-analyst', question: 'Is this query ok?', lang: 'en', file })
+    assert.equal(result.status, 200)
+    assert.match(result.body.answer, /notes\.txt/)
+    result = await call('/api/npc/ask', { careerId: 'data-analyst', question: 'And this?', file: { ...file, mediaType: 'application/zip' } })
+    assert.equal(result.status, 415)
+})

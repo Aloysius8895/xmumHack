@@ -49,5 +49,59 @@ const DETAILS = [
     ['project-management', 'compass', 'high', 3, '规划范围、时间和预算，协调团队按时交付。', 'Plan scope, schedule and budget and coordinate a team to deliver on time.', 'Rancang skop, jadual dan bajet serta selaraskan pasukan untuk menyiapkan tepat pada masa.'],
 ]
 
+/**
+ * One place to start learning each skill: free, open licence or open source when `open` (checked reachable 2026-10-22)
+ * Custom skills of AI generated careers have none, the stage card shows nothing rather than a guess
+ */
+const RESOURCES = {
+    'sql':                 { title: 'Select Star SQL', url: 'https://selectstarsql.com/', open: true },
+    'excel':               { title: 'GCFGlobal Excel', url: 'https://www.learnfree.org/series/excel-foundations', open: false },
+    'statistics':          { title: 'OpenIntro Statistics', url: 'https://www.openintro.org/book/os/', open: true },
+    'python':              { title: 'The Python Tutorial', url: 'https://docs.python.org/3/tutorial/', open: true },
+    'data-cleaning':       { title: 'Kaggle Learn: Data Cleaning', url: 'https://www.kaggle.com/learn/data-cleaning', open: false },
+    'data-visualization':  { title: 'Fundamentals of Data Visualization', url: 'https://clauswilke.com/dataviz/', open: true },
+    'communication':       { title: 'Google Technical Writing', url: 'https://developers.google.com/tech-writing', open: true },
+    'html-css':            { title: 'MDN: Learn web development', url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development', open: true },
+    'javascript':          { title: 'The Modern JavaScript Tutorial', url: 'https://javascript.info/', open: true },
+    'react':               { title: 'React: Learn', url: 'https://react.dev/learn', open: true },
+    'git':                 { title: 'Pro Git', url: 'https://git-scm.com/book/en/v2', open: true },
+    'accessibility':       { title: 'web.dev: Learn Accessibility', url: 'https://web.dev/learn/accessibility', open: true },
+    'api-integration':     { title: 'MDN: Using the Fetch API', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch', open: true },
+    'backend-language':    { title: 'roadmap.sh: Backend', url: 'https://roadmap.sh/backend', open: true },
+    'databases':           { title: 'PostgreSQL Tutorial', url: 'https://www.postgresql.org/docs/current/tutorial.html', open: true },
+    'rest-api':            { title: 'Microsoft REST API Guidelines', url: 'https://github.com/microsoft/api-guidelines', open: true },
+    'cloud-deploy':        { title: 'Docker: Get started', url: 'https://docs.docker.com/get-started/', open: true },
+    'testing':             { title: 'The Practical Test Pyramid', url: 'https://martinfowler.com/articles/practical-test-pyramid.html', open: false },
+    'user-research':       { title: 'GOV.UK Service Manual: User research', url: 'https://www.gov.uk/service-manual/user-research', open: true },
+    'prototyping':         { title: 'GOV.UK: Making prototypes', url: 'https://www.gov.uk/service-manual/design/making-prototypes', open: true },
+    'figma':               { title: 'Figma Learn', url: 'https://help.figma.com/hc/en-us', open: false },
+    'visual-design':       { title: 'Material Design: Foundations', url: 'https://m3.material.io/foundations', open: false },
+    'usability-testing':   { title: 'GOV.UK: Moderated usability testing', url: 'https://www.gov.uk/service-manual/user-research/using-moderated-usability-testing', open: true },
+    'ml-math':             { title: 'Mathematics for Machine Learning', url: 'https://mml-book.github.io/', open: false },
+    'ml-frameworks':       { title: 'PyTorch Tutorials', url: 'https://docs.pytorch.org/tutorials/', open: true },
+    'mlops':               { title: 'Made With ML', url: 'https://madewithml.com/', open: true },
+    'roadmapping':         { title: 'Atlassian: Product roadmaps', url: 'https://www.atlassian.com/agile/product-management/product-roadmaps', open: false },
+    'agile':               { title: 'The Scrum Guide', url: 'https://scrumguides.org/scrum-guide.html', open: true },
+    'market-analysis':     { title: 'OpenStax: Principles of Marketing', url: 'https://openstax.org/details/books/principles-marketing', open: true },
+    'accounting':          { title: 'OpenStax: Principles of Financial Accounting', url: 'https://openstax.org/details/books/principles-financial-accounting', open: true },
+    'auditing':            { title: 'Wikipedia: Financial audit', url: 'https://en.wikipedia.org/wiki/Financial_audit', open: true },
+    'internal-control':    { title: 'Wikipedia: Internal control', url: 'https://en.wikipedia.org/wiki/Internal_control', open: true },
+    'legal-research':      { title: 'Cornell LII Wex: Legal research', url: 'https://www.law.cornell.edu/wex/legal_research', open: false },
+    'legal-writing':       { title: 'Plain language guide', url: 'https://digital.gov/guides/plain-language', open: true },
+    'negotiation':         { title: 'Harvard PON: Negotiation skills', url: 'https://www.pon.harvard.edu/category/daily/negotiation-skills-daily/', open: false },
+    'lesson-planning':     { title: 'Wikipedia: Lesson plan', url: 'https://en.wikipedia.org/wiki/Lesson_plan', open: true },
+    'classroom-management':{ title: 'Edutopia: Classroom management', url: 'https://www.edutopia.org/topic/classroom-management', open: false },
+    'assessment':          { title: 'Edutopia: Assessment', url: 'https://www.edutopia.org/topic/assessment', open: false },
+    'clinical-knowledge':  { title: 'OpenStax: Anatomy and Physiology', url: 'https://openstax.org/details/books/anatomy-and-physiology-2e', open: true },
+    'patient-care':        { title: 'OpenStax: Fundamentals of Nursing', url: 'https://openstax.org/details/books/fundamentals-nursing', open: true },
+    'medical-ethics':      { title: 'Wikipedia: Medical ethics', url: 'https://en.wikipedia.org/wiki/Medical_ethics', open: true },
+    'cooking-technique':   { title: 'Wikibooks Cookbook', url: 'https://en.wikibooks.org/wiki/Cookbook:Table_of_Contents', open: true },
+    'food-safety':         { title: 'WHO: Five keys to safer food', url: 'https://www.who.int/publications/i/item/9789241594639', open: false },
+    'menu-planning':       { title: 'Wikipedia: Menu engineering', url: 'https://en.wikipedia.org/wiki/Menu_engineering', open: true },
+    'engineering-math':    { title: 'OpenStax: Calculus Volume 1', url: 'https://openstax.org/details/books/calculus-volume-1', open: true },
+    'cad':                 { title: 'FreeCAD: Getting started', url: 'https://wiki.freecad.org/Getting_started', open: true },
+    'project-management':  { title: 'Project Management (open textbook)', url: 'https://opentextbc.ca/projectmanagement/', open: true },
+}
+
 export const SKILL_DETAILS = Object.fromEntries(DETAILS.map(([id, icon, demand, difficulty, zh, en, ms]) =>
-    [id, { icon, demand, heat: { high: 80, medium: 60, low: 30 }[demand], difficulty, description: { zh, en, ms } }]))
+    [id, { icon, demand, heat: { high: 80, medium: 60, low: 30 }[demand], difficulty, description: { zh, en, ms }, resource: RESOURCES[id] ?? null }]))

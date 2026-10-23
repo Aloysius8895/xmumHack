@@ -1,22 +1,30 @@
-/* Character selection on the intro circle (sources/Game/CharacterSelect.js), paper / ink / pink like the career menu */
+/* Character selection on the intro circle (sources/Game/CharacterSelect.js), liquid glass under the character with the career menu pink */
 
 .character-select {
-    --select-paper: #fffbf8;
-    --select-ink: #383340;
     --select-pink: #ff659b;
-    --select-pink-soft: #ffe9f0;
-    --select-pink-ink: #a22f5a;
+    --select-pink-glow: rgba(255, 101, 155, 0.55);
+    --select-glass: linear-gradient(160deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.08) 45%, rgba(255, 255, 255, 0.14) 100%);
+    --select-glass-border: rgba(255, 255, 255, 0.38);
+    --select-glass-shine: inset 0 1px 0 rgba(255, 255, 255, 0.7), inset 0 -1px 1px rgba(255, 255, 255, 0.18), inset 0 0 18px rgba(255, 255, 255, 0.1);
 
     position: absolute;
     left: 50%;
-    bottom: 48px;
+    bottom: calc(24px + env(safe-area-inset-bottom));
     z-index: 6;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    width: 420px;
+    gap: 7px;
+    width: 300px;
     max-width: calc(100% - 32px);
+    box-sizing: border-box;
+    padding: 11px 13px 10px;
+    border: 1px solid var(--select-glass-border);
+    border-radius: 24px;
+    background: var(--select-glass);
+    box-shadow: var(--select-glass-shine), 0 18px 50px rgba(20, 10, 30, 0.35);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
     color: #ffffff;
     font-family: "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
     text-align: center;
@@ -28,6 +36,16 @@
     user-select: none;
 }
 
+/* Specular sheen across the top of the glass */
+.character-select::before {
+    content: "";
+    position: absolute;
+    inset: 1px 1px 50%;
+    border-radius: 23px 23px 60% 60% / 23px 23px 18px 18px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0));
+    pointer-events: none;
+}
+
 .character-select.is-visible {
     opacity: 1;
     transform: translate(-50%, 0);
@@ -35,16 +53,16 @@
 }
 
 .character-select-title {
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 800;
-    letter-spacing: 0.04em;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.06em;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
 }
 
 .character-select-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     width: 100%;
 }
 
@@ -53,31 +71,36 @@
     align-items: center;
     gap: 6px;
     flex-shrink: 0;
-    padding: 10px 12px;
-    border: 1px solid rgba(56, 51, 64, 0.08);
-    border-radius: 16px;
-    background: var(--select-paper);
-    box-shadow: 0 4px 18px rgba(37, 31, 43, 0.25);
-    color: var(--select-ink);
+    padding: 7px 9px;
+    border: 1px solid var(--select-glass-border);
+    border-radius: 999px;
+    background: var(--select-glass);
+    box-shadow: var(--select-glass-shine), 0 4px 14px rgba(20, 10, 30, 0.2);
+    color: #ffffff;
     font: inherit;
-    font-size: 16px;
+    font-size: 13px;
     cursor: pointer;
-    transition: background 0.15s, transform 0.15s;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
 .character-select-arrow:hover {
-    background: var(--select-pink-soft);
-    color: var(--select-pink-ink);
-    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: var(--select-glass-shine), 0 0 18px var(--select-pink-glow);
+    transform: scale(1.06);
+}
+
+.character-select-arrow:active {
+    transform: scale(0.96);
 }
 
 .character-select-key {
     display: inline-block;
-    min-width: 22px;
-    padding: 1px 5px;
-    border: 1px solid rgba(56, 51, 64, 0.35);
-    border-radius: 5px;
-    font-size: 13px;
+    min-width: 17px;
+    padding: 0 4px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 11px;
     font-weight: 800;
 }
 
@@ -85,17 +108,17 @@
     flex: 1;
     min-width: 0;
     position: relative;
-    padding: 12px 16px;
-    border: 1px solid rgba(56, 51, 64, 0.08);
-    border-radius: 22px;
-    background: var(--select-paper);
-    color: var(--select-ink);
-    box-shadow: 0 0 0 3px var(--select-pink), 0 10px 32px rgba(37, 31, 43, 0.3);
+    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 18px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.32), rgba(255, 101, 155, 0.16));
+    box-shadow: var(--select-glass-shine), 0 0 0 2px rgba(255, 101, 155, 0.75), 0 0 26px var(--select-pink-glow);
 }
 
 .character-select-card.is-empty {
-    box-shadow: 0 10px 32px rgba(37, 31, 43, 0.3);
-    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: var(--select-glass-shine);
+    opacity: 0.75;
 }
 
 .character-select-card.is-pop {
@@ -107,17 +130,18 @@
 }
 
 .character-select-index {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    color: var(--select-pink-ink);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .character-select-name {
     overflow: hidden;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 800;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
 }
 
 .character-select-dots {
@@ -126,22 +150,30 @@
 }
 
 .character-select-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: rgba(255, 251, 248, 0.45);
-    transition: background 0.2s, transform 0.2s;
+    background: rgba(255, 255, 255, 0.4);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .character-select-dot.is-active {
     background: var(--select-pink);
+    box-shadow: 0 0 8px var(--select-pink-glow);
     transform: scale(1.4);
 }
 
 .character-select-hint {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.75);
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+/* Narrow screens: above the 16+ badge (style/ageRating.styl) instead of over it */
+@media (max-width: 640px) {
+    .character-select {
+        bottom: calc(84px + env(safe-area-inset-bottom));
+    }
 }
 
 @keyframes character-select-pop {

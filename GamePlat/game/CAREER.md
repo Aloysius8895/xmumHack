@@ -27,7 +27,9 @@ npm run dev          # 游戏 + /api 一起启动（API 以 Vite 中间件的形
 
 - **左上角**：圆形小地图，点导师头像传送，点空白区域打开完整地图。
 - **右上角菜单**：点击向下展开档案、职业、宠物、路线、记录、设置；下方是宠物状态、积分和「下一步」。打开面板时人物会停下，按 `Esc` 关闭。
-- **职业导师**：地图上有 6 位导师。走近后按 `E` 对话，可以询问技能要求、准备差距和市场参考，也可以设为目标。
+- **职业导师**：地图上有 6 位导师。走近后按 `E` 对话，可以询问技能要求、准备差距和市场参考，也可以设为目标。选「我可以问你一些问题吗？」可以自己输入问题：后端（`POST /api/npc/ask`，`server/features.js` 的 `askMentor`）按这位导师的职业生成提示词，让 Claude 以该行业资深从业者的身份回答，同一次对话会记住前几轮。用的是 `.env` 里的 `ANTHROPIC_API_KEY`；`AI_MOCK=1` 时返回示例回答。
+- **行业精英**：部分导师的对话里有「请教行业精英：XX」。精英是用女娲方法（`skills/Distillation/nuwa-skill`）从公开资料蒸馏出的思维框架：完整 skill 和调研底稿放在 `GamePlat/expert/<人物>-perspective/`，回答时把其中精简的 `card.md` 放进提示词（`server/experts.js` 维护职业与人物的对应；`features.js` 的 `askExpert`）。开场会先说明「基于公开资料，不是本人」。目前有：ML 工程师 → Andrej Karpathy，数据分析师 → Hans Rosling。新增精英：蒸馏到 `GamePlat/expert/`，写一份 `card.md`，再在 `server/experts.js` 的 `EXPERTS` 加一行。
+- **学习资源**：路线卡片上每个阶段有「从这里开始学」，链接到该技能的免费入门资源（`server/skill-details.js` 的 `RESOURCES`，优先开源 / 开放教材）。
 - **职业列表**：每个职业显示好感度和档案适配度。档案适配度只看你上传或填写的技能档案；好感度 = 档案适配度 + 学习进度，完成路线任务、发每日汇报会继续上升。上方有搜索框，地图上没有的职业也能搜索并设为目标（会替换好感度最低的导师，被替换的职业进度会保存）。
 - **宠物**：选定目标后跟随玩家。技能卡包含图标、名称、现有进度、热度、难度和说明；菱形表示进度，不是装备按钮。
 - **语言**：设置里可切换中文 / English / Bahasa Melayu，界面和 AI 输出都会跟着变。
@@ -112,6 +114,31 @@ animation/pets/build.py     用 Blender 生成 6 只职业宠物 → static/pets
 - `change`（较上一期的 %）可以不填：会用上一期的职位数算出变化。
 - 数据存在 `server/data/market.json`，所有玩家共用。
 - 现成的 n8n 工作流（JSearch → 技能关键词统计 → 本接口）在 `n8n/market/`，设置步骤见那里的 README。
+
+### 1b. 趋势面板的每月数据：`POST /api/integrations/trends`
+
+「热度」面板（职业需求热力图、本月涨跌榜、职业排名、技能趋势）读这份数据（`server/trends.js`）。每月由 n8n 推送一次；还没推送过时显示演示数据，面板上标着「演示数据」，推送第一个月后自动换成真实数据。
+
+```json
+{
+  "period": "2026-09",
+  "source": "n8n:jsearch",
+  "collectedAt": "2026-10-01T00:00:00Z",
+  "careers": {
+    "data-analyst":   { "ads": 450 },
+    "cloud-engineer": { "ads": 365, "name": { "zh": "云工程师", "en": "Cloud Engineer", "ms": "Jurutera Awan" } }
+  },
+  "skills": {
+    "sql":    { "share": 38 },
+    "python": { "share": 36 }
+  }
+}
+```
+
+- `period` 是月份（`YYYY-MM`）；同一个月再推送会覆盖（用来修正），最多保留 24 个月。
+- `careers`：当月新增招聘数 `ads`。职业 id 用小写加连字符；目录里的职业（`server/careers.js`）点进去会打开职业卡，目录外的职业也会显示，`name` 可以是字符串或三语对象，不填就用目录里的名字。
+- `skills`（可不填）：当月招聘中要求该技能的比例 `share`（0–100）。
+- 数据存在 `server/data/trends.json`，所有玩家共用。
 
 ### 2. WhatsApp / Telegram AI agent
 

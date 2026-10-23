@@ -77,7 +77,14 @@ export class Objects
          */
         if(_physicalDescription)
         {
+            // Props stay where they are placed, only the ones marked movable can be pushed around
+            // (the player, CHILL CHILL letters, bowling, spawned cookies and social fans)
+            const pinned = _physicalDescription.type === 'dynamic' && !_physicalDescription.movable
+            if(pinned)
+                _physicalDescription = { ..._physicalDescription, type: 'fixed' }
+
             object.physical = this.game.physics.getPhysical(_physicalDescription)
+            object.physical.pinned = pinned // A prop of the original game, fixed here (SocialArea.js drops them when their pedestal is removed)
         }
 
         /**

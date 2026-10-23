@@ -115,6 +115,7 @@ export class SocialArea extends Area
                 },
                 {
                     type: 'dynamic',
+                    movable: true,
                     position: reference.position,
                     rotation: reference.quaternion,
                     friction: 0.7,
@@ -171,11 +172,9 @@ export class SocialArea extends Area
     {
         for(const object of this.objects.items)
         {
+            // Out of the scene, not only hidden: props are fixed now and the area frustum shows its fixed objects again
             if(/^onlyfans/i.test(object.visual?.object3D?.name ?? ''))
-            {
-                object.visual.object3D.visible = false
-                object.physical?.body.setEnabled(false)
-            }
+                this.game.objects.disable(object)
         }
 
         // Pedestal under the logo, in the pedestals mesh space (collider cuboid.049 of the model)
@@ -212,8 +211,7 @@ export class SocialArea extends Area
     setStatue()
     {
         const statue = this.references.items.get('statue')[0].userData.object
-        statue.visual.object3D.visible = false
-        statue.physical.body.setEnabled(false)
+        this.game.objects.disable(statue) // Out of the scene, the area frustum would show a hidden fixed statue again
         this.statue = null
 
         this.removePedestal(0, 0, 1.7)
@@ -222,6 +220,7 @@ export class SocialArea extends Area
     /**
      * Remove one pedestal of the shared pedestals mesh (Cube.133, centred on the statue): its triangles around
      * (x, z) in the mesh space, and the colliders standing there
+     * The props that stood on it (fixed now, Objects.js) go down by the pedestal height instead of floating
      */
     removePedestal(x, z, half)
     {
@@ -234,23 +233,45 @@ export class SocialArea extends Area
             const position = mesh.geometry.attributes.position
             const index = mesh.geometry.index
             const kept = []
+            let bottom = Infinity
+            let top = - Infinity
             for(let i = 0; i < index.count; i += 3)
             {
                 const corners = [ index.getX(i), index.getX(i + 1), index.getX(i + 2) ]
                 if(!corners.every((corner) => Math.abs(position.getX(corner) - x) < half && Math.abs(position.getZ(corner) - z) < half))
                     corners.forEach((corner) => kept.push(corner))
+                else
+                    for(const corner of corners)
+                    {
+                        bottom = Math.min(bottom, position.getY(corner))
+                        top = Math.max(top, position.getY(corner))
+                    }
             }
             mesh.geometry.setIndex(kept)
 
             mesh.updateMatrixWorld(true)
             const center = new THREE.Vector3(x, 0, z).applyMatrix4(mesh.matrixWorld)
+            const height = (top - bottom) * mesh.matrixWorld.getMaxScaleOnAxis()
             for(const other of this.objects.items)
-                for(const collider of other.physical?.type === 'fixed' ? other.physical.colliders : [])
+            {
+                if(other.physical?.type !== 'fixed')
+                    continue
+
+                const at = other.physical.pinned ? other.physical.body.translation() : null
+                if(at && Math.abs(at.x - center.x) < half && Math.abs(at.z - center.z) < half)
+                {
+                    other.physical.body.setTranslation({ x: at.x, y: at.y - height, z: at.z }, false)
+                    other.visual?.object3D.position.copy(other.physical.body.translation())
+                    continue
+                }
+
+                for(const collider of other.physical.pinned ? [] : other.physical.colliders)
                 {
                     const at = collider.translation()
                     if(Math.abs(at.x - center.x) < half && Math.abs(at.z - center.z) < half)
                         collider.setEnabled(false)
                 }
+            }
         }
     }
 

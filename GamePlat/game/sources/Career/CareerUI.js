@@ -25,9 +25,13 @@ const ICONS = {
     compass: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5Z"/>',
     market: '<path d="M12 21a6 6 0 0 0 6-6c0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-4-2 2-3 5-3 8a6 6 0 0 0 6 6Z"/><path d="M12 21a2.5 2.5 0 0 1-2.5-2.5c0-1.6 1.2-2.4 2.5-4 1.3 1.6 2.5 2.4 2.5 4A2.5 2.5 0 0 1 12 21Z"/>',
     settings: '<circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M5.6 18.4l2.1-2.1m8.6-8.6 2.1-2.1"/>',
+    magnifier: '<circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/>',
 }
 
 const MENU = [ 'profile', 'careers', 'market', 'pet', 'roadmap', 'log', 'leaderboard', 'settings' ]
+
+// Files a mentor question can carry (the server checks them again, server/app.js FILE_TYPES, 10 MB)
+const ASK_FILE_TYPES = 'image/png,image/jpeg,image/webp,image/gif,application/pdf,text/plain,text/markdown'
 
 const SKILL_ICONS = {
     database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 4 16 4 16 0V5M4 12c0 4 16 4 16 0"/>',
@@ -133,6 +137,40 @@ export class CareerUI
 
         this.api.events.on('state', () => this.render())
         this.api.events.on('busy', (busy) => this.setBusy(busy))
+
+        // Window resize, and the UI showing up after the intro (display none until then, nothing to measure)
+        new ResizeObserver(() => this.fitBar()).observe(this.root)
+        document.fonts?.ready.then(() => this.fitBar())
+    }
+
+    /**
+     * Top bar: centered in the room between the minimap and the HUD. Labels that don't fit beside the icons go under
+     * them in small type, icons only when even that doesn't fit (label width depends on the language, a fixed
+     * breakpoint can't tell)
+     */
+    fitBar()
+    {
+        if(!this.rail.children.length || !this.root.offsetWidth)
+            return
+
+        const gap = 16
+        const minimap = this.root.querySelector('.career-minimap')
+        const left = minimap ? minimap.offsetLeft + minimap.offsetWidth + gap : gap
+        const right = this.menuElement.offsetLeft - gap
+        const room = Math.max(0, right - left)
+
+        this.menuElement.style.setProperty('--career-bar-center', `${(left + right) / 2}px`)
+        this.menuElement.style.setProperty('--career-bar-room', `${room}px`)
+
+        // Width with the labels, uncapped (the buttons shrink to their min-width under the room cap)
+        this.menuElement.classList.remove('is-compact', 'is-stacked')
+        this.rail.style.maxWidth = 'none'
+        const width = this.rail.offsetWidth
+        this.menuElement.classList.add('is-stacked')
+        const stacked = this.rail.offsetWidth
+        this.rail.style.maxWidth = ''
+        this.menuElement.classList.toggle('is-stacked', width > room && stacked <= room)
+        this.menuElement.classList.toggle('is-compact', stacked > room)
     }
 
     get state()
@@ -190,6 +228,11 @@ export class CareerUI
         this.panelTitle = this.root.querySelector('.js-career-panel-title')
         this.panelBody = this.root.querySelector('.js-career-panel-body')
         this.dialogueElement = this.root.querySelector('.js-career-dialogue')
+        this.dialogueElement.addEventListener('submit', (event) =>
+        {
+            event.preventDefault()
+            this.askMentor(event.target.querySelector('input[type="text"]').value)
+        })
     }
 
     setEvents()
@@ -212,6 +255,11 @@ export class CareerUI
         {
             if(this.menuOpen && !this.menuElement.contains(event.target))
                 this.setMenuOpen(false)
+
+            // A stage note opened by a click closes on a press anywhere else (its own flag still toggles it)
+            const openStop = this.root.querySelector('.career-map-stop.is-open')
+            if(this.panel?.openStage && openStop && !openStop.contains(event.target))
+                this.closeStageNote(openStop)
         }, true)
 
         this.menuElement.addEventListener('focusout', (event) =>
@@ -259,7 +307,7 @@ export class CareerUI
                 this.drafts[key] = event.target.value
             // Search filters as you type (renderPanel keeps the focus and caret). Not mid IME composition (Chinese pinyin):
             // the re-render would drop the pending text, compositionend renders once the characters are picked
-            if(key === 'careerSearch' && !event.isComposing)
+            if((key === 'careerSearch' || key === 'marketSearch') && !event.isComposing)
                 this.renderPanel()
         })
 
@@ -275,13 +323,24 @@ export class CareerUI
             if(key)
                 this.drafts[key] = event.target.value
             // Render what was held back (state update while composing) or filter the search with the picked characters
-            if(this.renderPending || key === 'careerSearch')
+            if(this.panelRenderHeld || key === 'careerSearch' || key === 'marketSearch')
                 this.renderPanel()
         })
 
         // Screenshot pasted (Ctrl+V) into the CV / job posting box: attached like a picked file
         this.root.addEventListener('paste', (event) =>
         {
+            // Screenshot or file pasted into the mentor question field (CareerUI.askMentor)
+            if(this.dialogue && event.target.closest?.('.career-dialogue-ask'))
+            {
+                const file = [ ...(event.clipboardData?.files ?? []) ][0]
+                if(!file)
+                    return
+                event.preventDefault()
+                const extension = file.type.split('/')[1] ?? 'png'
+                return this.attachToQuestion(file.name && file.name !== `image.${extension}` ? file : new File([ file ], `screenshot-${Date.now()}.${extension}`, { type: file.type }))
+            }
+
             const key = event.target.dataset?.draft
             if(key !== 'profile' && key !== 'posting')
                 return
@@ -304,6 +363,11 @@ export class CareerUI
             }
             if(input.dataset.skillLevel !== undefined)
                 this.updateSkill(Number(input.dataset.skillLevel), { level: Number(input.value) })
+            if(input.dataset.askFile !== undefined)
+            {
+                this.attachToQuestion(input.files?.[0])
+                input.value = ''
+            }
             if(input.dataset.task)
             {
                 const stop = input.closest('[data-stage]')
@@ -313,6 +377,12 @@ export class CareerUI
             }
             if(input.dataset.lang)
                 this.changeLang(input.value)
+            if(input.dataset.market && this.panel)
+            {
+                const key = { filter: 'marketFilter', range: 'marketRange', sort: 'marketSort', movers: 'marketMovers' }[input.dataset.market]
+                this.panel[key] = key === 'marketRange' ? Number(input.value) : input.value
+                this.renderPanel()
+            }
         })
 
         addEventListener('keydown', (event) =>
@@ -337,6 +407,12 @@ export class CareerUI
                 this.setMenuOpen(false, true)
                 return
             }
+            if(this.dialogue && event.target.closest?.('.career-dialogue-ask'))
+            {
+                if(event.code === 'Escape')
+                    this.closeDialogue()
+                return
+            }
             if(this.dialogue)
             {
                 if(event.code === 'Escape')
@@ -357,6 +433,12 @@ export class CareerUI
                     event.preventDefault()
                     this.moveChoice(- 1)
                 }
+                return
+            }
+            if(event.key === '/' && this.panel?.name === 'market' && !event.target.closest?.('input, textarea, select'))
+            {
+                event.preventDefault()
+                this.panelBody.querySelector('[data-draft="marketSearch"]')?.focus()
                 return
             }
             if(event.code === 'Escape' && this.panel)
@@ -490,6 +572,8 @@ export class CareerUI
             case 'skill-add': return this.addSkill()
             case 'career': return this.openPanel('careers', { careerId: data.career })
             case 'careers-back': return this.openPanel('careers')
+            case 'market-tab': this.panel.marketTab = data.tab; return this.renderPanel()
+            case 'market-rising': Object.assign(this.panel, { marketTab: 'ranking', marketFilter: 'rising' }); return this.renderPanel()
             case 'mode': this.panel.mode = data.mode; return this.renderPanel()
             case 'stage-toggle': this.panel.openStage = this.panel.openStage === data.stage ? null : data.stage; return this.renderPanel()
             case 'stage-force': this.panel.forceConfirm = data.stage; this.panel.openStage = data.stage; return this.renderPanel()
@@ -512,6 +596,8 @@ export class CareerUI
             case 'choice': this.dialogue.selected = Number(data.index); return this.choose(Number(data.index))
             case 'dialogue-close': return this.closeDialogue()
             case 'dialogue-advance': return this.advanceDialogue()
+            case 'ask-file-remove': this.dialogue.file = null; this.renderAskFile(); return
+            case 'dialogue-menu': Object.assign(this.dialogue, { node: 'greet', page: 0, selected: 0 }); return this.renderDialogue()
         }
     }
 
@@ -643,6 +729,17 @@ export class CareerUI
             if(counted)
                 this.game.career.world.cheerPet()
         })
+    }
+
+    // Close in place (no re-render, the map keeps its scroll), and drop the focus so :focus-within doesn't keep it shown
+    closeStageNote(stop)
+    {
+        this.panel.openStage = null
+        this.panel.forceConfirm = null
+        stop.classList.remove('is-open')
+        stop.querySelector('.career-map-node')?.setAttribute('aria-expanded', 'false')
+        if(stop.contains(document.activeElement))
+            document.activeElement.blur()
     }
 
     // The padlock shatters first, then the stage is unlocked (the new state re-renders the note with its tasks)
@@ -779,18 +876,20 @@ export class CareerUI
             button.setAttribute('aria-label', t(`menu.${name}`))
             button.querySelector('span').textContent = t(`menu.${name}`)
         }
+        this.fitBar()
     }
 
     renderPanel()
     {
         if(!this.panel || !this.state)
             return
+        // Held while an IME composes (its own name: renderPending() is the pending-target block of the career page)
         if(this.composing)
         {
-            this.renderPending = true
+            this.panelRenderHeld = true
             return
         }
-        this.renderPending = false
+        this.panelRenderHeld = false
 
         // Keep the focused field and its caret while re-rendering
         const active = document.activeElement
@@ -1017,45 +1116,214 @@ export class CareerUI
     }
 
     /**
-     * Trends panel: careers ranked by heat with their trend, the fastest risers, and the skills the market asks for
-     * (reference data until the n8n workflow pushes job board data, server/market-trends.js)
+     * Trends panel: a demand heatmap of new job ads per career and month with the month's movers, a career ranking and
+     * the skill trends. Monthly data pushed by the n8n workflow (server/trends.js), demo numbers until the first push.
      */
     renderMarket()
     {
         const state = this.state
-        const changeOf = (career) => career.market.snapshot?.change ?? null
-        const careers = [ ...state.careers ].sort((a, b) => b.market.heat - a.market.heat || (changeOf(b) ?? 0) - (changeOf(a) ?? 0))
-        const rising = careers.filter((career) => changeOf(career) > 0).sort((a, b) => changeOf(b) - changeOf(a)).slice(0, 3)
-        const snapshot = careers[0]?.market.snapshot
-        const direction = (change) => change > 0 ? 'up' : change < 0 ? 'down' : 'flat'
-        const changeLabel = (change) => `${change > 0 ? '↑' : change < 0 ? '↓' : '→'} ${changeText(change)}%`
+        const trends = state.trends
+        const panel = this.panel
+        const tab = panel.marketTab ?? 'overview'
+        const periods = trends.periods
+        const last = periods.length - 1
+        const locale = getLang() === 'zh' ? 'zh-CN' : getLang()
+        const month = (period, options) => new Date(`${period}-01T00:00:00`).toLocaleString(locale, options)
+        const short = (period) => month(period, { month: 'short' })
+        const long = (period) => month(period, { month: 'long' })
+        const withYear = (period) => month(period, { month: 'short', year: 'numeric' })
+        const rangeLabel = (from, to) => from.slice(0, 4) === to.slice(0, 4) ? `${short(from)} – ${withYear(to)}` : `${withYear(from)} – ${withYear(to)}`
+        const change = (values, index) => index > 0 && values[index] !== null && values[index - 1] ? Math.round((values[index] - values[index - 1]) / values[index - 1] * 1000) / 10 : null
+        const percent = (value) => `${value > 0 ? '+' : ''}${value.toFixed(1)}%`
+        const direction = (value) => value > 0 ? 'up' : value < 0 ? 'down' : 'flat'
+        const spark = (values) =>
+        {
+            const known = values.filter((value) => value !== null)
+            if(known.length < 2)
+                return ''
+            const min = Math.min(...known), max = Math.max(...known)
+            const points = values.map((value, index) => value === null ? null : `${(index / (values.length - 1) * 58 + 1).toFixed(1)},${(17 - (value - min) / ((max - min) || 1) * 16).toFixed(1)}`).filter(Boolean)
+            return `<svg class="career-trend-spark" viewBox="0 0 60 18" aria-hidden="true"><polyline points="${points.join(' ')}"/></svg>`
+        }
 
-        const rows = careers.map((career, index) => `
-            <li>
-                <button class="career-rank ${index < 3 ? 'is-top' : ''}" data-action="career" data-career="${career.id}" style="--career:${career.color}">
-                    <span class="career-rank-number">${index + 1}</span>
-                    <span class="career-rank-name">${esc(pick(career.name))}${state.target?.careerId === career.id ? ` <em class="career-tag is-target">${esc(t('careers.current'))}</em>` : ''}</span>
-                    <span class="career-skill-trend-bar">${bar(career.market.heat)}</span>
-                    <span class="career-skill-trend-share">${career.market.heat}%</span>
-                    <span class="career-skill-trend-change is-${direction(changeOf(career))}">${esc(changeOf(career) === null ? t(`careers.trend.${career.market.trend}`) : changeLabel(changeOf(career)))}</span>
-                </button>
-            </li>`).join('')
+        // Range (last N months), search, filter and sort
+        const ranges = [ ...new Set([ 3, 6, 12, 24 ].filter((n) => n < periods.length).concat(periods.length)) ]
+        const range = ranges.includes(panel.marketRange) ? panel.marketRange : Math.min(6, periods.length)
+        const shown = periods.slice(- range)
+        const offset = periods.length - range
+        const query = (this.drafts.marketSearch ?? '').trim()
+        const matches = (name) => !query || Object.values(name).some((text) => String(text).toLowerCase().includes(query.toLowerCase()))
+        const careers = trends.careers.map((career) => ({ ...career, latest: career.ads[last], change: change(career.ads, last) }))
+        const filter = panel.marketFilter ?? 'all'
+        const counts = { all: careers.length, rising: careers.filter((career) => career.change > 0).length, falling: careers.filter((career) => career.change < 0).length }
+        const sort = panel.marketSort ?? 'latest'
+        const visible = careers
+            .filter((career) => matches(career.name) && (filter === 'all' || (filter === 'rising' ? career.change > 0 : career.change < 0)))
+            .sort((a, b) => sort === 'name' ? pick(a.name).localeCompare(pick(b.name), locale)
+                : sort === 'growth' ? (b.change ?? - Infinity) - (a.change ?? - Infinity)
+                : (b.latest ?? - 1) - (a.latest ?? - 1))
+        const target = state.target?.careerId
+        const isTarget = (career) => Boolean(career.careerId) && career.careerId === target
+        const option = (value, current, label) => `<option value="${value}" ${value === current ? 'selected' : ''}>${esc(label)}</option>`
+        const careerButton = (career, content, extraClass) => career.careerId
+            ? `<button class="${extraClass}" data-action="career" data-career="${career.careerId}">${content}</button>`
+            : `<div class="${extraClass}">${content}</div>`
+        const none = query && !visible.length ? `<p class="career-muted">${esc(t('market.none', { q: query }))}</p>` : ''
+        const filterSelect = `
+            <select data-market="filter" aria-label="${esc(t('market.filterLabel'))}">
+                ${[ 'all', 'rising', 'falling' ].map((name) => option(name, filter, t(`market.filter.${name}`, { n: counts[name] }))).join('')}
+            </select>`
 
+        const tabs = [ 'overview', 'ranking', 'skills' ].map((name) => `
+            <button class="career-trend-tab ${tab === name ? 'is-active' : ''}" data-action="market-tab" data-tab="${name}" aria-pressed="${tab === name}">${esc(t(`market.tab.${name}`))}</button>`).join('')
+
+        const badge = trends.demo
+            ? `<span class="career-trend-badge">${esc(t('market.demo'))}</span>`
+            : `<span class="career-trend-badge is-live">${esc(t('market.live', { date: trends.collectedAt ? new Date(trends.collectedAt).toLocaleDateString(locale) : withYear(periods[last]) }))}</span>`
+        const head = (title, subtitle, extra = badge) => `
+            <header class="career-trend-head">
+                <div><h3>${esc(title)}</h3><p class="career-muted">${esc(subtitle)}</p></div>
+                ${extra}
+            </header>`
+
+        let body = ''
+        if(tab === 'overview')
+        {
+            // Darker purple = more ads, on a scale rounded up to 50
+            const max = Math.max(50, ...visible.flatMap((career) => career.ads.slice(offset)).filter((value) => value !== null))
+            const scale = Math.ceil(max / 50) * 50
+            const cell = (value, index) =>
+            {
+                if(value === null)
+                    return `<td class="is-empty">—</td>`
+                const p = value / scale
+                const mix = 0.14 + p * 0.86 // From #f0ebff (no ads) to #4b2fb3 (top of the scale)
+                const shade = [ [ 240, 75 ], [ 235, 47 ], [ 255, 179 ] ].map(([ from, to ]) => Math.round(from + (to - from) * mix))
+                return `<td class="${index === last ? 'is-latest' : ''} ${p > 0.5 ? 'is-dark' : ''}" style="background:rgb(${shade.join(',')})"><span>${value}</span></td>`
+            }
+            const rows = visible.map((career) => `
+                <tr class="${isTarget(career) ? 'is-target' : ''}">
+                    <th scope="row">${careerButton(career, `<span>${esc(pick(career.name))}</span>${isTarget(career) ? '<i class="career-trend-dot" aria-hidden="true"></i>' : ''}`, 'career-trend-name')}</th>
+                    ${career.ads.slice(offset).map((value, index) => cell(value, index + offset)).join('')}
+                </tr>`).join('')
+
+            // Movers: change in the chosen month versus the month before
+            const chosen = periods.indexOf(panel.marketMovers)
+            const moversIndex = chosen > 0 ? chosen : last
+            const moved = trends.careers.map((career) => ({ ...career, change: change(career.ads, moversIndex) })).filter((career) => career.change !== null)
+            const rising = moved.filter((career) => career.change > 0).sort((a, b) => b.change - a.change)
+            const falling = moved.filter((career) => career.change < 0).sort((a, b) => a.change - b.change)
+            const moverList = (items, kind) => items.length
+                ? `<ol>${items.slice(0, 3).map((career, index) => `
+                    <li>${careerButton(career, `<span class="career-trend-rank">${index + 1}</span><strong>${esc(pick(career.name))}</strong><em class="is-${kind}">${percent(career.change)}</em>`, 'career-trend-mover')}</li>`).join('')}</ol>`
+                : `<p class="career-muted">${esc(t(kind === 'up' ? 'market.noneRising' : 'market.noneFalling'))}</p>`
+
+            body = `
+                <section class="career-trend-card">
+                    ${head(t('market.heatmap'), t('market.heatmapSub'))}
+                    <div class="career-trend-controls">
+                        ${filterSelect}
+                        <select data-market="range" aria-label="${esc(t('market.rangeLabel'))}">
+                            ${ranges.map((n) => option(String(n), String(range), rangeLabel(periods[periods.length - n], periods[last]))).join('')}
+                        </select>
+                        <select data-market="sort" aria-label="${esc(t('market.sortLabel'))}">
+                            ${option('latest', sort, t('market.sort.latest', { month: long(periods[last]) }))}
+                            ${option('growth', sort, t('market.sort.growth'))}
+                            ${option('name', sort, t('market.sort.name'))}
+                        </select>
+                    </div>
+                    ${none || `
+                    <div class="career-trend-scroll">
+                        <table class="career-heatmap">
+                            <thead><tr><th scope="col">${esc(t('market.career'))}</th>${shown.map((period, index) => `<th scope="col" class="${index + offset === last ? 'is-latest' : ''}">${esc(short(period))}</th>`).join('')}</tr></thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                    <div class="career-trend-legend">
+                        <span>${esc(t('market.fewer'))}</span>
+                        <div><i></i><small><b>0</b><b>${scale / 2}</b><b>${scale}</b></small></div>
+                        <span>${esc(t('market.more'))}</span>
+                    </div>`}
+                </section>
+
+                ${periods.length > 1 ? `
+                <section class="career-trend-movers">
+                    ${head(t('market.movers'), t('market.moversSub', { month: long(periods[moversIndex - 1]) }), `
+                        <select data-market="movers" aria-label="${esc(t('market.moversLabel'))}">
+                            ${periods.slice(1).map((period) => option(period, periods[moversIndex], withYear(period))).join('')}
+                        </select>`)}
+                    <div class="career-trend-columns">
+                        <div class="career-trend-column is-up">
+                            <h4>↑ ${esc(t('market.rising'))}</h4>
+                            ${moverList(rising, 'up')}
+                            ${rising.length > 3 ? `<button class="career-link" data-action="market-rising">${esc(t('market.viewRising', { n: rising.length }))}</button>` : ''}
+                        </div>
+                        <div class="career-trend-column is-down">
+                            <h4>↓ ${esc(t('market.falling'))}</h4>
+                            ${moverList(falling, 'down')}
+                            ${falling.length ? `<small class="career-muted">${esc(t('market.declining', { n: falling.length }))}</small>` : ''}
+                        </div>
+                    </div>
+                </section>` : ''}`
+        }
+        else if(tab === 'ranking')
+        {
+            const max = Math.max(1, ...visible.map((career) => career.latest ?? 0))
+            body = `
+                <section class="career-trend-card">
+                    ${head(t('market.tab.ranking'), t('market.rankingSub', { month: long(periods[last]), previous: long(periods[Math.max(0, last - 1)]) }))}
+                    <div class="career-trend-controls">${filterSelect}</div>
+                    ${none}
+                    <ol class="career-trend-ranking">${[ ...visible ].sort((a, b) => (b.latest ?? - 1) - (a.latest ?? - 1)).map((career, index) => `
+                        <li class="${isTarget(career) ? 'is-target' : ''}">${careerButton(career, `
+                            <span class="career-trend-rank">${index + 1}</span>
+                            <span class="career-trend-label"><strong>${esc(pick(career.name))}</strong>${bar((career.latest ?? 0) / max * 100)}</span>
+                            ${spark(career.ads.slice(offset))}
+                            <span class="career-trend-value">${esc(t('market.ads', { n: career.latest ?? '—' }))}</span>
+                            <em class="is-${direction(career.change)}">${career.change === null ? '—' : percent(career.change)}</em>`, 'career-trend-row')}
+                        </li>`).join('')}
+                    </ol>
+                </section>`
+        }
+        else
+        {
+            const skills = trends.skills
+                .map((skill) => ({ ...skill, latest: skill.share[last], points: last > 0 && skill.share[last] !== null && skill.share[last - 1] !== null ? Math.round((skill.share[last] - skill.share[last - 1]) * 10) / 10 : null }))
+                .filter((skill) => matches(skill.name))
+                .sort((a, b) => (b.latest ?? - 1) - (a.latest ?? - 1))
+            body = `
+                <section class="career-trend-card">
+                    ${head(t('market.tab.skills'), t('market.skillsSub', { month: long(periods[last]), previous: long(periods[Math.max(0, last - 1)]) }))}
+                    ${query && !skills.length ? `<p class="career-muted">${esc(t('market.none', { q: query }))}</p>` : ''}
+                    <ol class="career-trend-ranking">${skills.map((skill, index) => `
+                        <li><div class="career-trend-row">
+                            <span class="career-trend-rank">${index + 1}</span>
+                            <span class="career-trend-label"><strong>${esc(pick(skill.name))}</strong>${bar(skill.latest ?? 0)}</span>
+                            ${spark(skill.share.slice(offset))}
+                            <span class="career-trend-value">${skill.latest ?? '—'}%</span>
+                            <em class="is-${direction(skill.points)}">${skill.points === null ? '—' : esc(t('market.points', { n: `${skill.points > 0 ? '+' : ''}${skill.points}` }))}</em>
+                        </div></li>`).join('')}
+                    </ol>
+                </section>`
+        }
+
+        const targetCareer = target && state.careers.find((career) => career.id === target)
         return [ t('market.title'), `
-            <p>${esc(t('market.intro'))}</p>
-            ${rising.length ? `
-                <h3>${esc(t('market.rising'))}</h3>
-                <div class="career-risers">${rising.map((career) => `
-                    <button class="career-riser" data-action="career" data-career="${career.id}" style="--career:${career.color}">
-                        <strong>${esc(pick(career.name))}</strong>
-                        <span>↑ ${changeText(changeOf(career))}%</span>
-                    </button>`).join('')}
-                </div>` : ''}
-            <h3>${esc(t('market.careers'))}</h3>
-            <ol class="career-ranks">${rows}</ol>
-            ${this.skillPopularity(state.marketSkills, t('market.skills'), 10)}
-            ${snapshot ? `<p class="career-muted">${esc(t(snapshot.live ? (isWeek(snapshot.period) ? 'careers.weekLive' : 'careers.monthLive') : 'careers.monthNote', { period: snapshot.period }))}</p>` : ''}
-            <p class="career-muted">${esc(t('careers.marketNote'))}</p>
+            <p class="career-muted career-trend-intro">${esc(t('market.subtitle'))}</p>
+            <label class="career-trend-search">
+                ${icon('magnifier')}
+                <input type="search" data-draft="marketSearch" placeholder="${esc(t('market.search'))}" aria-label="${esc(t('market.search'))}" value="${esc(this.drafts.marketSearch ?? '')}">
+                <kbd>/</kbd>
+            </label>
+            <div class="career-trend-tabs" role="group">${tabs}</div>
+            ${body}
+            <p class="career-muted career-trend-note">${esc(t(trends.demo ? 'market.noteDemo' : 'market.noteLive', { source: trends.source }))}</p>
+            <footer class="career-trend-footer">
+                <span>${esc(targetCareer ? t('market.target', { career: pick(targetCareer.name) }) : t('market.noTarget'))}</span>
+                ${targetCareer
+                    ? `<button class="career-button" data-action="menu" data-panel="roadmap">${esc(t('market.viewRoadmap'))}</button>`
+                    : `<button class="career-button" data-action="menu" data-panel="careers">${esc(t('market.chooseCareer'))}</button>`}
+            </footer>
         ` ]
     }
 
@@ -1324,6 +1592,7 @@ export class CareerUI
                         </div>
                         <div class="career-map-progress">${bar(stage.progress)}<small>${esc(t('roadmap.tasksDone', { done, total: stage.tasks.length }))}</small></div>
                         <p class="career-map-why">${icon('target')}<span><b>${esc(t('roadmap.why'))}</b>${esc(stage.why)}</span></p>
+                        ${this.renderStageResources(stage)}
                         ${stage.requirementRefs.length ? `<p class="career-muted">${esc(t('roadmap.covers', { refs: stage.requirementRefs.join(', ') }))}</p>` : ''}
                         ${locked ? this.renderStageLock(stage, stage.prerequisites.map(stageTitle).join(', ')) : `
                         ${stage.prerequisites.length ? `<p class="career-map-lock">${icon('lock')}${esc(t('roadmap.needs', { stages: stage.prerequisites.map(stageTitle).join(', ') }))}</p>` : ''}
@@ -1377,6 +1646,27 @@ export class CareerUI
                     <p><span>${esc(state.roadmap.overview)}</span><small>${esc(t('roadmap.intro'))} ${esc(t('roadmap.mpNote'))}</small></p>
                     <button class="career-button is-secondary" data-action="roadmap" data-confirm="1">${esc(t('roadmap.regenerate'))}</button>
                 </footer>
+            </div>`
+    }
+
+    /**
+     * Where to start learning the stage skills (server/skill-details.js RESOURCES), nothing for custom skills
+     */
+    renderStageResources(stage)
+    {
+        const skillIds = [ ...new Set([ ...stage.skillIds, ...stage.tasks.map((task) => task.skillId) ]) ]
+        const resources = skillIds.map((id) => this.state.skillDetails[id]?.resource).filter(Boolean)
+        if(!resources.length)
+            return ''
+
+        return `
+            <div class="career-map-resources">
+                <b>${icon('compass')}${esc(t('roadmap.startHere'))}</b>
+                ${resources.map((resource) => `
+                <a href="${esc(resource.url)}" target="_blank" rel="noopener noreferrer">
+                    <span>${esc(resource.title)} ↗</span>
+                    <small>${esc(t(resource.open ? 'roadmap.resourceOpen' : 'roadmap.resourceFree'))}</small>
+                </a>`).join('')}
             </div>`
     }
 
@@ -1524,11 +1814,15 @@ export class CareerUI
         const gaps = career.match.skills.filter((skill) => skill.gap > 0).map((skill) => this.skillName(skill.id))
         const range = t('common.months', { a: career.effortMonths[0], b: career.effortMonths[1] })
 
+        const expert = career.expert
+
         const menu = [
             { text: t('npc.ask.about'), to: 'about' },
             { text: t('npc.ask.fit'), to: 'fit' },
             { text: t('npc.ask.market'), to: 'market' },
-            { text: t('npc.ask.target'), to: 'target', if: !isTarget },
+            { text: t('npc.ask.question'), action: () => this.startAsk(false) },
+            { text: t('npc.ask.expert', { name: expert?.name }), action: () => this.startAsk(true), if: Boolean(expert) },
+            { text: t('npc.ask.target'), action: () => this.setTargetFromDialogue(careerId), if: !isTarget },
             { text: t('npc.ask.bye'), to: 'bye' },
         ]
 
@@ -1551,12 +1845,35 @@ export class CareerUI
                 lines: [ t('npc.market', { p: career.market.heat, trend: t(`careers.trend.${career.market.trend}`), range }) ],
                 choices: menu,
             },
+            // Target just set from the dialogue: tailor it to a posting, plan the roadmap, or leave
             target: {
-                lines: [ t('npc.target', { pet: career.pet.name }) ],
+                lines: [ this.dialogue?.targetError ?? t('npc.targetDone', { career: name, pet: career.pet.name }) ],
+                choices: this.dialogue?.targetError ? [ { text: t('common.back'), to: 'greet' } ] : [
+                    { text: t('npc.targetCustomise'), action: () => this.openPanel('careers', { careerId, mode: 'customise' }) },
+                    { text: t('npc.targetRoadmap'), action: () => this.openPanel('roadmap') },
+                    { text: t('npc.ask.bye'), to: 'bye' },
+                ],
+            },
+            // The player types a question, the mentor answers as a professional of the field, or the career's distilled
+            // industry elite answers (dialogue.expert, server/experts.js) after being introduced as a perspective from public record
+            ask: {
+                lines: this.dialogue?.expert
+                    ? (this.dialogue.expertMet ? [ t('npc.expertAgain', { name: expert.name }) ] : [ t('npc.expertIntro', { name: expert.name, tagline: pick(expert.tagline) }), t('npc.expertNote', { name: expert.name }) ])
+                    : [ t('npc.askIntro') ],
+                input: true,
+                choices: [],
+            },
+            thinking: {
+                lines: [ t('npc.thinking') ],
+                waiting: true,
+                choices: [],
+            },
+            answer: {
+                lines: this.dialogue?.answerPages ?? [ '' ],
                 choices: [
-                    { text: t('mode.general'), action: () => this.openPanel('careers', { careerId, mode: 'general' }) },
-                    { text: t('mode.customise'), action: () => this.openPanel('careers', { careerId, mode: 'customise' }) },
-                    { text: t('common.back'), to: 'greet' },
+                    { text: t('npc.ask.more'), to: 'ask' },
+                    { text: t('npc.ask.menu'), to: 'greet' },
+                    { text: t('npc.ask.bye'), to: 'bye' },
                 ],
             },
             bye: {
@@ -1564,6 +1881,161 @@ export class CareerUI
                 choices: [],
             },
         }
+    }
+
+    /**
+     * "I want this career as my goal": set it as the target in general mode right away (the career panel can still
+     * tailor it to a posting), the pet pops out and the mentor confirms
+     */
+    async setTargetFromDialogue(careerId)
+    {
+        const dialogue = this.dialogue
+        if(!dialogue || dialogue.settingTarget)
+            return
+        dialogue.settingTarget = true
+        dialogue.targetError = null
+        try
+        {
+            await this.api.setTarget(careerId, 'general', '', null, false)
+            this.game.career.world.celebratePet()
+        }
+        catch(error)
+        {
+            const key = `error.${error.code}`
+            dialogue.targetError = t(key) === key ? t('error.generic') : t(key)
+        }
+        dialogue.settingTarget = false
+        if(this.dialogue !== dialogue)
+            return
+        dialogue.turn = (dialogue.turn ?? 0) + 1
+        Object.assign(dialogue, { node: 'target', page: 0, selected: 0 })
+        this.renderDialogue()
+    }
+
+    /**
+     * Ask the mentor (expert false) or hand over to the industry elite (expert true): switching starts a fresh
+     * conversation, the history of one is not the other's
+     */
+    startAsk(expert)
+    {
+        const dialogue = this.dialogue
+        if(dialogue.expert !== expert)
+            dialogue.history = []
+        dialogue.expert = expert
+        dialogue.turn = (dialogue.turn ?? 0) + 1
+        Object.assign(dialogue, { node: 'ask', page: 0, selected: 0 })
+        this.renderDialogue()
+    }
+
+    /**
+     * Send the typed question, the mentor "thinks" meanwhile, then the answer is paged in the dialogue box
+     */
+    async askMentor(question)
+    {
+        const dialogue = this.dialogue
+        const attachment = dialogue?.file ?? null
+        question = question.trim() || (attachment ? t('npc.askFileDefault') : '')
+        if(!dialogue || !question || dialogue.node !== 'ask')
+            return
+
+        dialogue.history ??= []
+        dialogue.node = 'thinking'
+        dialogue.page = 0
+        this.renderDialogue()
+
+        let answer
+        try
+        {
+            const file = attachment ? await readFile(attachment) : null
+            answer = (await this.api.askMentor(dialogue.careerId, question, dialogue.history, file, Boolean(dialogue.expert))).answer
+            // Later turns only keep the file name, the file itself is sent once
+            dialogue.history.push({ role: 'user', content: attachment ? `${question}\n[${attachment.name}]` : question }, { role: 'assistant', content: answer })
+            dialogue.file = null
+            // The elite's introduction and disclaimer show before the first answer only
+            if(dialogue.expert)
+                dialogue.expertMet = true
+        }
+        catch(error)
+        {
+            const key = `error.${error.code}`
+            answer = t('npc.askError', { reason: t(key) === key ? t('error.generic') : t(key) })
+        }
+
+        // Left meanwhile
+        if(this.dialogue !== dialogue)
+            return
+        dialogue.answerPages = this.pageText(answer)
+        dialogue.turn = (dialogue.turn ?? 0) + 1
+        dialogue.node = 'answer'
+        dialogue.page = 0
+        dialogue.selected = 0
+        this.renderDialogue()
+    }
+
+    // The file attached to the next question: a chip with its name (a thumbnail for images) and a remove button
+    renderAskFile()
+    {
+        const chip = this.dialogueElement.querySelector('.career-dialogue-file')
+        if(!chip)
+            return
+        URL.revokeObjectURL(this.askFileUrl)
+        const file = this.dialogue?.file
+        chip.hidden = !file
+        if(!file)
+            return chip.replaceChildren()
+        this.askFileUrl = file.type.startsWith('image/') ? URL.createObjectURL(file) : null
+        chip.innerHTML = `
+            ${this.askFileUrl ? `<img src="${this.askFileUrl}" alt="">` : ''}
+            <span>${esc(file.name)}</span>
+            <button type="button" data-action="ask-file-remove" aria-label="${esc(t('common.remove'))}">×</button>`
+    }
+
+    attachToQuestion(file)
+    {
+        if(!this.dialogue || !file)
+            return
+        if(!ASK_FILE_TYPES.split(',').includes(file.type))
+            return this.showAskError('error.file-type')
+        if(file.size > 10 * 1024 * 1024)
+            return this.showAskError('error.file-too-large')
+        this.dialogue.file = file
+        this.renderAskFile()
+        this.dialogueElement.querySelector('.career-dialogue-ask input[type="text"]')?.focus()
+    }
+
+    // Wrong file: said in the field's placeholder for a moment
+    showAskError(key)
+    {
+        const field = this.dialogueElement.querySelector('.career-dialogue-ask input[type="text"]')
+        if(!field)
+            return
+        field.value = ''
+        field.placeholder = t(key)
+        field.classList.add('is-error')
+        clearTimeout(this.askErrorTimeout)
+        this.askErrorTimeout = setTimeout(() =>
+        {
+            field.placeholder = t('npc.askPlaceholder')
+            field.classList.remove('is-error')
+        }, 3000)
+    }
+
+    // Long answers split into dialogue box pages, on sentence ends
+    pageText(text)
+    {
+        const limit = getLang() === 'zh' ? 90 : 230
+        // After 。！？ or after . ! ? followed by a space (keeps "Node.js", "3.5", "e.g.x" whole)
+        const sentences = text.split(/\n+/).flatMap((paragraph) => paragraph.split(/(?<=[。！？])|(?<=[.!?])\s+/)).map((sentence) => sentence.trim()).filter(Boolean)
+        const pages = []
+        for(const sentence of sentences)
+        {
+            const lastPage = pages[pages.length - 1]
+            if(lastPage !== undefined && (lastPage + ' ' + sentence).length <= limit)
+                pages[pages.length - 1] = getLang() === 'zh' ? lastPage + sentence : `${lastPage} ${sentence}`
+            else
+                pages.push(sentence)
+        }
+        return pages.length ? pages : [ text ]
     }
 
     currentNode()
@@ -1612,7 +2084,12 @@ export class CareerUI
             return this.renderDialogue()
         }
 
-        if(this.currentChoices().length)
+        const node = this.currentNode()
+        if(node.input)
+            this.dialogueElement.querySelector('.career-dialogue-ask input')?.focus()
+        else if(node.waiting)
+            return
+        else if(this.currentChoices().length)
             this.choose(dialogue.selected)
         else
             this.closeDialogue()
@@ -1648,6 +2125,10 @@ export class CareerUI
         this.dialogueElement.classList.toggle('has-choices', showChoices)
         if(showChoices)
             this.highlightChoice()
+        const askField = this.currentNode().input && this.dialogueElement.querySelector('.career-dialogue-ask input[type="text"]')
+        this.dialogueElement.classList.toggle('has-ask', Boolean(askField))
+        this.renderAskFile()
+        askField?.focus({ preventScroll: true })
     }
 
     renderDialogue()
@@ -1656,7 +2137,7 @@ export class CareerUI
             return
 
         // Only rebuild when the page changes, so state updates don't restart the typing
-        const key = `${this.dialogue.node}:${this.dialogue.page}`
+        const key = `${this.dialogue.node}:${this.dialogue.page}:${this.dialogue.turn ?? 0}`
         if(this.dialogue.rendered === key)
             return
         this.dialogue.rendered = key
@@ -1664,15 +2145,29 @@ export class CareerUI
         const career = this.state.careers.find((item) => item.id === this.dialogue.careerId)
         const node = this.currentNode()
         const choices = this.isLastPage() ? this.currentChoices() : []
+        // The industry elite speaks in the question / answer nodes, the mentor everywhere else
+        const expertSpeaks = this.dialogue.expert && career.expert && [ 'ask', 'thinking', 'answer' ].includes(this.dialogue.node)
+        const speaker = expertSpeaks ? t('npc.expertName', { name: career.expert.name }) : t('npc.leader', { career: pick(career.name) })
 
         this.dialogueElement.style.setProperty('--career', career.color)
-        this.dialogueElement.classList.remove('is-typed', 'has-choices')
+        this.dialogueElement.classList.remove('is-typed', 'has-choices', 'has-ask')
         this.dialogueElement.innerHTML = `
             <div class="career-dialogue-choices" role="menu">
                 ${choices.map((choice, index) => `<button role="menuitem" data-action="choice" data-index="${index}">${esc(choice.text)}</button>`).join('')}
             </div>
+            ${node.input ? `
+            <form class="career-dialogue-ask">
+                <label class="career-dialogue-attach" title="${esc(t('npc.askAttach'))}">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m20 11.5-8.2 8.2a5.2 5.2 0 0 1-7.4-7.4l8.6-8.6a3.5 3.5 0 0 1 5 5l-8.6 8.6a1.8 1.8 0 0 1-2.6-2.6l7.9-7.9"/></svg>
+                    <input type="file" data-ask-file accept="${ASK_FILE_TYPES}" aria-label="${esc(t('npc.askAttach'))}" hidden>
+                </label>
+                <span class="career-dialogue-file" hidden></span>
+                <input type="text" maxlength="500" placeholder="${esc(t('npc.askPlaceholder'))}" aria-label="${esc(t('npc.askPlaceholder'))}" autocomplete="off">
+                <button type="submit">${esc(t('npc.askSend'))}</button>
+                <button type="button" data-action="dialogue-menu">${esc(t('common.back'))}</button>
+            </form>` : ''}
             <div class="career-dialogue-box" data-action="dialogue-advance">
-                <div class="career-dialogue-name">${esc(t('npc.leader', { career: pick(career.name) }))}</div>
+                <div class="career-dialogue-name">${esc(speaker)}</div>
                 <p class="career-dialogue-line" aria-live="polite"></p>
                 <svg class="career-dialogue-next" viewBox="0 0 24 24" role="img" aria-label="${esc(t('npc.continue'))}"><path d="M5 9l7 7 7-7"/></svg>
                 <kbd class="career-key-hint career-dialogue-enter">${esc(t('hint.pressEnter'))}</kbd>

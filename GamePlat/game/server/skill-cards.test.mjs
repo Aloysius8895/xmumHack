@@ -35,6 +35,8 @@ test('every catalog skill has complete localized card metadata', () =>
             assert.match(detail.icon, /^[a-z]+$/)
             for(const lang of ['zh', 'en', 'ms'])
                 assert.ok(detail.description[lang].length > 10, `${id}: ${lang}`)
+            assert.match(detail.resource.url, /^https:\/\//, `${id}: resource`)
+            assert.ok(detail.resource.title.length > 3, `${id}: resource title`)
         }
 })
 
@@ -131,4 +133,22 @@ test('retired exam endpoints return 404 before reading or mutating a save', asyn
         assert.equal(response.statusCode, 404)
         assert.deepEqual(body, { error: 'not-found' })
     }
+})
+
+test('unticking a task ticked by mistake puts its progress back', () =>
+{
+    const save = learner()
+    const task = save.roadmap.stages[0].tasks[0] // 6 MP
+    task.progress = 0
+    game.setTaskDone(save, task.id, true)
+    assert.equal(task.progress, 100)
+    game.setTaskDone(save, task.id, false)
+    assert.equal(task.progress, 0)
+
+    // Hours logged while it was ticked still count once unticked
+    game.setTaskDone(save, task.id, true)
+    game.applyLog(save, { text: 'SQL', source: 'web', classification: { verdict: 'learned', summary: '', items: [{ taskId: task.id, skillId: 'sql', hours: 3 }] } })
+    assert.equal(task.progress, 100)
+    game.setTaskDone(save, task.id, false)
+    assert.equal(task.progress, 50)
 })

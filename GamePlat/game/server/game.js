@@ -6,9 +6,11 @@
  */
 import { DEFAULT_MAP, SKILLS, SKILL_IDS, allCareers, getCareer, matchCareer, useCustom } from './careers.js'
 import { SKILL_DETAILS } from './skill-details.js'
+import { expertOf } from './experts.js'
 import { friendCode, leaderboard } from './friends.js'
 import { marketSnapshot, skillMarket, skillTrendOrReference } from './market-trends.js'
 import { loadMarket } from './store.js'
+import { trendsView } from './trends.js'
 
 export const RULES = {
     affinityPerLevel: 20,      // affinity (affinityOf: profile match + learning progress) per pet level
@@ -329,6 +331,9 @@ export function applyLog(save, { text, source, classification })
         {
             const before = task.progress
             task.progress = Math.min(100, Math.round(task.progress + hours / task.mp * 100))
+            // Ticked done by hand: the logged hours still count if it gets unticked
+            if(task.progressBeforeDone !== undefined)
+                task.progressBeforeDone = Math.min(99, Math.round(task.progressBeforeDone + hours / task.mp * 100))
             const difficulty = difficultyTier(task.skillId)
             advanced.push({ taskId: task.id, from: before, to: task.progress, difficulty, points: (task.progress - before) * RULES.difficultyWeights[difficulty] })
         }
@@ -356,7 +361,17 @@ export function setTaskDone(save, taskId, done)
     const task = save.roadmap && findTask(save.roadmap, taskId)
     if(!task)
         return false
-    task.progress = done ? 100 : Math.min(task.progress, 99)
+    // Ticking keeps the progress it had, unticking (a misclick) puts it back
+    if(done && task.progress < 100)
+    {
+        task.progressBeforeDone = task.progress
+        task.progress = 100
+    }
+    else if(!done && task.progress >= 100)
+    {
+        task.progress = Math.min(task.progressBeforeDone ?? task.progress, 99)
+        delete task.progressBeforeDone
+    }
     return true
 }
 
@@ -379,6 +394,7 @@ export function view(save, ai)
         onMap: isOnMap(save, career.id),
         saved: Boolean(save.careers?.[career.id]),
         custom: Boolean(career.custom),
+        expert: expertOf(career.id), // Industry elite the mentor can hand over to (experts.js), null if none
     }))
 
     const pending = save.pendingTarget && {
@@ -424,6 +440,7 @@ export function view(save, ai)
         pending,
         marketSkills: skillTrendOrReference(null, SKILL_IDS, market),
         skillMarket: skillMarket(SKILL_IDS, market),
+        trends: trendsView(),
         target: save.target,
         pet,
         roadmap,

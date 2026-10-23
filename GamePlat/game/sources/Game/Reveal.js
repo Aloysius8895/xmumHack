@@ -18,6 +18,8 @@ export class Reveal
         this.color = uniform(color('#e88eff'))
         this.intensity = uniform(5.5)
         this.intensityMultiplier = 1
+        this.introRadius = 20 // Camera distance on the character selection (wandering is 15 to 30)
+        this.introFocusY = 2 // Look above the character so the whole cherry tree fits, the selection panel sits below it
         this.sound = this.game.audio.register({
             path: 'sounds/reveal/reveal-1.mp3',
             autoplay: false,
@@ -69,15 +71,29 @@ export class Reveal
                     }
                 )
 
-                // View
-                this.game.view.zoom.smoothedRatio = 0.6
-                this.game.view.zoom.baseRatio = 0.6
+                // View, close on the character with the character selection below it
+                // Ratio for a fixed camera distance (past 1 = closer than the wandering minimum), whatever the viewport overflow
+                const radius = this.game.view.spherical.radius
+                const radiusMax = radius.edges.max + this.game.view.ratioOverflow * radius.nonIdealRatioOffset
+                const introRatio = 1 + (radius.edges.min - this.introRadius) / (radiusMax - radius.edges.min)
+
+                this.game.view.zoom.smoothedRatio = introRatio - 0.3
+                this.game.view.zoom.baseRatio = introRatio - 0.3
 
                 gsap.to(
                     this.game.view.zoom,
                     {
-                        baseRatio: 0.3,
+                        baseRatio: introRatio,
                         // smoothedRatio: 0.4,
+                        ease: 'power1.inOut',
+                        duration: 1.25 / speedMultiplier,
+                        overwrite: true,
+                    }
+                )
+                gsap.to(
+                    this.game.view.focusPoint.position,
+                    {
+                        y: this.introFocusY,
                         ease: 'power1.inOut',
                         duration: 1.25 / speedMultiplier,
                         overwrite: true,
@@ -103,13 +119,11 @@ export class Reveal
                 }
                 else
                 {
-                    // Next function, called once the character is confirmed (Wisp's guided tour after the reveal, on every visit)
+                    // Next function, called once the character is confirmed (Wisp's guided tour only starts from Settings)
                     const next = () =>
                     {
                         this.updateStep(1)
                         this.game.rayCursor.removeIntersect(intersect)
-
-                        setTimeout(() => this.game.career.tour.start(), 2500)
                     }
 
                     // Character selection (A / D to browse, Enter or click on the circle to confirm)
@@ -184,6 +198,15 @@ export class Reveal
                     {
                         this.updateStep(2)
                     }
+                }
+            )
+            gsap.to(
+                this.game.view.focusPoint.position,
+                {
+                    y: 0,
+                    ease: 'power1.inOut',
+                    duration: 1.75 / speedMultiplier,
+                    overwrite: true,
                 }
             )
 

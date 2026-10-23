@@ -10,7 +10,9 @@ import * as friends from './friends.js'
 import * as game from './game.js'
 import * as integrations from './integrations.js'
 import { IntegrationError } from './integrations.js'
+import * as trends from './trends.js'
 import { getCareer, useCustom } from './careers.js'
+import { expertCard } from './experts.js'
 import * as store from './store.js'
 
 const MAX_BODY = 15 * 1024 * 1024 // base64 of a 10 MB file
@@ -194,6 +196,30 @@ const routes = {
         save.roadmap = game.buildRoadmap(plan)
     },
 
+    // A career mentor NPC answers the player's own question as a professional of that field, or hands over to the
+    // field's distilled industry elite (features.askMentor)
+    'POST /api/npc/ask': async (save, body) =>
+    {
+        const career = getCareer(String(body.careerId ?? ''))
+        if(!career)
+            throw new HttpError(404, 'no-career')
+        if(body.elite && !expertCard(career.id))
+            throw new HttpError(404, 'no-expert')
+        const question = text(body.question, 500).trim()
+        if(!question)
+            throw new HttpError(400, 'no-question')
+        // Earlier turns of this conversation: user / assistant alternating, starting with the user
+        const history = (Array.isArray(body.history) ? body.history : [])
+            .filter((turn) => [ 'user', 'assistant' ].includes(turn?.role) && typeof turn.content === 'string' && turn.content.trim())
+            .slice(- 6)
+        while(history.length && history[0].role !== 'user')
+            history.shift()
+        const file = checkFile(body.file) // A screenshot, PDF or text file the player attached or pasted
+        // elite: the question goes to the career's distilled industry elite instead of the mentor (experts.js)
+        const answer = await features.askMentor({ career, question, file, history, elite: Boolean(body.elite), profile: save.profile, target: save.target, lang: lang(save, body) })
+        return { answer }
+    },
+
     'POST /api/task': async (save, body) =>
     {
         if(!game.setTaskDone(save, String(body.taskId), Boolean(body.done)))
@@ -246,6 +272,12 @@ const routes = {
     'POST /api/integrations/market': async (save, body) =>
     {
         return integrations.receiveMarket(body)
+    },
+
+    // Monthly job ads per career and skill shares for the trends panel (server/trends.js)
+    'POST /api/integrations/trends': async (save, body) =>
+    {
+        return trends.receiveTrends(body, IntegrationError)
     },
 
     'POST /api/integrations/chat': async (save, body) =>
