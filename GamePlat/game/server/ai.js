@@ -18,7 +18,7 @@ import Anthropic from '@anthropic-ai/sdk'
 function pickProvider()
 {
     const chosen = (process.env.AI_PROVIDER ?? '').trim().toLowerCase()
-    const supported = [ 'deepseek', 'bedrock', 'deepseek_direct', 'replit', 'anthropic' ]
+    const supported = [ 'runpod', 'deepseek', 'bedrock', 'deepseek_direct', 'replit', 'anthropic' ]
     if(chosen && !supported.includes(chosen))
         throw new Error(`Unknown AI_PROVIDER: ${chosen}`)
     const hasAwsUrl = Boolean(process.env.AWS_BACKEND_URL)
@@ -40,6 +40,7 @@ const REPLIT = PROVIDER === 'replit'
 const DEEPSEEK = PROVIDER === 'deepseek'
 const COMPATIBLE = REPLIT || DEEPSEEK // Plain Messages API, JSON through a forced tool call
 export const MODEL = {
+    runpod: process.env.RUNPOD_MODEL || '',
     deepseek: process.env.DEEPSEEK_MODEL || 'deepseek-flash',
     bedrock: 'configured-in-aws',
     deepseek_direct: 'configured-in-aws',
@@ -106,7 +107,8 @@ export function status()
         mock: MOCK,
         provider: PROVIDER,
         model: MODEL,
-        keyConfigured: Boolean(AWS_PROXY ? process.env.AWS_BACKEND_URL && process.env.AWS_BACKEND_TOKEN
+        keyConfigured: Boolean(PROVIDER === 'runpod' ? process.env.RUNPOD_API_KEY?.trim() && process.env.RUNPOD_BASE_URL?.trim() && MODEL
+            : AWS_PROXY ? process.env.AWS_BACKEND_URL && process.env.AWS_BACKEND_TOKEN
             : DEEPSEEK ? process.env.DEEPSEEK_API_KEY?.trim()
             : REPLIT ? process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY && process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL
             : process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN),
@@ -231,6 +233,14 @@ export function conformSlot(container, key, schema, path)
  */
 export async function reply({ system, messages, effort = 'low', maxTokens = 2000, onText = null, signal = null })
 {
+    if(PROVIDER === 'runpod')
+    {
+        const { runpodReply } = await import('./runpod.js')
+        const text = await runpodReply({ system, messages, maxTokens, signal })
+        if(onText)
+            onText(text)
+        return text
+    }
     if(DEEPSEEK)
     {
         const { deepseekInput } = await import('./deepseek-input.js')
@@ -305,6 +315,27 @@ export async function reply({ system, messages, effort = 'low', maxTokens = 2000
  */
 export async function ask({ system, content, schema, effort = 'medium', maxTokens = 16000 })
 {
+    if(PROVIDER === 'runpod')
+    {
+        const { runpodReply } = await import('./runpod.js')
+        let problem = 'invalid JSON'
+        const messages = [ { role: 'user', content } ]
+        for(let attempt = 0; attempt < 2; attempt++)
+        {
+            const text = await runpodReply({ system, messages, schema, maxTokens })
+            let holder
+            try { holder = { result: JSON.parse(text) } }
+            catch { problem = 'invalid JSON' }
+            if(holder)
+            {
+                problem = conformSlot(holder, 'result', schema, 'result')
+                if(!problem)
+                    return holder.result
+            }
+            messages.push({ role: 'assistant', content: text }, { role: 'user', content: `Correct the result: ${problem}. Return only JSON matching the schema.` })
+        }
+        throw new AiError('ai-error', `structured output rejected: ${problem}`)
+    }
     if(DEEPSEEK)
     {
         const { deepseekInput } = await import('./deepseek-input.js')
