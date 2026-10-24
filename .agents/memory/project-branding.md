@@ -1,10 +1,10 @@
 ---
 name: Public project branding
-description: Link previews should identify CareerSphere rather than its original portfolio template.
+description: The project is called KerjayaKu; do not use CareerSphere or the original portfolio brand publicly.
 ---
 
-Public link previews should show CareerSphere, not Bruno Simon or his portfolio artwork.
+The user clarified: “我的项目叫kerjayaku”. Use KerjayaKu as the public project name, not CareerSphere. Public link previews must not identify the app as Bruno Simon or use his portfolio artwork.
 
-**Why:** the user explicitly rejected the Bruno Simon preview when sharing the game's link.
+**Why:** the user rejected the Bruno Simon link preview and corrected the assistant's mistaken use of CareerSphere.
 
-**How to apply:** use CareerSphere branding for public titles, descriptions and share artwork. This request concerns product branding, not removal of the original project's license or source attribution.
+**How to apply:** use KerjayaKu for public titles, visible product copy, descriptions and share artwork. Preserve internal integration identifiers and environment-variable names so existing connections keep working. Keep the original project's license and source attribution.
