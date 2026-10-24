@@ -2,6 +2,14 @@
 
 `GamePlat/crawler` 已接入 `GamePlat/game`。Trends（市场热度）新增 **Refresh · 重新采样** 按钮：点击后创建新的采集运行，异步显示进度，完成校验与发布后自动更新热力图、排行和技能统计。它会执行新的网络请求，不只是重新加载旧 JSON。
 
+## 2026-10-25 采样提速
+
+当前游戏配置让三个来源并行推进，LinkedIn/Indeed 共用 JSearch 响应缓存和 2500 ms 请求间隔，Ricebowl 在独立浏览器标签顺序访问，间隔为 1000 ms。职业查询、详情额度、来源过滤、去重和发布校验保留。请求总量和运行截止时间跨来源共用；429 继续按 Retry-After 等待，401/403 停止该 API 来源的后续职业查询。旧配置不填 `maxSourceConcurrency` 时仍以单 worker 执行。
+
+53 项服务测试与 7 项游戏端采样测试通过。本地合成响应对比中，相同 12 次请求、12 条相同记录，串行配置 25.743 秒，并行配置 9.843 秒，耗时减少 62%。这不是实网耗时保证，也没有为基准测试消耗 API 配额或发布测试记录。结果在 `../verification/crawler-integration/speed-benchmark.json`；复测命令为 `node scripts/benchmark-speed.js`。
+
+本机旧采样完成后已通过原终端正常停止并重启服务。`/health` 已确认来源并发 3、浏览器间隔 1000 ms、JSearch 间隔 2500 ms，JSearch 配置可用。下一次页面 Refresh 使用新配置。
+
 ## 当前 JSearch 配置
 
 已启用用户在 `GamePlat/game/.env` 配置的 `RAPIDAPI_KEY`，服务端也接受 `JSEARCH_API_KEY`。游戏入口只在服务端读取该文件，不复制密钥到浏览器。已用一个 `/search-v2` 请求实测 HTTP 200；健康检查返回 `jsearch.enabled=true`、`configured=true`。

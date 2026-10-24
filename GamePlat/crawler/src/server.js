@@ -10,7 +10,7 @@ export function makeServer(store,config,{token=process.env.CRAWLER_TOKEN,execute
  return createServer(async(req,res)=>{
   try{
    const path=new URL(req.url,'http://localhost').pathname;
-   if(path==='/health'&&req.method==='GET')return send(res,200,{ok:true,service:'careersphere-crawler',platformRestricted:config.platformRestricted===true,platforms:config.sources.filter(s=>s.enabled).map(s=>s.id),jsearch:{enabled:config.sources.some(s=>s.enabled&&(s.type==='jsearch'||s.transport==='jsearch')),configured:Boolean(jsearchSettings().key)}});
+   if(path==='/health'&&req.method==='GET')return send(res,200,{ok:true,service:'careersphere-crawler',platformRestricted:config.platformRestricted===true,platforms:config.sources.filter(s=>s.enabled).map(s=>s.id),jsearch:{enabled:config.sources.some(s=>s.enabled&&(s.type==='jsearch'||s.transport==='jsearch')),configured:Boolean(jsearchSettings().key)},performance:{sourceConcurrency:config.maxSourceConcurrency||1,publicIntervalMs:config.requestIntervalMs,jsearchIntervalMs:config.jsearchRequestIntervalMs??config.requestIntervalMs}});
    const expected=Buffer.from('Bearer '+token),actual=Buffer.from(req.headers.authorization||'');
    if(actual.length!==expected.length||!timingSafeEqual(actual,expected))return send(res,401,{error:'Unauthorized'});
    if(req.method==='POST'&&path==='/api/browser/open')return send(res,200,await openBrowserSession());

@@ -38,6 +38,6 @@ export async function collectJsearch({source,config,budget,onRecord,onTask,fetch
     if(seen.has(result.cursor))throw new Error('Provider repeated a cursor');seen.add(result.cursor);cursor=result.cursor;task.status='capped';
    }
   }catch(e){task.status=e.capped?'capped':'failed';task.error=e.message;}
-  await onTask(task);if(budget.signal.aborted||/HTTP (401|403)/.test(task.error||''))break;
+  await onTask(task);if(budget.signal.aborted||/HTTP (401|403)/.test(task.error||''))return;
  }
 }

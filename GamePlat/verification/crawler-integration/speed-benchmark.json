@@ -1,0 +1,23 @@
+{
+  "synthetic": true,
+  "networkUsed": false,
+  "published": false,
+  "before": {
+    "name": "serial, 2500 ms pacing",
+    "durationMs": 25743,
+    "requests": 12,
+    "apiRequests": 4,
+    "browserRequests": 8,
+    "postings": 12
+  },
+  "after": {
+    "name": "parallel, 1000 ms browser / 2500 ms API pacing",
+    "durationMs": 9843,
+    "requests": 12,
+    "apiRequests": 4,
+    "browserRequests": 8,
+    "postings": 12
+  },
+  "sameSample": true,
+  "lessElapsedPct": 62
+}

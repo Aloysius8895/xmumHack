@@ -1,7 +1,16 @@
 import {setTimeout as delay} from 'node:timers/promises';
 export class Budget{
- constructor(c){this.limit=c.maxRequestsPerRun;this.count=0;this.interval=c.requestIntervalMs;this.last=0;this.until=Date.now()+c.maxRunMs;this.signal=AbortSignal.timeout(c.maxRunMs);}
- async take(){this.signal.throwIfAborted();if(this.count>=this.limit){const e=new Error('Request budget exhausted');e.capped=true;throw e;}const wait=Math.max(0,this.last+this.interval-Date.now());if(wait)await delay(wait,undefined,{signal:this.signal});this.signal.throwIfAborted();this.last=Date.now();this.count++;}
+ constructor(c){this.limit=c.maxRequestsPerRun;this.count=0;this.interval=c.requestIntervalMs;this.until=Date.now()+c.maxRunMs;this.signal=AbortSignal.timeout(c.maxRunMs);this.queues=new Map();this.last=new Map();}
+ scope(key,interval=this.interval){return {take:()=>this.take(key,interval),signal:this.signal,until:this.until};}
+ take(key='default',interval=this.interval){
+  const turn=(this.queues.get(key)||Promise.resolve()).then(async()=>{
+   const check=()=>{this.signal.throwIfAborted();if(this.count>=this.limit){const e=new Error('Request budget exhausted');e.capped=true;throw e;}};
+   check();let wait;
+   while((wait=(this.last.get(key)||0)+interval-Date.now())>0)await delay(wait,undefined,{signal:this.signal});
+   check();this.last.set(key,Date.now());this.count++;
+  });
+  this.queues.set(key,turn.catch(()=>{}));return turn;
+ }
 }
 export async function fetchJson(url,{headers={},budget,fetchImpl=fetch,attempts=3,method='GET',body}={}){
  let last;

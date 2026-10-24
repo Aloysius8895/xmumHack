@@ -27,7 +27,7 @@ const QUERY={
 export function gameConfig({jsearch=false,apiProvider='rapidapi'}={}){
  return {
   pipelineVersion:4,platformRestricted:true,allowedPlatforms:['linkedin','indeed','ricebowl'],jsearchProvider:jsearch?apiProvider:null,timezone:'Asia/Kuala_Lumpur',country:'MY',datePosted:'month',
-  maxPagesPerQuery:1,maxRequestsPerRun:150,requestIntervalMs:2500,maxRunMs:600000,maxRecordsPerRun:1000,maxDetailsPerSource:28,
+  maxPagesPerQuery:1,maxRequestsPerRun:150,requestIntervalMs:1000,jsearchRequestIntervalMs:2500,maxSourceConcurrency:3,maxRunMs:600000,maxRecordsPerRun:1000,maxDetailsPerSource:28,
   roles:allCareers().filter(c=>!c.custom).map(c=>{
    if(!TITLES[c.id])throw new Error('Missing reviewed title rule for '+c.id);
    return {id:c.id,name:c.name.en,titlePatterns:[TITLES[c.id]],queries:[(QUERY[c.id]||c.name.en)+' jobs in Malaysia']};
