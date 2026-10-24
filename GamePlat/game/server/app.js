@@ -24,6 +24,7 @@ import { marketCollector, CollectionError } from './market-collection.js'
 import { receiveCrawler, CrawlerError } from './crawler-ingestion.js'
 import { crawlerStatus } from './crawler-market.js'
 import { sampleRefresh, RefreshError } from './crawler-refresh.js'
+import { localizePostingSkills } from './posting-skill-localization.js'
 
 const MAX_BODY = 15 * 1024 * 1024 // base64 of a 10 MB file
 const MAX_FILE = 10 * 1024 * 1024
@@ -204,6 +205,15 @@ const routes = {
         if(!LANGS.includes(body.lang))
             throw new HttpError(400, 'bad-lang')
         save.lang = body.lang
+        try
+        {
+            return await localizePostingSkills(save, features.translatePostingSkills)
+        }
+        catch
+        {
+            // Language selection still works if translation is offline; a later selection retries the repair.
+            return { translatedSkills: 0, skillTranslationPending: true }
+        }
     },
 
     'POST /api/profile/extract': async (save, body) =>

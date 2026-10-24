@@ -458,6 +458,7 @@ const STRINGS = {
 
     // Settings
     'settings.language': { zh: '语言', en: 'Language', ms: 'Bahasa' },
+    'settings.skillTranslationPending': { zh: '语言已切换，部分技能暂未能翻译。请稍后重新选择语言以重试。', en: 'Language updated. Some skills could not be translated yet. Select a language again later to retry.', ms: 'Bahasa dikemas kini. Sesetengah kemahiran belum dapat diterjemahkan. Pilih bahasa sekali lagi kemudian untuk mencuba semula.' },
     'settings.reset': { zh: '重置全部进度', en: 'Reset all progress', ms: 'Set semula semua kemajuan' },
     'settings.resetConfirm': { zh: '确定要清空档案、宠物、路线和记录吗？无法恢复。', en: 'Delete your profile, pet, roadmap and logs? This cannot be undone.', ms: 'Padam profil, haiwan, peta laluan dan log? Tidak boleh dibatalkan.' },
     'settings.ai': { zh: 'AI：{model}', en: 'AI: {model}', ms: 'AI: {model}' },

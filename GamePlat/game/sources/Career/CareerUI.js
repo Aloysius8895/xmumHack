@@ -553,7 +553,11 @@ export class CareerUI
     async changeLang(lang)
     {
         setLang(lang)
-        await this.run(() => this.api.setLang(lang))
+        await this.run(() => this.api.setLang(lang), (result) =>
+        {
+            if(result.skillTranslationPending)
+                this.notice = { type: 'warning', text: t('settings.skillTranslationPending') }
+        })
         this.rebuildStatic()
         this.render()
     }
@@ -981,7 +985,7 @@ export class CareerUI
             ? `<ul class="career-skill-list">${skills.map((skill, index) => `
                 <li>
                     <span class="career-skill-name">${esc(this.skillName(skill.id, skill.name))}<small>${esc(t(`profile.source.${skill.source}`))}${skill.evidence ? ` · ${esc(skill.evidence)}` : ''}</small></span>
-                    <select data-skill-level="${index}" aria-label="${esc(skill.name)}">
+                    <select data-skill-level="${index}" aria-label="${esc(this.skillName(skill.id, skill.name))}">
                         ${[ 0, 1, 2, 3 ].map((level) => `<option value="${level}" ${skill.level === level ? 'selected' : ''}>${esc(t(`level.${level}`))}</option>`).join('')}
                     </select>
                     <button class="career-icon-button" data-action="skill-remove" data-index="${index}" aria-label="${esc(t('common.remove'))}">×</button>

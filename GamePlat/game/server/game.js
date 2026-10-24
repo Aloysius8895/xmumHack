@@ -5,6 +5,7 @@
  * > log what you did and track preparation. Daily-report mastery growth is a separate, future feature.
  */
 import { DEFAULT_MAP, SKILLS, SKILL_IDS, allCareers, getCareer, localText, matchCareer, useCustom } from './careers.js'
+import { postingSkillLocalization } from './posting-skill-localization.js'
 import { SKILL_DETAILS } from './skill-details.js'
 import { expertOf } from './experts.js'
 import { friendCode, leaderboard } from './friends.js'
@@ -157,6 +158,15 @@ export function adoptPostingSkills(save)
                 }
                 continue
             }
+            const localized = postingSkillLocalization(requirement)
+            const existing = save.customSkills?.[current]
+            if(existing && localized && existing.localizationVersion !== 1)
+            {
+                existing.name = localized.name
+                existing.detail.description = localized.description
+                existing.localizationVersion = 1
+                changed = true
+            }
             // Already a catalog skill, or a custom skill this save has
             if(!text || (current.startsWith('custom-') ? save.customSkills?.[current] : SKILLS[current]))
                 continue
@@ -166,12 +176,12 @@ export function adoptPostingSkills(save)
             // Only this save counts: the SKILLS registry may still hold another save's custom skills
             if(!save.customSkills[id])
             {
-                // The posting is in one language: the same words in all three
                 const name = text.slice(0, 60)
                 const description = String(requirement.note || text).slice(0, 300)
                 save.customSkills[id] = {
-                    name: { zh: name, en: name, ms: name },
-                    detail: { icon: 'compass', demand: 'medium', heat: 60, difficulty: 3, description: { zh: description, en: description, ms: description } },
+                    name: localized?.name ?? { zh: name, en: name, ms: name },
+                    detail: { icon: 'compass', demand: 'medium', heat: 60, difficulty: 3, description: localized?.description ?? { zh: description, en: description, ms: description } },
+                    ...(localized ? { localizationVersion: 1 } : {}),
                 }
                 changed = true
             }

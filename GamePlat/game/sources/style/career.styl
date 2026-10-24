@@ -1405,8 +1405,16 @@ button.career-points {
     }
 
     .career-skill-stats > div {
+        flex-wrap: wrap;
         padding: 4px 6px;
         font-size: 12px;
+    }
+
+    .career-skill-stats dd {
+        max-width: 100%;
+        margin-left: auto;
+        overflow-wrap: anywhere;
+        text-align: right;
     }
 
     .career-skill-description {
