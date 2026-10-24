@@ -18,3 +18,13 @@ The WhatsApp branch's other changes synchronize older GamePlat/chatbot versions 
 The FDE recent-postings detail card is removed from both market and career detail views. The FDE career, heatmap row, and NEW badge remain available.
 
 Publication excludes local environment files, browser profiles, runtime databases, intermediate data runs, the standalone cloudflared executable, and unrelated untracked skill libraries.
+
+Validation after merging main:
+
+- Game/server, career UI logic, and n8n: 147 tests passed, including RunPod tests.
+- Collection service: 47 tests passed.
+- Chatbot: 109 tests passed using the repository `.venv` and a fresh temporary test directory.
+- Data processing: eight unit tests and 22 offline integrity/replay checks passed.
+- Desktop/mobile browser checks passed: no FDE detail card in either view, retained FDE career and NEW badge, refresh only in market overview, and no page errors. Refresh responses were intercepted; no test sample was published.
+- Production Vite build passed. Existing asset-resolution, dependency eval, and bundle-size warnings remain.
+- Staged project files contained no configured secret values or local environment/database/browser-profile paths.
