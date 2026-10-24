@@ -30,7 +30,8 @@ def handle_text(channel: Channel, uid: str, raw_id: str, text: str) -> None:
     text = text.strip()
     if not text:
         return
-    if text.lower() in RESET_WORDS:
+    command = text.split(maxsplit=1)[0].split("@", 1)[0].lower()
+    if text.lower() in RESET_WORDS or command == "/reset":
         db.clear_history(uid)
         db.pop_pending(uid)
         channel.send_text(uid, messages.t("reset_reply"))

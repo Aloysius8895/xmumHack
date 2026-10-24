@@ -1,7 +1,4 @@
-# .replit for a Repl of the game imported from the whole GitHub repo (the root .replit runs the chat bot).
-# In that Repl's Shell: cp GamePlat/game/replit-repo-root.replit .replit
-# Same commands as GamePlat/game/.replit, run from GamePlat/game.
-modules = ["nodejs-22"]
+modules = ["nodejs-22", "python-base-3.13"]
 run = "cd GamePlat/game && npm run dev"
 
 [[ports]]
@@ -40,3 +37,10 @@ waitForPort = 5000
 
 [workflows.workflow.metadata]
 outputType = "webview"
+
+[userenv]
+
+[userenv.shared]
+AI_PROVIDER = "deepseek"
+AI_MOCK = "0"
+DEEPSEEK_MODEL = "deepseek-flash"

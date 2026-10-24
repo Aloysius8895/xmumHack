@@ -4,6 +4,9 @@
 
 ## CareerSphere persistence and AI
 
+For RunPod-hosted models, see [RUNPOD.md](RUNPOD.md). Set `AI_PROVIDER=runpod`
+and configure its server-only endpoint, model and API key to route game AI to RunPod.
+
 Use `AI_PROVIDER=deepseek`, `DEEPSEEK_API_KEY` and `DEEPSEEK_MODEL=deepseek-flash`
 in the server-only `.env` or deployment Secrets. All game AI features use that key,
 including structured extraction, roadmaps, learning reports, mentors and experts.
