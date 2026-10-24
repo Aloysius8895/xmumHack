@@ -1,0 +1,609 @@
+{
+  "pipelineVersion": 4,
+  "platformRestricted": true,
+  "allowedPlatforms": [
+    "linkedin",
+    "indeed",
+    "ricebowl"
+  ],
+  "jsearchProvider": "rapidapi",
+  "timezone": "Asia/Kuala_Lumpur",
+  "country": "MY",
+  "datePosted": "month",
+  "maxPagesPerQuery": 1,
+  "maxRequestsPerRun": 150,
+  "requestIntervalMs": 2500,
+  "maxRunMs": 600000,
+  "maxRecordsPerRun": 1000,
+  "maxDetailsPerSource": 28,
+  "roles": [
+    {
+      "id": "data-analyst",
+      "name": "Data Analyst",
+      "titlePatterns": [
+        "\\b(data|business intelligence|bi|reporting|insights?) analysts?\\b"
+      ],
+      "queries": [
+        "Data Analyst jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "frontend-developer",
+      "name": "Frontend Developer",
+      "titlePatterns": [
+        "\\bfront[ -]?end\\b|\\breact (developer|engineer)\\b"
+      ],
+      "queries": [
+        "Frontend Developer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "backend-developer",
+      "name": "Backend Developer",
+      "titlePatterns": [
+        "\\bback[ -]?end\\b|\\b(java|node\\.?js|python|api|server[ -]side) (developer|engineer)\\b"
+      ],
+      "queries": [
+        "Backend Developer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "ui-ux-designer",
+      "name": "UI/UX Designer",
+      "titlePatterns": [
+        "\\b(ui|ux|user experience|user interface|product|interaction) designer\\b|\\bui[ /-]+ux\\b"
+      ],
+      "queries": [
+        "UI UX designer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "ml-engineer",
+      "name": "AI / ML Engineer",
+      "titlePatterns": [
+        "\\b(machine learning|mlops|ml|ai|artificial intelligence|deep learning|llm) (engineer|developer|specialist)\\b"
+      ],
+      "queries": [
+        "machine learning engineer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "product-manager",
+      "name": "Product Manager",
+      "titlePatterns": [
+        "\\bproduct (manager|owner|lead)\\b"
+      ],
+      "queries": [
+        "Product Manager jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "forward-deployed-engineer",
+      "name": "FDE (Forward Deployed Engineer)",
+      "titlePatterns": [
+        "\\bforward[ -]+deploy(?:ed|ment)[ -]+(?:(?:software|ai|genai)[ -]+)?engineer(?:ing)?\\b"
+      ],
+      "queries": [
+        "forward deployed engineer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "data-scientist",
+      "name": "Data Scientist",
+      "titlePatterns": [
+        "\\b(data|applied) scientist\\b"
+      ],
+      "queries": [
+        "Data Scientist jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "auditor",
+      "name": "Auditor",
+      "titlePatterns": [
+        "\\bauditor\\b|\\baudit (associate|executive|manager|senior)\\b"
+      ],
+      "queries": [
+        "Auditor jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "lawyer",
+      "name": "Lawyer",
+      "titlePatterns": [
+        "\\b(lawyer|legal counsel|legal associate|advocate|solicitor)\\b"
+      ],
+      "queries": [
+        "Lawyer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "teacher",
+      "name": "Teacher",
+      "titlePatterns": [
+        "\\b(teacher|lecturer|educator)\\b"
+      ],
+      "queries": [
+        "Teacher jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "doctor",
+      "name": "Doctor",
+      "titlePatterns": [
+        "\\b(medical officer|medical doctor|physician|general practitioner)\\b"
+      ],
+      "queries": [
+        "medical officer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "chef",
+      "name": "Chef",
+      "titlePatterns": [
+        "\\bchef\\b"
+      ],
+      "queries": [
+        "Chef jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "civil-engineer",
+      "name": "Civil Engineer",
+      "titlePatterns": [
+        "\\b(civil|structural) engineer\\b"
+      ],
+      "queries": [
+        "Civil Engineer jobs in Malaysia"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "sql",
+      "name": "SQL",
+      "aliases": [
+        "SQL"
+      ],
+      "pattern": "\\b(sql|mysql|postgres(ql)?|t-sql|pl\\/sql|mssql|sqlite|bigquery)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "excel",
+      "name": "Excel / Spreadsheets",
+      "aliases": [
+        "Excel / Spreadsheets"
+      ],
+      "pattern": "\\b(excel|spreadsheets?|google sheets|vlookup|pivot tables?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "statistics",
+      "name": "Statistics",
+      "aliases": [
+        "Statistics"
+      ],
+      "pattern": "\\b(statistics|statistical|regression|hypothesis testing|a\\/b test(ing|s)?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "python",
+      "name": "Python",
+      "aliases": [
+        "Python"
+      ],
+      "pattern": "\\b(python|pandas|numpy)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "data-cleaning",
+      "name": "Data cleaning",
+      "aliases": [
+        "Data cleaning"
+      ],
+      "pattern": "\\b(data clean(ing|sing)|data cleansing|data wrangling|data preparation|data quality|etl|elt|data validation)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "data-visualization",
+      "name": "Data visualization",
+      "aliases": [
+        "Data visualization"
+      ],
+      "pattern": "\\b(data visuali[sz]ation|power ?bi|tableau|looker|qlik|dashboards?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "communication",
+      "name": "Communication",
+      "aliases": [
+        "Communication"
+      ],
+      "pattern": "\\b(communication|stakeholders?|presentation skills?|storytelling)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "html-css",
+      "name": "HTML & CSS",
+      "aliases": [
+        "HTML & CSS"
+      ],
+      "pattern": "\\b(html5?|css3?|tailwind|sass|scss)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "javascript",
+      "name": "JavaScript",
+      "aliases": [
+        "JavaScript"
+      ],
+      "pattern": "\\b(javascript|typescript|ecmascript)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "react",
+      "name": "React",
+      "aliases": [
+        "React"
+      ],
+      "pattern": "\\bReact(\\.?js)?\\b|\\bNext\\.?js\\b",
+      "patternFlags": ""
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "aliases": [
+        "Git"
+      ],
+      "pattern": "\\b(git|github|gitlab|bitbucket|version control)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "accessibility",
+      "name": "Responsive & accessibility",
+      "aliases": [
+        "Responsive & accessibility"
+      ],
+      "pattern": "\\b(accessibility|wcag|a11y|responsive (web )?design)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "api-integration",
+      "name": "API integration",
+      "aliases": [
+        "API integration"
+      ],
+      "pattern": "\\b(api integrations?|third[- ]party apis?|integrat\\w* (with )?apis?|consum\\w* apis?|graphql)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "backend-language",
+      "name": "Backend language (Java / Node / Python)",
+      "aliases": [
+        "Backend language (Java / Node / Python)"
+      ],
+      "pattern": "\\b(java|node\\.?js|golang|php|ruby|django|flask|fastapi|spring boot|express\\.?js|nestjs|laravel|kotlin|\\.net)\\b|(^|[^\\w])c#(?=$|[^\\w])",
+      "patternFlags": "i"
+    },
+    {
+      "id": "databases",
+      "name": "Database design",
+      "aliases": [
+        "Database design"
+      ],
+      "pattern": "\\b(databases?|nosql|mongodb|redis|dynamodb|cassandra|data modell?ing|schema design)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "rest-api",
+      "name": "REST API design",
+      "aliases": [
+        "REST API design"
+      ],
+      "pattern": "\\b(rest(ful)? apis?|restful|rest services?|api design|microservices?|openapi|swagger)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "cloud-deploy",
+      "name": "Cloud deployment",
+      "aliases": [
+        "Cloud deployment"
+      ],
+      "pattern": "\\b(aws|amazon web services|azure|gcp|google cloud|docker|kubernetes|k8s|ci\\/cd|terraform)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "testing",
+      "name": "Automated testing",
+      "aliases": [
+        "Automated testing"
+      ],
+      "pattern": "\\b(unit test(s|ing)?|automated testing|test automation|jest|pytest|junit|cypress|selenium|playwright|tdd|integration tests?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "user-research",
+      "name": "User research",
+      "aliases": [
+        "User research"
+      ],
+      "pattern": "\\b(user research|user interviews?|ux research|personas?|customer research|user needs)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "prototyping",
+      "name": "Wireframes & prototyping",
+      "aliases": [
+        "Wireframes & prototyping"
+      ],
+      "pattern": "\\b(prototyp\\w*|wireframe\\w*|mock-?ups?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "figma",
+      "name": "Figma",
+      "aliases": [
+        "Figma"
+      ],
+      "pattern": "\\b(figma|adobe xd)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "visual-design",
+      "name": "Visual design",
+      "aliases": [
+        "Visual design"
+      ],
+      "pattern": "\\b(visual design|ui design|typography|colou?r theory|design systems?|graphic design|photoshop|illustrator)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "usability-testing",
+      "name": "Usability testing",
+      "aliases": [
+        "Usability testing"
+      ],
+      "pattern": "\\b(usability test\\w*|user testing|heuristic evaluation)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "ml-math",
+      "name": "Math for ML",
+      "aliases": [
+        "Math for ML"
+      ],
+      "pattern": "\\b(linear algebra|calculus|mathematics|mathematical|optimi[sz]ation)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "ml-frameworks",
+      "name": "ML frameworks",
+      "aliases": [
+        "ML frameworks"
+      ],
+      "pattern": "\\b(pytorch|tensorflow|keras|scikit-learn|sklearn|hugging ?face|xgboost|lightgbm|jax)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "mlops",
+      "name": "MLOps",
+      "aliases": [
+        "MLOps"
+      ],
+      "pattern": "\\b(mlops|model deployment|deploy\\w* (ml |machine learning )?models?|mlflow|kubeflow|sagemaker|vertex ai|model monitoring|model serving)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "roadmapping",
+      "name": "Product roadmapping",
+      "aliases": [
+        "Product roadmapping"
+      ],
+      "pattern": "\\b(roadmaps?|roadmapping|prioriti[sz]ation|product strategy|product vision|backlog)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "agile",
+      "name": "Agile collaboration",
+      "aliases": [
+        "Agile collaboration"
+      ],
+      "pattern": "\\b(agile|scrum|kanban|sprints?|jira)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "market-analysis",
+      "name": "Market analysis",
+      "aliases": [
+        "Market analysis"
+      ],
+      "pattern": "\\b(market (research|analysis)|competitive analysis|competitor analysis|market trends?|go-to-market|customer insights?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "accounting",
+      "name": "Financial accounting",
+      "aliases": [
+        "Financial accounting"
+      ],
+      "pattern": "\\b(accounting|bookkeeping|mfrs|ifrs|gaap|financial statements?|general ledger|acca|cpa)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "auditing",
+      "name": "Audit procedures & standards",
+      "aliases": [
+        "Audit procedures & standards"
+      ],
+      "pattern": "\\b(audit(s|ing|or)?|assurance|isa standards?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "internal-control",
+      "name": "Internal control & risk",
+      "aliases": [
+        "Internal control & risk"
+      ],
+      "pattern": "\\b(internal controls?|risk assessment|sox|compliance testing|risk management)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "legal-research",
+      "name": "Legal research",
+      "aliases": [
+        "Legal research"
+      ],
+      "pattern": "\\b(legal research|case law|statutes?|westlaw|lexis)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "legal-writing",
+      "name": "Legal drafting",
+      "aliases": [
+        "Legal drafting"
+      ],
+      "pattern": "\\b(legal (drafting|writing)|draft(ing)? (contracts?|agreements?)|pleadings?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "negotiation",
+      "name": "Negotiation",
+      "aliases": [
+        "Negotiation"
+      ],
+      "pattern": "\\b(negotiat\\w+)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "lesson-planning",
+      "name": "Lesson planning",
+      "aliases": [
+        "Lesson planning"
+      ],
+      "pattern": "\\b(lesson plans?|lesson planning|curriculum (design|development)|syllabus)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "classroom-management",
+      "name": "Classroom management",
+      "aliases": [
+        "Classroom management"
+      ],
+      "pattern": "\\b(classroom management|classroom routines?|behaviou?r management)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "assessment",
+      "name": "Learning assessment",
+      "aliases": [
+        "Learning assessment"
+      ],
+      "pattern": "\\b(student assessments?|formative assessments?|grading|rubrics?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "clinical-knowledge",
+      "name": "Clinical knowledge",
+      "aliases": [
+        "Clinical knowledge"
+      ],
+      "pattern": "\\b(clinical|diagnos\\w+|mbbs|medical degree)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "patient-care",
+      "name": "Patient care",
+      "aliases": [
+        "Patient care"
+      ],
+      "pattern": "\\b(patient care|patient management|bedside manner)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "medical-ethics",
+      "name": "Medical ethics",
+      "aliases": [
+        "Medical ethics"
+      ],
+      "pattern": "\\b(medical ethics|informed consent|patient confidentiality)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "cooking-technique",
+      "name": "Cooking technique",
+      "aliases": [
+        "Cooking technique"
+      ],
+      "pattern": "\\b(culinary|cooking|knife skills|kitchen techniques?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "food-safety",
+      "name": "Food safety & hygiene",
+      "aliases": [
+        "Food safety & hygiene"
+      ],
+      "pattern": "\\b(food (safety|hygiene|handling)|haccp|sanitation)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "menu-planning",
+      "name": "Menu planning & costing",
+      "aliases": [
+        "Menu planning & costing"
+      ],
+      "pattern": "\\b(menu (planning|development|design)|food cost(ing)?|recipe costing)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "engineering-math",
+      "name": "Engineering math & mechanics",
+      "aliases": [
+        "Engineering math & mechanics"
+      ],
+      "pattern": "\\b(structural (analysis|design)|engineering mechanics|load calculations?|finite element)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "cad",
+      "name": "CAD drafting",
+      "aliases": [
+        "CAD drafting"
+      ],
+      "pattern": "\\b(autocad|cad|revit|civil 3d|solidworks)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "project-management",
+      "name": "Project management",
+      "aliases": [
+        "Project management"
+      ],
+      "pattern": "\\b(project management|pmp|project planning|project schedul\\w+|prince2)\\b",
+      "patternFlags": "i"
+    }
+  ],
+  "sources": [
+    {
+      "id": "linkedin",
+      "type": "public",
+      "transport": "jsearch",
+      "enabled": true,
+      "optional": true
+    },
+    {
+      "id": "indeed",
+      "type": "public",
+      "transport": "jsearch",
+      "enabled": true,
+      "optional": true
+    },
+    {
+      "id": "ricebowl",
+      "type": "public",
+      "transport": "browser",
+      "enabled": true,
+      "optional": true
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+﻿skill_id,skill_name_normalized,postings,denominator,demand_rate_pct
+communication,Communication,174,251,69.32
+backend-language,Backend language (Java / Node / Python),82,251,32.67
+python,Python,64,251,25.5
+cloud-deploy,Cloud deployment,62,251,24.7
+sql,SQL,56,251,22.31
+databases,Database design,41,251,16.33
+roadmapping,Product roadmapping,40,251,15.94
+javascript,JavaScript,38,251,15.14
+statistics,Statistics,36,251,14.34
+auditing,Audit procedures & standards,33,251,13.15
+rest-api,REST API design,33,251,13.15
+git,Git,31,251,12.35
+agile,Agile collaboration,31,251,12.35
+data-visualization,Data visualization,30,251,11.95
+prototyping,Wireframes & prototyping,29,251,11.55
+mlops,MLOps,25,251,9.96
+react,React,22,251,8.76
+visual-design,Visual design,22,251,8.76
+internal-control,Internal control & risk,20,251,7.97
+html-css,HTML & CSS,20,251,7.97
+ml-frameworks,ML frameworks,20,251,7.97
+market-analysis,Market analysis,19,251,7.57
+testing,Automated testing,19,251,7.57
+negotiation,Negotiation,19,251,7.57
+accessibility,Responsive & accessibility,18,251,7.17
+excel,Excel / Spreadsheets,17,251,6.77
+clinical-knowledge,Clinical knowledge,16,251,6.37
+figma,Figma,15,251,5.98
+accounting,Financial accounting,15,251,5.98
+cooking-technique,Cooking technique,14,251,5.58
+data-cleaning,Data cleaning,14,251,5.58
+food-safety,Food safety & hygiene,13,251,5.18
+user-research,User research,12,251,4.78
+project-management,Project management,10,251,3.98
+lesson-planning,Lesson planning,10,251,3.98
+cad,CAD drafting,9,251,3.59
+api-integration,API integration,8,251,3.19
+usability-testing,Usability testing,8,251,3.19
+patient-care,Patient care,4,251,1.59
+legal-research,Legal research,3,251,1.2
+menu-planning,Menu planning & costing,3,251,1.2
+engineering-math,Engineering math & mechanics,2,251,0.8
+classroom-management,Classroom management,1,251,0.4
+legal-writing,Legal drafting,1,251,0.4
+ml-math,Math for ML,1,251,0.4

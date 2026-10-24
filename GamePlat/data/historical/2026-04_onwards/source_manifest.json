@@ -1,0 +1,32 @@
+[
+  {
+    "file": "sources/dosm-jmi-q2-2026.pdf",
+    "url": "https://www.dosm.gov.my/site/downloadrelease?id=big-data-analytics-job-market-insights-q22026&lang=English",
+    "final_url": "https://www.dosm.gov.my/site/downloadrelease?id=big-data-analytics-job-market-insights-q22026&lang=English",
+    "http_status": 200,
+    "content_type": "application/pdf",
+    "retrieved_at": "2026-10-24T05:02:55.008886+00:00",
+    "bytes": 840368,
+    "sha256": "ea830d383bca253cdc08b0650c6d15f3d6846db193404c03ecf5a701fb6ce98e"
+  },
+  {
+    "file": "sources/dosm-jmi-q2-2026-infographic.pdf",
+    "url": "https://www.dosm.gov.my/uploads/release-content/file_20260818075305.pdf",
+    "final_url": "https://www.dosm.gov.my/uploads/release-content/file_20260818075305.pdf",
+    "http_status": 200,
+    "content_type": "application/pdf",
+    "retrieved_at": "2026-10-24T05:02:56.376639+00:00",
+    "bytes": 2485325,
+    "sha256": "65b16bc78aaa56cb24285a11361d98cdb908fb21366161f6f0ba49fd393fa872"
+  },
+  {
+    "file": "sources/techmap-malaysia.html",
+    "url": "https://jobdatafeeds.com/data/countries/my",
+    "final_url": "https://jobdatafeeds.com/data/countries/my",
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "retrieved_at": "2026-10-24T05:02:56.706633+00:00",
+    "bytes": 60768,
+    "sha256": "70e9fcf1bc50316ff2a017bcca2a9cd39b938919804db1dc3bdf14943e988eb9"
+  }
+]

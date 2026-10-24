@@ -1,14 +1,19 @@
 # CareerSphere：最终 n8n 工作流
 
-先用浏览器打开本目录的 **[overview.html](overview.html)**。这是离线交互总览，可以切换三个流程、点击节点、查看接口；真正运行和编辑使用 n8n 的画布。
+**2026-10-24 更新：** 当前市场流程改用[无需 RapidAPI 的 LinkedIn 公开采集](market/PUBLIC_COLLECTION.md)，每天 08:00 采集并发布到本地热度数据。文件为 [public-market.workflow.json](market/public-market.workflow.json)。[岗位追踪](posting-watch/README.md)每 30 分钟运行，另支持带鉴权的 `POST /webhook/job-watch`。下文 JSearch 配置仅供可选旧方案参考，不是当前市场采集依赖；旧重复流程保持关闭。
+
+先用浏览器打开本目录的 **[overview.html](overview.html)**。这是离线交互总览，可以切换四个流程、点击节点、查看接口；真正运行和编辑使用 n8n 的画布。
 
 | 文件 | 作用 | 时间 |
 | --- | --- | --- |
-| [market/market-trends.workflow.json](market/market-trends.workflow.json) | 招聘采集、校验、游戏周快照、历史 ID、可选 Telegram 通知 | 每周一 08:00 / 手动 |
+| [market/public-market.workflow.json](market/public-market.workflow.json) | 公开 LinkedIn 采集、清洗校验、发布本地职业与技能热度 | 每天 08:00 / 手动 |
 | [learning/telegram-learning.workflow.json](learning/telegram-learning.workflow.json) | Telegram 私聊与按钮 → 已有 chatbot → 游戏学习记录 → chatbot 回复 | 消息到达时 |
 | [learning/daily-digest.workflow.json](learning/daily-digest.workflow.json) | 演示玩家昨天的真实汇报 → 原文摘录 → 游戏每日总结 | 每天 00:05 / 手动 |
+| [posting-watch/posting-watch.workflow.json](posting-watch/posting-watch.workflow.json) | 检查 customise 原始职位链接，变更时在游戏中提醒重新生成 | 每 30 分钟 / 鉴权 webhook |
 
-三个流程均使用 `Asia/Kuala_Lumpur`，导入文件均默认未激活。借鉴 [模板 #10918](https://n8n.io/workflows/10918-fetch-daily-job-postings-from-jsearch-to-google-sheets-and-telegram/) 的历史去重、通知和 [模板 #9254](https://n8n.io/workflows/9254-automate-telegram-message-processing-separate-text-and-files/) 的消息分流；按项目接口重新生成，不是原模板的原样副本。
+四个流程均使用 `Asia/Kuala_Lumpur`，导出文件默认未激活。本机四个流程已发布；Telegram 已通过官方 API 确认注册到提供的 HTTPS 隧道，市场采集、岗位检查和每日总结已实际执行成功。详细证据见 [activation-runtime.json](../../verification/market-posting-watch/activation-runtime.json)。
+
+隧道必须持续运行；临时 trycloudflare 域名变化后，更新 n8n 的 `N8N_WEBHOOK_URL` 为新的 HTTPS 基址并重新注册 Telegram Trigger。`/webhook/job-watch` 是岗位检查入口，Telegram 使用独立触发器路径。服务尚未配置开机自启动。
 
 ## DeepSeek AI 配置
 
@@ -32,7 +37,7 @@ Windows / PowerShell 运行：
 npx.cmd n8n
 ```
 
-浏览器打开 <http://localhost:5678>，首次使用建立本地账号。新建 workflow，在画布顶部 `… → Import from File` 导入一个 JSON。三个 JSON **分别导入为三个 workflow**，不要导入成同一个。只看节点和连线无需凭证，运行才需要下面的配置。文件夹位置：
+浏览器打开 <http://localhost:5678>，首次使用建立本地账号。新建 workflow，在画布顶部 `… → Import from File` 导入一个 JSON。四个 JSON **分别导入为四个 workflow**。本机已有已发布实例，避免重复导入后重复定时执行。只看节点和连线无需凭证，运行才需要下面的配置。文件夹位置：
 
 ```text
 C:\maven\GameEmployee (XmumHack)\GamePlat\game\n8n\

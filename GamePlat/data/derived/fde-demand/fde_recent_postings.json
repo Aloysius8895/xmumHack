@@ -1,0 +1,53 @@
+{
+  "recentAds": 6,
+  "companies": 5,
+  "windowStart": "2026-09-25",
+  "windowEnd": "2026-10-24",
+  "observedAds": 6,
+  "excludedClosed": 0,
+  "undated": 0,
+  "postings": [
+    {
+      "title": "Forward Deployed Engineer Lead",
+      "company": "Avanade",
+      "location": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+      "postedDate": "2026-10-24",
+      "url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-lead-at-avanade-4460346394"
+    },
+    {
+      "title": "Forward-Deployed Software Engineer",
+      "company": "Virtuos Kuala Lumpur",
+      "location": "Taman Wilayah, Federal Territory of Kuala Lumpur, Malaysia",
+      "postedDate": "2026-10-20",
+      "url": "https://my.linkedin.com/jobs/view/forward-deployed-software-engineer-at-virtuos-kuala-lumpur-4473204704"
+    },
+    {
+      "title": "Senior Forward Deployed Engineer (Pod Lead)",
+      "company": "Digile",
+      "location": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+      "postedDate": "2026-10-20",
+      "url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-pod-lead-at-digile-4478636998"
+    },
+    {
+      "title": "Forward Deployed Engineer",
+      "company": "Avanade",
+      "location": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+      "postedDate": "2026-10-19",
+      "url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-at-avanade-4460333582"
+    },
+    {
+      "title": "AI Architect (Forward Deployed Engineer)",
+      "company": "UST",
+      "location": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+      "postedDate": "2026-10-08",
+      "url": "https://my.linkedin.com/jobs/view/ai-architect-forward-deployed-engineer-at-ust-4474803320"
+    },
+    {
+      "title": "Senior Forward Deployed Engineer (Full-Stack Engineering, DevOps & Agentic AI)",
+      "company": "DHL",
+      "location": "Cyberjaya, Selangor, Malaysia",
+      "postedDate": "2026-10-06",
+      "url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-full-stack-engineering-devops-agentic-ai-at-dhl-4470963187"
+    }
+  ]
+}

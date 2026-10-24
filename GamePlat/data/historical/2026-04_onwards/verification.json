@@ -1,0 +1,30 @@
+{
+  "checked_at": "2026-10-24T05:04:49.225059+00:00",
+  "raw_source_hashes_verified": 3,
+  "monthly_rows": 14,
+  "observed_monthly_values": 9,
+  "missing_monthly_values": 5,
+  "monthly_sources": 2,
+  "dosm_q2_month_sum": 555509,
+  "dosm_occupation_totals_match": true,
+  "quarterly_occupation_rows": 20,
+  "project_careers": 13,
+  "project_skills": 47,
+  "all_project_historical_monthly_values_null": true,
+  "simulated_rows": 0,
+  "source_series_not_combined": true,
+  "application_data_unchanged": true,
+  "csv_nulls_preserved": true,
+  "monthly_series_period_keys_unique": true,
+  "chart_visually_reviewed": true,
+  "artifact_sha256": {
+    "career_skill_history_coverage.json": "1a81f2f17a178b66862791c37ac98e94371a20b83834cd350cf438205422b973",
+    "market_context_trends.png": "76f889996a024e832c7b347e09e94b97d16e8551dcca5cafebb0563ff3c2019f",
+    "monthly_market_context.csv": "fd4fdeb64b09ee05cfbb4e3af37b163910b037304f33434885fabb80485c0a06",
+    "monthly_market_context.json": "e02e7cb030f15bfdbb8f66d43c791c1db77e7949a375e27213414629b7f0c4b5",
+    "quarterly_occupation_context.csv": "372baf2242a871b895b569b8f93302450e293afdd9cb462746c35bec093ef4aa",
+    "quarterly_occupation_context.json": "738dd1ed854ae908f8a3dd3d7995965efd786604b262aa92d3e3455ffa4c06e4",
+    "README.md": "d6fc1e2f4f227ad9dc559cb8ea29cb323d1461b21e5cce1bbd2ae80b4fe6c78a",
+    "source_manifest.json": "dcc417b394647b1d25612e2bbcfce005fd85fc5cf91ab859c01d2ab68d3b1c48"
+  }
+}

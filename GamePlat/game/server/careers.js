@@ -204,6 +204,32 @@ export const CAREERS = [
  */
 export const EXTRA_CAREERS = [
     {
+        id: 'forward-deployed-engineer',
+        name: { zh: 'FDE（前线部署工程师）', en: 'FDE (Forward Deployed Engineer)', ms: 'FDE (Forward Deployed Engineer)' },
+        shortName: { zh: 'FDE', en: 'FDE', ms: 'FDE' },
+        summary: {
+            zh: '深入客户现场，把业务问题转化成可上线的 AI 应用、系统集成与解决方案。',
+            en: 'Works with customers to turn business problems into production AI applications and integrated solutions.',
+            ms: 'Bekerjasama dengan pelanggan untuk menukar masalah perniagaan kepada aplikasi AI dan penyelesaian bersepadu.',
+        },
+        emerging: true,
+        introducedAt: '2026-10-24',
+        color: '#ef6455',
+        skills: [
+            { id: 'python', level: 3, weight: 3 },
+            { id: 'api-integration', level: 3, weight: 3 },
+            { id: 'communication', level: 3, weight: 3 },
+            { id: 'rest-api', level: 2, weight: 2 },
+            { id: 'cloud-deploy', level: 2, weight: 2 },
+            { id: 'mlops', level: 2, weight: 2 },
+            { id: 'ml-frameworks', level: 2, weight: 2 },
+            { id: 'sql', level: 2, weight: 2 },
+        ],
+        market: { demand: 'medium', heat: 60, trend: 'stable' },
+        effortMonths: [ 8, 14 ],
+        pet: { name: 'Relay', species: 'fox' },
+    },
+    {
         id: 'data-scientist',
         name: { zh: '数据科学家', en: 'Data Scientist', ms: 'Saintis Data' },
         summary: { zh: '用统计和机器学习模型从数据中找出规律并做预测。', en: 'Finds patterns and makes predictions from data with statistics and models.', ms: 'Mencari corak dan membuat ramalan daripada data dengan statistik dan model.' },

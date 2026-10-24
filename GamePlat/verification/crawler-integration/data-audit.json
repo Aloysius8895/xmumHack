@@ -1,0 +1,40 @@
+{
+  "runId": "987c4733-8227-4a55-9440-379e2cd551d9",
+  "postings": 476,
+  "sources": {
+    "linkedin": 140,
+    "ricebowl": 336
+  },
+  "described": 55,
+  "firstObserved": 337,
+  "previouslySeen": 139,
+  "unclassified": 187,
+  "FDE": 4,
+  "excludedSources": [
+    {
+      "id": "indeed",
+      "optional": true,
+      "error": "Browser verification or access required (HTTP 403)"
+    }
+  ],
+  "uniqueIds": true,
+  "malaysiaOnly": true,
+  "noDemoRecords": true,
+  "roleCounts": {
+    "backend-developer": 19,
+    "teacher": 38,
+    "unmapped": 187,
+    "ml-engineer": 26,
+    "product-manager": 18,
+    "ui-ux-designer": 24,
+    "auditor": 27,
+    "chef": 40,
+    "frontend-developer": 18,
+    "lawyer": 22,
+    "data-scientist": 17,
+    "data-analyst": 17,
+    "forward-deployed-engineer": 4,
+    "civil-engineer": 10,
+    "doctor": 9
+  }
+}

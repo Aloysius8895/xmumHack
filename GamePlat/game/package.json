@@ -11,7 +11,13 @@
     "server": "node server/index.js",
     "n8n:build": "node n8n/build-all.mjs",
     "n8n:test": "node --test n8n/market/pipeline.test.mjs n8n/learning/pipeline.test.mjs server/workflow-integrations.test.mjs",
-    "n8n:run": "node n8n/market/run-local.mjs"
+    "n8n:run": "node n8n/market/run-local.mjs",
+    "crawler:setup": "npm --prefix ../crawler run setup:game",
+    "crawler:serve": "npm --prefix ../crawler run game:serve",
+    "crawler:browser": "npm --prefix ../crawler run browser:open",
+    "crawler:sync": "npm --prefix ../crawler run game:sync",
+    "crawler:push": "npm --prefix ../crawler run game:push",
+    "crawler:test": "npm --prefix ../crawler test"
   },
   "author": "",
   "license": "ISC",

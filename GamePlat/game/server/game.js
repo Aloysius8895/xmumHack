@@ -12,6 +12,9 @@ import { marketSnapshot, skillMarket, skillTrendOrReference } from './market-tre
 import { GOALS, PLATFORM_TARGETS, SKILL_TARGETS, SOURCE as SDG_SOURCE, TARGETS, TARGET_IDS, careerSdgs, contribution } from './sdg.js'
 import { loadMarket } from './store.js'
 import { trendsView } from './trends.js'
+import { collectedMarket } from './collected-market.js'
+import { crawlerStatus } from './crawler-market.js'
+import { withHistoricalMarket } from './historical-market.js'
 import { createHash } from 'node:crypto'
 
 export const RULES = {
@@ -499,12 +502,16 @@ export function setTaskDone(save, taskId, done)
 export function view(save, ai, documents = {})
 {
     const market = documents.market ?? loadMarket()
+    const collected = collectedMarket()
     const careers = allCareers().map((career) => ({
         id: career.id,
         name: career.name,
         summary: career.summary,
+        emerging: Boolean(career.emerging),
         color: career.color,
-        market: { ...career.market, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrReference(career.id, career.skills.map((skill) => skill.id), market) },
+        market: collected?.careers[career.id]
+            ? { ...career.market, heat: collected.careers[career.id].heat, trend: 'unknown', sample: true, snapshot: collected.careers[career.id], skills: collected.careers[career.id].skills }
+            : { ...career.market, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrReference(career.id, career.skills.map((skill) => skill.id), market) },
         effortMonths: career.effortMonths,
         pet: career.pet,
         affinity: affinityOf(save, career.id),
@@ -558,14 +565,15 @@ export function view(save, ai, documents = {})
         ai,
         rules: RULES,
         skillNames: SKILLS,
-        skillDetails: SKILL_DETAILS,
+        skillDetails: collected ? Object.fromEntries(Object.entries(SKILL_DETAILS).map(([id, detail]) => [id, { ...detail, heat: collected.skillMarket[id]?.share ?? null, sample: true }])) : SKILL_DETAILS,
         profile: save.profile,
         careers,
         map: { slots: mapSlots(save), replaceCandidate: replaceCandidate(save) },
         pending,
-        marketSkills: skillTrendOrReference(null, SKILL_IDS, market),
-        skillMarket: skillMarket(SKILL_IDS, market),
-        trends: trendsView(documents.trends),
+        marketSkills: collected?.skills ?? skillTrendOrReference(null, SKILL_IDS, market),
+        skillMarket: collected?.skillMarket ?? skillMarket(SKILL_IDS, market),
+        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus()}),
+        automation: save.automation ?? null,
         target: save.target,
         pet,
         roadmap,

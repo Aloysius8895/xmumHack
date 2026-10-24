@@ -1,0 +1,25 @@
+{
+  "distinct_career_trends_visible": true,
+  "no_visible_mock_label": true,
+  "heatmap_before_advertisement_history": true,
+  "api_observations_unchanged": true,
+  "real_sources_visible": true,
+  "mock_history_cells": 81,
+  "observed_current_cells": 14,
+  "archived_history_cells": 3,
+  "trend_filters_follow_displayed_values": true,
+  "filter_counts": {
+    "rising": 7,
+    "falling": 3
+  },
+  "range_and_search_preserve_month_alignment": true,
+  "quarterly_statistics_separate": true,
+  "skill_sample_denominator_unchanged": true,
+  "fde_selectable_with_new_badge_and_source_links": true,
+  "sampling_diagnostics_no_false_population_weights": true,
+  "november_shows_may_to_november_with_stale_october_sample": true,
+  "mobile_heatmap_scrolls_with_sticky_career_names": true,
+  "mobile_no_page_horizontal_overflow": true,
+  "browser_fixture_keeps_zero_distinct_from_missing": true,
+  "page_errors": []
+}

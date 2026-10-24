@@ -1,4 +1,4 @@
-import { CAREERS, SKILLS } from './careers.js'
+import { allCareers, SKILLS } from './careers.js'
 import * as store from './store.js'
 import * as persistence from './persistence.js'
 
@@ -52,7 +52,7 @@ function localized(value, fallback)
     return fallback
 }
 
-const catalogName = (id) => CAREERS.find((career) => career.id === id)?.name ?? null
+const catalogName = (id) => allCareers().find((career) => career.id === id)?.name ?? null
 const titleCase = (id) => id.split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
 
 /**
@@ -115,7 +115,7 @@ export async function receiveTrends(body, IntegrationError)
  */
 export function trendsView(data = store.loadTrends())
 {
-    const known = new Set(CAREERS.map((career) => career.id))
+    const known = new Set(allCareers().map((career) => career.id))
     const withLinks = (careers) => careers.map((career) => ({ ...career, careerId: known.has(career.id) ? career.id : null }))
     const skillName = (id, given) => given ?? SKILLS[id] ?? { zh: titleCase(id), en: titleCase(id), ms: titleCase(id) }
 

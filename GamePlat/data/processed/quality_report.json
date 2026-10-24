@@ -1,0 +1,2089 @@
+{
+  "schema_version": 1,
+  "grain": "one row per source job ID; cross-source duplicates not automatically merged",
+  "primary_key": "canonical_job_id",
+  "input_observations": 1297,
+  "unique_all_locations": 564,
+  "malaysia_jobs": 564,
+  "excluded_or_unconfirmed": 0,
+  "duplicate_observations_removed": 733,
+  "columns": 45,
+  "memory_bytes_deep": 1474222,
+  "sources": {
+    "linkedin": 507,
+    "indeed": 57
+  },
+  "usable_descriptions": 251,
+  "skill_links": 1160,
+  "mapped_occupations": 14,
+  "pending_classification": 169,
+  "posted_date_range": [
+    "2025-04-03",
+    "2026-10-24"
+  ],
+  "future_posted_dates": 0,
+  "raw_unchanged": true,
+  "trend_status": "insufficient_history",
+  "fields": [
+    {
+      "column": "canonical_job_id",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 564,
+      "role": "identifier"
+    },
+    {
+      "column": "source",
+      "dtype": "category",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 2,
+      "role": "dimension",
+      "frequencies": {
+        "linkedin": 507,
+        "indeed": 57
+      }
+    },
+    {
+      "column": "publisher",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 2,
+      "role": "dimension"
+    },
+    {
+      "column": "source_job_id",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 564,
+      "role": "identifier"
+    },
+    {
+      "column": "job_url",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 564,
+      "role": "dimension"
+    },
+    {
+      "column": "apply_url",
+      "dtype": "object",
+      "null_count": 564,
+      "null_pct": 100.0,
+      "distinct": 0,
+      "role": "dimension"
+    },
+    {
+      "column": "company_raw",
+      "dtype": "str",
+      "null_count": 2,
+      "null_pct": 0.35,
+      "distinct": 378,
+      "role": "text",
+      "length": {
+        "min": 2,
+        "max": 75,
+        "mean": 14.32
+      }
+    },
+    {
+      "column": "company_website",
+      "dtype": "object",
+      "null_count": 564,
+      "null_pct": 100.0,
+      "distinct": 0,
+      "role": "dimension"
+    },
+    {
+      "column": "company_normalized",
+      "dtype": "str",
+      "null_count": 6,
+      "null_pct": 1.06,
+      "distinct": 376,
+      "role": "dimension"
+    },
+    {
+      "column": "title_raw",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 454,
+      "role": "text",
+      "length": {
+        "min": 4,
+        "max": 93,
+        "mean": 31.11
+      }
+    },
+    {
+      "column": "description_raw",
+      "dtype": "str",
+      "null_count": 313,
+      "null_pct": 55.5,
+      "distinct": 247,
+      "role": "text",
+      "length": {
+        "min": 576,
+        "max": 12366,
+        "mean": 3813.63
+      }
+    },
+    {
+      "column": "excerpt_text",
+      "dtype": "str",
+      "null_count": 511,
+      "null_pct": 90.6,
+      "distinct": 53,
+      "role": "text"
+    },
+    {
+      "column": "location_raw",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 87,
+      "role": "text",
+      "length": {
+        "min": 4,
+        "max": 77,
+        "mean": 35.45
+      }
+    },
+    {
+      "column": "country",
+      "dtype": "category",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 1,
+      "role": "dimension",
+      "frequencies": {
+        "MY": 564
+      }
+    },
+    {
+      "column": "state",
+      "dtype": "object",
+      "null_count": 564,
+      "null_pct": 100.0,
+      "distinct": 0,
+      "role": "dimension"
+    },
+    {
+      "column": "city",
+      "dtype": "str",
+      "null_count": 4,
+      "null_pct": 0.71,
+      "distinct": 77,
+      "role": "dimension"
+    },
+    {
+      "column": "malaysia_eligibility",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 1,
+      "role": "dimension"
+    },
+    {
+      "column": "remote_eligibility",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 2,
+      "role": "dimension"
+    },
+    {
+      "column": "employment_type",
+      "dtype": "str",
+      "null_count": 265,
+      "null_pct": 46.99,
+      "distinct": 8,
+      "role": "dimension"
+    },
+    {
+      "column": "work_arrangement",
+      "dtype": "category",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 3,
+      "role": "dimension",
+      "frequencies": {
+        "unknown": 540,
+        "onsite": 18,
+        "remote": 6
+      }
+    },
+    {
+      "column": "posted_at",
+      "dtype": "object",
+      "null_count": 564,
+      "null_pct": 100.0,
+      "distinct": 0,
+      "role": "temporal"
+    },
+    {
+      "column": "posted_date",
+      "dtype": "str",
+      "null_count": 57,
+      "null_pct": 10.11,
+      "distinct": 86,
+      "role": "temporal"
+    },
+    {
+      "column": "posted_date_precision",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 2,
+      "role": "dimension"
+    },
+    {
+      "column": "posted_relative_raw",
+      "dtype": "str",
+      "null_count": 313,
+      "null_pct": 55.5,
+      "distinct": 29,
+      "role": "text"
+    },
+    {
+      "column": "valid_through",
+      "dtype": "object",
+      "null_count": 564,
+      "null_pct": 100.0,
+      "distinct": 0,
+      "role": "dimension"
+    },
+    {
+      "column": "salary_min",
+      "dtype": "Float64",
+      "null_count": 534,
+      "null_pct": 94.68,
+      "distinct": 15,
+      "role": "metric",
+      "statistics": {
+        "count": 30.0,
+        "mean": 4240.0,
+        "std": 1991.2913848330547,
+        "min": 1800.0,
+        "25%": 2625.0,
+        "50%": 3550.0,
+        "75%": 5750.0,
+        "max": 8000.0
+      }
+    },
+    {
+      "column": "salary_max",
+      "dtype": "Float64",
+      "null_count": 534,
+      "null_pct": 94.68,
+      "distinct": 22,
+      "role": "metric",
+      "statistics": {
+        "count": 30.0,
+        "mean": 6872.429999999999,
+        "std": 3993.6867042655695,
+        "min": 2100.0,
+        "25%": 3675.0,
+        "50%": 5750.0,
+        "75%": 9500.0,
+        "max": 15000.0
+      }
+    },
+    {
+      "column": "currency",
+      "dtype": "str",
+      "null_count": 534,
+      "null_pct": 94.68,
+      "distinct": 1,
+      "role": "dimension"
+    },
+    {
+      "column": "salary_period",
+      "dtype": "str",
+      "null_count": 534,
+      "null_pct": 94.68,
+      "distinct": 1,
+      "role": "dimension"
+    },
+    {
+      "column": "collected_at",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 509,
+      "role": "temporal"
+    },
+    {
+      "column": "status",
+      "dtype": "category",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 1,
+      "role": "dimension",
+      "frequencies": {
+        "unknown": 564
+      }
+    },
+    {
+      "column": "occupation_id",
+      "dtype": "str",
+      "null_count": 169,
+      "null_pct": 29.96,
+      "distinct": 14,
+      "role": "identifier",
+      "frequencies": {
+        "nan": 169,
+        "chef": 44,
+        "ml-engineer": 41,
+        "product-manager": 40,
+        "civil-engineer": 31,
+        "data-scientist": 31,
+        "lawyer": 31,
+        "data-analyst": 30,
+        "auditor": 29,
+        "teacher": 27,
+        "ui-ux-designer": 26,
+        "frontend-developer": 23,
+        "backend-developer": 21,
+        "doctor": 15,
+        "forward-deployed-engineer": 6
+      }
+    },
+    {
+      "column": "classification_confidence",
+      "dtype": "object",
+      "null_count": 564,
+      "null_pct": 100.0,
+      "distinct": 0,
+      "role": "dimension"
+    },
+    {
+      "column": "classification_method",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 4,
+      "role": "dimension"
+    },
+    {
+      "column": "seniority",
+      "dtype": "str",
+      "null_count": 313,
+      "null_pct": 55.5,
+      "distinct": 7,
+      "role": "dimension"
+    },
+    {
+      "column": "experience_min",
+      "dtype": "Float64",
+      "null_count": 457,
+      "null_pct": 81.03,
+      "distinct": 12,
+      "role": "metric",
+      "statistics": {
+        "count": 107.0,
+        "mean": 4.299065420560748,
+        "std": 2.7134012397971308,
+        "min": 0.0,
+        "25%": 3.0,
+        "50%": 3.0,
+        "75%": 5.0,
+        "max": 15.0
+      }
+    },
+    {
+      "column": "experience_max",
+      "dtype": "Float64",
+      "null_count": 520,
+      "null_pct": 92.2,
+      "distinct": 11,
+      "role": "metric",
+      "statistics": {
+        "count": 44.0,
+        "mean": 6.2727272727272725,
+        "std": 3.2519306348879313,
+        "min": 1.0,
+        "25%": 4.75,
+        "50%": 5.0,
+        "75%": 8.0,
+        "max": 15.0
+      }
+    },
+    {
+      "column": "education_requirement",
+      "dtype": "str",
+      "null_count": 449,
+      "null_pct": 79.61,
+      "distinct": 105,
+      "role": "dimension"
+    },
+    {
+      "column": "description_quality",
+      "dtype": "category",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 2,
+      "role": "dimension",
+      "frequencies": {
+        "missing_or_short": 313,
+        "usable": 251
+      }
+    },
+    {
+      "column": "retrieval_method",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 2,
+      "role": "dimension"
+    },
+    {
+      "column": "live_verified",
+      "dtype": "bool",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 2,
+      "role": "metric",
+      "statistics": {
+        "count": 564.0,
+        "unique": 2.0,
+        "top": 0.0,
+        "freq": 313.0
+      }
+    },
+    {
+      "column": "raw_payload_file",
+      "dtype": "str",
+      "null_count": 313,
+      "null_pct": 55.5,
+      "distinct": 251,
+      "role": "dimension"
+    },
+    {
+      "column": "detail_status",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 3,
+      "role": "dimension"
+    },
+    {
+      "column": "first_seen_at",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 509,
+      "role": "temporal"
+    },
+    {
+      "column": "last_seen_at",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct": 509,
+      "role": "temporal"
+    }
+  ],
+  "collection_runs": [
+    {
+      "schema_version": 1,
+      "run_id": "20261024T033405Z",
+      "source": "linkedin",
+      "started_at": "2026-10-24T03:34:05.845167Z",
+      "finished_at": "2026-10-24T03:40:25.914671Z",
+      "settings": {
+        "pages": 2,
+        "budget": 300,
+        "max_details": 180,
+        "interval": 1.5
+      },
+      "catalog_version": "careersphere-catalog-2026-10-24",
+      "searches": [
+        {
+          "career_id_hint": "data-analyst",
+          "query": "data analyst",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0001-82468641fb6b.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "data-analyst",
+          "query": "data analyst",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0002-4fa4eda17af8.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "frontend-developer",
+          "query": "frontend developer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0003-b4f792205a02.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "frontend-developer",
+          "query": "frontend developer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0004-12b0087dd795.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "backend-developer",
+          "query": "backend developer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0005-d7bb7aba2e89.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "backend-developer",
+          "query": "backend developer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0006-5818e7c300ce.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "ui-ux-designer",
+          "query": "UI UX designer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0007-32fa1df11cbf.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "ui-ux-designer",
+          "query": "UI UX designer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0008-06ae823ee568.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "ml-engineer",
+          "query": "machine learning engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0009-a3bdbedd06f7.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "ml-engineer",
+          "query": "machine learning engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0010-e594a2ad29a1.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "product-manager",
+          "query": "product manager",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0011-5f24d122b9f4.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "product-manager",
+          "query": "product manager",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0012-8c2a9ef81a2b.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "data-scientist",
+          "query": "data scientist",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0013-9cd47be44823.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "data-scientist",
+          "query": "data scientist",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0014-4d02098372a6.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "auditor",
+          "query": "auditor",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0015-7ed5f4d3c309.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "auditor",
+          "query": "auditor",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0016-d69f372c54dc.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "lawyer",
+          "query": "lawyer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0017-a8ac4a9d1364.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "lawyer",
+          "query": "lawyer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0018-1060a5093fdf.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "teacher",
+          "query": "teacher",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0019-34e5efd54bc9.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "teacher",
+          "query": "teacher",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0020-b40fc22c9e88.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "doctor",
+          "query": "medical officer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0021-eea56d281ae3.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "doctor",
+          "query": "medical officer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0022-9bf0d66fe938.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "chef",
+          "query": "chef",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0023-f7cc8fcaa52d.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "chef",
+          "query": "chef",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0024-d0bf8a4f86d4.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "civil-engineer",
+          "query": "civil engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0025-3a6042217d7d.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "civil-engineer",
+          "query": "civil engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0026-f924a257fe01.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "data-analyst",
+          "query": "business intelligence analyst",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0027-e0f015df38c4.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "data-analyst",
+          "query": "business intelligence analyst",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0028-438ab40f1d78.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "frontend-developer",
+          "query": "front end engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0030-5e1e5e78771b.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "frontend-developer",
+          "query": "front end engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0031-4b52a8be3032.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "backend-developer",
+          "query": "back end engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0032-c0e2b24ffdec.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "backend-developer",
+          "query": "back end engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0033-dfb45408078a.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "ui-ux-designer",
+          "query": "product designer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0034-b850bf01ce84.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "ui-ux-designer",
+          "query": "product designer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0035-8cdd92652b6b.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "ml-engineer",
+          "query": "AI engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0036-bc01120e9b1c.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "ml-engineer",
+          "query": "AI engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0037-1a331bd1e920.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "product-manager",
+          "query": "product owner",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0038-9cd4b0f1ad53.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "product-manager",
+          "query": "product owner",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0039-ad2c44ff9312.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "data-scientist",
+          "query": "applied scientist",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0040-fee5648b81bb.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "data-scientist",
+          "query": "applied scientist",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0041-012e27c3f80e.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "auditor",
+          "query": "audit associate",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0042-80e3e830a1b4.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "auditor",
+          "query": "audit associate",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0043-89b2ec2d46fa.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "lawyer",
+          "query": "legal counsel",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0044-02669c316022.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "lawyer",
+          "query": "legal counsel",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0045-e8daf7d46f62.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "teacher",
+          "query": "lecturer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0046-713cec803826.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "teacher",
+          "query": "lecturer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0047-e911be97f1a0.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "doctor",
+          "query": "medical doctor",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0048-8a2f14ea708b.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "doctor",
+          "query": "medical doctor",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0049-0fc63fe48053.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "chef",
+          "query": "sous chef",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0050-bd874b43d270.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "chef",
+          "query": "sous chef",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0051-b9d4f66105f9.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "civil-engineer",
+          "query": "structural engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0052-27680af43d76.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "civil-engineer",
+          "query": "structural engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0053-8e78442c9195.html",
+          "page_cap_reached": true
+        }
+      ],
+      "searches_expected": 52,
+      "searches_successful": 52,
+      "observations": 520,
+      "unique_source_jobs": 402,
+      "duplicates": 118,
+      "details_selected": 180,
+      "details_successful": 180,
+      "request_count": 235,
+      "requests_failed": 3,
+      "access_blocked": false,
+      "budget_reached": false,
+      "detail_cap_reached": true,
+      "status": "partial_success",
+      "coverage": "Bounded ranked search sample, not all Malaysia jobs; page cap does not imply source exhaustion."
+    },
+    {
+      "schema_version": 1,
+      "run_id": "20261024T043656Z",
+      "source": "linkedin",
+      "started_at": "2026-10-24T04:36:56.232414Z",
+      "finished_at": "2026-10-24T04:42:43.128385Z",
+      "settings": {
+        "pages": 2,
+        "budget": 300,
+        "max_details": 180,
+        "interval": 1.5
+      },
+      "catalog_version": "careersphere-catalog-2026-10-24",
+      "searches": [
+        {
+          "career_id_hint": "data-analyst",
+          "query": "data analyst",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0001-82468641fb6b.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "data-analyst",
+          "query": "data analyst",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0002-4fa4eda17af8.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "frontend-developer",
+          "query": "frontend developer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0003-b4f792205a02.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "frontend-developer",
+          "query": "frontend developer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0004-12b0087dd795.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "backend-developer",
+          "query": "backend developer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0005-d7bb7aba2e89.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "backend-developer",
+          "query": "backend developer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0006-5818e7c300ce.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "ui-ux-designer",
+          "query": "UI UX designer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0007-32fa1df11cbf.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "ui-ux-designer",
+          "query": "UI UX designer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0008-06ae823ee568.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "ml-engineer",
+          "query": "machine learning engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0009-a3bdbedd06f7.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "ml-engineer",
+          "query": "machine learning engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0010-e594a2ad29a1.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "product-manager",
+          "query": "product manager",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0011-5f24d122b9f4.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "product-manager",
+          "query": "product manager",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0012-8c2a9ef81a2b.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "data-scientist",
+          "query": "data scientist",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0013-9cd47be44823.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "data-scientist",
+          "query": "data scientist",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0014-4d02098372a6.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "auditor",
+          "query": "auditor",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0015-7ed5f4d3c309.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "auditor",
+          "query": "auditor",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0016-d69f372c54dc.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "lawyer",
+          "query": "lawyer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0017-a8ac4a9d1364.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "lawyer",
+          "query": "lawyer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0018-1060a5093fdf.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "teacher",
+          "query": "teacher",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0019-34e5efd54bc9.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "teacher",
+          "query": "teacher",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0020-b40fc22c9e88.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "doctor",
+          "query": "medical officer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0021-eea56d281ae3.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "doctor",
+          "query": "medical officer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0022-9bf0d66fe938.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "chef",
+          "query": "chef",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0023-f7cc8fcaa52d.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "chef",
+          "query": "chef",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0024-d0bf8a4f86d4.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "civil-engineer",
+          "query": "civil engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0025-3a6042217d7d.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "civil-engineer",
+          "query": "civil engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0026-f924a257fe01.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "data-analyst",
+          "query": "business intelligence analyst",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0027-e0f015df38c4.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "data-analyst",
+          "query": "business intelligence analyst",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0028-438ab40f1d78.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "frontend-developer",
+          "query": "front end engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0029-5e1e5e78771b.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "frontend-developer",
+          "query": "front end engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0030-4b52a8be3032.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "backend-developer",
+          "query": "back end engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0031-c0e2b24ffdec.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "backend-developer",
+          "query": "back end engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0032-dfb45408078a.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "ui-ux-designer",
+          "query": "product designer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0033-b850bf01ce84.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "ui-ux-designer",
+          "query": "product designer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0034-8cdd92652b6b.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "ml-engineer",
+          "query": "AI engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0035-bc01120e9b1c.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "ml-engineer",
+          "query": "AI engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0036-1a331bd1e920.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "product-manager",
+          "query": "product owner",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0037-9cd4b0f1ad53.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "product-manager",
+          "query": "product owner",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0038-ad2c44ff9312.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "data-scientist",
+          "query": "applied scientist",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0039-fee5648b81bb.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "data-scientist",
+          "query": "applied scientist",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0040-012e27c3f80e.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "auditor",
+          "query": "audit associate",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0041-80e3e830a1b4.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "auditor",
+          "query": "audit associate",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0042-89b2ec2d46fa.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "lawyer",
+          "query": "legal counsel",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0043-02669c316022.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "lawyer",
+          "query": "legal counsel",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0044-e8daf7d46f62.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "teacher",
+          "query": "lecturer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0045-713cec803826.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "teacher",
+          "query": "lecturer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0046-e911be97f1a0.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "doctor",
+          "query": "medical doctor",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0047-8a2f14ea708b.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "doctor",
+          "query": "medical doctor",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0048-0fc63fe48053.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "chef",
+          "query": "sous chef",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0049-bd874b43d270.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "chef",
+          "query": "sous chef",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0050-b9d4f66105f9.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "civil-engineer",
+          "query": "structural engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0051-27680af43d76.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "civil-engineer",
+          "query": "structural engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0052-8e78442c9195.html",
+          "page_cap_reached": true
+        }
+      ],
+      "searches_expected": 52,
+      "searches_successful": 52,
+      "observations": 520,
+      "unique_source_jobs": 402,
+      "duplicates": 118,
+      "details_selected": 180,
+      "details_successful": 180,
+      "request_count": 232,
+      "requests_failed": 0,
+      "access_blocked": false,
+      "budget_reached": false,
+      "detail_cap_reached": true,
+      "status": "partial_success",
+      "coverage": "Bounded ranked search sample, not all Malaysia jobs; page cap does not imply source exhaustion."
+    },
+    {
+      "schema_version": 1,
+      "run_id": "20261024T103111Z",
+      "source": "linkedin",
+      "started_at": "2026-10-24T10:31:11.244101Z",
+      "finished_at": "2026-10-24T10:48:35.643156Z",
+      "settings": {
+        "pages": 2,
+        "budget": 110,
+        "max_details": 70,
+        "interval": 1.5,
+        "career_ids": [
+          "forward-deployed-engineer"
+        ],
+        "locations": [
+          "Malaysia",
+          "Kuala Lumpur, Malaysia",
+          "Selangor, Malaysia",
+          "Penang, Malaysia",
+          "Johor, Malaysia"
+        ],
+        "posted_days": 30,
+        "sort_by": "DD"
+      },
+      "catalog_version": "careersphere-catalog-2026-10-24",
+      "searches": [
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0001-4e9c6897bc65.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0003-d7ba0f6914b4.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Kuala Lumpur, Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0005-97399a33f023.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Kuala Lumpur, Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0006-2fa70ec63c49.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Selangor, Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0007-9ea9a2ccb536.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Selangor, Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0009-6f83184a0603.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Penang, Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0011-4a2dede40312.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Penang, Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0013-ed2a1c06f647.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Johor, Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0015-8fb43735a6b1.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed engineer",
+          "location": "Johor, Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0016-235fea821f22.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0017-ca749f6a2a47.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0018-7346eaf44516.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Kuala Lumpur, Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0019-5b924f3939f1.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Kuala Lumpur, Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0021-9f98e0413c23.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Selangor, Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0022-a0d675d334d9.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Selangor, Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0023-ac0f513c4cb5.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Penang, Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0024-7c033e727989.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Penang, Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0025-1aef491659c8.html",
+          "page_cap_reached": true
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Johor, Malaysia",
+          "page": 1,
+          "offset": 0,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0026-43ac1e3326d7.html",
+          "page_cap_reached": false
+        },
+        {
+          "career_id_hint": "forward-deployed-engineer",
+          "query": "forward deployed software engineer",
+          "location": "Johor, Malaysia",
+          "page": 2,
+          "offset": 10,
+          "sort_by": "DD",
+          "posted_days": 30,
+          "status": "success",
+          "returned": 10,
+          "raw_file": "search/0027-51f85824a5d5.html",
+          "page_cap_reached": true
+        }
+      ],
+      "searches_expected": 20,
+      "searches_successful": 20,
+      "observations": 200,
+      "unique_source_jobs": 105,
+      "duplicates": 95,
+      "details_selected": 70,
+      "details_successful": 70,
+      "request_count": 108,
+      "requests_failed": 18,
+      "access_blocked": false,
+      "budget_reached": false,
+      "detail_cap_reached": true,
+      "status": "partial_success",
+      "coverage": "Bounded ranked search sample, not all Malaysia jobs; page cap does not imply source exhaustion."
+    },
+    {
+      "schema_version": 1,
+      "source": "indeed",
+      "collected_at": "2026-10-24T03:38:15Z",
+      "retrieval_method": "public_search_index",
+      "live_verified": false,
+      "status": "partial_success",
+      "direct_access": {
+        "url": "https://malaysia.indeed.com/jobs?q=data+analyst&l=Malaysia",
+        "status": 403
+      },
+      "search_batches": [
+        {
+          "batch": 1,
+          "queries": [
+            "machine learning engineer",
+            "data analyst SQL",
+            "backend developer",
+            "UI UX designer"
+          ]
+        },
+        {
+          "batch": 2,
+          "queries": [
+            "site:malaysia.indeed.com/viewjob \"data analyst\" \"SQL\"",
+            "site:malaysia.indeed.com/viewjob \"frontend developer\"",
+            "site:malaysia.indeed.com/viewjob \"backend developer\"",
+            "site:malaysia.indeed.com/viewjob \"UI UX designer\""
+          ]
+        },
+        {
+          "batch": 3,
+          "queries": [
+            "site:malaysia.indeed.com/viewjob \"product manager\"",
+            "site:malaysia.indeed.com/viewjob \"machine learning engineer\"",
+            "site:malaysia.indeed.com/viewjob \"data scientist\"",
+            "site:malaysia.indeed.com/viewjob \"auditor\""
+          ]
+        },
+        {
+          "batch": 4,
+          "queries": [
+            "site:malaysia.indeed.com/viewjob \"lawyer\"",
+            "site:malaysia.indeed.com/viewjob \"teacher\"",
+            "site:malaysia.indeed.com/viewjob \"medical officer\"",
+            "site:malaysia.indeed.com/viewjob \"civil engineer\""
+          ]
+        },
+        {
+          "batch": 5,
+          "queries": [
+            "site:malaysia.indeed.com/viewjob \"chef\"",
+            "site:malaysia.indeed.com/viewjob \"data analyst\" \"Power BI\"",
+            "site:malaysia.indeed.com/viewjob \"front end engineer\"",
+            "site:malaysia.indeed.com/viewjob \"legal counsel\""
+          ]
+        }
+      ],
+      "unique_source_jobs": 45,
+      "description_policy": "No full descriptions collected; excerpts at most 24 words. Never include these records in full-description skill-share denominators.",
+      "limitations": [
+        "Search-index freshness is unknown.",
+        "Only viewjob URLs with source jk identity retained.",
+        "Search query match is not occupation classification.",
+        "Index search is page/rank limited and not complete."
+      ]
+    },
+    {
+      "schema_version": 1,
+      "source": "indeed",
+      "collected_at": "2026-10-24T03:39:31Z",
+      "retrieval_method": "public_search_index",
+      "live_verified": false,
+      "status": "partial_success",
+      "queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "unique_source_jobs": 12,
+      "description_policy": "Excerpts at most 24 words; no full descriptions; exclude from skill denominator."
+    }
+  ],
+  "limitations": [
+    "Ranked page-limited sample, not Malaysia market totals.",
+    "Indeed search-index metadata is not live verified and has no full description.",
+    "LinkedIn date-only values remain date-only; no midnight UTC timestamps invented.",
+    "Conservative rules may miss skills; company introduction and negation heuristics need review.",
+    "Different source IDs are retained; same company/title alone never proves duplicate ads.",
+    "Source discovery does not prove an advertisement remains open.",
+    "One collection session cannot establish temporal demand trends."
+  ]
+}

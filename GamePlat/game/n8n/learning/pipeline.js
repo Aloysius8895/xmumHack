@@ -1,6 +1,6 @@
 // Pure helpers shared by the generated n8n Code nodes and local tests.
 export const LEARNING_SETTINGS = {
-    chatbotBaseUrl: 'http://localhost:8000',
+    chatbotBaseUrl: 'http://127.0.0.1:8000',
     ownerTelegramId: '', // numeric Telegram from.id of the ONE player of this local demo
 }
 

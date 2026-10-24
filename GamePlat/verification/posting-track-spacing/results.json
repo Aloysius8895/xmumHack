@@ -1,0 +1,15 @@
+{
+  "1440": {
+    "gap_px": 16,
+    "layout": "row"
+  },
+  "390": {
+    "gap_px": 16.0,
+    "layout": "stacked"
+  },
+  "320": {
+    "gap_px": 16.0,
+    "layout": "stacked"
+  },
+  "page_errors": []
+}

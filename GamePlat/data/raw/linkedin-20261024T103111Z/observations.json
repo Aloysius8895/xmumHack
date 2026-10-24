@@ -1,0 +1,4002 @@
+[
+  {
+    "source": "linkedin",
+    "source_job_id": "4460333582",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-at-avanade-4460333582",
+    "title_raw": "Forward Deployed Engineer",
+    "company_raw": "Avanade",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030650Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475204558",
+    "job_url": "https://my.linkedin.com/jobs/view/solutions-engineer-at-obiguard-4475204558",
+    "title_raw": "Solutions Engineer",
+    "company_raw": "Obiguard",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030681Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4438818754",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solutions-engineer-at-entrust-4438818754",
+    "title_raw": "Senior Solutions Engineer",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-04",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030687Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4462948541",
+    "job_url": "https://my.linkedin.com/jobs/view/field-application-engineer-south-east-asia-at-tenstorrent-4462948541",
+    "title_raw": "Field Application Engineer, South East Asia",
+    "company_raw": "Tenstorrent",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030691Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478636998",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-pod-lead-at-digile-4478636998",
+    "title_raw": "Senior Forward Deployed Engineer (Pod Lead)",
+    "company_raw": "Digile",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030695Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4377864792",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-applications-engineer-digital-implementation-at-synopsys-inc-4377864792",
+    "title_raw": "Staff Applications Engineer, Digital Implementation",
+    "company_raw": "Synopsys Inc",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-21",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030699Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4459800508",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-solutions-engineer-at-axi-4459800508",
+    "title_raw": "AI Solutions Engineer",
+    "company_raw": "Axi",
+    "location_raw": "WP. Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030702Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4460346394",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-lead-at-avanade-4460346394",
+    "title_raw": "Forward Deployed Engineer Lead",
+    "company_raw": "Avanade",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-24",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030705Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478863325",
+    "job_url": "https://my.linkedin.com/jobs/view/pioneer-talent-program-applied-ai-agent-ai-productivity-engineer-top-talent-program-at-binance-4478863325",
+    "title_raw": "Pioneer Talent Program - Applied AI Agent/AI Productivity Engineer (Top Talent Program)",
+    "company_raw": "Binance",
+    "location_raw": "Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030709Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4462860306",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-applications-engineer-fusion-compiler-at-synopsys-inc-4462860306",
+    "title_raw": "Staff Applications Engineer, Fusion Compiler",
+    "company_raw": "Synopsys Inc",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0001-4e9c6897bc65.html",
+    "collected_at": "2026-10-24T10:31:12.030713Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4469853420",
+    "job_url": "https://my.linkedin.com/jobs/view/developer-relations-engineer-ecosystem-product-operations-at-motorola-solutions-4469853420",
+    "title_raw": "Developer Relations Engineer - Ecosystem & Product Operations",
+    "company_raw": "Motorola Solutions",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.670981Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4479111120",
+    "job_url": "https://my.linkedin.com/jobs/view/solution-engineer-at-ant-international-4479111120",
+    "title_raw": "Solution Engineer",
+    "company_raw": "Ant International",
+    "location_raw": "Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.671001Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478799104",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-application-engineer-at-altera-4478799104",
+    "title_raw": "Staff Application Engineer",
+    "company_raw": "Altera",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.671006Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4456753041",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-systems-integrator-at-entrust-4456753041",
+    "title_raw": "Senior Systems Integrator",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-03",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.671010Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472906013",
+    "job_url": "https://my.linkedin.com/jobs/view/digital-presales-customer-engineer-at-cloudflare-4472906013",
+    "title_raw": "Digital Presales Customer Engineer",
+    "company_raw": "Cloudflare",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.671013Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4470963187",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-full-stack-engineering-devops-agentic-ai-at-dhl-4470963187",
+    "title_raw": "Senior Forward Deployed Engineer (Full-Stack Engineering, DevOps & Agentic AI)",
+    "company_raw": "DHL",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.671016Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474803320",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-architect-forward-deployed-engineer-at-ust-4474803320",
+    "title_raw": "AI Architect (Forward Deployed Engineer)",
+    "company_raw": "UST",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-08",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.671019Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4467040396",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-staff-embedded-applications-engineer-at-altera-4467040396",
+    "title_raw": "Senior / Staff Embedded Applications Engineer",
+    "company_raw": "Altera",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.671023Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4461060450",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solution-engineer-at-snowflake-4461060450",
+    "title_raw": "Senior Solution Engineer",
+    "company_raw": "Snowflake",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.671026Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4464877641",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-ai-solution-engineer-at-lenovo-4464877641",
+    "title_raw": "Full Stack AI Solution Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Wilayah Persekutuan Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0003-d7ba0f6914b4.html",
+    "collected_at": "2026-10-24T10:31:43.671029Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4460333582",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-at-avanade-4460333582",
+    "title_raw": "Forward Deployed Engineer",
+    "company_raw": "Avanade",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771608Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475204558",
+    "job_url": "https://my.linkedin.com/jobs/view/solutions-engineer-at-obiguard-4475204558",
+    "title_raw": "Solutions Engineer",
+    "company_raw": "Obiguard",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771628Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4438818754",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solutions-engineer-at-entrust-4438818754",
+    "title_raw": "Senior Solutions Engineer",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-04",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771634Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4462948541",
+    "job_url": "https://my.linkedin.com/jobs/view/field-application-engineer-south-east-asia-at-tenstorrent-4462948541",
+    "title_raw": "Field Application Engineer, South East Asia",
+    "company_raw": "Tenstorrent",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771637Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478636998",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-pod-lead-at-digile-4478636998",
+    "title_raw": "Senior Forward Deployed Engineer (Pod Lead)",
+    "company_raw": "Digile",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771641Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4459800508",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-solutions-engineer-at-axi-4459800508",
+    "title_raw": "AI Solutions Engineer",
+    "company_raw": "Axi",
+    "location_raw": "WP. Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771644Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4460346394",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-lead-at-avanade-4460346394",
+    "title_raw": "Forward Deployed Engineer Lead",
+    "company_raw": "Avanade",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-24",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771648Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4479111120",
+    "job_url": "https://my.linkedin.com/jobs/view/solution-engineer-at-ant-international-4479111120",
+    "title_raw": "Solution Engineer",
+    "company_raw": "Ant International",
+    "location_raw": "Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771651Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4456753041",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-systems-integrator-at-entrust-4456753041",
+    "title_raw": "Senior Systems Integrator",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-03",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771656Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472906013",
+    "job_url": "https://my.linkedin.com/jobs/view/digital-presales-customer-engineer-at-cloudflare-4472906013",
+    "title_raw": "Digital Presales Customer Engineer",
+    "company_raw": "Cloudflare",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0005-97399a33f023.html",
+    "collected_at": "2026-10-24T10:32:57.771664Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4470963187",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-full-stack-engineering-devops-agentic-ai-at-dhl-4470963187",
+    "title_raw": "Senior Forward Deployed Engineer (Full-Stack Engineering, DevOps & Agentic AI)",
+    "company_raw": "DHL",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286808Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474803320",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-architect-forward-deployed-engineer-at-ust-4474803320",
+    "title_raw": "AI Architect (Forward Deployed Engineer)",
+    "company_raw": "UST",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-08",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286826Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4461060450",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solution-engineer-at-snowflake-4461060450",
+    "title_raw": "Senior Solution Engineer",
+    "company_raw": "Snowflake",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286831Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4464877641",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-ai-solution-engineer-at-lenovo-4464877641",
+    "title_raw": "Full Stack AI Solution Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Wilayah Persekutuan Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286835Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4466544381",
+    "job_url": "https://my.linkedin.com/jobs/view/customer-solutions-architect-ai-engineer-at-teradata-4466544381",
+    "title_raw": "Customer Solutions Architect / AI Engineer",
+    "company_raw": "Teradata",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286840Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480327440",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-transformation-lead-at-eteam-4480327440",
+    "title_raw": "AI Transformation Lead",
+    "company_raw": "eTeam",
+    "location_raw": "Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286844Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4453672703",
+    "job_url": "https://my.linkedin.com/jobs/view/sales-engineer-south-east-asia-at-branch-4453672703",
+    "title_raw": "Sales Engineer- South East Asia",
+    "company_raw": "Branch",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286847Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4476724208",
+    "job_url": "https://my.linkedin.com/jobs/view/api-technical-solutions-specialist-at-coface-4476724208",
+    "title_raw": "API Technical Solutions Specialist",
+    "company_raw": "Coface",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286850Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480525310",
+    "job_url": "https://my.linkedin.com/jobs/view/tencent-cloud-%E2%80%93-edgeone-senior-product-solution-architect-malaysia-at-tencent-4480525310",
+    "title_raw": "Tencent Cloud – EdgeOne Senior Product Solution Architect (Malaysia)",
+    "company_raw": "Tencent",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286854Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472157280",
+    "job_url": "https://my.linkedin.com/jobs/view/solution-engineer-malaysia-market-lark-apac-lark-global-at-bytedance-4472157280",
+    "title_raw": "Solution Engineer - Malaysia Market, Lark APAC - Lark Global",
+    "company_raw": "ByteDance",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-09-30",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0006-2fa70ec63c49.html",
+    "collected_at": "2026-10-24T10:33:20.286857Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4438818754",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solutions-engineer-at-entrust-4438818754",
+    "title_raw": "Senior Solutions Engineer",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-04",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944010Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4456753041",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-systems-integrator-at-entrust-4456753041",
+    "title_raw": "Senior Systems Integrator",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-03",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944028Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4470963187",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-full-stack-engineering-devops-agentic-ai-at-dhl-4470963187",
+    "title_raw": "Senior Forward Deployed Engineer (Full-Stack Engineering, DevOps & Agentic AI)",
+    "company_raw": "DHL",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944033Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4461060450",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solution-engineer-at-snowflake-4461060450",
+    "title_raw": "Senior Solution Engineer",
+    "company_raw": "Snowflake",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944037Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4452388385",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-ai-solution-engineer-at-lenovo-4452388385",
+    "title_raw": "Full Stack AI Solution Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944041Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475198418",
+    "job_url": "https://my.linkedin.com/jobs/view/principal-engineer-service-delivery-senior-genai-hpc-engineer-at-dell-technologies-4475198418",
+    "title_raw": "Principal Engineer, Service Delivery (Senior GenAI & HPC Engineer)",
+    "company_raw": "Dell Technologies",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944045Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4481145868",
+    "job_url": "https://my.linkedin.com/jobs/view/product-developer-5g-private-network-mcx-at-enfrasys-4481145868",
+    "title_raw": "Product Developer (5G Private Network & MCX)",
+    "company_raw": "Enfrasys",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-21",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944048Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4456584457",
+    "job_url": "https://my.linkedin.com/jobs/view/application-engineer-aec-at-hexagon-manufacturing-intelligence-4456584457",
+    "title_raw": "Application Engineer, AEC",
+    "company_raw": "Hexagon Manufacturing Intelligence",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944051Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475198420",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-engineer-service-delivery-genai-hpc-engineer-at-dell-technologies-4475198420",
+    "title_raw": "Senior Engineer, Service Delivery (GenAI & HPC Engineer)",
+    "company_raw": "Dell Technologies",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944055Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478742490",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-ai-engineer-at-dhl-4478742490",
+    "title_raw": "Senior AI Engineer",
+    "company_raw": "DHL",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0007-9ea9a2ccb536.html",
+    "collected_at": "2026-10-24T10:33:20.944058Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4461060721",
+    "job_url": "https://my.linkedin.com/jobs/view/technical-solutions-architect-ii-at-akamai-technologies-4461060721",
+    "title_raw": "Technical Solutions Architect II",
+    "company_raw": "Akamai Technologies",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028073Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474038626",
+    "job_url": "https://my.linkedin.com/jobs/view/technical-support-representative-ai-specialist-at-ibm-4474038626",
+    "title_raw": "Technical Support Representative - AI Specialist",
+    "company_raw": "IBM",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028092Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472872858",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-engineer-at-locus-t-4472872858",
+    "title_raw": "AI Engineer",
+    "company_raw": "LOCUS-T",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-02",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028097Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480017013",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solutions-architect-at-ibm-4480017013",
+    "title_raw": "Senior Solutions Architect",
+    "company_raw": "IBM",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028101Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477955906",
+    "job_url": "https://my.linkedin.com/jobs/view/application-engineer-metrology-malaysia-at-shining-3d-4477955906",
+    "title_raw": "Application Engineer - Metrology - Malaysia",
+    "company_raw": "SHINING 3D",
+    "location_raw": "Shah Alam, Selangor, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028105Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4461143911",
+    "job_url": "https://my.linkedin.com/jobs/view/generative-ai-azure-architect-at-ntt-data-inc-4461143911",
+    "title_raw": "Generative AI Azure Architect",
+    "company_raw": "NTT DATA, Inc.",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-18",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028108Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4476068637",
+    "job_url": "https://my.linkedin.com/jobs/view/solution-architect-ibm-at-tec-d-malaysia-4476068637",
+    "title_raw": "Solution Architect - IBM",
+    "company_raw": "Tec D Malaysia",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028114Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4481146829",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-technical-presales-at-enfrasys-4481146829",
+    "title_raw": "Senior Technical Presales",
+    "company_raw": "Enfrasys",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-21",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028118Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477278703",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-engineer-go-to-market-at-rooftop-energy-4477278703",
+    "title_raw": "Full-Stack Engineer (Go-To-Market)",
+    "company_raw": "Rooftop Energy",
+    "location_raw": "Damansara, Selangor, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028121Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4447124442",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-application-engineer-at-lenovo-4447124442",
+    "title_raw": "AI Application Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0009-6f83184a0603.html",
+    "collected_at": "2026-10-24T10:34:14.028125Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4377864792",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-applications-engineer-digital-implementation-at-synopsys-inc-4377864792",
+    "title_raw": "Staff Applications Engineer, Digital Implementation",
+    "company_raw": "Synopsys Inc",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-21",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959677Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4462860306",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-applications-engineer-fusion-compiler-at-synopsys-inc-4462860306",
+    "title_raw": "Staff Applications Engineer, Fusion Compiler",
+    "company_raw": "Synopsys Inc",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959698Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4469853420",
+    "job_url": "https://my.linkedin.com/jobs/view/developer-relations-engineer-ecosystem-product-operations-at-motorola-solutions-4469853420",
+    "title_raw": "Developer Relations Engineer - Ecosystem & Product Operations",
+    "company_raw": "Motorola Solutions",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959704Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478799104",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-application-engineer-at-altera-4478799104",
+    "title_raw": "Staff Application Engineer",
+    "company_raw": "Altera",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959709Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4467040396",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-staff-embedded-applications-engineer-at-altera-4467040396",
+    "title_raw": "Senior / Staff Embedded Applications Engineer",
+    "company_raw": "Altera",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959714Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4435150845",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-field-application-engineer-rf-antenna-connector-hybrid-at-te-connectivity-4435150845",
+    "title_raw": "Senior Field Application Engineer - RF Antenna & Connector (Hybrid)",
+    "company_raw": "TE Connectivity",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959720Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4476314243",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-field-applications-engineer-at-arrow-electronics-4476314243",
+    "title_raw": "Senior Field Applications Engineer",
+    "company_raw": "Arrow Electronics",
+    "location_raw": "Tasek Gelugor, Penang, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959725Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472575384",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-agentic-solutions-engineer-at-lavu-tech-solutions-sdn-bhd-4472575384",
+    "title_raw": "AI Agentic Solutions Engineer",
+    "company_raw": "Lavu Tech Solutions Sdn Bhd",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-01",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959730Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478445271",
+    "job_url": "https://my.linkedin.com/jobs/view/regional-field-applications-sea-oceanic-regions-at-rigol-technologies-4478445271",
+    "title_raw": "Regional Field Applications ( SEA & Oceanic regions)",
+    "company_raw": "RIGOL TECHNOLOGIES",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-14",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959734Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472560945",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-data-semantic-modeling-engineer-genai-solutions-engineer-at-lavu-tech-solutions-sdn-bhd-4472560945",
+    "title_raw": "AI Data & Semantic Modeling Engineer / GenAI Solutions Engineer",
+    "company_raw": "Lavu Tech Solutions Sdn Bhd",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-01",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0011-4a2dede40312.html",
+    "collected_at": "2026-10-24T10:35:48.959739Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4482785463",
+    "job_url": "https://my.linkedin.com/jobs/view/business-development-engineer-at-vitrox-corporation-berhad-4482785463",
+    "title_raw": "Business Development Engineer",
+    "company_raw": "ViTrox Corporation Berhad",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801016Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480627507",
+    "job_url": "https://my.linkedin.com/jobs/view/it-engineer-software-entry-at-keysight-technologies-4480627507",
+    "title_raw": "IT Engineer,Software,Entry",
+    "company_raw": "Keysight Technologies",
+    "location_raw": "Mukim 10 (Bukit Relau), Penang, Malaysia",
+    "posted_date": "2026-10-23",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801029Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475188292",
+    "job_url": "https://my.linkedin.com/jobs/view/graduate-talent-software-application-development-engineer-at-intel-4475188292",
+    "title_raw": "Graduate Talent (Software Application Development Engineer)",
+    "company_raw": "Intel",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801031Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4479629881",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-engineer-jr-sr-at-ust-malaysia-4479629881",
+    "title_raw": "AI Engineer (Jr/Sr)",
+    "company_raw": "UST Malaysia",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-17",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801034Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4401074553",
+    "job_url": "https://my.linkedin.com/jobs/view/sr-application-engineer-at-monolithic-power-systems-inc-4401074553",
+    "title_raw": "Sr. Application Engineer",
+    "company_raw": "Monolithic Power Systems, Inc.",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-04",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801036Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4401076450",
+    "job_url": "https://my.linkedin.com/jobs/view/application-engineer-at-monolithic-power-systems-inc-4401076450",
+    "title_raw": "Application Engineer",
+    "company_raw": "Monolithic Power Systems, Inc.",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-24",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801037Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4470141436",
+    "job_url": "https://my.linkedin.com/jobs/view/workato-consultant-at-ust-4470141436",
+    "title_raw": "Workato Consultant",
+    "company_raw": "UST",
+    "location_raw": "Bukit Mertajam, Penang, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801040Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4482790340",
+    "job_url": "https://my.linkedin.com/jobs/view/technical-support-engineer-%E2%80%93-delhi-ncr-india-at-mech-mind-robotics-4482790340",
+    "title_raw": "Technical Support Engineer – Delhi NCR, India",
+    "company_raw": "Mech-Mind Robotics",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801043Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4459674366",
+    "job_url": "https://my.linkedin.com/jobs/view/lead-ai-integration-strategist-cloud-communications-at-motorola-solutions-4459674366",
+    "title_raw": "Lead AI Integration Strategist (Cloud & Communications)",
+    "company_raw": "Motorola Solutions",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801045Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4481184370",
+    "job_url": "https://my.linkedin.com/jobs/view/solutions-engineer-in-circuit-test-functional-test-at-keysight-technologies-4481184370",
+    "title_raw": "Solutions Engineer (In- Circuit Test & Functional Test)",
+    "company_raw": "Keysight Technologies",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0013-ed2a1c06f647.html",
+    "collected_at": "2026-10-24T10:36:40.801047Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475519830",
+    "job_url": "https://my.linkedin.com/jobs/view/digital-transformation-engineer-at-dayone-4475519830",
+    "title_raw": "Digital Transformation Engineer",
+    "company_raw": "DayOne",
+    "location_raw": "Iskandar Puteri, Johore, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723056Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475536275",
+    "job_url": "https://my.linkedin.com/jobs/view/digital-transformation-engineer-at-dayone-4475536275",
+    "title_raw": "Digital Transformation Engineer",
+    "company_raw": "DayOne",
+    "location_raw": "Johor Bahru, Johore, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723070Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478273124",
+    "job_url": "https://my.linkedin.com/jobs/view/data-engineering-lead-solution-architect-at-unison-group-4478273124",
+    "title_raw": "Data Engineering - Lead Solution Architect",
+    "company_raw": "Unison Group",
+    "location_raw": "Johor Baharu, Johore, Malaysia",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723074Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477214155",
+    "job_url": "https://my.linkedin.com/jobs/view/software-engineer-at-v-s-industry-berhad-4477214155",
+    "title_raw": "Software Engineer",
+    "company_raw": "V.S. INDUSTRY BERHAD",
+    "location_raw": "Senai, Johore, Malaysia",
+    "posted_date": "2026-10-10",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723076Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478977987",
+    "job_url": "https://my.linkedin.com/jobs/view/technical-sales-consultant-at-rothoblaas-4478977987",
+    "title_raw": "Technical Sales Consultant",
+    "company_raw": "Rothoblaas",
+    "location_raw": "Johor Bahru, Johore, Malaysia",
+    "posted_date": "2026-10-21",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723078Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480168873",
+    "job_url": "https://my.linkedin.com/jobs/view/solution-architect-at-nulogy-4480168873",
+    "title_raw": "Solution Architect",
+    "company_raw": "Nulogy",
+    "location_raw": "Bandar Banang Jaya, Johore, Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723080Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480168869",
+    "job_url": "https://my.linkedin.com/jobs/view/sr-consultant-systems-integration-enablement-at-nulogy-4480168869",
+    "title_raw": "Sr. Consultant, Systems Integration Enablement",
+    "company_raw": "Nulogy",
+    "location_raw": "Bandar Banang Jaya, Johore, Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723081Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477991561",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-engineer-java-%2B-react-javascript-johor-bahru-at-avepoint-4477991561",
+    "title_raw": "Full Stack Engineer (Java + React/JavaScript) - Johor Bahru",
+    "company_raw": "AvePoint",
+    "location_raw": "Johor Baharu, Johore, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723083Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4428671862",
+    "job_url": "https://my.linkedin.com/jobs/view/director-solutions-at-supermicro-4428671862",
+    "title_raw": "Director, Solutions",
+    "company_raw": "Supermicro",
+    "location_raw": "Senai, Johore, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723085Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474606494",
+    "job_url": "https://my.linkedin.com/jobs/view/application-chef-sales-demonstrator-at-unox-s-p-a-4474606494",
+    "title_raw": "Application Chef (Sales Demonstrator)",
+    "company_raw": "UNOX S.p.A.",
+    "location_raw": "Greater Johor Bahru",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0015-8fb43735a6b1.html",
+    "collected_at": "2026-10-24T10:37:12.723087Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4464511259",
+    "job_url": "https://my.linkedin.com/jobs/view/outsystems-developer-johor-bahru-at-avepoint-4464511259",
+    "title_raw": "OutSystems Developer (Johor Bahru)",
+    "company_raw": "AvePoint",
+    "location_raw": "Johor Baharu, Johore, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118335Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4481901491",
+    "job_url": "https://my.linkedin.com/jobs/view/business-development-manager-at-azeus-systems-limited-4481901491",
+    "title_raw": "Business Development Manager",
+    "company_raw": "Azeus Systems Limited",
+    "location_raw": "Greater Johor Bahru",
+    "posted_date": "2026-10-23",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118348Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4479940767",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-product-specialist-anachem-south-at-mettler-toledo-international-inc-4479940767",
+    "title_raw": "Senior Product Specialist, Anachem (South)",
+    "company_raw": "Mettler-Toledo International, Inc",
+    "location_raw": "Johor Bahru, Johore, Malaysia",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118351Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4458920931",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-specialist-digital-manufacturing-system-mes-mandarin-speaker-at-armstrong-asia-4458920931",
+    "title_raw": "Senior Specialist, Digital Manufacturing System (MES) - Mandarin Speaker",
+    "company_raw": "Armstrong Asia",
+    "location_raw": "Kulai, Johore, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118355Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4462917994",
+    "job_url": "https://my.linkedin.com/jobs/view/executive-technical-architecture-at-port-of-tanjung-pelepas-4462917994",
+    "title_raw": "Executive, Technical Architecture",
+    "company_raw": "Port of Tanjung Pelepas",
+    "location_raw": "Gelang Patah, Johore, Malaysia",
+    "posted_date": "2026-10-04",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118357Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478645878",
+    "job_url": "https://my.linkedin.com/jobs/view/customer-sales-engineer-at-skf-iseam-4478645878",
+    "title_raw": "Customer Sales Engineer",
+    "company_raw": "SKF ISEAM",
+    "location_raw": "Johore, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118359Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4476017477",
+    "job_url": "https://my.linkedin.com/jobs/view/forsta-decipher-expert-at-nitka-4476017477",
+    "title_raw": "Forsta Decipher Expert",
+    "company_raw": "Nitka",
+    "location_raw": "Bandar Banang Jaya, Johore, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118360Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475201591",
+    "job_url": "https://my.linkedin.com/jobs/view/sales-engineer-at-solmax-4475201591",
+    "title_raw": "Sales Engineer",
+    "company_raw": "Solmax",
+    "location_raw": "Johor Bahru, Johore, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118362Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477148284",
+    "job_url": "https://my.linkedin.com/jobs/view/mobile-developer-at-nitka-4477148284",
+    "title_raw": "Mobile Developer",
+    "company_raw": "Nitka",
+    "location_raw": "Bandar Banang Jaya, Johore, Malaysia",
+    "posted_date": "2026-10-08",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118364Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4356047050",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-engineer-building-automation-programming-controls-at-johnson-controls-4356047050",
+    "title_raw": "Senior Engineer, Building Automation & Programming Controls",
+    "company_raw": "Johnson Controls",
+    "location_raw": "Johore, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0016-235fea821f22.html",
+    "collected_at": "2026-10-24T10:37:35.118366Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4460333582",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-at-avanade-4460333582",
+    "title_raw": "Forward Deployed Engineer",
+    "company_raw": "Avanade",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857466Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4459800508",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-solutions-engineer-at-axi-4459800508",
+    "title_raw": "AI Solutions Engineer",
+    "company_raw": "Axi",
+    "location_raw": "WP. Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857478Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478636998",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-pod-lead-at-digile-4478636998",
+    "title_raw": "Senior Forward Deployed Engineer (Pod Lead)",
+    "company_raw": "Digile",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857481Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478863325",
+    "job_url": "https://my.linkedin.com/jobs/view/pioneer-talent-program-applied-ai-agent-ai-productivity-engineer-top-talent-program-at-binance-4478863325",
+    "title_raw": "Pioneer Talent Program - Applied AI Agent/AI Productivity Engineer (Top Talent Program)",
+    "company_raw": "Binance",
+    "location_raw": "Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857483Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4470963187",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-full-stack-engineering-devops-agentic-ai-at-dhl-4470963187",
+    "title_raw": "Senior Forward Deployed Engineer (Full-Stack Engineering, DevOps & Agentic AI)",
+    "company_raw": "DHL",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857485Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472575384",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-agentic-solutions-engineer-at-lavu-tech-solutions-sdn-bhd-4472575384",
+    "title_raw": "AI Agentic Solutions Engineer",
+    "company_raw": "Lavu Tech Solutions Sdn Bhd",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-01",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857487Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4469853420",
+    "job_url": "https://my.linkedin.com/jobs/view/developer-relations-engineer-ecosystem-product-operations-at-motorola-solutions-4469853420",
+    "title_raw": "Developer Relations Engineer - Ecosystem & Product Operations",
+    "company_raw": "Motorola Solutions",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857489Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480327440",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-transformation-lead-at-eteam-4480327440",
+    "title_raw": "AI Transformation Lead",
+    "company_raw": "eTeam",
+    "location_raw": "Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857491Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4473204704",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-software-engineer-at-virtuos-kuala-lumpur-4473204704",
+    "title_raw": "Forward-Deployed Software Engineer",
+    "company_raw": "Virtuos Kuala Lumpur",
+    "location_raw": "Taman Wilayah, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857493Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4464877641",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-ai-solution-engineer-at-lenovo-4464877641",
+    "title_raw": "Full Stack AI Solution Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Wilayah Persekutuan Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0017-ca749f6a2a47.html",
+    "collected_at": "2026-10-24T10:37:35.857497Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475204558",
+    "job_url": "https://my.linkedin.com/jobs/view/solutions-engineer-at-obiguard-4475204558",
+    "title_raw": "Solutions Engineer",
+    "company_raw": "Obiguard",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167141Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4481305775",
+    "job_url": "https://my.linkedin.com/jobs/view/applied-generative-ai-engineer-at-oxydata-software-sdn-bhd-4481305775",
+    "title_raw": "Applied Generative AI Engineer",
+    "company_raw": "Oxydata Software Sdn Bhd",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167157Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4452388385",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-ai-solution-engineer-at-lenovo-4452388385",
+    "title_raw": "Full Stack AI Solution Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167161Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474803320",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-architect-forward-deployed-engineer-at-ust-4474803320",
+    "title_raw": "AI Architect (Forward Deployed Engineer)",
+    "company_raw": "UST",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-08",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167163Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474676200",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-software-engineer-affiliate-platform-ai-accelerated-development-at-next-ventures-4474676200",
+    "title_raw": "Full Stack Software Engineer - Affiliate Platform (AI-Accelerated Development)",
+    "company_raw": "NEXT Ventures",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167166Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4460346394",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-lead-at-avanade-4460346394",
+    "title_raw": "Forward Deployed Engineer Lead",
+    "company_raw": "Avanade",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-24",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167168Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4462948541",
+    "job_url": "https://my.linkedin.com/jobs/view/field-application-engineer-south-east-asia-at-tenstorrent-4462948541",
+    "title_raw": "Field Application Engineer, South East Asia",
+    "company_raw": "Tenstorrent",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167170Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480448477",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-software-engineer-my-at-trustdecision-4480448477",
+    "title_raw": "Senior Software Engineer-MY",
+    "company_raw": "TrustDecision",
+    "location_raw": "Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167172Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4438818754",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solutions-engineer-at-entrust-4438818754",
+    "title_raw": "Senior Solutions Engineer",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-04",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167174Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4473202406",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-agentic-solutions-engineer-at-tata-consultancy-services-4473202406",
+    "title_raw": "AI Agentic Solutions Engineer",
+    "company_raw": "Tata Consultancy Services",
+    "location_raw": "WP. Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-09-29",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0018-7346eaf44516.html",
+    "collected_at": "2026-10-24T10:37:37.167176Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4460333582",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-at-avanade-4460333582",
+    "title_raw": "Forward Deployed Engineer",
+    "company_raw": "Avanade",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773598Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4459800508",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-solutions-engineer-at-axi-4459800508",
+    "title_raw": "AI Solutions Engineer",
+    "company_raw": "Axi",
+    "location_raw": "WP. Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773612Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478636998",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-pod-lead-at-digile-4478636998",
+    "title_raw": "Senior Forward Deployed Engineer (Pod Lead)",
+    "company_raw": "Digile",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773615Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4470963187",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-full-stack-engineering-devops-agentic-ai-at-dhl-4470963187",
+    "title_raw": "Senior Forward Deployed Engineer (Full-Stack Engineering, DevOps & Agentic AI)",
+    "company_raw": "DHL",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773618Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480327440",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-transformation-lead-at-eteam-4480327440",
+    "title_raw": "AI Transformation Lead",
+    "company_raw": "eTeam",
+    "location_raw": "Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773619Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4473204704",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-software-engineer-at-virtuos-kuala-lumpur-4473204704",
+    "title_raw": "Forward-Deployed Software Engineer",
+    "company_raw": "Virtuos Kuala Lumpur",
+    "location_raw": "Taman Wilayah, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773622Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4464877641",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-ai-solution-engineer-at-lenovo-4464877641",
+    "title_raw": "Full Stack AI Solution Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Wilayah Persekutuan Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773624Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475204558",
+    "job_url": "https://my.linkedin.com/jobs/view/solutions-engineer-at-obiguard-4475204558",
+    "title_raw": "Solutions Engineer",
+    "company_raw": "Obiguard",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-09",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773626Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4481305775",
+    "job_url": "https://my.linkedin.com/jobs/view/applied-generative-ai-engineer-at-oxydata-software-sdn-bhd-4481305775",
+    "title_raw": "Applied Generative AI Engineer",
+    "company_raw": "Oxydata Software Sdn Bhd",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773627Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4452388385",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-ai-solution-engineer-at-lenovo-4452388385",
+    "title_raw": "Full Stack AI Solution Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0019-5b924f3939f1.html",
+    "collected_at": "2026-10-24T10:37:59.773631Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474803320",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-architect-forward-deployed-engineer-at-ust-4474803320",
+    "title_raw": "AI Architect (Forward Deployed Engineer)",
+    "company_raw": "UST",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-08",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651020Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474676200",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-software-engineer-affiliate-platform-ai-accelerated-development-at-next-ventures-4474676200",
+    "title_raw": "Full Stack Software Engineer - Affiliate Platform (AI-Accelerated Development)",
+    "company_raw": "NEXT Ventures",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651037Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4460346394",
+    "job_url": "https://my.linkedin.com/jobs/view/forward-deployed-engineer-lead-at-avanade-4460346394",
+    "title_raw": "Forward Deployed Engineer Lead",
+    "company_raw": "Avanade",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-24",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651040Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4462948541",
+    "job_url": "https://my.linkedin.com/jobs/view/field-application-engineer-south-east-asia-at-tenstorrent-4462948541",
+    "title_raw": "Field Application Engineer, South East Asia",
+    "company_raw": "Tenstorrent",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651044Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480448477",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-software-engineer-my-at-trustdecision-4480448477",
+    "title_raw": "Senior Software Engineer-MY",
+    "company_raw": "TrustDecision",
+    "location_raw": "Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651046Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4438818754",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solutions-engineer-at-entrust-4438818754",
+    "title_raw": "Senior Solutions Engineer",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-04",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651049Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4473202406",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-agentic-solutions-engineer-at-tata-consultancy-services-4473202406",
+    "title_raw": "AI Agentic Solutions Engineer",
+    "company_raw": "Tata Consultancy Services",
+    "location_raw": "WP. Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-09-29",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651052Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480471552",
+    "job_url": "https://my.linkedin.com/jobs/view/t-t-senior-consultant-innovation-cloud-development-center-react-native-developer-my-at-deloitte-4480471552",
+    "title_raw": "T&T Senior Consultant - Innovation Cloud Development Center (React Native Developer) - MY",
+    "company_raw": "Deloitte",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651055Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4473099083",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-specialist-ai-automation-developer-at-u-mobile-4473099083",
+    "title_raw": "Senior Specialist, AI & Automation Developer",
+    "company_raw": "U Mobile",
+    "location_raw": "Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia",
+    "posted_date": "2026-10-20",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651057Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477969762",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-software-engineer-at-alliance-bank-malaysia-berhad-4477969762",
+    "title_raw": "Senior Software Engineer",
+    "company_raw": "Alliance Bank Malaysia Berhad",
+    "location_raw": "Greater Kuala Lumpur",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Kuala Lumpur, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0021-9f98e0413c23.html",
+    "collected_at": "2026-10-24T10:38:30.651060Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4470963187",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-forward-deployed-engineer-full-stack-engineering-devops-agentic-ai-at-dhl-4470963187",
+    "title_raw": "Senior Forward Deployed Engineer (Full-Stack Engineering, DevOps & Agentic AI)",
+    "company_raw": "DHL",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281674Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4452388385",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-ai-solution-engineer-at-lenovo-4452388385",
+    "title_raw": "Full Stack AI Solution Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281699Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4438818754",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solutions-engineer-at-entrust-4438818754",
+    "title_raw": "Senior Solutions Engineer",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-04",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281704Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472872858",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-engineer-at-locus-t-4472872858",
+    "title_raw": "AI Engineer",
+    "company_raw": "LOCUS-T",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-02",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281709Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478742490",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-ai-engineer-at-dhl-4478742490",
+    "title_raw": "Senior AI Engineer",
+    "company_raw": "DHL",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281713Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4447124442",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-application-engineer-at-lenovo-4447124442",
+    "title_raw": "AI Application Engineer",
+    "company_raw": "Lenovo",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281717Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4456753041",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-systems-integrator-at-entrust-4456753041",
+    "title_raw": "Senior Systems Integrator",
+    "company_raw": "Entrust",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-03",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281721Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475537388",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-engineer-backend-mobile-ai-solutions-at-segi-university-colleges-4475537388",
+    "title_raw": "Full Stack Engineer (Backend, Mobile & AI Solutions)",
+    "company_raw": "SEGi University & Colleges",
+    "location_raw": "Kota Damansara, Selangor, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281724Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475198418",
+    "job_url": "https://my.linkedin.com/jobs/view/principal-engineer-service-delivery-senior-genai-hpc-engineer-at-dell-technologies-4475198418",
+    "title_raw": "Principal Engineer, Service Delivery (Senior GenAI & HPC Engineer)",
+    "company_raw": "Dell Technologies",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281728Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4461060450",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solution-engineer-at-snowflake-4461060450",
+    "title_raw": "Senior Solution Engineer",
+    "company_raw": "Snowflake",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0022-a0d675d334d9.html",
+    "collected_at": "2026-10-24T10:38:32.281737Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4481167079",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-full-stack-engineer-%E2%80%93-ai-solutions-at-oxydata-software-sdn-bhd-4481167079",
+    "title_raw": "Senior Full Stack Engineer – AI Solutions",
+    "company_raw": "Oxydata Software Sdn Bhd",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-21",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.691991Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477278703",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-engineer-go-to-market-at-rooftop-energy-4477278703",
+    "title_raw": "Full-Stack Engineer (Go-To-Market)",
+    "company_raw": "Rooftop Energy",
+    "location_raw": "Damansara, Selangor, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.692013Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4470073624",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-engineer-at-ust-4470073624",
+    "title_raw": "AI Engineer",
+    "company_raw": "UST",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-09-25",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.692020Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474680448",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-engineer-at-coca-cola-beverages-singapore-malaysia-brunei-4474680448",
+    "title_raw": "AI Engineer",
+    "company_raw": "Coca-Cola Beverages Singapore, Malaysia & Brunei",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.692026Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474038626",
+    "job_url": "https://my.linkedin.com/jobs/view/technical-support-representative-ai-specialist-at-ibm-4474038626",
+    "title_raw": "Technical Support Representative - AI Specialist",
+    "company_raw": "IBM",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.692032Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4474113265",
+    "job_url": "https://my.linkedin.com/jobs/view/software-developer-engineer-it-at-ssi-sch%C3%A4fer-4474113265",
+    "title_raw": "Software Developer/Engineer (IT)",
+    "company_raw": "SSI SCHÄFER",
+    "location_raw": "Subang Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-01",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.692047Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475198420",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-engineer-service-delivery-genai-hpc-engineer-at-dell-technologies-4475198420",
+    "title_raw": "Senior Engineer, Service Delivery (GenAI & HPC Engineer)",
+    "company_raw": "Dell Technologies",
+    "location_raw": "Cyberjaya, Selangor, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.692053Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4479822753",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-software-engineer-payment-application-at-rhb-banking-group-4479822753",
+    "title_raw": "Senior Software Engineer (Payment Application)",
+    "company_raw": "RHB Banking Group",
+    "location_raw": "Selangor, Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.692059Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472508241",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-developer-finance-digitalization-at-siemens-energy-4472508241",
+    "title_raw": "AI Developer - Finance Digitalization",
+    "company_raw": "Siemens Energy",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.692064Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480017013",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-solutions-architect-at-ibm-4480017013",
+    "title_raw": "Senior Solutions Architect",
+    "company_raw": "IBM",
+    "location_raw": "Petaling Jaya, Selangor, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Selangor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0023-ac0f513c4cb5.html",
+    "collected_at": "2026-10-24T10:38:54.692069Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472575384",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-agentic-solutions-engineer-at-lavu-tech-solutions-sdn-bhd-4472575384",
+    "title_raw": "AI Agentic Solutions Engineer",
+    "company_raw": "Lavu Tech Solutions Sdn Bhd",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-01",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333894Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4469853420",
+    "job_url": "https://my.linkedin.com/jobs/view/developer-relations-engineer-ecosystem-product-operations-at-motorola-solutions-4469853420",
+    "title_raw": "Developer Relations Engineer - Ecosystem & Product Operations",
+    "company_raw": "Motorola Solutions",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-12",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333914Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4467040396",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-staff-embedded-applications-engineer-at-altera-4467040396",
+    "title_raw": "Senior / Staff Embedded Applications Engineer",
+    "company_raw": "Altera",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333918Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4377864792",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-applications-engineer-digital-implementation-at-synopsys-inc-4377864792",
+    "title_raw": "Staff Applications Engineer, Digital Implementation",
+    "company_raw": "Synopsys Inc",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-21",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333922Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472560945",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-data-semantic-modeling-engineer-genai-solutions-engineer-at-lavu-tech-solutions-sdn-bhd-4472560945",
+    "title_raw": "AI Data & Semantic Modeling Engineer / GenAI Solutions Engineer",
+    "company_raw": "Lavu Tech Solutions Sdn Bhd",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-01",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333925Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480627507",
+    "job_url": "https://my.linkedin.com/jobs/view/it-engineer-software-entry-at-keysight-technologies-4480627507",
+    "title_raw": "IT Engineer,Software,Entry",
+    "company_raw": "Keysight Technologies",
+    "location_raw": "Mukim 10 (Bukit Relau), Penang, Malaysia",
+    "posted_date": "2026-10-23",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333928Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4462860306",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-applications-engineer-fusion-compiler-at-synopsys-inc-4462860306",
+    "title_raw": "Staff Applications Engineer, Fusion Compiler",
+    "company_raw": "Synopsys Inc",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333931Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475188292",
+    "job_url": "https://my.linkedin.com/jobs/view/graduate-talent-software-application-development-engineer-at-intel-4475188292",
+    "title_raw": "Graduate Talent (Software Application Development Engineer)",
+    "company_raw": "Intel",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-07",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333934Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4466049423",
+    "job_url": "https://my.linkedin.com/jobs/view/software-engineer-fresh-graduate-at-motorola-solutions-4466049423",
+    "title_raw": "Software Engineer Fresh Graduate",
+    "company_raw": "Motorola Solutions",
+    "location_raw": "Taman Pulau Pinang, Penang, Malaysia",
+    "posted_date": "2026-10-23",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333937Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4479629881",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-engineer-jr-sr-at-ust-malaysia-4479629881",
+    "title_raw": "AI Engineer (Jr/Sr)",
+    "company_raw": "UST Malaysia",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-17",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0024-7c033e727989.html",
+    "collected_at": "2026-10-24T10:38:55.333941Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478799104",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-application-engineer-at-altera-4478799104",
+    "title_raw": "Staff Application Engineer",
+    "company_raw": "Altera",
+    "location_raw": "Bayan Lepas, Penang, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721824Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4470141436",
+    "job_url": "https://my.linkedin.com/jobs/view/workato-consultant-at-ust-4470141436",
+    "title_raw": "Workato Consultant",
+    "company_raw": "UST",
+    "location_raw": "Bukit Mertajam, Penang, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721849Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475548191",
+    "job_url": "https://my.linkedin.com/jobs/view/staff-software-developer-at-enovix-corporation-4475548191",
+    "title_raw": "Staff Software Developer",
+    "company_raw": "Enovix Corporation",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721858Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4479367710",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-developer-at-ust-4479367710",
+    "title_raw": "AI Developer",
+    "company_raw": "UST",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721869Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477072892",
+    "job_url": "https://my.linkedin.com/jobs/view/integration-engineer-maas-at-bitdeer-nasdaq-btdr-4477072892",
+    "title_raw": "Integration Engineer - MaaS",
+    "company_raw": "Bitdeer (NASDAQ: BTDR)",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721875Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4463811925",
+    "job_url": "https://my.linkedin.com/jobs/view/t-t-consultant-innovation-cloud-development-center-java-developer-backend-engineer-my-at-deloitte-4463811925",
+    "title_raw": "T&T Consultant - Innovation Cloud Development Center - Java Developer (Backend Engineer) - MY",
+    "company_raw": "Deloitte",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721881Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4476314243",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-field-applications-engineer-at-arrow-electronics-4476314243",
+    "title_raw": "Senior Field Applications Engineer",
+    "company_raw": "Arrow Electronics",
+    "location_raw": "Tasek Gelugor, Penang, Malaysia",
+    "posted_date": "2026-10-06",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721886Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4472129629",
+    "job_url": "https://my.linkedin.com/jobs/view/ai-specialist-penang-malaysia-at-congatec-4472129629",
+    "title_raw": "AI Specialist / Penang, Malaysia",
+    "company_raw": "congatec",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-09-30",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721891Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478461151",
+    "job_url": "https://my.linkedin.com/jobs/view/artificial-intelligence-engineer-at-ust-malaysia-4478461151",
+    "title_raw": "Artificial Intelligence Engineer",
+    "company_raw": "UST Malaysia",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-14",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721896Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478445271",
+    "job_url": "https://my.linkedin.com/jobs/view/regional-field-applications-sea-oceanic-regions-at-rigol-technologies-4478445271",
+    "title_raw": "Regional Field Applications ( SEA & Oceanic regions)",
+    "company_raw": "RIGOL TECHNOLOGIES",
+    "location_raw": "Penang, Malaysia",
+    "posted_date": "2026-10-14",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Penang, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0025-1aef491659c8.html",
+    "collected_at": "2026-10-24T10:38:56.721902Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475519830",
+    "job_url": "https://my.linkedin.com/jobs/view/digital-transformation-engineer-at-dayone-4475519830",
+    "title_raw": "Digital Transformation Engineer",
+    "company_raw": "DayOne",
+    "location_raw": "Iskandar Puteri, Johore, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193035Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4475536275",
+    "job_url": "https://my.linkedin.com/jobs/view/digital-transformation-engineer-at-dayone-4475536275",
+    "title_raw": "Digital Transformation Engineer",
+    "company_raw": "DayOne",
+    "location_raw": "Johor Bahru, Johore, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193055Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477214155",
+    "job_url": "https://my.linkedin.com/jobs/view/software-engineer-at-v-s-industry-berhad-4477214155",
+    "title_raw": "Software Engineer",
+    "company_raw": "V.S. INDUSTRY BERHAD",
+    "location_raw": "Senai, Johore, Malaysia",
+    "posted_date": "2026-10-10",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193064Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477991561",
+    "job_url": "https://my.linkedin.com/jobs/view/full-stack-engineer-java-%2B-react-javascript-johor-bahru-at-avepoint-4477991561",
+    "title_raw": "Full Stack Engineer (Java + React/JavaScript) - Johor Bahru",
+    "company_raw": "AvePoint",
+    "location_raw": "Johor Baharu, Johore, Malaysia",
+    "posted_date": "2026-10-13",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193070Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4464511259",
+    "job_url": "https://my.linkedin.com/jobs/view/outsystems-developer-johor-bahru-at-avepoint-4464511259",
+    "title_raw": "OutSystems Developer (Johor Bahru)",
+    "company_raw": "AvePoint",
+    "location_raw": "Johor Baharu, Johore, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193077Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478273124",
+    "job_url": "https://my.linkedin.com/jobs/view/data-engineering-lead-solution-architect-at-unison-group-4478273124",
+    "title_raw": "Data Engineering - Lead Solution Architect",
+    "company_raw": "Unison Group",
+    "location_raw": "Johor Baharu, Johore, Malaysia",
+    "posted_date": "2026-10-19",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193084Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4431262469",
+    "job_url": "https://my.linkedin.com/jobs/view/software-engineer-at-perkinelmer-4431262469",
+    "title_raw": "Software Engineer",
+    "company_raw": "PerkinElmer",
+    "location_raw": "Gelang Patah, Johore, Malaysia",
+    "posted_date": "2026-10-08",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193091Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480168869",
+    "job_url": "https://my.linkedin.com/jobs/view/sr-consultant-systems-integration-enablement-at-nulogy-4480168869",
+    "title_raw": "Sr. Consultant, Systems Integration Enablement",
+    "company_raw": "Nulogy",
+    "location_raw": "Bandar Banang Jaya, Johore, Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193097Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4461136974",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-executive-smart-technology-at-port-of-tanjung-pelepas-4461136974",
+    "title_raw": "Senior Executive, Smart Technology",
+    "company_raw": "Port of Tanjung Pelepas",
+    "location_raw": "Gelang Patah, Johore, Malaysia",
+    "posted_date": "2026-10-03",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193104Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4477148284",
+    "job_url": "https://my.linkedin.com/jobs/view/mobile-developer-at-nitka-4477148284",
+    "title_raw": "Mobile Developer",
+    "company_raw": "Nitka",
+    "location_raw": "Bandar Banang Jaya, Johore, Malaysia",
+    "posted_date": "2026-10-08",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 1,
+      "offset": 0,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0026-43ac1e3326d7.html",
+    "collected_at": "2026-10-24T10:38:58.193109Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4480168873",
+    "job_url": "https://my.linkedin.com/jobs/view/solution-architect-at-nulogy-4480168873",
+    "title_raw": "Solution Architect",
+    "company_raw": "Nulogy",
+    "location_raw": "Bandar Banang Jaya, Johore, Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900034Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4428671862",
+    "job_url": "https://my.linkedin.com/jobs/view/director-solutions-at-supermicro-4428671862",
+    "title_raw": "Director, Solutions",
+    "company_raw": "Supermicro",
+    "location_raw": "Senai, Johore, Malaysia",
+    "posted_date": "2026-10-22",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900050Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4478977987",
+    "job_url": "https://my.linkedin.com/jobs/view/technical-sales-consultant-at-rothoblaas-4478977987",
+    "title_raw": "Technical Sales Consultant",
+    "company_raw": "Rothoblaas",
+    "location_raw": "Johor Bahru, Johore, Malaysia",
+    "posted_date": "2026-10-21",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900055Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4447380979",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-industrial-software-engineer-at-hid-4447380979",
+    "title_raw": "Senior Industrial Software Engineer",
+    "company_raw": "HID",
+    "location_raw": "Bandar Tenggara, Johore, Malaysia",
+    "posted_date": "2026-10-08",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900058Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4481901491",
+    "job_url": "https://my.linkedin.com/jobs/view/business-development-manager-at-azeus-systems-limited-4481901491",
+    "title_raw": "Business Development Manager",
+    "company_raw": "Azeus Systems Limited",
+    "location_raw": "Greater Johor Bahru",
+    "posted_date": "2026-10-23",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900061Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4458920931",
+    "job_url": "https://my.linkedin.com/jobs/view/senior-specialist-digital-manufacturing-system-mes-mandarin-speaker-at-armstrong-asia-4458920931",
+    "title_raw": "Senior Specialist, Digital Manufacturing System (MES) - Mandarin Speaker",
+    "company_raw": "Armstrong Asia",
+    "location_raw": "Kulai, Johore, Malaysia",
+    "posted_date": "2026-10-05",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900064Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4452492335",
+    "job_url": "https://my.linkedin.com/jobs/view/applications-engineer-at-arrow-electronics-4452492335",
+    "title_raw": "Applications Engineer",
+    "company_raw": "Arrow Electronics",
+    "location_raw": "Gelang Patah, Johore, Malaysia",
+    "posted_date": "2026-10-14",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900067Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4462917994",
+    "job_url": "https://my.linkedin.com/jobs/view/executive-technical-architecture-at-port-of-tanjung-pelepas-4462917994",
+    "title_raw": "Executive, Technical Architecture",
+    "company_raw": "Port of Tanjung Pelepas",
+    "location_raw": "Gelang Patah, Johore, Malaysia",
+    "posted_date": "2026-10-04",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900070Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4405953828",
+    "job_url": "https://my.linkedin.com/jobs/view/salesforce-developer-johor-bahru-at-avepoint-4405953828",
+    "title_raw": "Salesforce Developer (Johor Bahru)",
+    "company_raw": "AvePoint",
+    "location_raw": "Johor Baharu, Johore, Malaysia",
+    "posted_date": "2026-10-16",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900072Z"
+  },
+  {
+    "source": "linkedin",
+    "source_job_id": "4405945812",
+    "job_url": "https://my.linkedin.com/jobs/view/microsoft-dynamics-365-crm-at-avepoint-4405945812",
+    "title_raw": "Microsoft Dynamics 365 CRM",
+    "company_raw": "AvePoint",
+    "location_raw": "Johor Baharu, Johore, Malaysia",
+    "posted_date": "2026-10-15",
+    "discovery": {
+      "career_id_hint": "forward-deployed-engineer",
+      "query": "forward deployed software engineer",
+      "location": "Johor, Malaysia",
+      "page": 2,
+      "offset": 10,
+      "sort_by": "DD",
+      "posted_days": 30
+    },
+    "raw_search_file": "search/0027-51f85824a5d5.html",
+    "collected_at": "2026-10-24T10:39:41.900075Z"
+  }
+]

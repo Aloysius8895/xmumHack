@@ -1,0 +1,317 @@
+[
+  {
+    "skill_id": "communication",
+    "skill_name_normalized": "Communication",
+    "postings": 174,
+    "denominator": 251,
+    "demand_rate_pct": 69.32
+  },
+  {
+    "skill_id": "backend-language",
+    "skill_name_normalized": "Backend language (Java / Node / Python)",
+    "postings": 82,
+    "denominator": 251,
+    "demand_rate_pct": 32.67
+  },
+  {
+    "skill_id": "python",
+    "skill_name_normalized": "Python",
+    "postings": 64,
+    "denominator": 251,
+    "demand_rate_pct": 25.5
+  },
+  {
+    "skill_id": "cloud-deploy",
+    "skill_name_normalized": "Cloud deployment",
+    "postings": 62,
+    "denominator": 251,
+    "demand_rate_pct": 24.7
+  },
+  {
+    "skill_id": "sql",
+    "skill_name_normalized": "SQL",
+    "postings": 56,
+    "denominator": 251,
+    "demand_rate_pct": 22.31
+  },
+  {
+    "skill_id": "databases",
+    "skill_name_normalized": "Database design",
+    "postings": 41,
+    "denominator": 251,
+    "demand_rate_pct": 16.33
+  },
+  {
+    "skill_id": "roadmapping",
+    "skill_name_normalized": "Product roadmapping",
+    "postings": 40,
+    "denominator": 251,
+    "demand_rate_pct": 15.94
+  },
+  {
+    "skill_id": "javascript",
+    "skill_name_normalized": "JavaScript",
+    "postings": 38,
+    "denominator": 251,
+    "demand_rate_pct": 15.14
+  },
+  {
+    "skill_id": "statistics",
+    "skill_name_normalized": "Statistics",
+    "postings": 36,
+    "denominator": 251,
+    "demand_rate_pct": 14.34
+  },
+  {
+    "skill_id": "auditing",
+    "skill_name_normalized": "Audit procedures & standards",
+    "postings": 33,
+    "denominator": 251,
+    "demand_rate_pct": 13.15
+  },
+  {
+    "skill_id": "rest-api",
+    "skill_name_normalized": "REST API design",
+    "postings": 33,
+    "denominator": 251,
+    "demand_rate_pct": 13.15
+  },
+  {
+    "skill_id": "git",
+    "skill_name_normalized": "Git",
+    "postings": 31,
+    "denominator": 251,
+    "demand_rate_pct": 12.35
+  },
+  {
+    "skill_id": "agile",
+    "skill_name_normalized": "Agile collaboration",
+    "postings": 31,
+    "denominator": 251,
+    "demand_rate_pct": 12.35
+  },
+  {
+    "skill_id": "data-visualization",
+    "skill_name_normalized": "Data visualization",
+    "postings": 30,
+    "denominator": 251,
+    "demand_rate_pct": 11.95
+  },
+  {
+    "skill_id": "prototyping",
+    "skill_name_normalized": "Wireframes & prototyping",
+    "postings": 29,
+    "denominator": 251,
+    "demand_rate_pct": 11.55
+  },
+  {
+    "skill_id": "mlops",
+    "skill_name_normalized": "MLOps",
+    "postings": 25,
+    "denominator": 251,
+    "demand_rate_pct": 9.96
+  },
+  {
+    "skill_id": "react",
+    "skill_name_normalized": "React",
+    "postings": 22,
+    "denominator": 251,
+    "demand_rate_pct": 8.76
+  },
+  {
+    "skill_id": "visual-design",
+    "skill_name_normalized": "Visual design",
+    "postings": 22,
+    "denominator": 251,
+    "demand_rate_pct": 8.76
+  },
+  {
+    "skill_id": "internal-control",
+    "skill_name_normalized": "Internal control & risk",
+    "postings": 20,
+    "denominator": 251,
+    "demand_rate_pct": 7.97
+  },
+  {
+    "skill_id": "html-css",
+    "skill_name_normalized": "HTML & CSS",
+    "postings": 20,
+    "denominator": 251,
+    "demand_rate_pct": 7.97
+  },
+  {
+    "skill_id": "ml-frameworks",
+    "skill_name_normalized": "ML frameworks",
+    "postings": 20,
+    "denominator": 251,
+    "demand_rate_pct": 7.97
+  },
+  {
+    "skill_id": "market-analysis",
+    "skill_name_normalized": "Market analysis",
+    "postings": 19,
+    "denominator": 251,
+    "demand_rate_pct": 7.57
+  },
+  {
+    "skill_id": "testing",
+    "skill_name_normalized": "Automated testing",
+    "postings": 19,
+    "denominator": 251,
+    "demand_rate_pct": 7.57
+  },
+  {
+    "skill_id": "negotiation",
+    "skill_name_normalized": "Negotiation",
+    "postings": 19,
+    "denominator": 251,
+    "demand_rate_pct": 7.57
+  },
+  {
+    "skill_id": "accessibility",
+    "skill_name_normalized": "Responsive & accessibility",
+    "postings": 18,
+    "denominator": 251,
+    "demand_rate_pct": 7.17
+  },
+  {
+    "skill_id": "excel",
+    "skill_name_normalized": "Excel / Spreadsheets",
+    "postings": 17,
+    "denominator": 251,
+    "demand_rate_pct": 6.77
+  },
+  {
+    "skill_id": "clinical-knowledge",
+    "skill_name_normalized": "Clinical knowledge",
+    "postings": 16,
+    "denominator": 251,
+    "demand_rate_pct": 6.37
+  },
+  {
+    "skill_id": "figma",
+    "skill_name_normalized": "Figma",
+    "postings": 15,
+    "denominator": 251,
+    "demand_rate_pct": 5.98
+  },
+  {
+    "skill_id": "accounting",
+    "skill_name_normalized": "Financial accounting",
+    "postings": 15,
+    "denominator": 251,
+    "demand_rate_pct": 5.98
+  },
+  {
+    "skill_id": "cooking-technique",
+    "skill_name_normalized": "Cooking technique",
+    "postings": 14,
+    "denominator": 251,
+    "demand_rate_pct": 5.58
+  },
+  {
+    "skill_id": "data-cleaning",
+    "skill_name_normalized": "Data cleaning",
+    "postings": 14,
+    "denominator": 251,
+    "demand_rate_pct": 5.58
+  },
+  {
+    "skill_id": "food-safety",
+    "skill_name_normalized": "Food safety & hygiene",
+    "postings": 13,
+    "denominator": 251,
+    "demand_rate_pct": 5.18
+  },
+  {
+    "skill_id": "user-research",
+    "skill_name_normalized": "User research",
+    "postings": 12,
+    "denominator": 251,
+    "demand_rate_pct": 4.78
+  },
+  {
+    "skill_id": "project-management",
+    "skill_name_normalized": "Project management",
+    "postings": 10,
+    "denominator": 251,
+    "demand_rate_pct": 3.98
+  },
+  {
+    "skill_id": "lesson-planning",
+    "skill_name_normalized": "Lesson planning",
+    "postings": 10,
+    "denominator": 251,
+    "demand_rate_pct": 3.98
+  },
+  {
+    "skill_id": "cad",
+    "skill_name_normalized": "CAD drafting",
+    "postings": 9,
+    "denominator": 251,
+    "demand_rate_pct": 3.59
+  },
+  {
+    "skill_id": "api-integration",
+    "skill_name_normalized": "API integration",
+    "postings": 8,
+    "denominator": 251,
+    "demand_rate_pct": 3.19
+  },
+  {
+    "skill_id": "usability-testing",
+    "skill_name_normalized": "Usability testing",
+    "postings": 8,
+    "denominator": 251,
+    "demand_rate_pct": 3.19
+  },
+  {
+    "skill_id": "patient-care",
+    "skill_name_normalized": "Patient care",
+    "postings": 4,
+    "denominator": 251,
+    "demand_rate_pct": 1.59
+  },
+  {
+    "skill_id": "legal-research",
+    "skill_name_normalized": "Legal research",
+    "postings": 3,
+    "denominator": 251,
+    "demand_rate_pct": 1.2
+  },
+  {
+    "skill_id": "menu-planning",
+    "skill_name_normalized": "Menu planning & costing",
+    "postings": 3,
+    "denominator": 251,
+    "demand_rate_pct": 1.2
+  },
+  {
+    "skill_id": "engineering-math",
+    "skill_name_normalized": "Engineering math & mechanics",
+    "postings": 2,
+    "denominator": 251,
+    "demand_rate_pct": 0.8
+  },
+  {
+    "skill_id": "classroom-management",
+    "skill_name_normalized": "Classroom management",
+    "postings": 1,
+    "denominator": 251,
+    "demand_rate_pct": 0.4
+  },
+  {
+    "skill_id": "legal-writing",
+    "skill_name_normalized": "Legal drafting",
+    "postings": 1,
+    "denominator": 251,
+    "demand_rate_pct": 0.4
+  },
+  {
+    "skill_id": "ml-math",
+    "skill_name_normalized": "Math for ML",
+    "postings": 1,
+    "denominator": 251,
+    "demand_rate_pct": 0.4
+  }
+]

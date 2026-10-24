@@ -1,0 +1,28 @@
+{
+  "real_network": true,
+  "result": {
+    "runId": "987c4733-8227-4a55-9440-379e2cd551d9",
+    "status": "published",
+    "startedAt": "2026-10-24T15:13:12.921Z",
+    "collectionStatus": "partial",
+    "error": null,
+    "postings": 476,
+    "newAds": 337,
+    "previouslySeen": 139,
+    "unavailableSources": [
+      {
+        "id": "indeed",
+        "error": "Browser verification or access required (HTTP 403)"
+      }
+    ],
+    "publishedRunId": "987c4733-8227-4a55-9440-379e2cd551d9",
+    "finishedAt": "2026-10-24T15:16:45.102Z"
+  },
+  "beforePostings": 140,
+  "afterPostings": 476,
+  "previous_retained_on_failure": true,
+  "new_snapshot_matches_run": true,
+  "source": "linkedin+ricebowl",
+  "isDemo": false,
+  "scopeSources": "linkedin+ricebowl"
+}

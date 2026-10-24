@@ -1,0 +1,144 @@
+{
+  "timezone": "Asia/Kuala_Lumpur",
+  "country": "MY",
+  "datePosted": "week",
+  "maxPagesPerQuery": 2,
+  "maxRequestsPerRun": 12,
+  "requestIntervalMs": 1500,
+  "maxRunMs": 600000,
+  "maxRecordsPerRun": 1000,
+  "roles": [
+    {
+      "id": "frontend-developer",
+      "name": "Frontend Developer",
+      "titlePatterns": [
+        "\\bfront[ -]?end\\b",
+        "\\breact (developer|engineer)\\b"
+      ],
+      "queries": [
+        "frontend developer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "data-analyst",
+      "name": "Data Analyst",
+      "titlePatterns": [
+        "\\bdata analyst\\b",
+        "\\bbusiness intelligence analyst\\b"
+      ],
+      "queries": [
+        "data analyst jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "ai-engineer",
+      "name": "AI / ML Engineer",
+      "titlePatterns": [
+        "\\b(ai|artificial intelligence|machine learning|ml) (engineer|developer)\\b"
+      ],
+      "queries": [
+        "machine learning engineer jobs in Malaysia"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "javascript",
+      "name": "JavaScript",
+      "aliases": [
+        "JavaScript",
+        "ECMAScript"
+      ]
+    },
+    {
+      "id": "typescript",
+      "name": "TypeScript",
+      "aliases": [
+        "TypeScript"
+      ]
+    },
+    {
+      "id": "react",
+      "name": "React",
+      "aliases": [
+        "React",
+        "React.js",
+        "ReactJS"
+      ]
+    },
+    {
+      "id": "nodejs",
+      "name": "Node.js",
+      "aliases": [
+        "Node.js",
+        "NodeJS"
+      ]
+    },
+    {
+      "id": "python",
+      "name": "Python",
+      "aliases": [
+        "Python"
+      ]
+    },
+    {
+      "id": "sql",
+      "name": "SQL",
+      "aliases": [
+        "SQL",
+        "PostgreSQL",
+        "MySQL"
+      ]
+    },
+    {
+      "id": "excel",
+      "name": "Excel",
+      "aliases": [
+        "Excel"
+      ]
+    },
+    {
+      "id": "powerbi",
+      "name": "Power BI",
+      "aliases": [
+        "Power BI",
+        "PowerBI"
+      ]
+    },
+    {
+      "id": "pytorch",
+      "name": "PyTorch",
+      "aliases": [
+        "PyTorch"
+      ]
+    },
+    {
+      "id": "tensorflow",
+      "name": "TensorFlow",
+      "aliases": [
+        "TensorFlow"
+      ]
+    },
+    {
+      "id": "cpp",
+      "name": "C++",
+      "aliases": [
+        "C++"
+      ]
+    },
+    {
+      "id": "csharp",
+      "name": "C#",
+      "aliases": [
+        "C#"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "jsearch",
+      "type": "jsearch",
+      "enabled": true
+    }
+  ]
+}
