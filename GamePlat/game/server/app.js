@@ -106,6 +106,11 @@ function lang(save, body)
     return LANGS.includes(body.lang) ? body.lang : save.lang
 }
 
+function displayLanguage(save, request, body)
+{
+    return lang(save, { lang: LANGS.includes(body.lang) ? body.lang : request.headers['x-career-lang'] })
+}
+
 function mytDate()
 {
     return new Intl.DateTimeFormat('en-CA', {
@@ -613,16 +618,19 @@ export async function handle(request, response)
             if(url.pathname === '/api/reset')
             {
                 const save = store.createSave()
+                save.lang = displayLanguage(loaded.state, request, body)
                 useCustom(save)
                 const result = { reset: true }
                 if(persistence.cloudEnabled())
                     await persistence.commitSave(save, loaded.version, 'save', { result })
                 else
-                    store.reset()
+                    store.save(save)
                 return { result, save }
             }
 
             const save = loaded.state
+            if(!integration && request.method === 'POST')
+                save.lang = displayLanguage(save, request, body)
             useCustom(save)
             // Postings customised before their "other" requirements became pet skills
             game.adoptPostingSkills(save)
@@ -656,7 +664,8 @@ export async function handle(request, response)
                 persistence.loadDocument('market'),
                 persistence.loadDocument('trends'),
             ])
-            send(response, 200, { ...payload.result, state: game.view(payload.save, ai.status(), { market: market.payload, trends: trends.payload }) })
+            const displaySave = { ...payload.save, lang: displayLanguage(payload.save, request, body) }
+            send(response, 200, { ...payload.result, state: game.view(displaySave, ai.status(), { market: market.payload, trends: trends.payload }) })
         }
     }
     catch(error)

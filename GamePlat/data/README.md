@@ -71,11 +71,11 @@ python GamePlat/data/scripts/verify_data.py
 - status 默认为 unknown；没有在新搜索中出现不等于关闭。仅页面明确“停止接受申请”才记 closed。
 - 只有一次采集会话，没有可靠连续历史，**当前为“正在积累历史数据”**，不计算周增长、技能趋势或全国招聘人数。
 
-## 使用的用户技能
+## 开发方法来源
 
-读取 `skills/data/README.md` 后，按本次显式请求采用：
+数据处理开发时参考了以下方法；参考库已在最终交付清理中移出项目，实际流程由本目录的 `scripts/` 实现：
 
-- `skills/data/02_exploration_quality/explore-data/data/skills/explore-data/SKILL.md`：检查粒度、唯一性、缺失、分布和覆盖。
-- `skills/data/01_cleaning_transformation/pandas-pro/skills/pandas-pro/SKILL.md` 及 `references/data-cleaning.md`：pandas 独立清洗、副本、分组汇总及校验。
+- explore-data：检查粒度、唯一性、缺失、分布和覆盖。
+- pandas-pro：pandas 独立清洗、副本、分组汇总及校验。
 
 原始数据留在本机。最终实际数量和上限见 `processed/QUALITY_REPORT.md` 与每批 `manifest.json`。

@@ -19,3 +19,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.zip
+
+# Development reference libraries are kept outside the finished application.
+/skills/

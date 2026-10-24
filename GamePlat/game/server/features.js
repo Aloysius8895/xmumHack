@@ -463,7 +463,9 @@ export async function generateRoadmap({ target, profile, gaps, lang })
         : '\nGeneral mode: no specific company, use the general requirements of the career.'
 
     return ask({
-        system: `${PLATFORM}\n\nTask: plan an ordered preparation roadmap. ${language(lang)}`,
+        system: `${PLATFORM}\n\nTask: plan an ordered preparation roadmap. The player's current UI language is ${LANGUAGES[lang] ?? LANGUAGES.en}.
+Every roadmap overview, title and why is a language map: write zh in Chinese, en in English and ms in Malay,
+regardless of the current UI language. Translate the complete meaning in each field and keep technology names unchanged.`,
         content:
 `Target: ${describeCareer(career)}
 ${posting}

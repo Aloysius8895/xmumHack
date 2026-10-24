@@ -1,0 +1,13 @@
+{
+  "page_errors": [],
+  "languages": [
+    "en",
+    "zh",
+    "ms",
+    "en"
+  ],
+  "no_regeneration_or_ai_calls": true,
+  "startup_uses_browser_language": true,
+  "background_refresh_keeps_english": true,
+  "saved_roadmap_and_progress_unchanged": true
+}

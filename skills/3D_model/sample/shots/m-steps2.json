@@ -1,5 +1,0 @@
-[
- { "js": "lab.controls.load.set(100)", "wait": 30, "out": "shots/m-generate.png" },
- { "js": "lab.breakNow(); lab._syncButtons(); lab.toggle('labels', true)", "wait": 40, "out": "shots/m-stall.png" },
- { "js": "lab.toggle('labels', false); lab.toggle('explode', true)", "wait": 4.5, "out": "shots/m-explode.png" }
-]

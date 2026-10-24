@@ -119,7 +119,7 @@ export class Reveal
                 }
                 else
                 {
-                    // Next function, called once the character is confirmed (Wisp's guided tour only starts from Settings)
+                    // The beginner tour waits until the world reveal and initial career state are ready.
                     const next = () =>
                     {
                         this.updateStep(1)
@@ -243,6 +243,8 @@ export class Reveal
         }
 
         this.step = step
+        if(step === 2)
+            this.game.career?.tour.maybeStart()
     }
 
     update()

@@ -65,12 +65,13 @@ export class CareerApi
             return
         }
         this.refreshAgain = false
-        this.refreshing = fetch('./api/state', { headers: { 'X-Career-Client': this.clientId }, cache: 'no-store' })
+        const language = getLang()
+        this.refreshing = fetch('./api/state', { headers: { 'X-Career-Client': this.clientId, 'X-Career-Lang': language }, cache: 'no-store' })
             .then((response) => response.ok ? response.json() : null)
             .then((payload) =>
             {
                 // A request of the tab started meanwhile: its answer may be newer, try again after it
-                if(this.busy > 0)
+                if(this.busy > 0 || getLang() !== language)
                     this.refreshAgain = true
                 else if(payload?.state)
                 {
@@ -94,7 +95,7 @@ export class CareerApi
         {
             const response = await fetch(`./api/${path}`, {
                 method,
-                headers: { 'X-Career-Client': this.clientId, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+                headers: { 'X-Career-Client': this.clientId, 'X-Career-Lang': getLang(), ...(body ? { 'Content-Type': 'application/json' } : {}) },
                 body: body ? JSON.stringify({ lang: getLang(), ...(this.demo ? { demo: true } : {}), ...body }) : undefined,
             })
             const payload = await response.json().catch(() => ({ error: 'generic' }))

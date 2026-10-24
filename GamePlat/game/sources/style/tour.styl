@@ -194,12 +194,59 @@
 }
 
 @media (max-width: 640px) {
+    .career-ui.is-touring .career-panel-body textarea {
+        height: 80px;
+        min-height: 80px;
+    }
+
     .career-tour-ghost {
         width: 72px;
     }
 
     .career-tour-text {
         font-size: 16px;
+        max-height: 22vh;
+        overflow-y: auto;
+    }
+
+    .career-tour-footer {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+/* A menu instruction needs a reachable bar on narrow screens, including over an open panel. */
+@media (max-width: 640px) and (max-height: 640px) {
+    .career-tour-text {
+        max-height: 14vh;
+    }
+}
+
+@media (max-width: 720px) {
+    .career-ui[data-tour-target] .career-menu.is-bar {
+        z-index: 10;
+        visibility: visible;
+    }
+
+    .career-ui[data-tour-target] .career-menu.is-bar .career-hud,
+    .career-ui[data-tour-target] .career-minimap {
+        visibility: hidden;
+    }
+
+    .career-ui[data-tour-target] .career-menu.is-bar .career-rail {
+        left: 10px;
+        right: 10px;
+        width: calc(100vw - 20px);
+        max-width: calc(100vw - 20px);
+        box-sizing: border-box;
+        overflow-x: auto;
+        overflow-y: hidden;
+        transform: none;
+        visibility: visible;
+    }
+
+    .career-ui[data-tour-target] .career-menu.is-bar .career-rail-item {
+        flex-shrink: 0;
     }
 }
 

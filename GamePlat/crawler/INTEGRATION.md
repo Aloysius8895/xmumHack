@@ -79,9 +79,9 @@ npm run crawler:serve
 
 Docker 中 localhost 是容器自身。两处爬虫 URL 需改为 n8n 能访问的服务名或宿主机地址，BACKEND_INGEST_URL 也需从爬虫进程可达。避免与旧的市场定时采集任务重复启用。
 
-## 使用的 scrap skill
+## 开发方法来源
 
-- [Agent Reach](../../skills/Copy/scrap/Agent-Reach/agent_reach/skill/SKILL.md) 与网页读取路由：按适用来源选择读取方式、保留出处，并用 Jina Reader 核对原包接口文档。
-- [browser-use](../../skills/Copy/scrap/browser-use/skills/browser-use/SKILL.md)：公开 HTTP 优先；需要交互才使用浏览器；明确等待、验证结果并在访问控制处停止。沿用已有 Playwright 动态页面适配器。
+- [Agent Reach](https://github.com/Panniantong/Agent-Reach) 与网页读取路由：按适用来源选择读取方式、保留出处，并用 Jina Reader 核对原包接口文档。
+- [browser-use](https://github.com/browser-use/browser-use)：公开 HTTP 优先；需要交互才使用浏览器；明确等待、验证结果并在访问控制处停止。沿用已有 Playwright 动态页面适配器。
 
-已按这些 skill 设计和实施；两者的独立 CLI 不是游戏运行依赖。未使用 rea，也未引入 LLM、云浏览器或付费 API 依赖。
+以上是开发参考来源，参考库已在最终交付清理中从项目移除；现有实现直接使用项目中的 Node.js、Python 和 Playwright 代码。配置 JSearch 时会使用服务端 API 凭据。

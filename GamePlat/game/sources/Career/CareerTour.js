@@ -42,6 +42,7 @@ export class CareerTour
         this.api = api
         this.ui = ui
         this.active = false
+        this.autoStartHandled = false
         this.panel = null
 
         // say: string ids typed one page each; target: menu button that glows; focus: elements to spotlight while
@@ -73,7 +74,11 @@ export class CareerTour
 
         this.setElement()
 
-        this.api.events.on('state', () => this.check())
+        this.api.events.on('state', () =>
+        {
+            this.maybeStart()
+            this.check()
+        })
         this.ui.events.on('panel', (name) =>
         {
             this.panel = name
@@ -165,12 +170,31 @@ export class CareerTour
         return this.api.state
     }
 
+    // The reveal and initial API request can finish in either order.
+    maybeStart()
+    {
+        if(this.autoStartHandled || this.active || !this.state || this.ui.game.reveal?.step !== 2)
+            return
+
+        this.autoStartHandled = true
+        try
+        {
+            if(localStorage.getItem(STORAGE_KEY) === '1')
+                return
+        }
+        catch {}
+        this.start()
+    }
+
     start()
     {
         if(this.active)
             return
 
+        this.autoStartHandled = true
         this.active = true
+        this.originalPanelPadding = this.ui.panelBody.style.paddingBottom
+        this.ui.root.classList.add('is-touring')
         this.api.demo = true
         // The world is frozen for the whole tour (no walking, no camera drag / zoom), the menu and panels still work
         this.ui.touring = true
@@ -188,6 +212,8 @@ export class CareerTour
             return
 
         this.active = false
+        this.ui.panelBody.style.paddingBottom = this.originalPanelPadding
+        this.ui.root.classList.remove('is-touring')
         this.api.demo = false
         this.ui.touring = false
         this.ui.releaseInputs()
@@ -328,6 +354,7 @@ export class CareerTour
         const elements = this.waiting && this.step.focus ? this.step.focus().filter((element) => element.offsetParent !== null) : []
         if(!elements.length)
         {
+            this.ui.panelBody.style.paddingBottom = this.originalPanelPadding
             this.focused = null
             this.spot.classList.remove('is-visible')
             this.pointer.classList.remove('is-visible')
@@ -341,7 +368,7 @@ export class CareerTour
         if(this.focused !== last)
         {
             this.focused = last
-            last.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+            last.scrollIntoView({ block: 'nearest', behavior: innerWidth <= 720 ? 'auto' : 'smooth' })
         }
 
         // Spotlight around all of them
@@ -366,9 +393,20 @@ export class CareerTour
         const height = this.element.offsetHeight
         const margin = 16
         const inPanel = this.ui.panelElement.contains(last) && !last.classList.contains('career-close')
+        const narrowPanel = inPanel && innerWidth <= 720
+        this.ui.panelBody.style.paddingBottom = narrowPanel ? `${height + margin}px` : this.originalPanelPadding
         let x
         let y
-        if(inPanel)
+        if(narrowPanel)
+        {
+            x = margin
+            y = innerHeight - height - margin
+            // Reserve room for Wisp and keep the form action reachable above the dialogue.
+            const overlap = last.getBoundingClientRect().bottom + margin - y
+            if(overlap > 1)
+                this.ui.panelBody.scrollTop += overlap
+        }
+        else if(inPanel)
         {
             x = this.ui.panelElement.getBoundingClientRect().left - width - margin
             y = (box.top + box.bottom) / 2 - height / 2

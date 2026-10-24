@@ -1,0 +1,6 @@
+{
+  "page_errors": [],
+  "isolated_api_no_player_save_writes": true,
+  "slow_api_waits_until_world_ready": true,
+  "mobile_guidance_and_spotlight_fit_390_and_320": true
+}
