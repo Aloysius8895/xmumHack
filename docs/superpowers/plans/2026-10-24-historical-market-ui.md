@@ -10,4 +10,4 @@
 
 - [x] `server/historical-market.js`：纯数据校验与月份组合、文件读取缓存；`server/game.js` 接入已有响应。测试防止总量混入职业/技能、缺失变零、非法来源和哈希失效。
 - [x] `sources/Career/MarketHistory.js`：独立图表及季度表渲染；`CareerUI.js` 接入概览并显示完整月份，避免缺失月份生成涨跌榜。`i18n.js` 和 `style/career.styl` 提供三语文案与响应式样式。
-- [x] 9 项针对性测试和生产构建通过。localhost:5000 的真实浏览器页面显示两组历史数据、13 个职业及 78 个历史空格，季度表可展开，技能分母保持 181；手机无页面横向溢出，无 JavaScript 异常。独立 8787 后端也已重启加载。证据在 `GamePlat/verification/historical-market-ui/`。
+- [x] 9 项针对性测试和生产构建通过。localhost:5000 的真实浏览器页面显示两组历史数据、13 个职业及 78 个历史空格，季度表可展开，技能分母保持 181；手机无页面横向溢出，无 JavaScript 异常。独立 8787 后端也已重启加载。证据在 `src/verification/historical-market-ui/`。

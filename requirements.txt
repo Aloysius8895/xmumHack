@@ -1,0 +1,7 @@
+# Python services and offline data checks. The main game uses npm in src/game.
+-r src/chatbot/requirements.txt
+beautifulsoup4>=4.12
+pandas>=2.2
+PyYAML>=6.0
+# Used by the existing optional browser verification tools.
+playwright>=1.40

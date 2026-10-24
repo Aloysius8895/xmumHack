@@ -11,15 +11,15 @@
 ## Global Constraints
 
 - Use metres and Z-up in Blender; let the glTF exporter convert axes.
-- Work in `GamePlat/assets/island-v1` and `GamePlat/game/world-building` only, plus these new documents.
+- Work in `src/assets/island-v1` and `src/game/world-building` only, plus these new documents.
 - Preserve existing Blender processes and game source modifications.
 - Do not claim click-to-move or game collision integration.
 
 ### Task 1: Terrain and circulation
 
-**Files:** Create `GamePlat/game/world-building/build_island.py` and `island_geometry.py`.
+**Files:** Create `src/game/world-building/build_island.py` and `island_geometry.py`.
 
-**Interfaces:** Build script writes `island.blend`, `island.glb`, `navigation.json` and static PNG previews under `GamePlat/assets/island-v1`.
+**Interfaces:** Build script writes `island.blend`, `island.glb`, `navigation.json` and static PNG previews under `src/assets/island-v1`.
 
 - [x] Create named terrain, route, bridge, stair, site and preview collections.
 - [x] Triangulate shoreline and terrain samples; shape terraces, ramps, caldera and beach.
@@ -29,7 +29,7 @@
 
 ### Task 2: Delivery verification
 
-**Files:** Create `GamePlat/game/world-building/verify_island.py` and `GamePlat/assets/island-v1/README.md`.
+**Files:** Create `src/game/world-building/verify_island.py` and `src/assets/island-v1/README.md`.
 
 **Interfaces:** Verification reads the saved blend, GLB and route JSON; writes `verification.json`.
 

@@ -26,4 +26,4 @@
 
 ## Validation result
 
-Production build passed. Browser verification exercised all eight actual world interaction callbacks in Chinese, English and Malay (24 cases), plus six mobile layout checks at 390 x 844. GitHub opened only after its button was clicked and used the supplied repository destination. Placeholder dialogs had no external link, including after visiting GitHub. Close-button and Escape checks restored game input. No browser page errors were recorded. Screenshots and results are in `GamePlat/verification/team-social/`.
+Production build passed. Browser verification exercised all eight actual world interaction callbacks in Chinese, English and Malay (24 cases), plus six mobile layout checks at 390 x 844. GitHub opened only after its button was clicked and used the supplied repository destination. Placeholder dialogs had no external link, including after visiting GitHub. Close-button and Escape checks restored game input. No browser page errors were recorded. Screenshots and results are in `src/verification/team-social/`.

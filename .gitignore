@@ -22,3 +22,7 @@ Thumbs.db
 
 # Development reference libraries are kept outside the finished application.
 /skills/
+
+# Local tooling and test scratch data
+/.local/
+/src/tools/bin/*.exe

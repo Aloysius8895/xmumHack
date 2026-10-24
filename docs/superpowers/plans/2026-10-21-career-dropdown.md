@@ -25,7 +25,7 @@
 - [x] Replace career-rail positioning with upper-right dropdown styling: #fffbf8 background, #383340 ink, #ff659b accent, rounded corners, subtle shadow and downward reveal.
 - [x] Keep mobile placement at the upper right; constrain height and allow list scrolling. Respect reduced motion and hide the trigger while a panel/dialogue covers it.
 - [x] Apply the user's follow-up: remove map-trigger markup/listeners and its SocialArea reference, move the circular minimap to the upper left, and nest the HUD under the dropdown so it shifts down on expansion. Verify desktop/mobile corner placement and the minimap's full-map action.
-- [x] Run npm run build from GamePlat/game.
-- [x] Run browser checks on desktop and mobile for closed initial state, toggling, outside dismissal, Escape focus restoration, keyboard navigation, all seven routes, translations and viewport fit. Save screenshots under GamePlat/verification/career-dropdown/.
+- [x] Run npm run build from src/game.
+- [x] Run browser checks on desktop and mobile for closed initial state, toggling, outside dismissal, Escape focus restoration, keyboard navigation, all seven routes, translations and viewport fit. Save screenshots under src/verification/career-dropdown/.
 
-Validation: production build passed. Browser checks passed at 1440x1000, 390x844, 320x568 and 740x390, including all seven routes, dismissals, keyboard navigation, localization, map opening and corner alignment. No browser page errors. Screenshots and results are in GamePlat/verification/career-dropdown/.
+Validation: production build passed. Browser checks passed at 1440x1000, 390x844, 320x568 and 740x390, including all seven routes, dismissals, keyboard navigation, localization, map opening and corner alignment. No browser page errors. Screenshots and results are in src/verification/career-dropdown/.

@@ -1,0 +1,528 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: CareerSphere private Aurora backend, authenticated HTTP API, Bedrock worker, and controlled legacy importer.
+
+Parameters:
+  AuroraPostgresEngineVersion:
+    Type: String
+    Description: Exact Aurora PostgreSQL engine version supported in the deployment Region.
+  BedrockRegion:
+    Type: String
+    Default: ""
+    Description: Optional. Region where the selected model or inference profile is enabled. Leave the three Bedrock parameters empty when the app calls DeepSeek directly (AI_PROVIDER=deepseek).
+  BedrockModelId:
+    Type: String
+    Default: ""
+    Description: Optional. Exact model or inference profile ID confirmed in this AWS account and Region.
+  BedrockInvokeResourceArns:
+    Type: String
+    Default: ""
+    Description: Optional. Comma-separated exact model/profile ARNs for IAM. Include each ARN required by a cross-Region inference profile.
+  CareersphereSkillIds:
+    Type: String
+    Default: sql,excel,statistics,python,data-cleaning,data-visualization,communication,html-css,javascript,react,git,accessibility,api-integration,backend-language,databases,rest-api,cloud-deploy,testing,user-research,prototyping,figma,visual-design,usability-testing,ml-math,ml-frameworks,mlops,roadmapping,agile,market-analysis,accounting,auditing,internal-control,legal-research,legal-writing,negotiation,lesson-planning,classroom-management,assessment,clinical-knowledge,patient-care,medical-ethics,cooking-technique,food-safety,menu-planning,engineering-math,cad,project-management
+    Description: Current skill IDs from src/game/server/careers.js. Keep in sync before deployment.
+  AuroraMinCapacity:
+    Type: Number
+    Default: 0.5
+    MinValue: 0.5
+    Description: Aurora Serverless v2 minimum capacity (ACUs); confirm engine/Region support.
+  AuroraMaxCapacity:
+    Type: Number
+    Default: 2
+    MinValue: 0.5
+    Description: Aurora Serverless v2 maximum capacity (ACUs).
+  EnableDeepSeekDirect:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+    Description: Optional explicit DeepSeek official API mode; disabled by default.
+  DeepSeekSecretArn:
+    Type: String
+    Default: ""
+    Description: Optional ARN of careersphere/deepseek in Secrets Manager, containing DEEPSEEK_API_KEY.
+  DeepSeekModelId:
+    Type: String
+    Default: ""
+    Description: Exact official DeepSeek API model identifier; required only for explicitly enabled direct mode.
+
+Conditions:
+  DirectDeepSeekEnabled: !And
+    - !Equals [!Ref EnableDeepSeekDirect, "true"]
+    - !Not [!Equals [!Ref DeepSeekSecretArn, ""]]
+  BedrockEnabled: !Not [!Equals [!Ref BedrockModelId, ""]]
+
+Rules:
+  BedrockParametersComeTogether:
+    RuleCondition: !Or
+      - !Not [!Equals [!Ref BedrockRegion, ""]]
+      - !Not [!Equals [!Ref BedrockModelId, ""]]
+      - !Not [!Equals [!Ref BedrockInvokeResourceArns, ""]]
+    Assertions:
+      - Assert: !And
+          - !Not [!Equals [!Ref BedrockRegion, ""]]
+          - !Not [!Equals [!Ref BedrockModelId, ""]]
+          - !Not [!Equals [!Ref BedrockInvokeResourceArns, ""]]
+        AssertDescription: Bedrock needs BedrockRegion, BedrockModelId and BedrockInvokeResourceArns together, or all three empty.
+  DirectDeepSeekNeedsSecretAndModel:
+    RuleCondition: !Equals [!Ref EnableDeepSeekDirect, "true"]
+    Assertions:
+      - Assert: !Not [!Equals [!Ref DeepSeekSecretArn, ""]]
+        AssertDescription: Direct DeepSeek requires the Secrets Manager secret ARN.
+      - Assert: !Not [!Equals [!Ref DeepSeekModelId, ""]]
+        AssertDescription: Direct DeepSeek requires the verified official API model identifier.
+
+Globals:
+  Function:
+    Runtime: python3.12
+    CodeUri: lambda/
+    MemorySize: 512
+    Timeout: 30
+    Tracing: Active
+    Environment:
+      Variables:
+        AURORA_DATABASE: careersphere
+        AURORA_CLUSTER_ARN: !GetAtt AuroraCluster.DBClusterArn
+        AURORA_SECRET_ARN: !Ref ApplicationDatabaseSecret
+        BEDROCK_REGION: !Ref BedrockRegion
+        BEDROCK_MODEL_ID: !Ref BedrockModelId
+        DEEPSEEK_SECRET_ARN: !Ref DeepSeekSecretArn
+        DEEPSEEK_MODEL_ID: !Ref DeepSeekModelId
+        ALLOW_DEEPSEEK_DIRECT: !If [DirectDeepSeekEnabled, "true", "false"]
+        # Read by the API when a caller names no provider; must be one this stack can serve.
+        DEFAULT_AI_PROVIDER: !If [BedrockEnabled, bedrock, !If [DirectDeepSeekEnabled, deepseek_direct, bedrock]]
+        CAREERSPHERE_SKILL_IDS: !Ref CareersphereSkillIds
+
+Resources:
+  DataVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.42.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-data
+
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref DataVpc
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      CidrBlock: 10.42.1.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-private-a
+
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref DataVpc
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      CidrBlock: 10.42.2.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-private-b
+
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Isolated subnets for the private CareerSphere Aurora cluster.
+      SubnetIds: [!Ref PrivateSubnetA, !Ref PrivateSubnetB]
+
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Aurora has no inbound network access; Lambda uses the RDS Data API.
+      VpcId: !Ref DataVpc
+      SecurityGroupIngress: []
+      SecurityGroupEgress: []
+
+  AuroraCluster:
+    Type: AWS::RDS::DBCluster
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Engine: aurora-postgresql
+      EngineVersion: !Ref AuroraPostgresEngineVersion
+      DatabaseName: careersphere
+      MasterUsername: careersphere_admin
+      ManageMasterUserPassword: true
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      VpcSecurityGroupIds: [!GetAtt DatabaseSecurityGroup.GroupId]
+      EnableHttpEndpoint: true
+      StorageEncrypted: true
+      BackupRetentionPeriod: 7
+      CopyTagsToSnapshot: true
+      DeletionProtection: true
+      ServerlessV2ScalingConfiguration:
+        MinCapacity: !Ref AuroraMinCapacity
+        MaxCapacity: !Ref AuroraMaxCapacity
+
+  AuroraInstance:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      DBClusterIdentifier: !Ref AuroraCluster
+      DBInstanceClass: db.serverless
+      Engine: aurora-postgresql
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      PubliclyAccessible: false
+
+  BackendTokenSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: careersphere/aws-backend-token
+      Description: Shared server-to-server token checked by the CareerSphere Lambda API.
+      GenerateSecretString:
+        PasswordLength: 48
+        ExcludePunctuation: true
+      Tags:
+        - Key: Application
+          Value: CareerSphere
+
+  ApplicationDatabaseSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: careersphere/database-runtime
+      Description: Restricted PostgreSQL runtime login for the CareerSphere API, AI worker, and importer.
+      GenerateSecretString:
+        SecretStringTemplate: !Sub '{"engine":"postgres","host":"${AuroraCluster.Endpoint.Address}","username":"careersphere_runtime","dbname":"careersphere","port":5432,"dbClusterIdentifier":"${AuroraCluster}"}'
+        GenerateStringKey: password
+        PasswordLength: 48
+        ExcludePunctuation: true
+      Tags:
+        - Key: Application
+          Value: CareerSphere
+
+  WorkerDatabaseSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: careersphere/database-ai-worker
+      Description: Restricted PostgreSQL login that can only read and update AI jobs.
+      GenerateSecretString:
+        SecretStringTemplate: !Sub '{"engine":"postgres","host":"${AuroraCluster.Endpoint.Address}","username":"careersphere_ai_worker","dbname":"careersphere","port":5432,"dbClusterIdentifier":"${AuroraCluster}"}'
+        GenerateStringKey: password
+        PasswordLength: 48
+        ExcludePunctuation: true
+      Tags:
+        - Key: Application
+          Value: CareerSphere
+
+  LegacyImportBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
+
+  LegacyImportBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref LegacyImportBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: s3:*
+            Resource:
+              - !GetAtt LegacyImportBucket.Arn
+              - !Sub ${LegacyImportBucket.Arn}/*
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
+  ApiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: TypedBackendAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - rds-data:ExecuteStatement
+                  - rds-data:BeginTransaction
+                  - rds-data:CommitTransaction
+                  - rds-data:RollbackTransaction
+                Resource: !GetAtt AuroraCluster.DBClusterArn
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource:
+                  - !Ref ApplicationDatabaseSecret
+                  - !Ref BackendTokenSecret
+              - Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource: !GetAtt AiWorkerFunction.Arn
+
+  WorkerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: AiJobRuntime
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - rds-data:ExecuteStatement
+                  - rds-data:BeginTransaction
+                  - rds-data:CommitTransaction
+                  - rds-data:RollbackTransaction
+                Resource: !GetAtt AuroraCluster.DBClusterArn
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Ref WorkerDatabaseSecret
+              - !If
+                - BedrockEnabled
+                - Effect: Allow
+                  Action: bedrock:InvokeModel
+                  Resource: !Split [",", !Ref BedrockInvokeResourceArns]
+                - !Ref AWS::NoValue
+              - !If
+                - DirectDeepSeekEnabled
+                - Effect: Allow
+                  Action: secretsmanager:GetSecretValue
+                  Resource: !Ref DeepSeekSecretArn
+                - !Ref AWS::NoValue
+
+  MigrationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: ControlledLegacyImport
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - rds-data:ExecuteStatement
+                  - rds-data:BeginTransaction
+                  - rds-data:CommitTransaction
+                  - rds-data:RollbackTransaction
+                Resource: !GetAtt AuroraCluster.DBClusterArn
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Ref ApplicationDatabaseSecret
+              - Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub ${LegacyImportBucket.Arn}/*
+
+  CleanupRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: ScheduledRetention
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: rds-data:ExecuteStatement
+                Resource: !GetAtt AuroraCluster.DBClusterArn
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Ref ApplicationDatabaseSecret
+
+  SchemaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: ApplySchema
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: rds-data:ExecuteStatement
+                Resource: !GetAtt AuroraCluster.DBClusterArn
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource:
+                  - !GetAtt AuroraCluster.MasterUserSecret.SecretArn
+                  - !Ref ApplicationDatabaseSecret
+                  - !Ref WorkerDatabaseSecret
+
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+      Description: Authenticated CareerSphere server-to-server API. The backend Lambda verifies AWS_BACKEND_TOKEN.
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: AuroraInstance
+    Properties:
+      Handler: app.handler
+      Role: !GetAtt ApiRole.Arn
+      Timeout: 30
+      Environment:
+        Variables:
+          AWS_BACKEND_TOKEN_SECRET_ARN: !Ref BackendTokenSecret
+          AI_WORKER_FUNCTION_ARN: !GetAtt AiWorkerFunction.Arn
+      Events:
+        VersionedApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /v1/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: "2.0"
+        VersionRoot:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /v1
+            Method: ANY
+            PayloadFormatVersion: "2.0"
+
+  AiWorkerFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: AuroraInstance
+    Properties:
+      Handler: app.ai_worker
+      Role: !GetAtt WorkerRole.Arn
+      Timeout: 300
+      MemorySize: 1024
+      Environment:
+        Variables:
+          AURORA_SECRET_ARN: !Ref WorkerDatabaseSecret
+
+  MigrationFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: AuroraInstance
+    Properties:
+      Handler: app.migration_handler
+      Role: !GetAtt MigrationRole.Arn
+      Timeout: 300
+      MemorySize: 1024
+      ReservedConcurrentExecutions: 1
+
+  CleanupFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: AuroraInstance
+    Properties:
+      Handler: app.cleanup_handler
+      Role: !GetAtt CleanupRole.Arn
+      Timeout: 120
+      MemorySize: 256
+      ReservedConcurrentExecutions: 1
+      Environment:
+        Variables:
+          AI_JOB_RETENTION_DAYS: "7"
+          MARKER_RETENTION_DAYS: "30"
+      Events:
+        Daily:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 19 * * ? *)
+            Description: Daily CareerSphere retention at 03:00 Asia/Kuala_Lumpur.
+
+  SchemaFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: AuroraInstance
+    Properties:
+      Handler: app.schema_handler
+      Role: !GetAtt SchemaRole.Arn
+      Timeout: 300
+      MemorySize: 256
+      Environment:
+        Variables:
+          AURORA_SECRET_ARN: !GetAtt AuroraCluster.MasterUserSecret.SecretArn
+          APPLICATION_DATABASE_SECRET_ARN: !Ref ApplicationDatabaseSecret
+          WORKER_DATABASE_SECRET_ARN: !Ref WorkerDatabaseSecret
+
+  ApplyDatabaseSchema:
+    Type: Custom::ApplyCareerSphereSchema
+    DependsOn: [AuroraInstance, ApiFunction, AiWorkerFunction, MigrationFunction, CleanupFunction, SchemaFunction]
+    Properties:
+      ServiceToken: !GetAtt SchemaFunction.Arn
+      SchemaVersion: 2
+      StackName: !Ref AWS::StackName
+
+Outputs:
+  AwsBackendUrl:
+    Description: HTTPS endpoint for the Replit game and chatbot servers.
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}
+  BackendTokenSecretArn:
+    Description: Secret ARN; retrieve its generated value in Secrets Manager and store it as Replit AWS_BACKEND_TOKEN.
+    Value: !Ref BackendTokenSecret
+  AuroraClusterArn:
+    Value: !GetAtt AuroraCluster.DBClusterArn
+  AuroraAdminSecretArn:
+    Value: !GetAtt AuroraCluster.MasterUserSecret.SecretArn
+  AuroraRuntimeSecretArn:
+    Value: !Ref ApplicationDatabaseSecret
+  AuroraWorkerSecretArn:
+    Value: !Ref WorkerDatabaseSecret
+  AuroraDatabaseName:
+    Value: careersphere
+  LegacyImportBucketName:
+    Value: !Ref LegacyImportBucket
+  MigrationFunctionName:
+    Value: !Ref MigrationFunction
+  BedrockRegion:
+    Condition: BedrockEnabled
+    Value: !Ref BedrockRegion
+  BedrockModelId:
+    Condition: BedrockEnabled
+    Value: !Ref BedrockModelId

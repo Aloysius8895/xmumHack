@@ -18,7 +18,7 @@
 
 ### Task 1: Game provider and document compatibility
 
-**Files:** `GamePlat/game/server/ai.js`, new `server/deepseek-input.js`, new `server/deepseek-local.test.mjs`, `package.json`, `package-lock.json`, `sources/Career/i18n.js`.
+**Files:** `src/game/server/ai.js`, new `server/deepseek-input.js`, new `server/deepseek-local.test.mjs`, `package.json`, `package-lock.json`, `sources/Career/i18n.js`.
 
 **Interfaces:** Keep `ask({ system, content, schema, ... })` and `reply({ system, messages, onText, signal, ... })`. Add `deepseekInput(content)` returning a promise of text or compatible blocks.
 
@@ -42,7 +42,7 @@
 
 ### Task 3: Documentation, generated workflows and integration verification
 
-**Files:** game/chatbot `.env.example`, `GamePlat/game/CAREER.md`, `chatbot/README.md`, `GamePlat/game/n8n/README.md`, `n8n/learning/build-workflows.mjs`, generated workflow JSON, approved design and this plan.
+**Files:** game/chatbot `.env.example`, `src/game/CAREER.md`, `chatbot/README.md`, `src/game/n8n/README.md`, `n8n/learning/build-workflows.mjs`, generated workflow JSON, approved design and this plan.
 
 - [x] Document both services' configuration, startup, supported uploads, deployment secrets, preserved AWS provider distinction and n8n's delegated AI routing.
 - [x] Update workflow setup notes, then run `npm.cmd run n8n:build` from the game directory.

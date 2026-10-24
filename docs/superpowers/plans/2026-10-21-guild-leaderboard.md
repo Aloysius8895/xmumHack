@@ -15,19 +15,19 @@
 - Never insert preview/example scores into a player save.
 - Keep changing names and scores separate from the generated paper artwork.
 - Draw updates on state, portrait, and font changes, not every frame.
-- Keep all production artwork in `GamePlat/game/static/`.
+- Keep all production artwork in `src/game/static/`.
 - Preserve existing unrelated working changes.
 
 ## Task 1: Parchment artwork and live scene component
 
 Files:
-- Create `GamePlat/game/static/leaderboard/guild-parchment.png` from the approved image using the built-in image generator.
-- Create `GamePlat/game/sources/Game/World/GuildLeaderboardArtwork.js` for canvas medals, portraits, names, points, and small quest notices.
-- Create `GamePlat/game/sources/Game/World/GuildLeaderboard.js` for mesh placement, textures, image loading, and API binding.
-- Modify `GamePlat/game/sources/Game/World/Areas/LandingArea.js` to retain the removed map's transform as the placement reference and create the component.
-- Modify `GamePlat/game/sources/Game/Game.js` to bind it after Career is initialized.
-- Modify `GamePlat/game/sources/Game/CharacterSelect.js` to refresh the local player's board portrait on selection.
-- Modify `GamePlat/game/sources/Career/i18n.js` for the empty rank label.
+- Create `src/game/static/leaderboard/guild-parchment.png` from the approved image using the built-in image generator.
+- Create `src/game/sources/Game/World/GuildLeaderboardArtwork.js` for canvas medals, portraits, names, points, and small quest notices.
+- Create `src/game/sources/Game/World/GuildLeaderboard.js` for mesh placement, textures, image loading, and API binding.
+- Modify `src/game/sources/Game/World/Areas/LandingArea.js` to retain the removed map's transform as the placement reference and create the component.
+- Modify `src/game/sources/Game/Game.js` to bind it after Career is initialized.
+- Modify `src/game/sources/Game/CharacterSelect.js` to refresh the local player's board portrait on selection.
+- Modify `src/game/sources/Career/i18n.js` for the empty rank label.
 
 Interfaces:
 - `new GuildLeaderboard(area, surface)` consumes the landing Area and the detached original map mesh.

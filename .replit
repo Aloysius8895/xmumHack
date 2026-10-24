@@ -1,5 +1,5 @@
 modules = ["nodejs-22", "python-base-3.13"]
-run = "cd GamePlat/game && npm run dev"
+run = "cd src/game && npm run dev"
 
 [[ports]]
 localPort = 5000
@@ -10,8 +10,8 @@ localPort = 5173
 externalPort = 5173
 
 [deployment]
-build = ["sh", "-c", "cd GamePlat/game && npm install && npm run build"]
-run = ["sh", "-c", "cd GamePlat/game && HOST=0.0.0.0 PORT=5000 npm run server"]
+build = ["sh", "-c", "cd src/game && npm install && npm run build"]
+run = ["sh", "-c", "cd src/game && HOST=0.0.0.0 PORT=5000 npm run server"]
 deploymentTarget = "cloudrun"
 
 [workflows]
@@ -32,7 +32,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd GamePlat/game && npm run dev"
+args = "cd src/game && npm run dev"
 waitForPort = 5000
 
 [workflows.workflow.metadata]
