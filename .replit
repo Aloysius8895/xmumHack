@@ -41,6 +41,6 @@ outputType = "webview"
 [userenv]
 
 [userenv.shared]
-AI_PROVIDER = "deepseek"
+AI_PROVIDER = "RUNPOD"
 AI_MOCK = "0"
 DEEPSEEK_MODEL = "deepseek-flash"
