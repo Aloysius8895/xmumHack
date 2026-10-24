@@ -1,0 +1,44 @@
+[
+  {
+    "period": "2026-04",
+    "known_archived_ads": null,
+    "displayed_value": 2,
+    "origin": "mock"
+  },
+  {
+    "period": "2026-05",
+    "known_archived_ads": null,
+    "displayed_value": 2,
+    "origin": "mock"
+  },
+  {
+    "period": "2026-06",
+    "known_archived_ads": null,
+    "displayed_value": 3,
+    "origin": "mock"
+  },
+  {
+    "period": "2026-07",
+    "known_archived_ads": 1,
+    "displayed_value": 1,
+    "origin": "archived_posting_sample"
+  },
+  {
+    "period": "2026-08",
+    "known_archived_ads": 2,
+    "displayed_value": 2,
+    "origin": "archived_posting_sample"
+  },
+  {
+    "period": "2026-09",
+    "known_archived_ads": 1,
+    "displayed_value": 1,
+    "origin": "archived_posting_sample"
+  },
+  {
+    "period": "2026-10",
+    "known_archived_ads": null,
+    "displayed_value": 6,
+    "origin": "current_collected_sample"
+  }
+]

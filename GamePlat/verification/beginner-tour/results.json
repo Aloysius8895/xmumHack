@@ -1,0 +1,9 @@
+{
+  "page_errors": [],
+  "isolated_api_no_player_save_writes": true,
+  "first_visit_after_character_confirmation": true,
+  "skip_persists_and_return_visit_stays_quiet": true,
+  "settings_replay_still_works": true,
+  "slow_api_waits_until_world_ready": true,
+  "mobile_guidance_and_spotlight_fit_390_and_320": true
+}

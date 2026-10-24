@@ -1,0 +1,9 @@
+# Roadmap display language
+
+The browser kept its language in `careerLang`, while roadmap strings were projected using `save.lang`. The live save already contained correct zh/en/ms roadmap fields but retained `save.lang=zh`, producing Chinese stages and tasks beside English UI. Reset also restored the server default language and wrote a different new save object than the one returned.
+
+Carry the UI language in the existing API client's startup, mutation, and quiet-refresh requests. Resolve display language from a valid request body/header, with the stored preference as fallback. Web mutations persist that preference; read-only views use a display copy without rewriting learning data. Reset preserves the selected language and saves the actual object returned. Ignore quiet-refresh responses requested under an older language and reload in the current selection. The normal AI roadmap prompt explicitly assigns the language of each localized field.
+
+Existing multilingual roadmaps display immediately without regeneration. IDs, progress, MP, prerequisites, and points remain unchanged. Tests cover English startup against a Chinese-preference save, tutorial and normal generation, three-language switching, reset, invalid headers, and a quiet-refresh language race. Browser verification uses real GET responses and intercepts settings writes, preserving the actual player save and avoiding AI calls.
+
+Validation passed: 166 game/server/career/n8n tests and the production build. The real browser showed English, Chinese, Malay, then English again for the saved roadmap; stage titles, explanations, and task text matched the selected language. Quiet refresh stayed in English. The existing save file hash and task progress were unchanged. Evidence is in `GamePlat/verification/roadmap-languages/`.

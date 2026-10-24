@@ -1,0 +1,122 @@
+[
+  {
+    "occupation_id": "auditor",
+    "occupation_name": "Auditor",
+    "postings": 29,
+    "companies": 28,
+    "usable_descriptions": 13,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "backend-developer",
+    "occupation_name": "Backend Developer",
+    "postings": 21,
+    "companies": 18,
+    "usable_descriptions": 11,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "chef",
+    "occupation_name": "Chef",
+    "postings": 44,
+    "companies": 26,
+    "usable_descriptions": 14,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "civil-engineer",
+    "occupation_name": "Civil Engineer",
+    "postings": 31,
+    "companies": 25,
+    "usable_descriptions": 8,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "data-analyst",
+    "occupation_name": "Data Analyst",
+    "postings": 30,
+    "companies": 25,
+    "usable_descriptions": 14,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "data-scientist",
+    "occupation_name": "Data Scientist",
+    "postings": 31,
+    "companies": 28,
+    "usable_descriptions": 14,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "doctor",
+    "occupation_name": "Doctor",
+    "postings": 15,
+    "companies": 13,
+    "usable_descriptions": 7,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "forward-deployed-engineer",
+    "occupation_name": "FDE (Forward Deployed Engineer)",
+    "postings": 6,
+    "companies": 5,
+    "usable_descriptions": 5,
+    "coverage_status": "low_sample"
+  },
+  {
+    "occupation_id": "frontend-developer",
+    "occupation_name": "Frontend Developer",
+    "postings": 23,
+    "companies": 18,
+    "usable_descriptions": 12,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "lawyer",
+    "occupation_name": "Lawyer",
+    "postings": 31,
+    "companies": 24,
+    "usable_descriptions": 13,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "ml-engineer",
+    "occupation_name": "AI / ML Engineer",
+    "postings": 41,
+    "companies": 34,
+    "usable_descriptions": 20,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "product-manager",
+    "occupation_name": "Product Manager",
+    "postings": 40,
+    "companies": 33,
+    "usable_descriptions": 14,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "teacher",
+    "occupation_name": "Teacher",
+    "postings": 27,
+    "companies": 19,
+    "usable_descriptions": 14,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": "ui-ux-designer",
+    "occupation_name": "UI/UX Designer",
+    "postings": 26,
+    "companies": 24,
+    "usable_descriptions": 13,
+    "coverage_status": "sample_available"
+  },
+  {
+    "occupation_id": null,
+    "occupation_name": "Pending classification",
+    "postings": 169,
+    "companies": 127,
+    "usable_descriptions": 79,
+    "coverage_status": "sample_available"
+  }
+]

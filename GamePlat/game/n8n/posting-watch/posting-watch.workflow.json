@@ -1,0 +1,147 @@
+{
+  "id": "CSPostingWatch01",
+  "name": "CareerSphere: customised job posting watch",
+  "active": false,
+  "nodes": [
+    {
+      "id": "watch-manual",
+      "name": "Check now",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "watch-schedule",
+      "name": "Every 30 minutes MYT",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        180
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/30 * * * *"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "watch-webhook",
+      "name": "Local job-watch webhook",
+      "webhookId": "CSPostingWatch01-hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        340
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "job-watch",
+        "authentication": "headerAuth",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CSPostingAuth001",
+          "name": "CareerSphere posting watch bearer"
+        }
+      }
+    },
+    {
+      "id": "watch-check",
+      "name": "Check postings and refresh sample",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        80
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8787/api/integrations/jobs/check",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {
+          "timeout": 330000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CSPostingAuth001",
+          "name": "CareerSphere posting watch bearer"
+        }
+      }
+    },
+    {
+      "id": "watch-notes",
+      "name": "Monitoring contract",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -240
+      ],
+      "parameters": {
+        "width": 700,
+        "height": 200,
+        "content": "## Customised job watch\nEvery 30 minutes (Asia/Kuala_Lumpur), check saved source URLs. The server compares job content, preserves the roadmap, and sends in-app live updates when a revision needs review.\nFirst fetch establishes baseline. HTTP/parse failures do not count as changes. Existing targets need a source URL.\nSet Header Auth: Authorization = Bearer <INTEGRATION_TOKEN>. No secrets are embedded in this JSON. This workflow checks postings; it does not re-scrape the full market dataset."
+      }
+    }
+  ],
+  "connections": {
+    "Check now": {
+      "main": [
+        [
+          {
+            "node": "Check postings and refresh sample",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every 30 minutes MYT": {
+      "main": [
+        [
+          {
+            "node": "Check postings and refresh sample",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Local job-watch webhook": {
+      "main": [
+        [
+          {
+            "node": "Check postings and refresh sample",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kuala_Lumpur",
+    "saveDataSuccessExecution": "all",
+    "saveDataErrorExecution": "all"
+  },
+  "pinData": {}
+}

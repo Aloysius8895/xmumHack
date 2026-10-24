@@ -60,12 +60,15 @@ export class Quality
             frames++
             if(now - last >= 1000)
             {
-                const fps = frames * 1000 / (now - last)
+                const sampleMs = now - last
+                const fps = frames * 1000 / sampleMs
                 frames = 0
                 last = now
 
                 // Hidden tab or a long hitch (tab switch, shader compile): not a measure of the rendering
-                if(!document.hidden && fps > 5)
+                if(document.hidden || sampleMs > 2500)
+                    slowSeconds = 0
+                else
                     slowSeconds = fps < minimumFps ? slowSeconds + 1 : 0
 
                 if(slowSeconds >= slowSecondsToSwitch)

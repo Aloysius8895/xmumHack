@@ -1,0 +1,15 @@
+﻿period,frequency,country,series_id,source_id,metric,value,unit,source_count,status,simulated,source_url,eligible_for_project_career_skill_trends
+2026-04,monthly,MY,dosm_online_ads,dosm,online_job_offerings,225826,advertisements,,observed,False,https://www.dosm.gov.my/uploads/release-content/file_20260818075305.pdf,False
+2026-05,monthly,MY,dosm_online_ads,dosm,online_job_offerings,200730,advertisements,,observed,False,https://www.dosm.gov.my/uploads/release-content/file_20260818075305.pdf,False
+2026-06,monthly,MY,dosm_online_ads,dosm,online_job_offerings,128953,advertisements,,observed,False,https://www.dosm.gov.my/uploads/release-content/file_20260818075305.pdf,False
+2026-07,monthly,MY,dosm_online_ads,dosm,online_job_offerings,,advertisements,,not_obtained,False,https://www.dosm.gov.my/uploads/release-content/file_20260818075305.pdf,False
+2026-08,monthly,MY,dosm_online_ads,dosm,online_job_offerings,,advertisements,,not_obtained,False,https://www.dosm.gov.my/uploads/release-content/file_20260818075305.pdf,False
+2026-09,monthly,MY,dosm_online_ads,dosm,online_job_offerings,,advertisements,,not_obtained,False,https://www.dosm.gov.my/uploads/release-content/file_20260818075305.pdf,False
+2026-10,monthly,MY,dosm_online_ads,dosm,online_job_offerings,,advertisements,,not_obtained,False,https://www.dosm.gov.my/uploads/release-content/file_20260818075305.pdf,False
+2026-04,monthly,MY,techmap_new_postings,techmap,provider_new_job_postings,78942,advertisements,34,observed,False,https://jobdatafeeds.com/data/countries/my,False
+2026-05,monthly,MY,techmap_new_postings,techmap,provider_new_job_postings,59559,advertisements,32,observed,False,https://jobdatafeeds.com/data/countries/my,False
+2026-06,monthly,MY,techmap_new_postings,techmap,provider_new_job_postings,83284,advertisements,36,observed,False,https://jobdatafeeds.com/data/countries/my,False
+2026-07,monthly,MY,techmap_new_postings,techmap,provider_new_job_postings,91230,advertisements,50,observed,False,https://jobdatafeeds.com/data/countries/my,False
+2026-08,monthly,MY,techmap_new_postings,techmap,provider_new_job_postings,92610,advertisements,36,observed,False,https://jobdatafeeds.com/data/countries/my,False
+2026-09,monthly,MY,techmap_new_postings,techmap,provider_new_job_postings,48752,advertisements,36,observed,False,https://jobdatafeeds.com/data/countries/my,False
+2026-10,monthly,MY,techmap_new_postings,techmap,provider_new_job_postings,,advertisements,,not_obtained,False,https://jobdatafeeds.com/data/countries/my,False

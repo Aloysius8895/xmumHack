@@ -1,0 +1,32 @@
+{
+  "languages": {
+    "zh": {
+      "custom_skill_cards": 1,
+      "viewports": [
+        "1440x1000",
+        "390x844",
+        "320x568"
+      ]
+    },
+    "en": {
+      "custom_skill_cards": 1,
+      "viewports": [
+        "1440x1000",
+        "390x844",
+        "320x568"
+      ]
+    },
+    "ms": {
+      "custom_skill_cards": 1,
+      "viewports": [
+        "1440x1000",
+        "390x844",
+        "320x568"
+      ]
+    }
+  },
+  "page_errors": [],
+  "cached_switches": 3,
+  "isolated_fixture_no_player_save_writes": true,
+  "learning_progress_unchanged": true
+}

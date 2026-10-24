@@ -1,0 +1,56 @@
+{
+  "notice": "Disabled template. Replace URL and selectors after inspecting a real permitted target; not a validated job-site adapter.",
+  "source": {
+    "id": "company-careers",
+    "type": "browser",
+    "enabled": false,
+    "validated": false,
+    "allowOrigins": [
+      "https://careers.example.invalid"
+    ],
+    "startUrls": [
+      "https://careers.example.invalid/jobs"
+    ],
+    "readySelector": "[data-jobs-ready='true']",
+    "itemSelector": "[data-job-id]",
+    "emptySelector": "[data-no-jobs]",
+    "idAttribute": "data-job-id",
+    "fields": {
+      "title": {
+        "selector": "h2"
+      },
+      "company": {
+        "value": "REPLACE WITH ACTUAL COMPANY"
+      },
+      "country": {
+        "value": "MY"
+      },
+      "location": {
+        "selector": ".job-location"
+      },
+      "description": {
+        "selector": ".job-description"
+      },
+      "url": {
+        "selector": "a",
+        "attribute": "href"
+      },
+      "postedAt": {
+        "selector": "time",
+        "attribute": "datetime"
+      }
+    },
+    "detail": {
+      "readySelector": "[data-job-detail]",
+      "descriptionSelector": "[data-job-detail]"
+    },
+    "pagination": {
+      "mode": "button",
+      "nextSelector": "button[data-load-more]",
+      "maxSteps": 5,
+      "noNewRounds": 2
+    },
+    "endSelector": "[data-end-of-results]",
+    "timeoutMs": 30000
+  }
+}

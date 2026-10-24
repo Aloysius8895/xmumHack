@@ -65,12 +65,13 @@ export class CareerApi
             return
         }
         this.refreshAgain = false
-        this.refreshing = fetch('./api/state', { headers: { 'X-Career-Client': this.clientId }, cache: 'no-store' })
+        const language = getLang()
+        this.refreshing = fetch('./api/state', { headers: { 'X-Career-Client': this.clientId, 'X-Career-Lang': language }, cache: 'no-store' })
             .then((response) => response.ok ? response.json() : null)
             .then((payload) =>
             {
                 // A request of the tab started meanwhile: its answer may be newer, try again after it
-                if(this.busy > 0)
+                if(this.busy > 0 || getLang() !== language)
                     this.refreshAgain = true
                 else if(payload?.state)
                 {
@@ -94,7 +95,7 @@ export class CareerApi
         {
             const response = await fetch(`./api/${path}`, {
                 method,
-                headers: { 'X-Career-Client': this.clientId, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+                headers: { 'X-Career-Client': this.clientId, 'X-Career-Lang': getLang(), ...(body ? { 'Content-Type': 'application/json' } : {}) },
                 body: body ? JSON.stringify({ lang: getLang(), ...(this.demo ? { demo: true } : {}), ...body }) : undefined,
             })
             const payload = await response.json().catch(() => ({ error: 'generic' }))
@@ -120,10 +121,21 @@ export class CareerApi
     }
 
     load() { return this.request('GET', 'state') }
+    async sampleRequest(method,path)
+    {
+        const response=await fetch(`./api/market/sample/${path}`,{method,cache:'no-store',headers:{'X-Career-Client':this.clientId,...(method==='POST'?{'Content-Type':'application/json'}:{})},...(method==='POST'?{body:'{}'}:{})})
+        const payload=await response.json().catch(()=>({error:'crawler-request-failed'}))
+        if(!response.ok)throw Object.assign(new Error(payload.error),{code:payload.error})
+        return payload
+    }
+    startMarketSample() {return this.sampleRequest('POST','refresh')}
+    marketSampleStatus(runId) {return this.sampleRequest('GET',encodeURIComponent(runId))}
     setLang(lang) { return this.request('POST', 'lang', { lang }) }
     extractProfile(text, file) { return this.request('POST', 'profile/extract', { text, file }) }
     setSkills(skills) { return this.request('POST', 'profile/skills', { skills }) }
-    setTarget(careerId, mode, text, file, replace = false) { return this.request('POST', 'target', { careerId, mode, text, file, replace }) }
+    setTarget(careerId, mode, text, file, replace = false, sourceUrl = '') { return this.request('POST', 'target', { careerId, mode, text, file, replace, sourceUrl }) }
+    trackPosting(sourceUrl) { return this.request('POST', 'target/track', { sourceUrl }) }
+    refreshPosting(revision) { return this.request('POST', 'roadmap/refresh-posting', { revision }) }
     resolveTarget(choice) { return this.request('POST', 'target/resolve', { choice }) }
     generateCareer(query) { return this.request('POST', 'careers/generate', { query }) }
     generateRoadmap() { return this.request('POST', 'roadmap', {}) }

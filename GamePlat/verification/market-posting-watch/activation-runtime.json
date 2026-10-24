@@ -1,0 +1,151 @@
+{
+  "withoutAuth": {
+    "http": 403
+  },
+  "withAuth": {
+    "http": 200,
+    "watching": 0
+  },
+  "telegram": {
+    "apiOk": true,
+    "registeredToCurrentTunnel": true,
+    "usesOwnTriggerPath": true,
+    "pendingUpdates": 0,
+    "lastErrorPresent": false,
+    "ingressVerification": {
+      "unauthenticated": {
+        "http": 403
+      },
+      "authenticatedEmptyUpdate": {
+        "http": 200
+      }
+    }
+  },
+  "workflows": [
+    {
+      "id": "2dIWYl9AzvgByBAz",
+      "name": "Career platform: job market trends",
+      "active": false
+    },
+    {
+      "id": "5erFfpD0uZ1L719B",
+      "name": "CareerSphere: LinkedIn public market collection",
+      "active": true
+    },
+    {
+      "id": "0deMEMMmF77TExcY",
+      "name": "CareerSphere: yesterday learning digest (summary only)",
+      "active": true
+    },
+    {
+      "id": "1TbhadTZiXfdtnBR",
+      "name": "CareerSphere: Telegram learning reports (existing chatbot)",
+      "active": true
+    },
+    {
+      "id": "CSPostingWatch01",
+      "name": "CareerSphere: customised job posting watch",
+      "active": true
+    }
+  ],
+  "collection": {
+    "status": "success",
+    "source": "linkedin",
+    "requiresRapidApiKey": false,
+    "runId": "2026-10-24T04-36-55-863Z-95cf08",
+    "step": "finished",
+    "startedAt": "2026-10-24T04:36:55.864Z",
+    "finishedAt": "2026-10-24T04:42:53.130Z",
+    "error": null,
+    "summary": {
+      "postings": 462,
+      "usableDescriptions": 181,
+      "skillLinks": 815,
+      "source": "linkedin+indeed"
+    },
+    "logFile": "runs/2026-10-24T04-36-55-863Z-95cf08.log",
+    "collection": {
+      "runId": "20261024T043656Z",
+      "observations": 520,
+      "uniqueJobs": 402,
+      "usableDetails": 180,
+      "requestCount": 232,
+      "boundedSample": true
+    }
+  },
+  "digest": {
+    "executionId": 6,
+    "status": "success",
+    "result": "skipped-no-reports"
+  },
+  "verifiedAt": "2026-10-24T04:57:34.475Z",
+  "latestExecutions": [
+    {
+      "id": 7,
+      "workflowId": "1TbhadTZiXfdtnBR",
+      "status": "success"
+    },
+    {
+      "id": 6,
+      "workflowId": "0deMEMMmF77TExcY",
+      "status": "success"
+    },
+    {
+      "id": 5,
+      "workflowId": "0deMEMMmF77TExcY",
+      "status": "error"
+    },
+    {
+      "id": 4,
+      "workflowId": "CSPostingWatch01",
+      "status": "success"
+    }
+  ],
+  "triggerStatus": [
+    {
+      "workflowId": "1TbhadTZiXfdtnBR",
+      "status": "activated",
+      "kind": "persisted"
+    },
+    {
+      "workflowId": "5erFfpD0uZ1L719B",
+      "status": "activated",
+      "kind": "in-memory"
+    },
+    {
+      "workflowId": "5erFfpD0uZ1L719B",
+      "status": "activated",
+      "kind": "persisted"
+    },
+    {
+      "workflowId": "0deMEMMmF77TExcY",
+      "status": "activated",
+      "kind": "in-memory"
+    },
+    {
+      "workflowId": "0deMEMMmF77TExcY",
+      "status": "activated",
+      "kind": "persisted"
+    },
+    {
+      "workflowId": "CSPostingWatch01",
+      "status": "activated",
+      "kind": "persisted"
+    },
+    {
+      "workflowId": "CSPostingWatch01",
+      "status": "activated",
+      "kind": "in-memory"
+    },
+    {
+      "workflowId": "CSPostingWatch01",
+      "status": "activated",
+      "kind": "persisted"
+    }
+  ],
+  "tunnel": {
+    "origin": "https://specified-antique-issue-might.trycloudflare.com",
+    "health": 200,
+    "replacedPreviousTunnelAfterHTTP530": true
+  }
+}

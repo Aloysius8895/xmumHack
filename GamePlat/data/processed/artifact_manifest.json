@@ -1,0 +1,17 @@
+{
+  "excluded_jobs.csv": "ae6fe01da5883dc32ee3e3259e9d6490906aee1880a8ca80d68d5b8f8133ff3b",
+  "excluded_jobs.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+  "job_skills.csv": "f2f363453f9457e73c5957db4ac7f55e5142b1102df468b6663303dfdb74df3c",
+  "job_skills.json": "1ce7b39ba980bf3c2c9f297934dab60cbc5b73525cee8c92f9b5c9e2653b318a",
+  "job_sources.csv": "f5621bf92c11fc2f245f6642fb51977b708013ffe7fc3d29141d99619df975ff",
+  "job_sources.json": "0a8b26bc0af5723dac10559563bd32dee5d2a2fcbed2752daf9788f7b8f79c4e",
+  "jobs.csv": "7c86c1395150870e243292ec89aa5d1dec02cc18d05932602ae00834f15cfba9",
+  "jobs.json": "5b30620e7ec96192a440cbdf242908595c55df6d239e9705298edbe63d4c2dba",
+  "occupation_coverage.csv": "5d3a7358dc93bbd516d99311ed53ca4acee55af7790ca972412e7554e6420f82",
+  "occupation_coverage.json": "a503a190b8899aaf41eaab2e227defc3f6b1a437203c65b2da7c193f203d8928",
+  "quality_report.json": "ca4939eaa30006ebb532d4413c1543eee3273cebc0861ca52aab368fba78bc36",
+  "QUALITY_REPORT.md": "799b94f152139d0d4a9f4792ec1196a3e1b0ca373c5cbadde976f12e09a6d0ab",
+  "skill_demand_sample.csv": "acb8e3954db09fd441045d787a7459f24904aba13aadaf74753aab5d8d20f3ed",
+  "skill_demand_sample.json": "d7ca07524c5c41dd0413383e1f299da2a228099b46411f90231beafbf5de4d9f",
+  "verification.json": "ae645e69f05914004e072952e8a7136e1f51d0082dc3ae79718d513bfd15c6d8"
+}

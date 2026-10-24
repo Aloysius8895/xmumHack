@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-24T10:48:23.583614+00:00",
+  "source_url": "https://huggingface.co/datasets/scholarweave/Jobs-Dataset-v2",
+  "source_revision": "8e8bf159e315449f235c0ed2f814e76e14126395",
+  "source_license": "apache-2.0",
+  "files_scanned": 314,
+  "files_failed": [],
+  "artifact_sha256": {
+    "observations.json": "e9cf0234576b9d4aa72734ae8924ab9e8e064a6ad40bd9eb6ddb7b456539674a"
+  },
+  "monthly_known_ads": {
+    "2026-04": 0,
+    "2026-05": 0,
+    "2026-06": 0,
+    "2026-07": 1,
+    "2026-08": 2,
+    "2026-09": 1
+  },
+  "scope": "Known dated Malaysia FDE advertisements in public active and closed archives, not complete population totals. Missing matches do not establish zero demand.",
+  "deduplication": "Original apply URL, keeping earliest observed posted date within the requested history window."
+}

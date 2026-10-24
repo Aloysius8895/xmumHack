@@ -5,6 +5,7 @@
  * > log what you did and track preparation. Daily-report mastery growth is a separate, future feature.
  */
 import { DEFAULT_MAP, SKILLS, SKILL_IDS, allCareers, getCareer, localText, matchCareer, useCustom } from './careers.js'
+import { postingSkillLocalization } from './posting-skill-localization.js'
 import { SKILL_DETAILS } from './skill-details.js'
 import { expertOf } from './experts.js'
 import { friendCode, leaderboard } from './friends.js'
@@ -12,6 +13,9 @@ import { marketSnapshot, skillMarket, skillTrendOrReference } from './market-tre
 import { GOALS, PLATFORM_TARGETS, SKILL_TARGETS, SOURCE as SDG_SOURCE, TARGETS, TARGET_IDS, careerSdgs, contribution } from './sdg.js'
 import { loadMarket } from './store.js'
 import { trendsView } from './trends.js'
+import { collectedMarket } from './collected-market.js'
+import { crawlerStatus } from './crawler-market.js'
+import { withHistoricalMarket } from './historical-market.js'
 import { createHash } from 'node:crypto'
 
 export const RULES = {
@@ -154,6 +158,15 @@ export function adoptPostingSkills(save)
                 }
                 continue
             }
+            const localized = postingSkillLocalization(requirement)
+            const existing = save.customSkills?.[current]
+            if(existing && localized && existing.localizationVersion !== 1)
+            {
+                existing.name = localized.name
+                existing.detail.description = localized.description
+                existing.localizationVersion = 1
+                changed = true
+            }
             // Already a catalog skill, or a custom skill this save has
             if(!text || (current.startsWith('custom-') ? save.customSkills?.[current] : SKILLS[current]))
                 continue
@@ -163,12 +176,12 @@ export function adoptPostingSkills(save)
             // Only this save counts: the SKILLS registry may still hold another save's custom skills
             if(!save.customSkills[id])
             {
-                // The posting is in one language: the same words in all three
                 const name = text.slice(0, 60)
                 const description = String(requirement.note || text).slice(0, 300)
                 save.customSkills[id] = {
-                    name: { zh: name, en: name, ms: name },
-                    detail: { icon: 'compass', demand: 'medium', heat: 60, difficulty: 3, description: { zh: description, en: description, ms: description } },
+                    name: localized?.name ?? { zh: name, en: name, ms: name },
+                    detail: { icon: 'compass', demand: 'medium', heat: 60, difficulty: 3, description: localized?.description ?? { zh: description, en: description, ms: description } },
+                    ...(localized ? { localizationVersion: 1 } : {}),
                 }
                 changed = true
             }
@@ -499,12 +512,16 @@ export function setTaskDone(save, taskId, done)
 export function view(save, ai, documents = {})
 {
     const market = documents.market ?? loadMarket()
+    const collected = collectedMarket()
     const careers = allCareers().map((career) => ({
         id: career.id,
         name: career.name,
         summary: career.summary,
+        emerging: Boolean(career.emerging),
         color: career.color,
-        market: { ...career.market, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrReference(career.id, career.skills.map((skill) => skill.id), market) },
+        market: collected?.careers[career.id]
+            ? { ...career.market, heat: collected.careers[career.id].heat, trend: 'unknown', sample: true, snapshot: collected.careers[career.id], skills: collected.careers[career.id].skills }
+            : { ...career.market, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrReference(career.id, career.skills.map((skill) => skill.id), market) },
         effortMonths: career.effortMonths,
         pet: career.pet,
         affinity: affinityOf(save, career.id),
@@ -558,14 +575,15 @@ export function view(save, ai, documents = {})
         ai,
         rules: RULES,
         skillNames: SKILLS,
-        skillDetails: SKILL_DETAILS,
+        skillDetails: collected ? Object.fromEntries(Object.entries(SKILL_DETAILS).map(([id, detail]) => [id, { ...detail, heat: collected.skillMarket[id]?.share ?? null, sample: true }])) : SKILL_DETAILS,
         profile: save.profile,
         careers,
         map: { slots: mapSlots(save), replaceCandidate: replaceCandidate(save) },
         pending,
-        marketSkills: skillTrendOrReference(null, SKILL_IDS, market),
-        skillMarket: skillMarket(SKILL_IDS, market),
-        trends: trendsView(documents.trends),
+        marketSkills: collected?.skills ?? skillTrendOrReference(null, SKILL_IDS, market),
+        skillMarket: collected?.skillMarket ?? skillMarket(SKILL_IDS, market),
+        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus()}),
+        automation: save.automation ?? null,
         target: save.target,
         pet,
         roadmap,

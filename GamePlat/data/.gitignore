@@ -1,0 +1,3 @@
+# Local publication runs and intermediate staging generations.
+/runs/
+/derived/20*/

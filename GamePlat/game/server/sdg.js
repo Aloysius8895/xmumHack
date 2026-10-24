@@ -74,6 +74,10 @@ export const PLATFORM_TARGETS = [ '4.4', '8.5' ]
  * Career → targets, with why the job moves each one
  */
 export const CAREER_SDGS = {
+    'forward-deployed-engineer': [
+        { target: '9.5', why: name('把 AI 和软件研究转化为客户现场可用的生产系统，促进技术落地。', 'Turns AI and software research into production systems used by customers.', 'Menukar penyelidikan AI dan perisian kepada sistem pengeluaran yang digunakan pelanggan.') },
+        { target: '8.2', why: name('与用户共同改进业务流程，以可靠的系统集成提升生产力。', 'Works with users to improve workflows and productivity through reliable system integration.', 'Bekerjasama dengan pengguna untuk menambah baik aliran kerja dan produktiviti melalui integrasi sistem yang boleh dipercayai.') },
+    ],
     'data-analyst': [
         { target: '17.18', why: name('把杂乱的数据整理成可靠、及时的信息，供企业和公共部门决策。', 'Turns messy data into reliable, timely information for business and public decisions.', 'Menukar data bersepah kepada maklumat yang boleh dipercayai dan tepat pada masanya untuk keputusan.') },
         { target: '8.2', why: name('用数据找出流程的浪费，帮助企业提高生产力。', 'Finds waste in processes with data and helps companies raise productivity.', 'Mencari pembaziran proses dengan data dan membantu syarikat meningkatkan produktiviti.') },

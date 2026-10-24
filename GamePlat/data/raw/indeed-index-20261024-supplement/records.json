@@ -1,0 +1,282 @@
+{
+  "manifest": {
+    "schema_version": 1,
+    "source": "indeed",
+    "collected_at": "2026-10-24T03:39:31Z",
+    "retrieval_method": "public_search_index",
+    "live_verified": false,
+    "status": "partial_success",
+    "queries": [
+      "site:malaysia.indeed.com/viewjob \"auditor\"",
+      "site:malaysia.indeed.com/viewjob \"chef\""
+    ],
+    "unique_source_jobs": 12,
+    "description_policy": "Excerpts at most 24 words; no full descriptions; exclude from skill denominator."
+  },
+  "records": [
+    {
+      "source": "indeed",
+      "source_job_id": "1ca19342323a9060",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=1ca19342323a9060",
+      "title_raw": "Auditor/Senior Auditor",
+      "company_raw": "FedEx AMEA",
+      "location_raw": "Kuala Lumpur",
+      "employment_type": "Full-time",
+      "salary_min": null,
+      "salary_max": null,
+      "currency": null,
+      "salary_period": null,
+      "description_raw": null,
+      "excerpt_text": "Auditor: Performance of worldwide integrated financial, operational, compliance and information technology audits, as appropriate, and special projects. Professional qualification required Working as part of",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "dfcea41b22a63a4b",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=dfcea41b22a63a4b",
+      "title_raw": "Internal Auditor",
+      "company_raw": "Singer Malaysia",
+      "location_raw": "Petaling Jaya",
+      "employment_type": "Full-time",
+      "salary_min": 3000,
+      "salary_max": 4500,
+      "currency": "MYR",
+      "salary_period": "month",
+      "description_raw": null,
+      "excerpt_text": "Education: Candidate must possess at least a Diploma, Advanced/Higher/Graduate Diploma, Bachelor's Degree any fields. Experience: Minimum 2 years of working experience preferably in auditing.",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "e4eecfc867593519",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=e4eecfc867593519",
+      "title_raw": "INTERNAL AUDITOR",
+      "company_raw": "Centre Side Express Sdn Bhd",
+      "location_raw": "Klang",
+      "employment_type": "Full-time",
+      "salary_min": 2200,
+      "salary_max": 2500,
+      "currency": "MYR",
+      "salary_period": "month",
+      "description_raw": null,
+      "excerpt_text": "Job Responsibilities * Maintain, implement, and monitor the company's Quality Management System (QMS) in accordance with ISO 9001:2015 requirements. * Ensure company policies, procedures,",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "470c19f01c89887d",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=470c19f01c89887d",
+      "title_raw": "COMMIS CHEF (IMMEDIATE HIRING)",
+      "company_raw": "The BIG Group",
+      "location_raw": "Kuala Lumpur",
+      "employment_type": "Full-time",
+      "salary_min": 1800,
+      "salary_max": 2100,
+      "currency": "MYR",
+      "salary_period": "month",
+      "description_raw": null,
+      "excerpt_text": "DUTIES & RESPONSIBILITIES: * Assist Section Head to prepare daily ingredients and food items in the menu specifications. * Possess sound knowledge and skills",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "bf439cbffd752127",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=bf439cbffd752127",
+      "title_raw": "Auditor",
+      "company_raw": "BASF",
+      "location_raw": "Kuala Lumpur",
+      "employment_type": "Permanent, Full-time",
+      "salary_min": null,
+      "salary_max": null,
+      "currency": null,
+      "salary_period": null,
+      "description_raw": null,
+      "excerpt_text": "LOCATION Kuala Lumpur, MYS COMPANY BASF Asia-Pacific Service Centre Sdn. Bhd. JOB FIELD Finance, Controlling & Audit JOB TYPE Permanent JOB ID 143961 FLEXIBLE",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "1c8e29f5c6c35734",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=1c8e29f5c6c35734",
+      "title_raw": "DEMI CHEF (IMMEDIATE HIRING)",
+      "company_raw": "The BIG Group",
+      "location_raw": "Ipoh",
+      "employment_type": "Permanent, Full-time",
+      "salary_min": 2100,
+      "salary_max": 2500,
+      "currency": "MYR",
+      "salary_period": "month",
+      "description_raw": null,
+      "excerpt_text": "DUTIES & RESPONSIBILITIES: * Ability to prepare different foods required in the different Sections under the supervision of the Chef de Partie or Chef",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "17dc12c2a10104d3",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=17dc12c2a10104d3",
+      "title_raw": "Semi-Senior Auditor",
+      "company_raw": "CAS MALAYSIA PLT",
+      "location_raw": "Puchong",
+      "employment_type": "Full-time",
+      "salary_min": 3600,
+      "salary_max": 4700,
+      "currency": "MYR",
+      "salary_period": "month",
+      "description_raw": null,
+      "excerpt_text": "Key Responsibilities * Assist in the preparation of financial statements and audit reports. * Identify and communicate audit issues and findings to the Senior",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "70ee157541126a7c",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=70ee157541126a7c",
+      "title_raw": "CHEF DE PARTIE (KUALA LUMPUR)",
+      "company_raw": "The BIG Group",
+      "location_raw": "Kuala Lumpur",
+      "employment_type": "Permanent, Full-time",
+      "salary_min": 2500,
+      "salary_max": 3000,
+      "currency": "MYR",
+      "salary_period": "month",
+      "description_raw": null,
+      "excerpt_text": "JOB REQUIREMENTS: * Min Qualification: Certificate in culinary/apprenticeship/training/ mid-level management/Food Safety Handling (HACCP)/Basic Food Hygiene * Min Experience at least 4 years working in",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "29b4e85b31801d3b",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=29b4e85b31801d3b",
+      "title_raw": "Chef",
+      "company_raw": "DKM Kids Concept Trading Sdn. Bhd.",
+      "location_raw": "Petaling Jaya",
+      "employment_type": "Permanent, Full-time",
+      "salary_min": 3500,
+      "salary_max": 4500,
+      "currency": "MYR",
+      "salary_period": "month",
+      "description_raw": null,
+      "excerpt_text": "Job Description: Our cafe is looking to hire a chef ASAP. This is an excellent position for someone who is looking to step up",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "44fe40e85394f0e1",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=44fe40e85394f0e1",
+      "title_raw": "Internal Auditor",
+      "company_raw": "Solarvest",
+      "location_raw": "Petaling Jaya",
+      "employment_type": "Contract",
+      "salary_min": null,
+      "salary_max": null,
+      "currency": null,
+      "salary_period": null,
+      "description_raw": null,
+      "excerpt_text": "We're looking for a hands-on Internal Auditor to strengthen governance and controls across our operations, with emphasis on operational process audits. The role will",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "e482ad3dd63ffe92",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=e482ad3dd63ffe92",
+      "title_raw": "Kitchen Leader / Head Cook / Chef",
+      "company_raw": "MFAS Resources",
+      "location_raw": "Taman Tun Dr Ismail",
+      "employment_type": "Permanent, Full-time",
+      "salary_min": 2500,
+      "salary_max": 3200,
+      "currency": "MYR",
+      "salary_period": "month",
+      "description_raw": null,
+      "excerpt_text": "We are looking for qualified Kitchen Leader / Head Cook / Chef to join our kitchen in Taman Tun Dr Ismail, KL. Requirement: *",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    },
+    {
+      "source": "indeed",
+      "source_job_id": "45ac5e8b1fd93158",
+      "job_url": "https://malaysia.indeed.com/viewjob?jk=45ac5e8b1fd93158",
+      "title_raw": "Auditor",
+      "company_raw": "Fuku",
+      "location_raw": "Johor Bahru",
+      "employment_type": "Full-time",
+      "salary_min": null,
+      "salary_max": null,
+      "currency": null,
+      "salary_period": null,
+      "description_raw": null,
+      "excerpt_text": "Responsibilities: * Perform audit procedures during fieldwork under the guidance of senior auditors, ensuring compliance with relevant accounting and auditing standards. * Conduct analytical",
+      "retrieval_method": "search_index",
+      "live_verified": false,
+      "discovery_queries": [
+        "site:malaysia.indeed.com/viewjob \"auditor\"",
+        "site:malaysia.indeed.com/viewjob \"chef\""
+      ],
+      "collected_at": "2026-10-24T03:39:31Z"
+    }
+  ]
+}

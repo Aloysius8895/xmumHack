@@ -1,0 +1,55 @@
+[
+  {
+    "sourceId": "DEMO-001",
+    "title": "Frontend Developer",
+    "company": "DEMO Example Tech",
+    "location": "Kuala Lumpur",
+    "country": "MY",
+    "description": "DEMO ONLY. Build with React.js, JavaScript, TypeScript and Node.js.",
+    "url": "https://example.invalid/jobs/DEMO-001"
+  },
+  {
+    "sourceId": "DEMO-001",
+    "title": "Frontend Developer",
+    "company": "DEMO Example Tech",
+    "location": "Kuala Lumpur",
+    "country": "MY",
+    "description": "DEMO ONLY. Build with React.js, JavaScript, TypeScript and Node.js.",
+    "url": "https://example.invalid/jobs/DEMO-001?utm_source=duplicate"
+  },
+  {
+    "sourceId": "DEMO-002",
+    "title": "Data Analyst",
+    "company": "DEMO Example Analytics",
+    "location": "Penang",
+    "country": "MY",
+    "description": "DEMO ONLY. SQL, Python, Excel and Power BI.",
+    "url": "https://example.invalid/jobs/DEMO-002"
+  },
+  {
+    "sourceId": "DEMO-003",
+    "title": "Machine Learning Engineer",
+    "company": "DEMO Example AI",
+    "location": "Selangor",
+    "country": "MY",
+    "description": "DEMO ONLY. Python, PyTorch and SQL.",
+    "url": "https://example.invalid/jobs/DEMO-003"
+  },
+  {
+    "sourceId": "DEMO-004",
+    "title": "Forward Deployed Engineer",
+    "company": "DEMO Example AI",
+    "location": "Kuala Lumpur",
+    "country": "MY",
+    "description": "DEMO ONLY. Python and TypeScript.",
+    "url": "https://example.invalid/jobs/DEMO-004"
+  },
+  {
+    "sourceId": "DEMO-005",
+    "title": "Frontend Developer",
+    "company": "DEMO Outside Country",
+    "location": "Singapore",
+    "country": "SG",
+    "description": "DEMO ONLY. React."
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "canonical_id": "https://genesys.wd1.myworkdayjobs.com/genesys/job/Senior-Principal-Forward-Deployed-Engineer_JR111757",
+    "career_id": "forward-deployed-engineer",
+    "title": "Senior Principal Forward Deployed Engineer",
+    "country": "MY",
+    "company_id": 43593,
+    "posted_date": "2026-07-15",
+    "period": "2026-07",
+    "url": "https://genesys.wd1.myworkdayjobs.com/genesys/job/Senior-Principal-Forward-Deployed-Engineer_JR111757",
+    "source": "OpenJobData",
+    "source_file": "data/closed/minimal/date=2026-07-22/2026-07-22.parquet",
+    "source_revision": "8e8bf159e315449f235c0ed2f814e76e14126395",
+    "mock": false
+  },
+  {
+    "canonical_id": "https://accenture.wd103.myworkdayjobs.com/avanadecareers/job/Forward-Deployed-Engineer-Lead_R00353206",
+    "career_id": "forward-deployed-engineer",
+    "title": "Forward Deployed Engineer Lead",
+    "country": "MY",
+    "company_id": 9126,
+    "posted_date": "2026-08-28",
+    "period": "2026-08",
+    "url": "https://accenture.wd103.myworkdayjobs.com/avanadecareers/job/Forward-Deployed-Engineer-Lead_R00353206",
+    "source": "OpenJobData",
+    "source_file": "data/closed/minimal/date=2026-09-04/2026-09-04.parquet",
+    "source_revision": "8e8bf159e315449f235c0ed2f814e76e14126395",
+    "mock": false
+  },
+  {
+    "canonical_id": "https://accenture.wd103.myworkdayjobs.com/avanadecareers/job/Forward-Deployed-Engineer_R00353188",
+    "career_id": "forward-deployed-engineer",
+    "title": "Forward Deployed Engineer",
+    "country": "MY",
+    "company_id": 9126,
+    "posted_date": "2026-08-28",
+    "period": "2026-08",
+    "url": "https://accenture.wd103.myworkdayjobs.com/avanadecareers/job/Forward-Deployed-Engineer_R00353188",
+    "source": "OpenJobData",
+    "source_file": "data/closed/minimal/date=2026-09-25/2026-09-25.parquet",
+    "source_revision": "8e8bf159e315449f235c0ed2f814e76e14126395",
+    "mock": false
+  },
+  {
+    "canonical_id": "https://fa-exhj-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/2299",
+    "career_id": "forward-deployed-engineer",
+    "title": "Forward-Deployed Software Engineer",
+    "country": "MY",
+    "company_id": 115944,
+    "posted_date": "2026-09-29",
+    "period": "2026-09",
+    "url": "https://fa-exhj-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/job/2299",
+    "source": "OpenJobData",
+    "source_file": "data/active/minimal/current/shard_0053.parquet",
+    "source_revision": "8e8bf159e315449f235c0ed2f814e76e14126395",
+    "mock": false
+  }
+]

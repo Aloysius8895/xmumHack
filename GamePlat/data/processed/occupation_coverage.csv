@@ -1,0 +1,16 @@
+﻿occupation_id,occupation_name,postings,companies,usable_descriptions,coverage_status
+auditor,Auditor,29,28,13,sample_available
+backend-developer,Backend Developer,21,18,11,sample_available
+chef,Chef,44,26,14,sample_available
+civil-engineer,Civil Engineer,31,25,8,sample_available
+data-analyst,Data Analyst,30,25,14,sample_available
+data-scientist,Data Scientist,31,28,14,sample_available
+doctor,Doctor,15,13,7,sample_available
+forward-deployed-engineer,FDE (Forward Deployed Engineer),6,5,5,low_sample
+frontend-developer,Frontend Developer,23,18,12,sample_available
+lawyer,Lawyer,31,24,13,sample_available
+ml-engineer,AI / ML Engineer,41,34,20,sample_available
+product-manager,Product Manager,40,33,14,sample_available
+teacher,Teacher,27,19,14,sample_available
+ui-ux-designer,UI/UX Designer,26,24,13,sample_available
+,Pending classification,169,127,79,sample_available

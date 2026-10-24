@@ -18,6 +18,13 @@ import { telegramExpert, expertReceipt } from './telegram-expert.js'
 import * as store from './store.js'
 import * as live from './live.js'
 import { createHash } from 'node:crypto'
+import { collectedMarket, watchCollectedMarket } from './collected-market.js'
+import { attachPostingWatch, checkPostings, acceptPostingRevision, PostingWatchError } from './posting-watch.js'
+import { marketCollector, CollectionError } from './market-collection.js'
+import { receiveCrawler, CrawlerError } from './crawler-ingestion.js'
+import { crawlerStatus } from './crawler-market.js'
+import { sampleRefresh, RefreshError } from './crawler-refresh.js'
+import { localizePostingSkills } from './posting-skill-localization.js'
 
 const MAX_BODY = 15 * 1024 * 1024 // base64 of a 10 MB file
 const MAX_FILE = 10 * 1024 * 1024
@@ -97,6 +104,11 @@ function text(value, max = 8000)
 function lang(save, body)
 {
     return LANGS.includes(body.lang) ? body.lang : save.lang
+}
+
+function displayLanguage(save, request, body)
+{
+    return lang(save, { lang: LANGS.includes(body.lang) ? body.lang : request.headers['x-career-lang'] })
 }
 
 function mytDate()
@@ -191,12 +203,22 @@ const routes = {
     {
         return { ok: true }
     },
+    'GET /api/integrations/market/collection': async () => marketCollector.status(),
 
     'POST /api/lang': async (save, body) =>
     {
         if(!LANGS.includes(body.lang))
             throw new HttpError(400, 'bad-lang')
         save.lang = body.lang
+        try
+        {
+            return await localizePostingSkills(save, features.translatePostingSkills)
+        }
+        catch
+        {
+            // Language selection still works if translation is offline; a later selection retries the repair.
+            return { translatedSkills: 0, skillTranslationPending: true }
+        }
     },
 
     'POST /api/profile/extract': async (save, body) =>
@@ -236,6 +258,8 @@ const routes = {
                 throw new HttpError(400, 'empty-posting')
             const result = await features.analyzePosting({ text: text(body.text, 30000), file, careerId: body.careerId, profile: save.profile, lang: lang(save, body) })
             posting = { ...result, sourceName: file?.name ?? null }
+            const sourceUrl = text(body.sourceUrl, 2000).trim()
+            if(sourceUrl) posting = attachPostingWatch(posting, sourceUrl)
 
             if(result.suggestedCareerId !== body.careerId)
             {
@@ -283,9 +307,47 @@ const routes = {
     {
         if(!save.target)
             throw new HttpError(409, 'no-target')
+        if(save.target.posting?.monitor?.requiresRegeneration)
+            throw new HttpError(409, 'posting-changed-regenerate')
         const plan = await features.generateRoadmap({ target: save.target, profile: save.profile, gaps: game.gapsFor(save), lang: lang(save, body) })
         save.roadmap = game.buildRoadmap(plan)
     },
+
+    'POST /api/target/track': async (save, body) =>
+    {
+        if(save.target?.mode !== 'customise' || !save.target.posting) throw new HttpError(409, 'no-custom-posting')
+        save.target.posting = attachPostingWatch(save.target.posting, text(body.sourceUrl, 2000).trim())
+        return { tracking: true }
+    },
+
+    'POST /api/roadmap/refresh-posting': async (save, body) =>
+    {
+        const current = save.target?.posting
+        const monitor = current?.monitor
+        if(!monitor?.pending || !monitor.requiresRegeneration) throw new HttpError(409, 'no-posting-change')
+        if(body.revision !== monitor.pending.hash) throw new HttpError(409, 'posting-revision-stale')
+        const updated = await features.analyzePosting({ text: `${monitor.pending.title}\n${monitor.pending.company ?? ''}\n${monitor.pending.description}`, file: null,
+            careerId: save.target.careerId, profile: save.profile, lang: lang(save, body) })
+        const next = structuredClone(save)
+        next.target.posting = { ...updated, sourceName: current.sourceName, sourceUrl: current.sourceUrl, monitor: structuredClone(monitor) }
+        game.adoptPostingSkills(next)
+        const plan = await features.generateRoadmap({ target: next.target, profile: next.profile, gaps: game.gapsFor(next), lang: lang(save, body) })
+        next.roadmap = game.buildRoadmap(plan)
+        acceptPostingRevision(next.target.posting)
+        Object.assign(save, next)
+        return { regenerated: true }
+    },
+
+    'POST /api/integrations/jobs/check': async (save) =>
+    {
+        const result = await checkPostings(save)
+        const market = collectedMarket()
+        return { ...result, market: market ? { source: market.source, collectedAt: market.collectedAt, postings: market.postings, sample: true } : null }
+    },
+
+    'GET /api/integrations/jobs/status': async (save) => ({ ...save.automation?.postingWatch,
+        targets: [save.target, ...Object.values(save.careers ?? {}).map(item => item.target)].filter(Boolean).map(target => ({ careerId: target.careerId,
+            tracking: Boolean(target.posting?.monitor), status: target.posting?.monitor?.status ?? 'missing_source_url', lastCheckedAt: target.posting?.monitor?.lastCheckedAt ?? null })) }),
 
     // A career mentor NPC answers the player's own question as a professional of that field, or hands over to the
     // field's distilled industry elite (features.askMentor). The game dialogue uses the streamed version (streams below)
@@ -456,9 +518,70 @@ async function stream(request, response, route)
  */
 export async function handle(request, response)
 {
+    watchCollectedMarket()
     const url = new URL(request.url, 'http://localhost')
     if(!url.pathname.startsWith('/api/'))
         return false
+
+    // Collection does not mutate player saves. Keep its multi-minute work outside the player transaction queue.
+    const sampleRun=/^\/api\/market\/sample\/([\w-]{1,100})$/.exec(url.pathname)
+    if((request.method==='POST'&&url.pathname==='/api/market/sample/refresh')||(request.method==='GET'&&sampleRun))
+    {
+        try
+        {
+            const origin=request.headers.origin
+            if(origin&&new URL(origin).host!==request.headers.host)throw new HttpError(403,'cross-origin-refresh')
+            if(request.method==='POST')
+            {
+                const body=await readBody(request)
+                if(!body||Array.isArray(body)||Object.keys(body).some(key=>!['lang','demo'].includes(key)))throw new HttpError(400,'refresh-body-must-be-empty')
+                send(response,202,await sampleRefresh.start())
+            }
+            else send(response,200,await sampleRefresh.poll(sampleRun[1]))
+        }
+        catch(error)
+        {
+            send(response,error instanceof RefreshError||error instanceof HttpError?error.status:500,
+                {error:error instanceof RefreshError||error instanceof HttpError?error.code:'crawler-refresh-failed'})
+        }
+        return true
+    }
+
+    if(url.pathname==='/api/integrations/crawler' && ['POST','GET'].includes(request.method))
+    {
+        try
+        {
+            integrations.authorize(request)
+            const result=request.method==='GET'?crawlerStatus():receiveCrawler(await readBody(request),request.headers['idempotency-key'])
+            if(request.method==='POST'&&!result.duplicate) live.changed()
+            send(response,200,result)
+        }
+        catch(error)
+        {
+            send(response,error instanceof CrawlerError||error instanceof IntegrationError||error instanceof HttpError?error.status:500,
+                {error:error instanceof CrawlerError||error instanceof IntegrationError||error instanceof HttpError?error.code:'crawler-ingestion-failed'})
+        }
+        return true
+    }
+
+    if(request.method === 'POST' && url.pathname === '/api/integrations/market/collect')
+    {
+        try
+        {
+            integrations.authorize(request)
+            const body = await readBody(request)
+            if(!body || Array.isArray(body) || Object.keys(body).length) throw new HttpError(400, 'collection-body-must-be-empty')
+            const result = await marketCollector.run()
+            live.changed()
+            send(response, 200, result)
+        }
+        catch(error)
+        {
+            send(response, error instanceof HttpError || error instanceof IntegrationError ? error.status : 502,
+                { error: error instanceof CollectionError || error instanceof IntegrationError || error instanceof HttpError ? error.code : 'collection-failed' })
+        }
+        return true
+    }
 
     // The web client listens here for changes made elsewhere (live.js)
     if(request.method === 'GET' && url.pathname === '/api/events')
@@ -495,16 +618,19 @@ export async function handle(request, response)
             if(url.pathname === '/api/reset')
             {
                 const save = store.createSave()
+                save.lang = displayLanguage(loaded.state, request, body)
                 useCustom(save)
                 const result = { reset: true }
                 if(persistence.cloudEnabled())
                     await persistence.commitSave(save, loaded.version, 'save', { result })
                 else
-                    store.reset()
+                    store.save(save)
                 return { result, save }
             }
 
             const save = loaded.state
+            if(!integration && request.method === 'POST')
+                save.lang = displayLanguage(save, request, body)
             useCustom(save)
             // Postings customised before their "other" requirements became pet skills
             game.adoptPostingSkills(save)
@@ -538,11 +664,17 @@ export async function handle(request, response)
                 persistence.loadDocument('market'),
                 persistence.loadDocument('trends'),
             ])
-            send(response, 200, { ...payload.result, state: game.view(payload.save, ai.status(), { market: market.payload, trends: trends.payload }) })
+            const displaySave = { ...payload.save, lang: displayLanguage(payload.save, request, body) }
+            send(response, 200, { ...payload.result, state: game.view(displaySave, ai.status(), { market: market.payload, trends: trends.payload }) })
         }
     }
     catch(error)
     {
+        if(error instanceof PostingWatchError)
+        {
+            send(response, 400, { error: error.code })
+            return true
+        }
         if(error instanceof HttpError || error instanceof IntegrationError)
             send(response, error.status, { error: error.code })
         else if(error instanceof AiError)

@@ -2,7 +2,7 @@
 
 使用本机 Blender 5.2.2 LTS 程序化制作，参考用户提供的同一座岛的六张视图重新规划。此版本交付可编辑地形与道路设施。
 
-按用户要求读取 `skills/3D_model/README.md` 及其 Machine、Anatomy、Hairline 说明。当前在 Blender 工作流中采用 Machine 的比例、材质、部件衔接和多角度检查标准；使用 Blender Python 建模与渲染，没有运行 Machine 的网页引擎。Anatomy、Hairline 对应的网页说明图不在本轮 Blender 资产交付范围内，未生成。
+开发阶段参考了 Machine、Anatomy、Hairline 的说明，并在 Blender 工作流中采用比例、材质、部件衔接和多角度检查标准；实际使用 Blender Python 建模与渲染。开发参考库已在最终交付清理中移出项目，本目录中的 Blender 工程、模型和验证资料保留。Anatomy、Hairline 对应的网页说明图不在本轮 Blender 资产交付范围内，未生成。
 
 ## 文件
 

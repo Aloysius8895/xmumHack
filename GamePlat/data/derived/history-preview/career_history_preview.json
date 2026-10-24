@@ -1,0 +1,1000 @@
+{
+  "generatedAt": "2026-10-24T10:54:33.699Z",
+  "authorizationDate": "2026-10-24",
+  "purpose": "User-authorized trend preview; mock history is not measured recruitment data.",
+  "visibleMockLabel": false,
+  "method": "seeded-career-profile-v1",
+  "periods": [
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09",
+    "2026-10"
+  ],
+  "mockCells": 81,
+  "observedCells": 14,
+  "archivedCells": 3,
+  "sourceCollectedAt": "2026-10-24T10:48:35.624498Z",
+  "excludedFromGrowthAndSkills": true,
+  "rows": [
+    {
+      "period": "2026-04",
+      "career_id": "data-analyst",
+      "career_name": "数据分析师",
+      "value": 20,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 30
+    },
+    {
+      "period": "2026-05",
+      "career_id": "data-analyst",
+      "career_name": "数据分析师",
+      "value": 20,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 30
+    },
+    {
+      "period": "2026-06",
+      "career_id": "data-analyst",
+      "career_name": "数据分析师",
+      "value": 23,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 30
+    },
+    {
+      "period": "2026-07",
+      "career_id": "data-analyst",
+      "career_name": "数据分析师",
+      "value": 26,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 30
+    },
+    {
+      "period": "2026-08",
+      "career_id": "data-analyst",
+      "career_name": "数据分析师",
+      "value": 26,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 30
+    },
+    {
+      "period": "2026-09",
+      "career_id": "data-analyst",
+      "career_name": "数据分析师",
+      "value": 26,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 30
+    },
+    {
+      "period": "2026-10",
+      "career_id": "data-analyst",
+      "career_name": "数据分析师",
+      "value": 30,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 30
+    },
+    {
+      "period": "2026-04",
+      "career_id": "frontend-developer",
+      "career_name": "前端工程师",
+      "value": 18,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 23
+    },
+    {
+      "period": "2026-05",
+      "career_id": "frontend-developer",
+      "career_name": "前端工程师",
+      "value": 18,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 23
+    },
+    {
+      "period": "2026-06",
+      "career_id": "frontend-developer",
+      "career_name": "前端工程师",
+      "value": 20,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 23
+    },
+    {
+      "period": "2026-07",
+      "career_id": "frontend-developer",
+      "career_name": "前端工程师",
+      "value": 21,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 23
+    },
+    {
+      "period": "2026-08",
+      "career_id": "frontend-developer",
+      "career_name": "前端工程师",
+      "value": 20,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 23
+    },
+    {
+      "period": "2026-09",
+      "career_id": "frontend-developer",
+      "career_name": "前端工程师",
+      "value": 20,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 23
+    },
+    {
+      "period": "2026-10",
+      "career_id": "frontend-developer",
+      "career_name": "前端工程师",
+      "value": 23,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 23
+    },
+    {
+      "period": "2026-04",
+      "career_id": "backend-developer",
+      "career_name": "后端工程师",
+      "value": 14,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 21
+    },
+    {
+      "period": "2026-05",
+      "career_id": "backend-developer",
+      "career_name": "后端工程师",
+      "value": 16,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 21
+    },
+    {
+      "period": "2026-06",
+      "career_id": "backend-developer",
+      "career_name": "后端工程师",
+      "value": 16,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 21
+    },
+    {
+      "period": "2026-07",
+      "career_id": "backend-developer",
+      "career_name": "后端工程师",
+      "value": 16,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 21
+    },
+    {
+      "period": "2026-08",
+      "career_id": "backend-developer",
+      "career_name": "后端工程师",
+      "value": 19,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 21
+    },
+    {
+      "period": "2026-09",
+      "career_id": "backend-developer",
+      "career_name": "后端工程师",
+      "value": 21,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 21
+    },
+    {
+      "period": "2026-10",
+      "career_id": "backend-developer",
+      "career_name": "后端工程师",
+      "value": 21,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 21
+    },
+    {
+      "period": "2026-04",
+      "career_id": "ui-ux-designer",
+      "career_name": "UI/UX 设计师",
+      "value": 30,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 26
+    },
+    {
+      "period": "2026-05",
+      "career_id": "ui-ux-designer",
+      "career_name": "UI/UX 设计师",
+      "value": 31,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 26
+    },
+    {
+      "period": "2026-06",
+      "career_id": "ui-ux-designer",
+      "career_name": "UI/UX 设计师",
+      "value": 31,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 26
+    },
+    {
+      "period": "2026-07",
+      "career_id": "ui-ux-designer",
+      "career_name": "UI/UX 设计师",
+      "value": 28,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 26
+    },
+    {
+      "period": "2026-08",
+      "career_id": "ui-ux-designer",
+      "career_name": "UI/UX 设计师",
+      "value": 25,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 26
+    },
+    {
+      "period": "2026-09",
+      "career_id": "ui-ux-designer",
+      "career_name": "UI/UX 设计师",
+      "value": 26,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 26
+    },
+    {
+      "period": "2026-10",
+      "career_id": "ui-ux-designer",
+      "career_name": "UI/UX 设计师",
+      "value": 26,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 26
+    },
+    {
+      "period": "2026-04",
+      "career_id": "ml-engineer",
+      "career_name": "AI / 机器学习工程师",
+      "value": 17,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 41
+    },
+    {
+      "period": "2026-05",
+      "career_id": "ml-engineer",
+      "career_name": "AI / 机器学习工程师",
+      "value": 21,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 41
+    },
+    {
+      "period": "2026-06",
+      "career_id": "ml-engineer",
+      "career_name": "AI / 机器学习工程师",
+      "value": 23,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 41
+    },
+    {
+      "period": "2026-07",
+      "career_id": "ml-engineer",
+      "career_name": "AI / 机器学习工程师",
+      "value": 25,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 41
+    },
+    {
+      "period": "2026-08",
+      "career_id": "ml-engineer",
+      "career_name": "AI / 机器学习工程师",
+      "value": 31,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 41
+    },
+    {
+      "period": "2026-09",
+      "career_id": "ml-engineer",
+      "career_name": "AI / 机器学习工程师",
+      "value": 38,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 41
+    },
+    {
+      "period": "2026-10",
+      "career_id": "ml-engineer",
+      "career_name": "AI / 机器学习工程师",
+      "value": 41,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 41
+    },
+    {
+      "period": "2026-04",
+      "career_id": "product-manager",
+      "career_name": "产品经理",
+      "value": 27,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 40
+    },
+    {
+      "period": "2026-05",
+      "career_id": "product-manager",
+      "career_name": "产品经理",
+      "value": 28,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 40
+    },
+    {
+      "period": "2026-06",
+      "career_id": "product-manager",
+      "career_name": "产品经理",
+      "value": 32,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 40
+    },
+    {
+      "period": "2026-07",
+      "career_id": "product-manager",
+      "career_name": "产品经理",
+      "value": 35,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 40
+    },
+    {
+      "period": "2026-08",
+      "career_id": "product-manager",
+      "career_name": "产品经理",
+      "value": 34,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 40
+    },
+    {
+      "period": "2026-09",
+      "career_id": "product-manager",
+      "career_name": "产品经理",
+      "value": 35,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 40
+    },
+    {
+      "period": "2026-10",
+      "career_id": "product-manager",
+      "career_name": "产品经理",
+      "value": 40,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 40
+    },
+    {
+      "period": "2026-04",
+      "career_id": "forward-deployed-engineer",
+      "career_name": "FDE（前线部署工程师）",
+      "value": 2,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 6
+    },
+    {
+      "period": "2026-05",
+      "career_id": "forward-deployed-engineer",
+      "career_name": "FDE（前线部署工程师）",
+      "value": 2,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 6
+    },
+    {
+      "period": "2026-06",
+      "career_id": "forward-deployed-engineer",
+      "career_name": "FDE（前线部署工程师）",
+      "value": 3,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 6
+    },
+    {
+      "period": "2026-07",
+      "career_id": "forward-deployed-engineer",
+      "career_name": "FDE（前线部署工程师）",
+      "value": 1,
+      "mock": false,
+      "origin": "archived",
+      "anchor_period": "2026-07"
+    },
+    {
+      "period": "2026-08",
+      "career_id": "forward-deployed-engineer",
+      "career_name": "FDE（前线部署工程师）",
+      "value": 2,
+      "mock": false,
+      "origin": "archived",
+      "anchor_period": "2026-08"
+    },
+    {
+      "period": "2026-09",
+      "career_id": "forward-deployed-engineer",
+      "career_name": "FDE（前线部署工程师）",
+      "value": 1,
+      "mock": false,
+      "origin": "archived",
+      "anchor_period": "2026-09"
+    },
+    {
+      "period": "2026-10",
+      "career_id": "forward-deployed-engineer",
+      "career_name": "FDE（前线部署工程师）",
+      "value": 6,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 6
+    },
+    {
+      "period": "2026-04",
+      "career_id": "data-scientist",
+      "career_name": "数据科学家",
+      "value": 16,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-05",
+      "career_id": "data-scientist",
+      "career_name": "数据科学家",
+      "value": 19,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-06",
+      "career_id": "data-scientist",
+      "career_name": "数据科学家",
+      "value": 20,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-07",
+      "career_id": "data-scientist",
+      "career_name": "数据科学家",
+      "value": 21,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-08",
+      "career_id": "data-scientist",
+      "career_name": "数据科学家",
+      "value": 26,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-09",
+      "career_id": "data-scientist",
+      "career_name": "数据科学家",
+      "value": 30,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-10",
+      "career_id": "data-scientist",
+      "career_name": "数据科学家",
+      "value": 31,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-04",
+      "career_id": "auditor",
+      "career_name": "审计师",
+      "value": 38,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 29
+    },
+    {
+      "period": "2026-05",
+      "career_id": "auditor",
+      "career_name": "审计师",
+      "value": 34,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 29
+    },
+    {
+      "period": "2026-06",
+      "career_id": "auditor",
+      "career_name": "审计师",
+      "value": 32,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 29
+    },
+    {
+      "period": "2026-07",
+      "career_id": "auditor",
+      "career_name": "审计师",
+      "value": 34,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 29
+    },
+    {
+      "period": "2026-08",
+      "career_id": "auditor",
+      "career_name": "审计师",
+      "value": 34,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 29
+    },
+    {
+      "period": "2026-09",
+      "career_id": "auditor",
+      "career_name": "审计师",
+      "value": 31,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 29
+    },
+    {
+      "period": "2026-10",
+      "career_id": "auditor",
+      "career_name": "审计师",
+      "value": 29,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 29
+    },
+    {
+      "period": "2026-04",
+      "career_id": "lawyer",
+      "career_name": "律师",
+      "value": 24,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-05",
+      "career_id": "lawyer",
+      "career_name": "律师",
+      "value": 27,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-06",
+      "career_id": "lawyer",
+      "career_name": "律师",
+      "value": 29,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-07",
+      "career_id": "lawyer",
+      "career_name": "律师",
+      "value": 27,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-08",
+      "career_id": "lawyer",
+      "career_name": "律师",
+      "value": 26,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-09",
+      "career_id": "lawyer",
+      "career_name": "律师",
+      "value": 29,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-10",
+      "career_id": "lawyer",
+      "career_name": "律师",
+      "value": 31,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-04",
+      "career_id": "teacher",
+      "career_name": "教师",
+      "value": 24,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 27
+    },
+    {
+      "period": "2026-05",
+      "career_id": "teacher",
+      "career_name": "教师",
+      "value": 23,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 27
+    },
+    {
+      "period": "2026-06",
+      "career_id": "teacher",
+      "career_name": "教师",
+      "value": 23,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 27
+    },
+    {
+      "period": "2026-07",
+      "career_id": "teacher",
+      "career_name": "教师",
+      "value": 26,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 27
+    },
+    {
+      "period": "2026-08",
+      "career_id": "teacher",
+      "career_name": "教师",
+      "value": 28,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 27
+    },
+    {
+      "period": "2026-09",
+      "career_id": "teacher",
+      "career_name": "教师",
+      "value": 27,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 27
+    },
+    {
+      "period": "2026-10",
+      "career_id": "teacher",
+      "career_name": "教师",
+      "value": 27,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 27
+    },
+    {
+      "period": "2026-04",
+      "career_id": "doctor",
+      "career_name": "医生",
+      "value": 13,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 15
+    },
+    {
+      "period": "2026-05",
+      "career_id": "doctor",
+      "career_name": "医生",
+      "value": 13,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 15
+    },
+    {
+      "period": "2026-06",
+      "career_id": "doctor",
+      "career_name": "医生",
+      "value": 14,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 15
+    },
+    {
+      "period": "2026-07",
+      "career_id": "doctor",
+      "career_name": "医生",
+      "value": 15,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 15
+    },
+    {
+      "period": "2026-08",
+      "career_id": "doctor",
+      "career_name": "医生",
+      "value": 14,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 15
+    },
+    {
+      "period": "2026-09",
+      "career_id": "doctor",
+      "career_name": "医生",
+      "value": 14,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 15
+    },
+    {
+      "period": "2026-10",
+      "career_id": "doctor",
+      "career_name": "医生",
+      "value": 15,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 15
+    },
+    {
+      "period": "2026-04",
+      "career_id": "chef",
+      "career_name": "厨师",
+      "value": 74,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 44
+    },
+    {
+      "period": "2026-05",
+      "career_id": "chef",
+      "career_name": "厨师",
+      "value": 64,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 44
+    },
+    {
+      "period": "2026-06",
+      "career_id": "chef",
+      "career_name": "厨师",
+      "value": 58,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 44
+    },
+    {
+      "period": "2026-07",
+      "career_id": "chef",
+      "career_name": "厨师",
+      "value": 59,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 44
+    },
+    {
+      "period": "2026-08",
+      "career_id": "chef",
+      "career_name": "厨师",
+      "value": 56,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 44
+    },
+    {
+      "period": "2026-09",
+      "career_id": "chef",
+      "career_name": "厨师",
+      "value": 48,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 44
+    },
+    {
+      "period": "2026-10",
+      "career_id": "chef",
+      "career_name": "厨师",
+      "value": 44,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 44
+    },
+    {
+      "period": "2026-04",
+      "career_id": "civil-engineer",
+      "career_name": "土木工程师",
+      "value": 40,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-05",
+      "career_id": "civil-engineer",
+      "career_name": "土木工程师",
+      "value": 40,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-06",
+      "career_id": "civil-engineer",
+      "career_name": "土木工程师",
+      "value": 36,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-07",
+      "career_id": "civil-engineer",
+      "career_name": "土木工程师",
+      "value": 34,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-08",
+      "career_id": "civil-engineer",
+      "career_name": "土木工程师",
+      "value": 35,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-09",
+      "career_id": "civil-engineer",
+      "career_name": "土木工程师",
+      "value": 35,
+      "mock": true,
+      "origin": "mock",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    },
+    {
+      "period": "2026-10",
+      "career_id": "civil-engineer",
+      "career_name": "土木工程师",
+      "value": 31,
+      "mock": false,
+      "origin": "observed",
+      "anchor_period": "2026-10",
+      "anchor_value": 31
+    }
+  ]
+}

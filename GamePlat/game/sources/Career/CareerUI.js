@@ -3,6 +3,12 @@ import { Events } from '../Game/Events.js'
 import { CharacterSelect } from '../Game/CharacterSelect.js'
 import { readFile } from './CareerApi.js'
 import { LANGS, getLang, pick, setLang, t } from './i18n.js'
+import { renderMarketHistory } from './MarketHistory.js'
+import { marketMonthWindow } from './MarketWindow.js'
+import { buildMockMarketHistory } from './MockMarketHistory.js'
+import { buildMarketRows } from './MarketSeries.js'
+import { newCareerBadge, renderSamplingDiagnostics } from './MarketSampling.js'
+import { collectNewSample } from './SampleRefresh.js'
 
 /**
  * Career platform UI: HUD (pet, points, next step), quick menu rail, side panels and the NPC dialogue box
@@ -547,9 +553,27 @@ export class CareerUI
     async changeLang(lang)
     {
         setLang(lang)
-        await this.run(() => this.api.setLang(lang))
+        await this.run(() => this.api.setLang(lang), (result) =>
+        {
+            if(result.skillTranslationPending)
+                this.notice = { type: 'warning', text: t('settings.skillTranslationPending') }
+        })
         this.rebuildStatic()
         this.render()
+    }
+
+    async refreshMarketSample()
+    {
+        if(this.marketRefreshing)return
+        this.marketRefreshing=true
+        this.marketRefreshResult={status:'running'}
+        this.renderPanel()
+        try
+        {
+            this.marketRefreshResult=await collectNewSample(this.api,{onChange:run=>{this.marketRefreshResult=run;if(this.panel?.name==='market')this.renderPanel()}})
+        }
+        catch(error){this.marketRefreshResult={...this.marketRefreshResult,status:'failed',error:error.code??'crawler-refresh-failed'}}
+        finally {this.marketRefreshing=false;if(this.panel?.name==='market')this.renderPanel()}
     }
 
     rebuildStatic()
@@ -574,6 +598,8 @@ export class CareerUI
             case 'career': return this.openPanel('careers', { careerId: data.career })
             case 'careers-back': return this.openPanel('careers')
             case 'market-tab': this.panel.marketTab = data.tab; return this.renderPanel()
+            case 'market-sampling-toggle': this.panel.marketSamplingExpanded = !this.panel.marketSamplingExpanded; return this.renderPanel()
+            case 'market-refresh': return this.refreshMarketSample()
             case 'market-rising': Object.assign(this.panel, { marketTab: 'ranking', marketFilter: 'rising' }); return this.renderPanel()
             case 'mode': this.panel.mode = data.mode; return this.renderPanel()
             case 'sdg-filter': this.panel.sdgFilter = this.panel.sdgFilter === Number(data.goal) ? null : Number(data.goal); return this.renderPanel()
@@ -589,6 +615,10 @@ export class CareerUI
             case 'career-generate': return this.generateCareer()
             case 'file-remove': delete this.files[data.file]; return this.renderPanel()
             case 'roadmap': return this.generateRoadmap(data.confirm === '1')
+            case 'track-posting': return this.run(() => this.api.trackPosting(this.drafts.postingTrackUrl ?? ''))
+            case 'refresh-posting':
+                if(!confirm(t('roadmap.regenerateConfirm'))) return
+                return this.run(() => this.api.refreshPosting(this.state.target?.posting?.monitor?.pending?.hash))
             case 'log': return this.submitLog()
             case 'reset': return this.reset()
             case 'tutorial': this.closePanel(); return Game.getInstance().career.tour.start()
@@ -657,9 +687,10 @@ export class CareerUI
         const mode = this.panel.mode ?? 'general'
         const file = mode === 'customise' && this.files.posting ? await readFile(this.files.posting) : null
         const text = mode === 'customise' ? this.drafts.posting ?? '' : ''
-        await this.run(() => this.api.setTarget(careerId, mode, text, file, replace), (result) =>
+        await this.run(() => this.api.setTarget(careerId, mode, text, file, replace, this.drafts.postingSourceUrl ?? ''), (result) =>
         {
             this.drafts.posting = ''
+            this.drafts.postingSourceUrl = ''
             delete this.files.posting
             this.panel.confirmReplace = false
             if(result.pending)
@@ -915,7 +946,9 @@ export class CareerUI
         const notice = this.notice ? `<p class="career-notice is-${this.notice.type}" role="status">${esc(this.notice.text)}</p>` : ''
 
         this.panelTitle.textContent = title
-        this.panelBody.innerHTML = notice + body
+        const changedPosting = this.state.target?.posting?.monitor?.requiresRegeneration && this.panel.name !== 'roadmap'
+            ? `<p class="career-notice is-warning" role="status">${esc(t('watch.changed'))} <button class="career-link" data-action="menu" data-panel="roadmap">${esc(t('roadmap.title'))}</button></p>` : ''
+        this.panelBody.innerHTML = changedPosting + notice + body
         this.panelElement.classList.toggle('is-map', this.panel.name === 'roadmap' && Boolean(this.state.roadmap))
         this.panelBody.scrollTop = scroll
         this.renderRail()
@@ -952,7 +985,7 @@ export class CareerUI
             ? `<ul class="career-skill-list">${skills.map((skill, index) => `
                 <li>
                     <span class="career-skill-name">${esc(this.skillName(skill.id, skill.name))}<small>${esc(t(`profile.source.${skill.source}`))}${skill.evidence ? ` · ${esc(skill.evidence)}` : ''}</small></span>
-                    <select data-skill-level="${index}" aria-label="${esc(skill.name)}">
+                    <select data-skill-level="${index}" aria-label="${esc(this.skillName(skill.id, skill.name))}">
                         ${[ 0, 1, 2, 3 ].map((level) => `<option value="${level}" ${skill.level === level ? 'selected' : ''}>${esc(t(`level.${level}`))}</option>`).join('')}
                     </select>
                     <button class="career-icon-button" data-action="skill-remove" data-index="${index}" aria-label="${esc(t('common.remove'))}">×</button>
@@ -978,6 +1011,8 @@ export class CareerUI
     marketBadges(career)
     {
         const snapshot = career.market.snapshot
+        if(career.market.sample)
+            return `<span class="career-tag">${esc(t('market.sampleShare', { p: career.market.heat ?? '—' }))}</span><span class="career-tag">${esc(t('market.sampleAds', { n: snapshot.postings }))}</span><span class="career-tag">${esc(t('market.accumulating'))}</span>`
         const direction = (change) => change > 0 ? 'up' : change < 0 ? 'down' : 'flat'
         const trend = snapshot
             ? `<span class="career-tag is-trend is-${direction(snapshot.change)}" title="${esc([ snapshot.note ? pick(snapshot.note) : '', snapshot.postings !== undefined && snapshot.postings !== null ? t('careers.postings', { n: snapshot.postings }) : '' ].filter(Boolean).join(' · '))}">${esc(t(isWeek(snapshot.period) ? 'careers.weekTrend' : 'careers.monthTrend', {
@@ -1054,7 +1089,7 @@ export class CareerUI
                 <span class="career-skill-trend-change is-${skill.change > 0 ? 'up' : skill.change < 0 ? 'down' : 'flat'}">${esc(skill.change === null ? '—' : t('careers.skillChange', { arrow: skill.change > 0 ? '↑' : skill.change < 0 ? '↓' : '→', n: Math.abs(skill.change) }))}</span>
             </li>`).join('')
 
-        const note = trend.previousPeriod
+        const note = trend.sample ? t('market.sampleSkills', { n: trend.denominator }) : trend.previousPeriod
             ? t('careers.skillsVs', { period: periodLabel(trend.period), previous: periodLabel(trend.previousPeriod), n: trend.postings })
             : t('careers.skillsFirst', { period: periodLabel(trend.period), n: trend.postings })
         return `
@@ -1106,7 +1141,7 @@ export class CareerUI
                 ${careers.map((career) => `
                     <button class="career-card ${career.onMap ? '' : 'is-off-map'}" data-action="career" data-career="${career.id}" style="--career:${career.color}">
                         <span class="career-card-top">
-                            <strong>${esc(pick(career.name))}</strong>
+                            <strong>${esc(pick(career.name))}${newCareerBadge(career,{t,esc})}</strong>
                             ${this.state.target?.careerId === career.id ? `<span class="career-tag is-target">${esc(t('careers.current'))}</span>` : ''}
                         </span>
                         <small>${esc(pick(career.summary))}</small>
@@ -1141,7 +1176,7 @@ export class CareerUI
         const short = (period) => month(period, { month: 'short' })
         const long = (period) => month(period, { month: 'long' })
         const withYear = (period) => month(period, { month: 'short', year: 'numeric' })
-        const rangeLabel = (from, to) => from.slice(0, 4) === to.slice(0, 4) ? `${short(from)} – ${withYear(to)}` : `${withYear(from)} – ${withYear(to)}`
+        const rangeLabel = (from, to) => from === to ? withYear(to) : from.slice(0, 4) === to.slice(0, 4) ? `${short(from)} – ${withYear(to)}` : `${withYear(from)} – ${withYear(to)}`
         const change = (values, index) => index > 0 && values[index] !== null && values[index - 1] ? Math.round((values[index] - values[index - 1]) / values[index - 1] * 1000) / 10 : null
         const percent = (value) => `${value > 0 ? '+' : ''}${value.toFixed(1)}%`
         const direction = (value) => value > 0 ? 'up' : value < 0 ? 'down' : 'flat'
@@ -1156,18 +1191,24 @@ export class CareerUI
         }
 
         // Range (last N months), search, filter and sort
-        const ranges = [ ...new Set([ 3, 6, 12, 24 ].filter((n) => n < periods.length).concat(periods.length)) ]
-        const range = ranges.includes(panel.marketRange) ? panel.marketRange : Math.min(6, periods.length)
-        const shown = periods.slice(- range)
-        const offset = periods.length - range
+        const calendar = marketMonthWindow()
+        const currentMonth = calendar.at(-1)
+        const firstMonth = [ ...calendar, ...periods, ...(trends.historical?.periods ?? []) ].sort()[0]
+        const monthCount = Math.min(24, (Number(currentMonth.slice(0, 4)) - Number(firstMonth.slice(0, 4))) * 12 + Number(currentMonth.slice(5)) - Number(firstMonth.slice(5)) + 1)
+        const ranges = [ ...new Set([ 3, 6, 7, 12, 24 ].filter((n) => n < monthCount).concat(monthCount)) ]
+        const range = ranges.includes(panel.marketRange) ? panel.marketRange : 7
+        const shown = range === 7 ? calendar : marketMonthWindow(range)
+        const shownIndexes = shown.map(period => periods.indexOf(period))
+        const historyPreview = buildMockMarketHistory(trends, shown)
+        const offset = Math.max(0, periods.length - range)
         const query = (this.drafts.marketSearch ?? '').trim()
         const matches = (name) => !query || Object.values(name).some((text) => String(text).toLowerCase().includes(query.toLowerCase()))
-        const careers = trends.careers.map((career) => ({ ...career, latest: career.ads[last], change: change(career.ads, last) }))
+        const careers = buildMarketRows(trends, shown, historyPreview)
         const filter = panel.marketFilter ?? 'all'
-        const counts = { all: careers.length, rising: careers.filter((career) => career.change > 0).length, falling: careers.filter((career) => career.change < 0).length }
+        const counts = { all: careers.length, rising: careers.filter((career) => career.trend === 'rising').length, falling: careers.filter((career) => career.trend === 'falling').length }
         const sort = panel.marketSort ?? 'latest'
         const visible = careers
-            .filter((career) => matches(career.name) && (filter === 'all' || (filter === 'rising' ? career.change > 0 : career.change < 0)))
+            .filter((career) => matches(career.name) && (filter === 'all' || career.trend === filter))
             .sort((a, b) => sort === 'name' ? pick(a.name).localeCompare(pick(b.name), locale)
                 : sort === 'growth' ? (b.change ?? - Infinity) - (a.change ?? - Infinity)
                 : (b.latest ?? - 1) - (a.latest ?? - 1))
@@ -1198,28 +1239,31 @@ export class CareerUI
         let body = ''
         if(tab === 'overview')
         {
+            const hasBackfill = visible.some(career => shown.some(period => historyPreview.cells[career.id]?.[period]))
+            const displayedValue = (career, index) => career.displayAds[index]
             // Darker purple = more ads, on a scale rounded up to 50
-            const max = Math.max(50, ...visible.flatMap((career) => career.ads.slice(offset)).filter((value) => value !== null))
+            const max = Math.max(50, ...visible.flatMap((career) => shown.map((_, index) => displayedValue(career, index))).filter((value) => value !== null))
             const scale = Math.ceil(max / 50) * 50
-            const cell = (value, index) =>
+            const cell = (value, period, preview, archived) =>
             {
                 if(value === null)
-                    return `<td class="is-empty">—</td>`
+                    return `<td class="is-empty" title="${esc(`${period}: ${t('market.history.missing')}`)}" aria-label="${esc(`${period}: ${t('market.history.missing')}`)}">—</td>`
                 const p = value / scale
                 const mix = 0.14 + p * 0.86 // From #f0ebff (no ads) to #4b2fb3 (top of the scale)
                 const shade = [ [ 240, 75 ], [ 235, 47 ], [ 255, 179 ] ].map(([ from, to ]) => Math.round(from + (to - from) * mix))
-                return `<td class="${index === last ? 'is-latest' : ''} ${p > 0.5 ? 'is-dark' : ''}" style="background:rgb(${shade.join(',')})"><span>${value}</span></td>`
+                const description = `${period}: ${value}`
+                return `<td data-period="${period}" data-origin="${preview ? 'mock' : archived ? 'archived' : 'observed'}" class="${period === currentMonth ? 'is-latest' : ''} ${p > 0.5 ? 'is-dark' : ''}" style="background-color:rgb(${shade.join(',')})" title="${esc(description)}" aria-label="${esc(description)}"><span>${value}</span></td>`
             }
             const rows = visible.map((career) => `
-                <tr class="${isTarget(career) ? 'is-target' : ''}">
-                    <th scope="row">${careerButton(career, `<span>${esc(pick(career.name))}</span>${isTarget(career) ? '<i class="career-trend-dot" aria-hidden="true"></i>' : ''}`, 'career-trend-name')}</th>
-                    ${career.ads.slice(offset).map((value, index) => cell(value, index + offset)).join('')}
+                <tr data-career="${esc(career.id)}" class="${isTarget(career) ? 'is-target' : ''}">
+                    <th scope="row" title="${esc(pick(career.name))}">${careerButton(career, `<span>${esc(pick(career.shortName ?? career.name))}${newCareerBadge(career,{t,esc})}</span>${isTarget(career) ? '<i class="career-trend-dot" aria-hidden="true"></i>' : ''}`, 'career-trend-name')}</th>
+                    ${shown.map((period, index) => cell(displayedValue(career, index), period, historyPreview.cells[career.id]?.[period], career.ads[shownIndexes[index]] == null && trends.careerObservations?.[career.id]?.[period])).join('')}
                 </tr>`).join('')
 
             // Movers: change in the chosen month versus the month before
             const chosen = periods.indexOf(panel.marketMovers)
             const moversIndex = chosen > 0 ? chosen : last
-            const moved = trends.careers.map((career) => ({ ...career, change: change(career.ads, moversIndex) })).filter((career) => career.change !== null)
+            const moved = trends.sample ? careers.filter(career => career.change !== null) : trends.careers.map((career) => ({ ...career, change: change(career.ads, moversIndex) })).filter((career) => career.change !== null)
             const rising = moved.filter((career) => career.change > 0).sort((a, b) => b.change - a.change)
             const falling = moved.filter((career) => career.change < 0).sort((a, b) => a.change - b.change)
             const moverList = (items, kind) => items.length
@@ -1229,11 +1273,12 @@ export class CareerUI
 
             body = `
                 <section class="career-trend-card">
-                    ${head(t('market.heatmap'), t('market.heatmapSub'))}
+                    ${head(t(hasBackfill ? 'market.heatmap' : trends.sample ? 'market.sampleHeatmap' : 'market.heatmap'), t(hasBackfill ? 'market.trendSub' : trends.sample ? 'market.sampleSub' : 'market.heatmapSub', { n: trends.postings, d: trends.denominator }))}
+                    ${!hasBackfill && trends.sample ? `<p class="career-market-coverage">${esc(t('market.history.sampleCoverage', { range: rangeLabel(periods[0], periods[last]) }))}</p>` : ''}
                     <div class="career-trend-controls">
                         ${filterSelect}
                         <select data-market="range" aria-label="${esc(t('market.rangeLabel'))}">
-                            ${ranges.map((n) => option(String(n), String(range), rangeLabel(periods[periods.length - n], periods[last]))).join('')}
+                            ${ranges.map((n) => option(String(n), String(range), rangeLabel(marketMonthWindow(n)[0], currentMonth))).join('')}
                         </select>
                         <select data-market="sort" aria-label="${esc(t('market.sortLabel'))}">
                             ${option('latest', sort, t('market.sort.latest', { month: long(periods[last]) }))}
@@ -1241,10 +1286,11 @@ export class CareerUI
                             ${option('name', sort, t('market.sort.name'))}
                         </select>
                     </div>
+                    <small class="career-history-scrollhint">${esc(t('market.history.scroll'))}</small>
                     ${none || `
                     <div class="career-trend-scroll">
                         <table class="career-heatmap">
-                            <thead><tr><th scope="col">${esc(t('market.career'))}</th>${shown.map((period, index) => `<th scope="col" class="${index + offset === last ? 'is-latest' : ''}">${esc(short(period))}</th>`).join('')}</tr></thead>
+                            <thead><tr><th scope="col">${esc(t('market.career'))}</th>${shown.map((period) => `<th scope="col" class="${period === currentMonth ? 'is-latest' : ''}" title="${esc(trends.sample && period === periods[last] ? t('market.history.currentSample') : period)}">${esc(short(period))}</th>`).join('')}</tr></thead>
                             <tbody>${rows}</tbody>
                         </table>
                     </div>
@@ -1255,9 +1301,12 @@ export class CareerUI
                     </div>`}
                 </section>
 
-                ${periods.length > 1 ? `
+
+                ${renderMarketHistory(trends.historical, { t, esc, locale, short, rangeLabel })}
+
+                ${(periods.length > 1 && !trends.sample) || (trends.sample && moved.length) ? `
                 <section class="career-trend-movers">
-                    ${head(t('market.movers'), t('market.moversSub', { month: long(periods[moversIndex - 1]) }), `
+                    ${head(t('market.movers'), t('market.moversSub', { month: long(trends.sample ? careers[0].previousPeriod : periods[moversIndex - 1]) }), trends.sample ? '' : `
                         <select data-market="movers" aria-label="${esc(t('market.moversLabel'))}">
                             ${periods.slice(1).map((period) => option(period, periods[moversIndex], withYear(period))).join('')}
                         </select>`)}
@@ -1280,14 +1329,14 @@ export class CareerUI
             const max = Math.max(1, ...visible.map((career) => career.latest ?? 0))
             body = `
                 <section class="career-trend-card">
-                    ${head(t('market.tab.ranking'), t('market.rankingSub', { month: long(periods[last]), previous: long(periods[Math.max(0, last - 1)]) }))}
+                    ${head(t('market.tab.ranking'), t(trends.sample ? 'market.sampleSub' : 'market.rankingSub', { n: trends.postings, d: trends.denominator, month: long(periods[last]), previous: long(periods[Math.max(0, last - 1)]) }))}
                     <div class="career-trend-controls">${filterSelect}</div>
                     ${none}
                     <ol class="career-trend-ranking">${[ ...visible ].sort((a, b) => (b.latest ?? - 1) - (a.latest ?? - 1)).map((career, index) => `
                         <li class="${isTarget(career) ? 'is-target' : ''}">${careerButton(career, `
                             <span class="career-trend-rank">${index + 1}</span>
-                            <span class="career-trend-label"><strong>${esc(pick(career.name))}</strong>${bar((career.latest ?? 0) / max * 100)}</span>
-                            ${spark(career.ads.slice(offset))}
+                            <span class="career-trend-label"><strong>${esc(pick(career.name))}${newCareerBadge(career,{t,esc})}</strong>${bar((career.latest ?? 0) / max * 100)}</span>
+                            ${spark(career.displayAds)}
                             <span class="career-trend-value">${esc(t('market.ads', { n: career.latest ?? '—' }))}</span>
                             <em class="is-${direction(career.change)}">${career.change === null ? '—' : percent(career.change)}</em>`, 'career-trend-row')}
                         </li>`).join('')}
@@ -1302,7 +1351,7 @@ export class CareerUI
                 .sort((a, b) => (b.latest ?? - 1) - (a.latest ?? - 1))
             body = `
                 <section class="career-trend-card">
-                    ${head(t('market.tab.skills'), t('market.skillsSub', { month: long(periods[last]), previous: long(periods[Math.max(0, last - 1)]) }))}
+                    ${head(t('market.tab.skills'), t(trends.sample ? 'market.sampleSkills' : 'market.skillsSub', { n: trends.denominator, month: long(periods[last]), previous: long(periods[Math.max(0, last - 1)]) }))}
                     ${query && !skills.length ? `<p class="career-muted">${esc(t('market.none', { q: query }))}</p>` : ''}
                     <ol class="career-trend-ranking">${skills.map((skill, index) => `
                         <li><div class="career-trend-row">
@@ -1318,15 +1367,16 @@ export class CareerUI
 
         const targetCareer = target && state.careers.find((career) => career.id === target)
         return [ t('market.title'), `
-            <p class="career-muted career-trend-intro">${esc(t('market.subtitle'))}</p>
+            <p class="career-muted career-trend-intro">${esc(t(tab === 'overview' && historyPreview.count ? 'market.trendIntro' : trends.sample ? 'market.sampleSub' : 'market.subtitle', { n: trends.postings, d: trends.denominator }))}</p>
             <label class="career-trend-search">
                 ${icon('magnifier')}
                 <input type="search" data-draft="marketSearch" placeholder="${esc(t('market.search'))}" aria-label="${esc(t('market.search'))}" value="${esc(this.drafts.marketSearch ?? '')}">
                 <kbd>/</kbd>
             </label>
             <div class="career-trend-tabs" role="group">${tabs}</div>
+            ${tab === 'overview' ? renderSamplingDiagnostics(trends.sampling,{t,esc,locale,expanded:Boolean(panel.marketSamplingExpanded),refresh:{busy:this.marketRefreshing,result:this.marketRefreshResult}}) : ''}
             ${body}
-            <p class="career-muted career-trend-note">${esc(t(trends.demo ? 'market.noteDemo' : 'market.noteLive', { source: trends.source }))}</p>
+            <p class="career-muted career-trend-note">${esc(t(trends.sample ? 'market.sampleNote' : trends.demo ? 'market.noteDemo' : 'market.noteLive', { source: trends.source }))}</p>
             <footer class="career-trend-footer">
                 <span>${esc(targetCareer ? t('market.target', { career: pick(targetCareer.name) }) : t('market.noTarget'))}</span>
                 ${targetCareer
@@ -1396,10 +1446,11 @@ export class CareerUI
         return [ pick(career.name), `
             <button class="career-link" data-action="careers-back">← ${esc(t('common.back'))}</button>
             ${this.renderPending(careerId)}
+            ${newCareerBadge(career,{t,esc})}
             <p>${esc(pick(career.summary))}</p>
             ${career.onMap ? '' : `<p class="career-notice is-warning">${esc(t('careers.offMap'))}</p>`}
             <p>${this.marketBadges(career)} <span class="career-tag">${esc(t('careers.pet', { name: career.pet.name }))}</span></p>
-            <p class="career-muted">${esc(t('careers.effort', { range }))} · ${esc(t('careers.marketNote'))}</p>
+            <p class="career-muted">${esc(t('careers.effort', { range }))} · ${esc(t(career.market.sample ? 'market.accumulating' : 'careers.marketNote'))}</p>
             ${this.renderCareerSdgs(career)}
             <h3>${esc(t('careers.chooseMode'))}</h3>
             <div class="career-modes">
@@ -1410,6 +1461,8 @@ export class CareerUI
             </div>
             ${mode === 'customise' ? `
                 <textarea data-draft="posting" rows="5" placeholder="${esc(t('mode.postingPlaceholder'))}">${esc(this.drafts.posting ?? '')}</textarea>
+                <label>${esc(t('watch.sourceLabel'))}<input type="url" data-draft="postingSourceUrl" placeholder="https://www.linkedin.com/jobs/view/…" value="${esc(this.drafts.postingSourceUrl ?? '')}"></label>
+                <p class="career-muted">${esc(t('watch.sourceHelp'))}</p>
                 <div class="career-row">${this.fileField('posting', '.pdf,.png,.jpg,.jpeg,.webp,.txt,.md')}</div>
                 <p class="career-muted">${esc(t('mode.disclaimer'))}</p>` : ''}
             ${switching}
@@ -1418,7 +1471,7 @@ export class CareerUI
             <div class="career-skill-popularity">${this.skillPopularity(career.market.skills, t('careers.skillsCareer'))}</div>
             ${this.weeklyTrend(career)}
             <h3>${esc(t('careers.requirements'))}</h3>
-            <p class="career-muted career-skill-reference">${esc(t('skill.reference'))}</p>
+            <p class="career-muted career-skill-reference">${esc(t(this.state.trends?.sample ? 'market.sampleSkillReference' : 'skill.reference'))}</p>
             <ul class="career-skill-grid career-requirements" style="--skill-accent:${career.color}">${requirements}</ul>
             ${posting}
         ` ]
@@ -1554,7 +1607,7 @@ export class CareerUI
                 </p>
                 ${detail ? `
                 <dl class="career-skill-stats">
-                    <div><dt title="${esc(t('skill.market'))}">${esc(t('skill.heat'))}</dt><dd>${detail.heat}%</dd></div>
+                    <div><dt title="${esc(t('skill.market'))}">${esc(t('skill.heat'))}</dt><dd>${detail.heat ?? '—'}%</dd></div>
                     ${this.skillTrendStat(requirement.skillId)}
                     <div><dt>${esc(t('skill.difficulty'))}</dt><dd>${detail.difficulty}/5</dd></div>
                 </dl>` : ''}
@@ -1581,7 +1634,7 @@ export class CareerUI
             </div>
             <p class="career-muted">${esc(t('pet.affinityNote'))}</p>
             <h3>${esc(t('pet.skills'))}</h3>
-            <p class="career-muted career-skill-reference">${esc(t('skill.reference'))}</p>
+            <p class="career-muted career-skill-reference">${esc(t(this.state.trends?.sample ? 'market.sampleSkillReference' : 'skill.reference'))}</p>
             <ul class="career-skill-grid career-pet-skills" style="--skill-accent:${career.color}">${pet.skills.map((skill) => this.renderSkillCard(skill)).join('')}
             </ul>
         ` ]
@@ -1595,6 +1648,8 @@ export class CareerUI
         const market = this.state.skillMarket?.[skillId]
         if(!market)
             return ''
+        if(market.sample)
+            return `<div><dt title="${esc(t('market.sampleSkills', { n: market.denominator }))}">${esc(t('skill.trend'))}</dt><dd>${esc(t('market.accumulating'))}</dd></div>`
         if(!market.live)
             return `<div><dt title="${esc(t('skill.trendReference', { period: periodLabel(market.period) }))}">${esc(t('skill.trend'))}</dt><dd class="career-skill-trend-change is-${{ rising: 'up', falling: 'down', stable: 'flat' }[market.trend]}">${esc(t(`skill.trend.${market.trend}`))}</dd></div>`
         const direction = market.change > 0 ? 'up' : market.change < 0 ? 'down' : 'flat'
@@ -1619,7 +1674,7 @@ export class CareerUI
                         </div>
                 </header>
                 <dl class="career-skill-stats">
-                    <div><dt title="${esc(t('skill.market'))}">${esc(t('skill.heat'))}</dt><dd>${detail.heat}%</dd></div>
+                    <div><dt title="${esc(t('skill.market'))}">${esc(t('skill.heat'))}</dt><dd>${detail.heat ?? '—'}%</dd></div>
                     ${this.skillTrendStat(skill.id)}
                     <div><dt>${esc(t('skill.difficulty'))}</dt><dd>${detail.difficulty}/5</dd></div>
                 </dl>
@@ -1634,9 +1689,30 @@ export class CareerUI
         if(!state.target)
             return [ t('roadmap.title'), `<p>${esc(t('roadmap.noTarget'))}</p><button class="career-button" data-action="menu" data-panel="careers">${esc(t('menu.careers'))}</button>` ]
         if(!state.roadmap)
-            return [ t('roadmap.title'), `<p>${esc(t('roadmap.intro'))}</p><button class="career-button is-wide" data-action="roadmap">${esc(t('roadmap.generate'))}</button>` ]
+            return [ t('roadmap.title'), `${this.renderPostingWatch()}<p>${esc(t('roadmap.intro'))}</p>${state.target.posting?.monitor?.requiresRegeneration ? '' : `<button class="career-button is-wide" data-action="roadmap">${esc(t('roadmap.generate'))}</button>`}` ]
 
-        return [ t('roadmap.title'), this.renderRoadmapMap() ]
+        return [ t('roadmap.title'), this.renderPostingWatch() + this.renderRoadmapMap() ]
+    }
+
+    renderPostingWatch()
+    {
+        const target = this.state.target
+        if(target?.mode !== 'customise') return ''
+        const monitor = target.posting?.monitor
+        if(!monitor) return `<section class="career-notice">
+            <p>${esc(t('watch.missing'))}</p>
+            <div class="career-row career-posting-track">
+                <label>${esc(t('watch.sourceLabel'))}<input type="url" data-draft="postingTrackUrl" value="${esc(this.drafts.postingTrackUrl ?? '')}" placeholder="https://www.linkedin.com/jobs/view/…"></label>
+                <button class="career-button" data-action="track-posting">${esc(t('watch.attach'))}</button>
+            </div>
+        </section>`
+        return `<section class="career-notice ${monitor.requiresRegeneration ? 'is-warning' : 'is-info'}" role="status">
+            <p>${esc(t(monitor.requiresRegeneration ? 'watch.changed' : 'watch.tracking'))}</p>
+            <a href="${esc(monitor.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(t('watch.openSource'))}</a>
+            <p>${esc(t('watch.lastChecked', { at: monitor.lastCheckedAt ? new Date(monitor.lastCheckedAt).toLocaleString() : '—' }))}</p>
+            ${monitor.lastError ? `<p>${esc(t('watch.failed'))} (${esc(monitor.lastError)})</p>` : ''}
+            ${monitor.pending ? `<details><summary>${esc(t('watch.review'))}</summary><strong>${esc(monitor.pending.title)}</strong><p style="white-space:pre-wrap">${esc(monitor.pending.description)}</p></details><button class="career-button" data-action="refresh-posting">${esc(t('watch.regenerate'))}</button>` : ''}
+        </section>`
     }
 
     /**
@@ -1964,7 +2040,7 @@ export class CareerUI
                 choices: state.profile.skills.length ? menu : [ { text: t('menu.profile'), action: () => this.openPanel('profile') }, ...menu ],
             },
             market: {
-                lines: [ t('npc.market', { p: career.market.heat, trend: t(`careers.trend.${career.market.trend}`), range }) ],
+                lines: [ career.market.sample ? `${t('market.sampleShare', { p: career.market.heat })} · ${t('market.sampleAds', { n: career.market.snapshot.postings })} · ${t('market.accumulating')}` : t('npc.market', { p: career.market.heat, trend: t(`careers.trend.${career.market.trend}`), range }) ],
                 choices: menu,
             },
             noExpert: {

@@ -1,0 +1,12 @@
+{
+  "fde_details_card_removed_career_retained": true,
+  "coverage_and_refresh_only_in_market_overview": true,
+  "refresh_at_upper_right_of_coverage": true,
+  "coverage_body_16px_and_status_block_removed": true,
+  "button_starts_and_polls_new_collection": true,
+  "disabled_while_running_and_reloads_after_publication": true,
+  "failure_retains_previous_chart": true,
+  "mobile_button_visible_without_page_overflow": true,
+  "synthetic_refresh_responses_only_no_test_ads_published": true,
+  "page_errors": []
+}

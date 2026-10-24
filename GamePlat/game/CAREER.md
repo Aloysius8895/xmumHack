@@ -33,7 +33,7 @@ DeepSeek 的 PDF 上传会在服务器先提取文字：最多 10 MB、40 页、
 - **左上角**：圆形小地图，点导师头像传送，点空白区域打开完整地图。
 - **右上角菜单**：点击向下展开档案、职业、宠物、路线、记录、设置；下方是宠物状态、积分和「下一步」。打开面板时人物会停下，按 `Esc` 关闭。
 - **职业导师**：地图上有 6 位导师。走近后按 `E` 对话，可以询问技能要求、准备差距和市场参考，也可以设为目标。选「我可以问你一些问题吗？」可以自己输入问题：后端（`POST /api/npc/ask`，`server/features.js` 的 `askMentor`）按这位导师的职业生成提示词，让配置的 AI 以该行业资深从业者的身份回答，同一次对话会记住前几轮。设置 `AI_PROVIDER=deepseek` 时用 `.env` 里的 `DEEPSEEK_API_KEY`；`AI_MOCK=1` 时返回示例回答。回答是流式的（`POST /api/npc/ask/stream`，每行一个 JSON 事件）：等待第一个字时导师头上冒思考气泡、对话框显示「. .. ...」，之后逐字打出，一页满了按 Enter 翻页；离开对话会中止 AI 请求。DeepSeek 使用非思考模式以缩短等待时间。
-- **行业精英**：部分导师的对话里有「请教行业精英：XX」。精英是用女娲方法（`skills/Distillation/nuwa-skill`）从公开资料蒸馏出的思维框架：完整 skill 和调研底稿放在 `GamePlat/expert/<人物>-perspective/`，回答时把其中精简的 `card.md` 放进提示词（`server/experts.js` 维护职业与人物的对应；`features.js` 的 `askExpert`）。开场会先说明「基于公开资料，不是本人」。目前有：ML 工程师 → Andrej Karpathy，数据分析师 → Hans Rosling。新增精英：蒸馏到 `GamePlat/expert/`，写一份 `card.md`，再在 `server/experts.js` 的 `EXPERTS` 加一行。
+- **行业精英**：部分导师的对话里有「请教行业精英：XX」。精英是用女娲方法从公开资料蒸馏出的思维框架：完整 skill 和调研底稿放在 `GamePlat/expert/<人物>-perspective/`，回答时把其中精简的 `card.md` 放进提示词（`server/experts.js` 维护职业与人物的对应；`features.js` 的 `askExpert`）。开场会先说明「基于公开资料，不是本人」。目前有：ML 工程师 → Andrej Karpathy，数据分析师 → Hans Rosling。新增精英：蒸馏到 `GamePlat/expert/`，写一份 `card.md`，再在 `server/experts.js` 的 `EXPERTS` 加一行。
 - **学习资源**：路线卡片上每个阶段有「从这里开始学」，链接到该技能的免费入门资源（`server/skill-details.js` 的 `RESOURCES`，优先开源 / 开放教材）。
 - **职业列表**：每个职业显示好感度和档案适配度。档案适配度只看你上传或填写的技能档案；好感度 = 档案适配度 + 学习进度，完成路线任务、发每日汇报会继续上升。上方有搜索框，地图上没有的职业也能搜索并设为目标（会替换好感度最低的导师，被替换的职业进度会保存）。
 - **宠物**：选定目标后跟随玩家。技能卡包含图标、名称、现有进度、热度、难度和说明；菱形表示进度，不是装备按钮。
