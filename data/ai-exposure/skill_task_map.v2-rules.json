@@ -1,0 +1,488 @@
+{
+  "about": "v2 (2026-10-30): for each career, every task statement of its O*NET occupations that matches a skill's pattern counts for that skill, including tasks with no observed AI use. Nothing is ranked by penetration. A reviewer removes irrelevant tasks with exclude and sets reviewed: true.",
+  "reviewer": "Aloysius Ting",
+  "careers": {
+    "data-analyst": {
+      "onet": [
+        "15-1199.08",
+        "15-2041.00"
+      ],
+      "soc": "15-2051",
+      "skills": [
+        "sql",
+        "data-cleaning",
+        "data-visualization",
+        "excel",
+        "statistics",
+        "python",
+        "communication"
+      ]
+    },
+    "frontend-developer": {
+      "onet": [
+        "15-1134.00"
+      ],
+      "soc": "15-1254",
+      "skills": [
+        "html-css",
+        "javascript",
+        "react",
+        "git",
+        "accessibility",
+        "api-integration"
+      ]
+    },
+    "backend-developer": {
+      "onet": [
+        "15-1132.00",
+        "15-1133.00",
+        "15-1199.06"
+      ],
+      "soc": "15-1252",
+      "skills": [
+        "backend-language",
+        "databases",
+        "rest-api",
+        "git",
+        "testing",
+        "cloud-deploy"
+      ]
+    },
+    "ui-ux-designer": {
+      "onet": [
+        "27-1024.00",
+        "15-1134.00"
+      ],
+      "soc": "15-1255",
+      "skills": [
+        "user-research",
+        "prototyping",
+        "figma",
+        "visual-design",
+        "usability-testing",
+        "communication"
+      ]
+    },
+    "ml-engineer": {
+      "onet": [
+        "15-1111.00",
+        "15-2041.00"
+      ],
+      "soc": "15-1221",
+      "skills": [
+        "python",
+        "ml-math",
+        "ml-frameworks",
+        "data-cleaning",
+        "mlops",
+        "sql"
+      ]
+    },
+    "product-manager": {
+      "onet": [
+        "11-3021.00"
+      ],
+      "soc": "11-3021",
+      "skills": [
+        "roadmapping",
+        "user-research",
+        "communication",
+        "market-analysis",
+        "agile",
+        "sql"
+      ]
+    },
+    "forward-deployed-engineer": {
+      "onet": [
+        "15-1132.00",
+        "15-1121.00"
+      ],
+      "soc": "15-1252",
+      "skills": [
+        "python",
+        "api-integration",
+        "communication",
+        "rest-api",
+        "cloud-deploy",
+        "mlops",
+        "ml-frameworks",
+        "sql"
+      ]
+    },
+    "data-scientist": {
+      "onet": [
+        "15-2041.00",
+        "15-1199.08"
+      ],
+      "soc": "15-2051",
+      "skills": [
+        "python",
+        "statistics",
+        "ml-frameworks",
+        "sql",
+        "data-visualization",
+        "communication"
+      ]
+    },
+    "auditor": {
+      "onet": [
+        "13-2011.02",
+        "13-2011.01"
+      ],
+      "soc": "13-2011",
+      "skills": [
+        "accounting",
+        "auditing",
+        "internal-control",
+        "excel",
+        "communication"
+      ]
+    },
+    "lawyer": {
+      "onet": [
+        "23-1011.00"
+      ],
+      "soc": "23-1011",
+      "skills": [
+        "legal-research",
+        "legal-writing",
+        "negotiation",
+        "communication"
+      ]
+    },
+    "teacher": {
+      "onet": [
+        "25-2031.00"
+      ],
+      "soc": "25-2031",
+      "skills": [
+        "lesson-planning",
+        "classroom-management",
+        "assessment",
+        "communication"
+      ]
+    },
+    "doctor": {
+      "onet": [
+        "29-1063.00",
+        "29-1062.00"
+      ],
+      "soc": "29-1216",
+      "skills": [
+        "clinical-knowledge",
+        "patient-care",
+        "medical-ethics",
+        "communication"
+      ]
+    },
+    "chef": {
+      "onet": [
+        "35-1011.00"
+      ],
+      "soc": "35-1011",
+      "skills": [
+        "cooking-technique",
+        "food-safety",
+        "menu-planning",
+        "project-management",
+        "communication"
+      ]
+    },
+    "civil-engineer": {
+      "onet": [
+        "17-2051.00"
+      ],
+      "soc": "17-2051",
+      "skills": [
+        "engineering-math",
+        "cad",
+        "project-management",
+        "communication"
+      ]
+    }
+  },
+  "skills": {
+    "sql": {
+      "pattern": "\\bsql\\b|\\bquer(y|ies)\\b|database",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 加词边界"
+    },
+    "excel": {
+      "pattern": "spreadsheet",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "statistics": {
+      "pattern": "statistic",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "python": {
+      "pattern": "\\bprogramm|\\bcode\\b|\\bcoding\\b|software|\\bscript",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 去掉 script 误匹配 description/prescription；program 改为 programm（避免匹配“项目/计划 programs”）"
+    },
+    "data-cleaning": {
+      "pattern": "clean|data quality|validat|verif|accura|integrity",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "data-visualization": {
+      "pattern": "chart|\\bgraph|visuali|dashboard",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 去掉 report：撰写报告属于写作，不是可视化"
+    },
+    "communication": {
+      "pattern": "\\bpresent|communicat|explain|consult|advis|discuss|confer",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] present 加词边界，避免匹配 represent（律师代表客户是核心法律工作）"
+    },
+    "html-css": {
+      "pattern": "\\bweb|html|page",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "javascript": {
+      "pattern": "\\bprogramm|\\bcode\\b|\\bcoding\\b|web application|\\bscript",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 同 python：修 script / program 误匹配"
+    },
+    "react": {
+      "pattern": "\\binterface|front.?end|web application",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 去掉 user：太宽，与 user-research 重叠"
+    },
+    "git": {
+      "pattern": "\\bversion|source code|configuration management|revision control|back ?up",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 原规则 0 匹配；version 加词边界（避免 conversion），新增 back up（网页开发任务里的备份/恢复最接近版本管理）"
+    },
+    "accessibility": {
+      "pattern": "accessib|usab|compatib|disab",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "api-integration": {
+      "pattern": "interface|integrat|\\bapi\\b",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "backend-language": {
+      "pattern": "program|\\bcode|software|application",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "databases": {
+      "pattern": "database",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "rest-api": {
+      "pattern": "(?<!user )interface|web service|\\bapi\\b",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 排除 user interface（那是前端，不是 API）"
+    },
+    "cloud-deploy": {
+      "pattern": "deploy|install|configur|server|cloud|network",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "testing": {
+      "pattern": "\\btest|debug|\\berrors?\\b",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] test 加词边界，避免匹配 latest/contest/attest"
+    },
+    "user-research": {
+      "pattern": "\\busers?\\b|client|customer|requirement|survey|interview|(user|customer|client) needs",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 去掉 need：会匹配所有 “as needed”"
+    },
+    "prototyping": {
+      "pattern": "prototyp|mock-?up|sketch|layout|wireframe|storyboard",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 去掉 model（ML/统计模型），加 wireframe/storyboard；上轮未通过，需人工确认"
+    },
+    "figma": {
+      "pattern": "layout|graphic|illustrat|mock-?up|wireframe",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 去掉 design：几乎匹配设计师全部任务，失去区分度"
+    },
+    "visual-design": {
+      "pattern": "visual|colou?r|graphic|illustrat|layout|typograph",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "usability-testing": {
+      "pattern": "usab|user (experience|feedback|testing)|\\buser.*\\btest|\\btest.*\\buser",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 原来 test 会匹配网页开发的代码测试；改为必须与 user 同时出现"
+    },
+    "ml-math": {
+      "pattern": "mathemat|statistic|model|algorithm",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "ml-frameworks": {
+      "pattern": "machine learning|model|algorithm|data mining",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "mlops": {
+      "pattern": "deploy|monitor|production|maintain.*(system|software|model)",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 去掉单独的 model 和 maintain：与 ml-frameworks 几乎重复、会匹配 maintain records"
+    },
+    "roadmapping": {
+      "pattern": "\\bplan|strateg|priorit|\\bgoals?\\b",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation"
+    },
+    "agile": {
+      "pattern": "coordinat|team|schedul|collaborat",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "market-analysis": {
+      "pattern": "market|competit|trend|customer|vendor|industry|new technolog|advances in|cost.?benefit|feasibility",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 原规则 0 匹配；11-3021（IT 经理）任务里没有 market 字眼，放宽到供应商评估、行业/新技术跟踪、成本效益和可行性分析"
+    },
+    "accounting": {
+      "pattern": "account|financial|ledger|statement",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "auditing": {
+      "pattern": "audit|examin|inspect",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "internal-control": {
+      "pattern": "\\bcontrols?\\b|risk|complian|fraud",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] control 加词边界，避免匹配 controller"
+    },
+    "legal-research": {
+      "pattern": "research|statute|regulation|case law|precedent|interpret",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "legal-writing": {
+      "pattern": "prepare|draft|writ|document",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "negotiation": {
+      "pattern": "negotiat|\\bsettle|\\bmediat|agreement",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] mediat 加词边界，避免匹配 immediately/intermediate"
+    },
+    "lesson-planning": {
+      "pattern": "\\bplan|lesson|curricul|instruction|material",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation"
+    },
+    "classroom-management": {
+      "pattern": "classroom|behavio|disciplin|\\border\\b(?! to)|rules",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] order 只匹配独立单词且排除 in order to，避免匹配 disorder/border"
+    },
+    "assessment": {
+      "pattern": "evaluat|assess|\\bgrad(e|es|ing)\\b(?! level)|\\btest|progress",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] test 加词边界；grade 排除 grade level（年级不是评分）"
+    },
+    "clinical-knowledge": {
+      "pattern": "diagnos|treat|prescri|disease|clinical|condition|examin",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "patient-care": {
+      "pattern": "patient",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "medical-ethics": {
+      "pattern": "ethic|confidential|consent|privacy|explain.*(risk|procedure|treatment option)",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 原规则 0 匹配；O*NET 医生任务基本不写伦理，用“向病人解释风险/治疗方案”（知情同意）做近似。这是代理指标，需人工确认是否接受"
+    },
+    "cooking-technique": {
+      "pattern": "\\bcooking\\b|\\bcook (food|meat|dish)|\\bdish(es)?\\b|season|ingredient|prepar\\w* (food|meal|dish|sauce)",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 原来 cook 匹配 supervise cooks（管理任务），prepar 匹配 prepare budgets；改为只匹配烹饪动作"
+    },
+    "food-safety": {
+      "pattern": "sanit|safety|hygien|clean|inspect|storage",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "menu-planning": {
+      "pattern": "menu|recipe|food cost|\\bprice|portion",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 去掉单独的 cost：与 project-management 的预算重叠"
+    },
+    "engineering-math": {
+      "pattern": "calculat|\\bcompute\\b|computation|estimat|analy",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] comput 改为 compute/computation，避免匹配 computer-aided（那是 cad）"
+    },
+    "cad": {
+      "pattern": "drawing|\\bcad\\b|computer-aided|blueprint",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "project-management": {
+      "pattern": "project|schedul|budget|coordinat",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    }
+  }
+}

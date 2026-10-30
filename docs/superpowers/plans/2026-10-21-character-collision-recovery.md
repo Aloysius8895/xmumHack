@@ -2,7 +2,7 @@
 
 **Goal:** Fix collision/knock recovery in the existing dynamic Rapier capsule without replacing the engine or hiding the causes with resets.
 
-**Evidence before implementation:** `GamePlat/verification/character-stuck/before-fix-summary.json` preserves the pre-change controller test summaries. A capsule caught between two edges remains `grounded=false`, `knock=air`, at rest after 15 real seconds. The map boundary's post-step translation clamp repeatedly embeds the capsule in an adjacent obstacle. Ordinary wall contact and backing away work. The supplied 2.7-second video only shows the resulting symptom, so its exact unseen trigger is not assumed.
+**Evidence before implementation:** `src/verification/character-stuck/before-fix-summary.json` preserves the pre-change controller test summaries. A capsule caught between two edges remains `grounded=false`, `knock=air`, at rest after 15 real seconds. The map boundary's post-step translation clamp repeatedly embeds the capsule in an adjacent obstacle. Ordinary wall contact and backing away work. The supplied 2.7-second video only shows the resulting symptom, so its exact unseen trigger is not assumed.
 
 **Architecture:** Keep a dynamic upright capsule, use Rapier CCD and bounded physics substeps, replace post-step map teleport clamps with character-only static boundary colliders. Ground queries inspect non-sensor, collision-compatible upward surfaces and capsule contacts. Physics owns knock recovery deadlines; animations cannot leave input locked. A dedicated recovery helper measures penetration, resolves small overlaps, records verified supported positions and only relocates after persistent geometric failure. Diagnostics are opt-in and record the physics evidence.
 

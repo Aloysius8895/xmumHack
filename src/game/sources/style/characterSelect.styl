@@ -1,0 +1,266 @@
+/* Character selection on the intro circle (sources/Game/CharacterSelect.js), liquid glass under the character with the career menu pink */
+
+.character-select {
+    --select-pink: #ff659b;
+    --select-pink-glow: rgba(255, 101, 155, 0.55);
+    --select-glass: linear-gradient(160deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.08) 45%, rgba(255, 255, 255, 0.14) 100%);
+    --select-glass-border: rgba(255, 255, 255, 0.38);
+    --select-glass-shine: inset 0 1px 0 rgba(255, 255, 255, 0.7), inset 0 -1px 1px rgba(255, 255, 255, 0.18), inset 0 0 18px rgba(255, 255, 255, 0.1);
+
+    position: absolute;
+    left: 50%;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    width: 300px;
+    max-width: calc(100% - 32px);
+    box-sizing: border-box;
+    padding: 11px 13px 10px;
+    border: 1px solid var(--select-glass-border);
+    border-radius: 24px;
+    background: var(--select-glass);
+    box-shadow: var(--select-glass-shine), 0 18px 50px rgba(20, 10, 30, 0.35);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    color: #ffffff;
+    font-family: "Nunito", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, 20px);
+    transition: opacity 0.3s, transform 0.3s;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Specular sheen across the top of the glass */
+.character-select::before {
+    content: "";
+    position: absolute;
+    inset: 1px 1px 50%;
+    border-radius: 23px 23px 60% 60% / 23px 23px 18px 18px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0));
+    pointer-events: none;
+}
+
+.character-select.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: auto;
+}
+
+.character-select-title {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+.character-select-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.character-select-arrow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    padding: 7px 9px;
+    border: 1px solid var(--select-glass-border);
+    border-radius: 999px;
+    background: var(--select-glass);
+    box-shadow: var(--select-glass-shine), 0 4px 14px rgba(20, 10, 30, 0.2);
+    color: #ffffff;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.character-select-arrow:hover {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: var(--select-glass-shine), 0 0 18px var(--select-pink-glow);
+    transform: scale(1.06);
+}
+
+.character-select-arrow:active {
+    transform: scale(0.96);
+}
+
+.character-select-key {
+    display: inline-block;
+    min-width: 17px;
+    padding: 0 4px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.character-select-card {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 18px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.32), rgba(255, 101, 155, 0.16));
+    box-shadow: var(--select-glass-shine), 0 0 0 2px rgba(255, 101, 155, 0.75), 0 0 26px var(--select-pink-glow);
+}
+
+.character-select-card.is-empty {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: var(--select-glass-shine);
+    opacity: 0.75;
+}
+
+.character-select-card.is-pop {
+    animation: character-select-pop 0.25s ease-out;
+}
+
+.character-select-card.is-shake {
+    animation: character-select-shake 0.35s ease-in-out;
+}
+
+.character-select-index {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.character-select-name {
+    overflow: hidden;
+    font-size: 18px;
+    font-weight: 800;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+}
+
+.character-select-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.character-select-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.character-select-dot.is-active {
+    background: var(--select-pink);
+    box-shadow: 0 0 8px var(--select-pink-glow);
+    transform: scale(1.4);
+}
+
+.character-select-hint {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+/* Username step first (CharacterSelect.signIn), the character browser after it */
+.character-select-signin {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+}
+
+.character-select.is-signing-in .character-select-signin {
+    display: flex;
+}
+
+.character-select.is-signing-in > :not(.character-select-signin) {
+    display: none;
+}
+
+.character-select-signin-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.character-select-input {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: var(--select-glass-shine);
+    color: #ffffff;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    outline: none;
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+.character-select-input::placeholder {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.character-select-input:focus {
+    box-shadow: var(--select-glass-shine), 0 0 0 2px rgba(255, 101, 155, 0.75), 0 0 18px var(--select-pink-glow);
+}
+
+.character-select-submit {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border: 1px solid var(--select-glass-border);
+    border-radius: 999px;
+    background: var(--select-pink);
+    box-shadow: var(--select-glass-shine), 0 4px 14px rgba(20, 10, 30, 0.2);
+    color: #ffffff;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: box-shadow 0.15s, transform 0.15s, opacity 0.15s;
+}
+
+.character-select-submit:hover {
+    box-shadow: var(--select-glass-shine), 0 0 18px var(--select-pink-glow);
+    transform: scale(1.04);
+}
+
+.character-select-submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.character-select-hint.is-error {
+    color: #ffd2e1;
+    font-weight: 700;
+}
+
+/* Narrow screens: above the 16+ badge (style/ageRating.styl) instead of over it */
+@media (max-width: 640px) {
+    .character-select {
+        bottom: calc(84px + env(safe-area-inset-bottom));
+    }
+}
+
+@keyframes character-select-pop {
+    0% { transform: scale(0.94); }
+    100% { transform: scale(1); }
+}
+
+@keyframes character-select-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}

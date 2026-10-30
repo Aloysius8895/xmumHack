@@ -6,7 +6,7 @@ All seven associated Git submodule registrations and `.gitmodules` were removed.
 
 Preserved application dependencies include:
 
-- `GamePlat/expert/`: the live AI mentor persona cards, full source skills, research, and licenses. `server/experts.js` reads the local `card.md` files from this directory.
+- `src/expert/`: the live AI mentor persona cards, full source skills, research, and licenses. `server/experts.js` reads the local `card.md` files from this directory.
 - The actual career skill catalog, extracted-skill translations, game assets, Blender tools, collection adapters, market data, workflows, environment files, and player saves.
 - User-wide Codex/agent skill installations outside this repository.
 
@@ -23,6 +23,6 @@ Validation after removal:
 - 159 game/server/career/n8n tests passed.
 - 53 collection-service tests passed.
 - Eight data-processing tests and 22 offline integrity/replay checks passed; no network collection was run.
-- Both active AI mentor persona cards loaded from `GamePlat/expert/`.
+- Both active AI mentor persona cards loaded from `src/expert/`.
 - The production Vite build passed, with its existing bundle/dependency warnings.
 - No root skill directory, tracked skill paths, `.gitmodules`, or local skill submodule registrations remain. The existing expert files and game environment file have no cleanup changes.

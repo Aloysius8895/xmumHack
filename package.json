@@ -1,0 +1,19 @@
+{
+  "name": "kerjayaku",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "KerjayaKu career exploration and learning companion",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "dev": "npm --prefix src/game run dev",
+    "build": "npm --prefix src/game run build",
+    "start": "npm --prefix src/game run server",
+    "test": "node tests/run.mjs node",
+    "test:python": "node tests/run.mjs python",
+    "test:all": "node tests/run.mjs all",
+    "test:browser": "node tests/run.mjs browser",
+    "market:setup": "npm --prefix src/game run crawler:setup",
+    "market:serve": "npm --prefix src/game run crawler:serve"
+  }
+}

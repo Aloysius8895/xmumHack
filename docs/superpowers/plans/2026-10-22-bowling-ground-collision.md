@@ -2,7 +2,7 @@
 
 **Goal:** Prevent the player from sinking below the visible ground beside the bowling lanes.
 
-**Evidence:** The exported terrain vertices around x=-18 contain Float32 drift, e.g. x=-18.000005722 on a nominal boundary vertex. `Floor.setPhysical()` compares raw exported coordinates to `MAP_BOUNDS` and replaces these in-bounds heights with -1.5. At x=-17.65, z=63 the real Rapier floor is about -1.15 while the visible paved ground is at 0. A settled character consequently has feet below -1.0. Similar drift exists at z=84. Evidence is in `GamePlat/verification/bowling-ground/before-edge-survey.json`, `before-edge-reproduction.json` and `before-edge.png`.
+**Evidence:** The exported terrain vertices around x=-18 contain Float32 drift, e.g. x=-18.000005722 on a nominal boundary vertex. `Floor.setPhysical()` compares raw exported coordinates to `MAP_BOUNDS` and replaces these in-bounds heights with -1.5. At x=-17.65, z=63 the real Rapier floor is about -1.15 while the visible paved ground is at 0. A settled character consequently has feet below -1.0. Similar drift exists at z=84. Evidence is in `src/verification/bowling-ground/before-edge-survey.json`, `before-edge-reproduction.json` and `before-edge.png`.
 
 **Architecture:** Keep the existing dynamic capsule, visual synchronization and terrain. Classify heightfield vertices against crop bounds using their canonical regular-grid coordinates (the same rounded indices already used by Rapier's heightfield), instead of imprecise source GLB coordinates. Preserve source heights and truly out-of-bounds seabed. No blanket floor, player offset or forced teleport.
 

@@ -10,7 +10,7 @@ Route every existing model-backed CareerSphere feature, including features reach
 ## Current findings
 
 - Current branch: `database-model`, after SDG merge commit `bf052c0`.
-- `GamePlat/game/.env` contains a nonempty `DEEPSEEK_API_KEY` and `DEEPSEEK_MODEL=deepseek-flash`, but `AI_PROVIDER` is empty. No key value was printed during inspection.
+- `src/game/.env` contains a nonempty `DEEPSEEK_API_KEY` and `DEEPSEEK_MODEL=deepseek-flash`, but `AI_PROVIDER` is empty. No key value was printed during inspection.
 - Game provider selection currently supports `bedrock`, `deepseek_direct`, `replit` and `anthropic`. `deepseek_direct` means AWS Lambda, rather than local direct API access.
 - Game structured features call `server/ai.js:ask`; mentor and industry expert conversations call `reply`.
 - Chatbot `app/ai.py` supports AWS providers, Anthropic and OpenAI, with no local `deepseek` provider.

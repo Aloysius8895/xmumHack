@@ -1,0 +1,10 @@
+{
+  "name": "JobStreet Malaysia job postings 2025 (Hugging Face seemarn/jobstreet)",
+  "platform": "JobStreet",
+  "url": "https://huggingface.co/datasets/seemarn/jobstreet",
+  "revision": "c1f4a140d60f405a9736c1fb0de0a0b2dbde7804",
+  "file": "jobstreet_all_job_dataset_2025_skills_ner_clustered.csv",
+  "sha256": "b59db2797edf7567b34aa9cbd64dfc5818d2c870811cbf071f5710aaceb17263",
+  "licence": "not stated by the dataset; aggregates only, no posting text is redistributed",
+  "rows": 9566
+}

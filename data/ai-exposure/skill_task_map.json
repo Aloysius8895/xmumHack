@@ -1,0 +1,625 @@
+{
+  "about": "v2 (2026-10-30): for each career, every task statement of its O*NET occupations that matches a skill's pattern counts for that skill, including tasks with no observed AI use. Nothing is ranked by penetration. A reviewer removes irrelevant tasks with exclude and sets reviewed: true.",
+  "reviewer": "Aloysius Ting",
+  "careers": {
+    "data-analyst": {
+      "onet": [
+        "15-1199.08",
+        "15-2041.00"
+      ],
+      "soc": "15-2051",
+      "skills": [
+        "sql",
+        "data-cleaning",
+        "data-visualization",
+        "excel",
+        "statistics",
+        "python",
+        "communication"
+      ]
+    },
+    "frontend-developer": {
+      "onet": [
+        "15-1134.00"
+      ],
+      "soc": "15-1254",
+      "skills": [
+        "html-css",
+        "javascript",
+        "react",
+        "git",
+        "accessibility",
+        "api-integration"
+      ]
+    },
+    "backend-developer": {
+      "onet": [
+        "15-1132.00",
+        "15-1133.00",
+        "15-1199.06"
+      ],
+      "soc": "15-1252",
+      "skills": [
+        "backend-language",
+        "databases",
+        "rest-api",
+        "git",
+        "testing",
+        "cloud-deploy"
+      ]
+    },
+    "ui-ux-designer": {
+      "onet": [
+        "27-1024.00",
+        "15-1134.00"
+      ],
+      "soc": "15-1255",
+      "skills": [
+        "user-research",
+        "prototyping",
+        "figma",
+        "visual-design",
+        "usability-testing",
+        "communication"
+      ]
+    },
+    "ml-engineer": {
+      "onet": [
+        "15-1111.00",
+        "15-2041.00"
+      ],
+      "soc": "15-1221",
+      "skills": [
+        "python",
+        "ml-math",
+        "ml-frameworks",
+        "data-cleaning",
+        "mlops",
+        "sql"
+      ]
+    },
+    "product-manager": {
+      "onet": [
+        "11-3021.00"
+      ],
+      "soc": "11-3021",
+      "skills": [
+        "roadmapping",
+        "user-research",
+        "communication",
+        "market-analysis",
+        "agile",
+        "sql"
+      ]
+    },
+    "forward-deployed-engineer": {
+      "onet": [
+        "15-1132.00",
+        "15-1121.00"
+      ],
+      "soc": "15-1252",
+      "skills": [
+        "python",
+        "api-integration",
+        "communication",
+        "rest-api",
+        "cloud-deploy",
+        "mlops",
+        "ml-frameworks",
+        "sql"
+      ]
+    },
+    "data-scientist": {
+      "onet": [
+        "15-2041.00",
+        "15-1199.08"
+      ],
+      "soc": "15-2051",
+      "skills": [
+        "python",
+        "statistics",
+        "ml-frameworks",
+        "sql",
+        "data-visualization",
+        "communication"
+      ]
+    },
+    "auditor": {
+      "onet": [
+        "13-2011.02",
+        "13-2011.01"
+      ],
+      "soc": "13-2011",
+      "skills": [
+        "accounting",
+        "auditing",
+        "internal-control",
+        "excel",
+        "communication"
+      ]
+    },
+    "lawyer": {
+      "onet": [
+        "23-1011.00"
+      ],
+      "soc": "23-1011",
+      "skills": [
+        "legal-research",
+        "legal-writing",
+        "negotiation",
+        "communication"
+      ]
+    },
+    "teacher": {
+      "onet": [
+        "25-2031.00"
+      ],
+      "soc": "25-2031",
+      "skills": [
+        "lesson-planning",
+        "classroom-management",
+        "assessment",
+        "communication"
+      ]
+    },
+    "doctor": {
+      "onet": [
+        "29-1063.00",
+        "29-1062.00"
+      ],
+      "soc": "29-1216",
+      "skills": [
+        "clinical-knowledge",
+        "patient-care",
+        "medical-ethics",
+        "communication"
+      ]
+    },
+    "chef": {
+      "onet": [
+        "35-1011.00"
+      ],
+      "soc": "35-1011",
+      "skills": [
+        "cooking-technique",
+        "food-safety",
+        "menu-planning",
+        "project-management",
+        "communication"
+      ]
+    },
+    "civil-engineer": {
+      "onet": [
+        "17-2051.00"
+      ],
+      "soc": "17-2051",
+      "skills": [
+        "engineering-math",
+        "cad",
+        "project-management",
+        "communication"
+      ]
+    }
+  },
+  "skills": {
+    "sql": {
+      "pattern": "\\bsql\\b|\\bquer(y|ies)\\b|database",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 加词边界；[AI 任务初审 2026-10-30] 2 条都是 BI 工具/数据库相关，全部保留"
+    },
+    "excel": {
+      "pattern": "spreadsheet",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 只有 1 条任务（含 spreadsheets），相关，保留；样本很薄"
+    },
+    "statistics": {
+      "pattern": "statistic",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 6 条都是统计分析，全部保留"
+    },
+    "python": {
+      "pattern": "\\bprogramm|\\bcode\\b|\\bcoding\\b|software|\\bscript",
+      "reviewed": true,
+      "exclude": [
+        "Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.",
+        "Design computers and the software that runs them.",
+        "Determine computer software or hardware needed to set up or alter system.",
+        "Maintain network hardware and software, direct network security measures, and monitor networks to ensure availability to system users.",
+        "Recommend new equipment or software packages.",
+        "Supervise computer programmers or other systems analysts or serve as project leaders for particular systems projects.",
+        "Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 script 误匹配 description/prescription；program 改为 programm（避免匹配“项目/计划 programs”）；[AI 任务初审 2026-10-30] 删除督导、采购、网络维护、硬件设计、需求分析，只保留写/改代码的任务"
+    },
+    "data-cleaning": {
+      "pattern": "clean|data quality|validat|verif|accura|integrity",
+      "reviewed": true,
+      "exclude": [
+        "Create or review technical design documentation to ensure the accurate development of reporting solutions."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除写设计文档的任务；剩下的“评估统计方法的有效性/准确性”是最接近的，但不是严格意义的数据清洗"
+    },
+    "data-visualization": {
+      "pattern": "chart|\\bgraph|visuali|dashboard",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 去掉 report：撰写报告属于写作，不是可视化；[AI 任务初审 2026-10-30] 4 条都是图表/仪表板，全部保留"
+    },
+    "communication": {
+      "pattern": "\\bpresent|communicat|explain|consult|advis|discuss|confer",
+      "reviewed": true,
+      "exclude": [
+        "Attend professional meetings, educational conferences, and teacher training workshops to maintain and improve professional competence.",
+        "Determine how food should be presented and create decorative food displays.",
+        "Evaluate findings and develop strategies and arguments in preparation for presentation of cases.",
+        "Examine legal data to determine advisability of defending or prosecuting lawsuit.",
+        "Instruct cooks or other workers in the preparation, cooking, garnishing, or presentation of food.",
+        "Maintain understanding of current Web technologies or programming practices through continuing education, reading, or participation in professional conferences, workshops, or groups.",
+        "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes.",
+        "Study illustrations and photographs to plan presentation of materials, products, or services.",
+        "Use computers, audio-visual aids, and other equipment and materials to supplement presentations."
+      ],
+      "note": "[AI 规则初审 2026-10-30] present 加词边界，避免匹配 represent（律师代表客户是核心法律工作）；[AI 任务初审 2026-10-30] 删除只是字面命中的任务：画草图、食物摆盘（presentation）、持续学习/参会、法律分析（advisability）、使用教具"
+    },
+    "html-css": {
+      "pattern": "\\bweb|html|page",
+      "reviewed": true,
+      "exclude": [
+        "Back up files from Web sites to local directories for instant recovery in case of problems.",
+        "Collaborate with management or users to develop e-commerce strategies and to integrate these strategies with Web sites.",
+        "Communicate with network personnel or Web site hosting agencies to address hardware or software issues affecting Web sites.",
+        "Develop databases that support Web applications and Web sites.",
+        "Develop or implement procedures for ongoing Web site revision.",
+        "Incorporate technical considerations into Web site design plans, such as budgets, equipment, performance requirements, or legal issues including accessibility and privacy.",
+        "Maintain understanding of current Web technologies or programming practices through continuing education, reading, or participation in professional conferences, workshops, or groups.",
+        "Perform Web site tests according to planned schedules, or after any Web site or product revision.",
+        "Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware.",
+        "Register Web sites with search engines to increase Web site traffic.",
+        "Research, document, rate, or select alternatives for Web architecture or technologies."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 只保留建站、写页面代码、页面模板、样式指南、链接维护；删除备份、数据库、商业策略、测试、SEO、写规格文档、技术选型"
+    },
+    "javascript": {
+      "pattern": "\\bprogramm|\\bcode\\b|\\bcoding\\b|web application|\\bscript",
+      "reviewed": true,
+      "exclude": [
+        "Develop databases that support Web applications and Web sites.",
+        "Maintain understanding of current Web technologies or programming practices through continuing education, reading, or participation in professional conferences, workshops, or groups.",
+        "Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware.",
+        "Select programming languages, design tools, or applications."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 同 python：修 script / program 误匹配；[AI 任务初审 2026-10-30] 只保留写代码、评估代码、用脚本语言建站"
+    },
+    "react": {
+      "pattern": "\\binterface|front.?end|web application",
+      "reviewed": true,
+      "exclude": [
+        "Develop databases that support Web applications and Web sites."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 user：太宽，与 user-research 重叠；[AI 任务初审 2026-10-30] 删除数据库任务"
+    },
+    "git": {
+      "pattern": "\\bversion|source code|configuration management|revision control",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 原规则 0 匹配；version 加词边界（避免 conversion），新增 back up（网页开发任务里的备份/恢复最接近版本管理）；[AI 任务初审 2026-10-30] O*NET 没有版本管理相关任务；“备份文件/数据库集群”不是 git，用作代理会误导（渗透率 0 会被理解成 AI 用不上 git）。规则恢复为不放宽，显示「无来源」"
+    },
+    "accessibility": {
+      "pattern": "accessib|usab|compatib|disab",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 2 条：浏览器/设备兼容性检查、网站设计考虑无障碍。是最接近的任务，保留；上一轮你没通过这个技能，请再确认"
+    },
+    "api-integration": {
+      "pattern": "\\binterface|integrat|\\bapi\\b|coordinate and link",
+      "reviewed": false,
+      "exclude": [
+        "Collaborate with management or users to develop e-commerce strategies and to integrate these strategies with Web sites.",
+        "Create web models or prototypes that include physical, interface, logical, or data models."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除商业策略、原型任务。规则新增 coordinate and link，以匹配系统分析师“连接组织内各计算机系统”这类任务；新匹配到的任务还没看过"
+    },
+    "backend-language": {
+      "pattern": "\\bprogramm|\\bcode\\b|\\bcoding\\b|software|\\bapplications?\\b",
+      "reviewed": true,
+      "exclude": [
+        "Analyze user needs and software requirements to determine feasibility of design within time and cost constraints.",
+        "Collaborate with system architects, software architects, design analysts, and others to understand business or industry requirements.",
+        "Consult with customers or other departments on project status, proposals, or technical issues, such as software system design or maintenance.",
+        "Coordinate installation of software system.",
+        "Identify, evaluate and recommend hardware or software technologies to achieve desired database performance.",
+        "Plan and install upgrades of database management system software to enhance database performance.",
+        "Supervise and assign work to programmers, designers, technologists, technicians, or other engineering or scientific personnel.",
+        "Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel.",
+        "Test changes to database applications or systems."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 规则与 python 统一（program→programm）；删除督导、沟通、安装、选型、测试任务，只保留写/改代码与数据模型"
+    },
+    "databases": {
+      "pattern": "database",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 12 条都是数据库工作，全部保留"
+    },
+    "rest-api": {
+      "pattern": "(?<!user )interface|web service|\\bapi\\b",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 排除 user interface（那是前端，不是 API）；[AI 任务初审 2026-10-30] 只有 1 条（数据库应用的接口与数据传输机制），相关，保留；样本很薄"
+    },
+    "cloud-deploy": {
+      "pattern": "deploy|install|configur|server|cloud|network",
+      "reviewed": true,
+      "exclude": [
+        "Recommend purchase of equipment to control dust, temperature, and humidity in area of system installation.",
+        "Recommend purchase of equipment to control dust, temperature, or humidity in area of system installation.",
+        "Specify power supply requirements and configuration.",
+        "Use object-oriented programming languages, as well as client and server applications development processes and multimedia and Internet technology."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除机房供电、温湿度设备采购（硬件设施）和写代码任务"
+    },
+    "testing": {
+      "pattern": "\\btest|debug|\\berrors?\\b",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] test 加词边界，避免匹配 latest/contest/attest；[AI 任务初审 2026-10-30] 2 条都是修错/测试，保留"
+    },
+    "user-research": {
+      "pattern": "\\busers?\\b|client|customer|requirement|survey|interview|(user|customer|client) needs",
+      "reviewed": true,
+      "exclude": [
+        "Develop Web site maps, application models, image templates, or page templates that meet project goals, user needs, or industry standards.",
+        "Incorporate technical considerations into Web site design plans, such as budgets, equipment, performance requirements, or legal issues including accessibility and privacy.",
+        "Key information into computer equipment to create layouts for client or supervisor.",
+        "Manage backup, security and user help systems.",
+        "Photograph layouts, using camera, to make layout prints for supervisors or clients.",
+        "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes.",
+        "Provide users with technical support for computer problems.",
+        "Respond to user email inquiries, or set up automated systems to send responses."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 need：会匹配所有 “as needed”；[AI 任务初审 2026-10-30] 删除只因 client/user 字眼命中的制作和技术支持任务；保留与客户/用户沟通需求、分析用户需求、处理用户反馈"
+    },
+    "prototyping": {
+      "pattern": "prototyp|mock-?up|sketch|layout|wireframe|storyboard",
+      "reviewed": true,
+      "exclude": [
+        "Confer with clients to discuss and determine layout design.",
+        "Key information into computer equipment to create layouts for client or supervisor.",
+        "Mark up, paste, and assemble final layouts to prepare layouts for printer.",
+        "Photograph layouts, using camera, to make layout prints for supervisors or clients.",
+        "Prepare notes and instructions for workers who assemble and prepare final layouts for printing."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 model（ML/统计模型），加 wireframe/storyboard；上轮未通过，需人工确认；[AI 任务初审 2026-10-30] 删除印刷排版流程和客户沟通；保留设计概念、草图、版式、网页原型。上一轮你没通过这个技能，请再确认"
+    },
+    "figma": {
+      "pattern": "layout|graphic|illustrat|mock-?up|wireframe",
+      "reviewed": true,
+      "exclude": [
+        "Confer with clients to discuss and determine layout design.",
+        "Mark up, paste, and assemble final layouts to prepare layouts for printer.",
+        "Photograph layouts, using camera, to make layout prints for supervisors or clients.",
+        "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes.",
+        "Prepare notes and instructions for workers who assemble and prepare final layouts for printing.",
+        "Produce still and animated graphics for on-air and taped portions of television news broadcasts, using electronic video equipment.",
+        "Study illustrations and photographs to plan presentation of materials, products, or services."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 design：几乎匹配设计师全部任务，失去区分度；[AI 任务初审 2026-10-30] 只保留数字化设计与排版任务；删除手绘草图、印刷流程、电视广播图像、客户沟通"
+    },
+    "visual-design": {
+      "pattern": "visual|colou?r|graphic|illustrat|layout|typograph",
+      "reviewed": true,
+      "exclude": [
+        "Confer with clients to discuss and determine layout design.",
+        "Key information into computer equipment to create layouts for client or supervisor.",
+        "Mark up, paste, and assemble final layouts to prepare layouts for printer.",
+        "Photograph layouts, using camera, to make layout prints for supervisors or clients.",
+        "Prepare notes and instructions for workers who assemble and prepare final layouts for printing."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除印刷制作流程和客户沟通，保留视觉设计本身"
+    },
+    "usability-testing": {
+      "pattern": "usab|uncovered by testing|(customer|user) feedback|user experience",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 原来 test 会匹配网页开发的代码测试；改为必须与 user 同时出现；[AI 任务初审 2026-10-30] 原规则 0 匹配；改为匹配“测试或客户反馈中发现的问题”这类任务（网页开发职业里有）。新匹配到的任务还没看过"
+    },
+    "ml-math": {
+      "pattern": "mathemat|statistic|model|algorithm",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 8 条都是数学/统计建模，全部保留"
+    },
+    "ml-frameworks": {
+      "pattern": "machine learning|model|algorithm|data mining",
+      "reviewed": true,
+      "exclude": [
+        "Maintain library of model documents, templates, or other reusable knowledge assets."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除“维护模型文档模板库”（model 指文档模板，不是 ML 模型）"
+    },
+    "mlops": {
+      "pattern": "deploy|monitor|production|maintain.*(system|software|model)",
+      "reviewed": true,
+      "exclude": [
+        "Approve, prepare, monitor, and adjust operational budgets.",
+        "Maintain network hardware and software, direct network security measures, and monitor networks to ensure availability to system users.",
+        "Use the computer in the analysis and solution of business problems, such as development of integrated production and inventory control and cost analysis systems."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉单独的 model 和 maintain：与 ml-frameworks 几乎重复、会匹配 maintain records；[AI 任务初审 2026-10-30] 删除网络维护、预算监控、生产库存系统；只剩 1 条（测试、维护、监控程序与系统），样本很薄"
+    },
+    "roadmapping": {
+      "pattern": "\\bplan|strateg|priorit|\\bgoals?\\b",
+      "reviewed": true,
+      "exclude": [
+        "Develop computer information resources, providing for data security and control, strategic computing, and disaster recovery."
+      ],
+      "note": "[AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation；[AI 任务初审 2026-10-30] 删除 IT 基础设施/灾备任务，保留计划、目标、优先级"
+    },
+    "agile": {
+      "pattern": "coordinat|team|schedul|collaborat",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 只有 1 条（审查项目计划、协调项目活动），保留；样本很薄"
+    },
+    "market-analysis": {
+      "pattern": "market|competit|trend|customer|vendor|industry|new technolog|advances in|cost.?benefit|feasibility",
+      "reviewed": true,
+      "exclude": [
+        "Consult with users, management, vendors, and technicians to assess computing needs and system requirements.",
+        "Meet with department heads, managers, supervisors, vendors, and others, to solicit cooperation and resolve problems."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 原规则 0 匹配；11-3021（IT 经理）任务里没有 market 字眼，放宽到供应商评估、行业/新技术跟踪、成本效益和可行性分析；[AI 任务初审 2026-10-30] 删除与 user-research/沟通重复的任务；保留跟踪技术进展、评估项目可行性。产品经理映射到 IT 经理本身较弱"
+    },
+    "accounting": {
+      "pattern": "account|financial|ledger|statement",
+      "reviewed": true,
+      "exclude": [
+        "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
+        "Confer with company officials about financial and regulatory matters.",
+        "Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity.",
+        "Report to management about asset utilization and audit results, and recommend changes in operations and financial activities.",
+        "Represent clients before taxing authorities and provide support during litigation involving financial issues.",
+        "Review taxpayer accounts, and conduct audits on-site, by correspondence, or by summoning taxpayer to office."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除归属审计、内控、沟通、代理出庭的任务，只保留记账、报表、会计系统、财务分析"
+    },
+    "auditing": {
+      "pattern": "audit|examin|inspect",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 13 条都是审计工作，全部保留"
+    },
+    "internal-control": {
+      "pattern": "\\bcontrols?\\b|risk|complian|fraud",
+      "reviewed": true,
+      "exclude": [
+        "Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements."
+      ],
+      "note": "[AI 规则初审 2026-10-30] control 加词边界，避免匹配 controller；[AI 任务初审 2026-10-30] 删除报税任务"
+    },
+    "legal-research": {
+      "pattern": "research|statute|regulation|case law|precedent|interpret",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 4 条都是法律研究/解释，全部保留"
+    },
+    "legal-writing": {
+      "pattern": "prepare|draft|writ|document",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 3 条都是法律文书写作，全部保留"
+    },
+    "negotiation": {
+      "pattern": "negotiat|\\bsettle|\\bmediat|agreement",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] mediat 加词边界，避免匹配 immediately/intermediate；[AI 任务初审 2026-10-30] 只有 1 条（谈判民事和解），保留"
+    },
+    "lesson-planning": {
+      "pattern": "\\bplan|lesson|curricul|instruction|material",
+      "reviewed": true,
+      "exclude": [
+        "Instruct and monitor students in the use of equipment and materials to prevent injuries and damage.",
+        "Select, store, order, issue, and inventory classroom equipment, materials, and supplies.",
+        "Use computers, audio-visual aids, and other equipment and materials to supplement presentations."
+      ],
+      "note": "[AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation；[AI 任务初审 2026-10-30] 删除器材安全、教具使用、物资管理任务"
+    },
+    "classroom-management": {
+      "pattern": "classroom|behavio|disciplin|\\border\\b(?! to)|rules",
+      "reviewed": true,
+      "exclude": [
+        "Observe and evaluate students' performance, behavior, social development, and physical health.",
+        "Prepare materials and classrooms for class activities.",
+        "Select, store, order, issue, and inventory classroom equipment, materials, and supplies."
+      ],
+      "note": "[AI 规则初审 2026-10-30] order 只匹配独立单词且排除 in order to，避免匹配 disorder/border；[AI 任务初审 2026-10-30] 删除备课物资任务；“观察评估学生表现”归入 assessment（它的替代度 0.80 原本把课堂管理拉高了）"
+    },
+    "assessment": {
+      "pattern": "evaluat|assess|\\bgrad(e|es|ing)\\b(?! level)|\\btest|progress",
+      "reviewed": true,
+      "exclude": [
+        "Collaborate with other teachers and administrators in the development, evaluation, and revision of secondary school programs.",
+        "Meet with other professionals to discuss individual students' needs and progress.",
+        "Meet with parents and guardians to discuss their children's progress and to determine priorities for their children and their resource needs.",
+        "Prepare students for later grades by encouraging them to explore learning opportunities and to persevere with challenging tasks."
+      ],
+      "note": "[AI 规则初审 2026-10-30] test 加词边界；grade 排除 grade level（年级不是评分）；[AI 任务初审 2026-10-30] 删除年级（grades）误匹配、家长/同事沟通、学校项目评估"
+    },
+    "clinical-knowledge": {
+      "pattern": "diagnos|treat|prescri|disease|clinical|condition|examin",
+      "reviewed": true,
+      "exclude": [
+        "Advise patients and community members concerning diet, activity, hygiene, and disease prevention.",
+        "Conduct research to develop or test medications, treatments, or procedures to prevent or control disease or injury.",
+        "Conduct research to study anatomy and develop or test medications, treatments, or procedures to prevent or control disease or injury.",
+        "Explain procedures and discuss test results or prescribed treatments with patients.",
+        "Plan, implement, or administer health programs in hospitals, businesses, or communities for prevention and treatment of injuries or illnesses.",
+        "Plan, implement, or administer health programs or standards in hospitals, businesses, or communities for prevention or treatment of injury or illness.",
+        "Prepare government or organizational reports on birth, death, and disease statistics, workforce evaluations, or the medical status of individuals.",
+        "Prepare government or organizational reports which include birth, death, and disease statistics, workforce evaluations, or medical status of individuals."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除归属沟通、行政报告、公共卫生项目管理、科研的任务，保留诊断、治疗、开药、手术、监测"
+    },
+    "patient-care": {
+      "pattern": "patient",
+      "reviewed": true,
+      "exclude": [
+        "Provide consulting services to other doctors caring for patients with special or difficult problems."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除医生之间会诊（不直接面对病人）"
+    },
+    "medical-ethics": {
+      "pattern": "ethic|confidential|consent|privacy",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] 原规则 0 匹配；O*NET 医生任务基本不写伦理，用“向病人解释风险/治疗方案”（知情同意）做近似。这是代理指标，需人工确认是否接受；[AI 任务初审 2026-10-30] 撤回我上次加的代理规则：它只命中 1 条渗透率 0.85 的任务，单独把医生总分从 0.14 拉到 0.32。O*NET 没有伦理相关任务，恢复原规则，显示「无来源」"
+    },
+    "cooking-technique": {
+      "pattern": "\\bcooking\\b|\\bcook (food|meat|dish)|\\bdish(es)?\\b|season|ingredient|prepar\\w* (food|meal|dish|sauce)",
+      "reviewed": true,
+      "exclude": [
+        "Collaborate with other personnel to plan and develop recipes or menus, taking into account such factors as seasonal availability of ingredients or the likely number of customers.",
+        "Estimate amounts and costs of required supplies, such as food and ingredients."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 原来 cook 匹配 supervise cooks（管理任务），prepar 匹配 prepare budgets；改为只匹配烹饪动作；[AI 任务初审 2026-10-30] 删除成本估算和菜单规划，保留烹饪、示范和指导烹饪技巧"
+    },
+    "food-safety": {
+      "pattern": "sanit|safety|hygien|clean|inspect|storage",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 2 条都是卫生检查，保留"
+    },
+    "menu-planning": {
+      "pattern": "menu|recipe|food cost|\\bprice|portion",
+      "reviewed": true,
+      "exclude": [
+        "Meet with sales representatives to negotiate prices or order supplies."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉单独的 cost：与 project-management 的预算重叠；[AI 任务初审 2026-10-30] 删除采购议价"
+    },
+    "engineering-math": {
+      "pattern": "calculat|\\bcompute\\b|computation|estimat|analy",
+      "reviewed": true,
+      "exclude": [],
+      "note": "[AI 规则初审 2026-10-30] comput 改为 compute/computation，避免匹配 computer-aided（那是 cad）；[AI 任务初审 2026-10-30] 4 条都是工程计算/分析，全部保留"
+    },
+    "cad": {
+      "pattern": "drawing|\\bcad\\b|computer-a(ided|ssisted)|blueprint|drafting",
+      "reviewed": false,
+      "exclude": [],
+      "note": "[AI 任务初审 2026-10-30] 只匹配到 1 条“分析图纸蓝图”。规则新增 computer-assisted/drafting，以匹配“用计算机辅助设计或绘图工具设计交通、水利系统”这类任务；新匹配到的任务还没看过"
+    },
+    "project-management": {
+      "pattern": "project|schedul|budget|coordinat",
+      "reviewed": true,
+      "exclude": [
+        "Conduct studies of traffic patterns or environmental conditions to identify engineering problems and assess potential project impact."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除交通/环境研究，保留项目现场管理、排期、预算、协调"
+    }
+  }
+}

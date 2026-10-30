@@ -1,0 +1,25 @@
+{
+  "about": "Reviewed job title rules (regular expressions, case-insensitive) and search words per career. Shared by the crawler (src/crawler/src/game-config.js) and the reference imports (src/data/scripts).",
+  "titles": {
+    "data-analyst": "\\b(data|business intelligence|bi|reporting|insights?) analysts?\\b",
+    "frontend-developer": "\\bfront[ -]?end\\b|\\breact (developer|engineer)\\b",
+    "backend-developer": "\\bback[ -]?end\\b|\\b(java|node\\.?js|python|api|server[ -]side) (developer|engineer)\\b",
+    "ui-ux-designer": "\\b(ui|ux|user experience|user interface|product|interaction) designer\\b|\\bui[ /-]+ux\\b",
+    "ml-engineer": "\\b(machine learning|mlops|ml|ai|artificial intelligence|deep learning|llm) (engineer|developer|specialist)\\b",
+    "product-manager": "\\bproduct (manager|owner|lead)\\b",
+    "forward-deployed-engineer": "\\bforward[ -]+deploy(?:ed|ment)[ -]+(?:(?:software|ai|genai)[ -]+)?engineer(?:ing)?\\b",
+    "data-scientist": "\\b(data|applied) scientist\\b",
+    "auditor": "\\bauditor\\b|\\baudit (associate|executive|manager|senior)\\b",
+    "lawyer": "\\b(lawyer|legal counsel|legal associate|advocate|solicitor)\\b",
+    "teacher": "\\b(teacher|lecturer|educator)\\b",
+    "doctor": "\\b(medical officer|medical doctor|physician|general practitioner)\\b",
+    "chef": "\\bchef\\b",
+    "civil-engineer": "\\b(civil|structural) engineer\\b"
+  },
+  "queries": {
+    "ml-engineer": "machine learning engineer",
+    "forward-deployed-engineer": "forward deployed engineer",
+    "ui-ux-designer": "UI UX designer",
+    "doctor": "medical officer"
+  }
+}

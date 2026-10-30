@@ -1,0 +1,743 @@
+{
+  "source": {
+    "name": "JobStreet Malaysia job postings 2025 (Hugging Face seemarn/jobstreet)",
+    "platform": "JobStreet",
+    "url": "https://huggingface.co/datasets/seemarn/jobstreet",
+    "revision": "c1f4a140d60f405a9736c1fb0de0a0b2dbde7804",
+    "file": "jobstreet_all_job_dataset_2025_skills_ner_clustered.csv",
+    "sha256": "b59db2797edf7567b34aa9cbd64dfc5818d2c870811cbf071f5710aaceb17263",
+    "licence": "not stated by the dataset; aggregates only, no posting text is redistributed",
+    "rows": 9566
+  },
+  "generatedAt": "2026-10-30T07:42:43.012Z",
+  "method": "Careers and skills found by the crawler's normalize() and game config (src/crawler/src), the same rules as the LinkedIn / Indeed collection",
+  "candidates": {
+    "accountant": {
+      "name": "Accountant",
+      "initial": true,
+      "postings": 501,
+      "byMonth": {
+        "2025-03": 212,
+        "2025-04": 265,
+        "2025-05": 24
+      },
+      "precision": 95.6,
+      "categories": {
+        "Accounting": 95.6,
+        "Administration & Office Support": 2.4,
+        "Sales": 0.8,
+        "Banking & Financial Services": 0.6,
+        "Human Resources & Recruitment": 0.2
+      },
+      "overlaps": {},
+      "entryLevel": 35.3,
+      "described": 501,
+      "skills": {
+        "accounting": 95,
+        "communication": 52.1,
+        "auditing": 50.1,
+        "excel": 41.1,
+        "internal-control": 15.8,
+        "sql": 11.2,
+        "databases": 3,
+        "negotiation": 2.6,
+        "project-management": 2.6,
+        "data-visualization": 1.8,
+        "statistics": 1,
+        "clinical-knowledge": 0.8,
+        "react": 0.6,
+        "roadmapping": 0.6,
+        "accessibility": 0.6
+      },
+      "datasetSkills": {
+        "accounting": 87.2,
+        "finance": 62.9,
+        "communication": 44.7,
+        "management": 42.1,
+        "registration": 36.5,
+        "accounting software": 30.5,
+        "accounts payable": 29.5,
+        "reconciliation": 27.3,
+        "financial statements": 26.9,
+        "operations": 24.8,
+        "filing": 21.8,
+        "accounts receivable": 21,
+        "problem solving": 20.8,
+        "microsoft office": 19,
+        "general ledger": 17.8
+      },
+      "examples": [
+        "Accountant",
+        "Account Officer",
+        "Accounts Executive",
+        "ACCOUNT ASSISTANT/ EXECUTIVE",
+        "Account Assistant",
+        "Finance Officer",
+        "Finance Executive (6 months contract)",
+        "FINANCE OFFICER"
+      ]
+    },
+    "software-engineer": {
+      "name": "Software Engineer",
+      "initial": true,
+      "postings": 155,
+      "byMonth": {
+        "2025-03": 60,
+        "2025-04": 88,
+        "2025-05": 7
+      },
+      "precision": 80.6,
+      "categories": {
+        "Information & Communication Technology": 80.6,
+        "Engineering": 11.6,
+        "Manufacturing, Transport & Logistics": 3.9,
+        "Sales": 3.2,
+        "Marketing & Communications": 0.6
+      },
+      "overlaps": {
+        "ui-ux-designer": 2,
+        "backend-developer": 2
+      },
+      "entryLevel": 22.6,
+      "described": 155,
+      "skills": {
+        "backend-language": 63.2,
+        "communication": 58.1,
+        "sql": 52.3,
+        "databases": 45.8,
+        "javascript": 40,
+        "html-css": 32.3,
+        "cloud-deploy": 28.4,
+        "react": 27.7,
+        "git": 27.1,
+        "agile": 27.1,
+        "rest-api": 26.5,
+        "testing": 25.2,
+        "python": 20.6,
+        "project-management": 11.6,
+        "api-integration": 6.5
+      },
+      "datasetSkills": {
+        "computer science": 52.9,
+        "communication": 47.1,
+        "problem solving": 47.1,
+        "software development": 34.8,
+        "registration": 33.5,
+        "software engineering": 28.4,
+        "information technology": 25.8,
+        "mysql": 23.9,
+        "programming languages": 18.1,
+        "collaboration": 18.1,
+        "innovation": 18.1,
+        "business requirements": 14.2,
+        "web development": 14.2,
+        "version control": 14.2,
+        "debugging": 13.5
+      },
+      "examples": [
+        "Software Engineer (Fresh Graduates are welcome)",
+        "Software Engineer",
+        "Web Developer",
+        "Senior Full Stack Engineer",
+        "Senior Embedded Software Engineer",
+        "Senior Software Engineer, Web",
+        "Software Developer—云平台测试与自动化开发工程师",
+        "Senior/Staff Software Engineer"
+      ]
+    },
+    "electrical-engineer": {
+      "name": "Electrical & Electronics Engineer",
+      "initial": true,
+      "postings": 82,
+      "byMonth": {
+        "2025-03": 37,
+        "2025-04": 41,
+        "2025-05": 4
+      },
+      "precision": 84.1,
+      "categories": {
+        "Engineering": 82.9,
+        "Real Estate & Property": 6.1,
+        "Information & Communication Technology": 6.1,
+        "Manufacturing, Transport & Logistics": 1.2,
+        "Mining, Resources & Energy": 1.2
+      },
+      "overlaps": {
+        "candidate mechanical-engineer": 2
+      },
+      "entryLevel": 14.6,
+      "described": 82,
+      "skills": {
+        "communication": 51.2,
+        "cad": 29.3,
+        "prototyping": 14.6,
+        "auditing": 11,
+        "project-management": 11,
+        "excel": 8.5,
+        "python": 4.9,
+        "internal-control": 3.7,
+        "backend-language": 3.7,
+        "market-analysis": 3.7,
+        "data-visualization": 2.4,
+        "databases": 2.4,
+        "sql": 2.4,
+        "statistics": 1.2,
+        "cooking-technique": 1.2
+      },
+      "datasetSkills": {
+        "communication": 41.5,
+        "registration": 39,
+        "problem solving": 37.8,
+        "installation": 29.3,
+        "management": 28,
+        "electrical engineering": 26.8,
+        "electrical systems": 26.8,
+        "preventive maintenance": 23.2,
+        "operations": 19.5,
+        "planning": 19.5,
+        "electronics": 15.9,
+        "construction": 15.9,
+        "leadership": 13.4,
+        "autocad": 13.4,
+        "automation": 13.4
+      },
+      "examples": [
+        "EOI:BO Chargeman, 11KV or 33KV (Penang)",
+        "Senior Control & Instrumentation Engineer",
+        "PLC ENGINEER",
+        "Electrical Engineer, Maintenance & Facilities",
+        "Senior/ Electronic Design Engineer",
+        "Chargeman (M&E)",
+        "Chargeman A4",
+        "Assistant Engineer Chargeman (BO 11Kv)"
+      ]
+    },
+    "digital-marketer": {
+      "name": "Digital Marketing Executive",
+      "initial": true,
+      "postings": 107,
+      "byMonth": {
+        "2025-03": 43,
+        "2025-04": 61,
+        "2025-05": 3
+      },
+      "precision": 97.2,
+      "categories": {
+        "Marketing & Communications": 90.7,
+        "Sales": 3.7,
+        "Advertising, Arts & Media": 2.8,
+        "Design & Architecture": 0.9,
+        "Administration & Office Support": 0.9
+      },
+      "overlaps": {
+        "candidate sales-executive": 2
+      },
+      "entryLevel": 20.6,
+      "described": 107,
+      "skills": {
+        "communication": 65.4,
+        "visual-design": 23.4,
+        "market-analysis": 23.4,
+        "excel": 11.2,
+        "project-management": 10.3,
+        "statistics": 8.4,
+        "data-visualization": 6.5,
+        "accounting": 5.6,
+        "databases": 5.6,
+        "negotiation": 4.7,
+        "html-css": 3.7,
+        "auditing": 3.7,
+        "roadmapping": 1.9,
+        "javascript": 0.9,
+        "agile": 0.9
+      },
+      "datasetSkills": {
+        "digital marketing": 76.6,
+        "marketing": 73.8,
+        "social media": 72,
+        "communication": 45.8,
+        "facebook": 44.9,
+        "registration": 42.1,
+        "tiktok": 39.3,
+        "google analytics": 30.8,
+        "analytics": 29,
+        "google ads": 28,
+        "sales": 25.2,
+        "content creation": 24.3,
+        "management": 23.4,
+        "planning": 22.4,
+        "research": 20.6
+      },
+      "examples": [
+        "Social Media Manager",
+        "Digital Marketing Executive (fresh graduate or 1 year of experience)",
+        "SOCIAL MEDIA COORDINATOR",
+        "Digital Marketer (Muslims are welcome)",
+        "Digital Marketer",
+        "Tiktok Content Creator (Social Media & Digital Marketing)",
+        "Performance Marketing Executive",
+        "Social Media Specialist"
+      ]
+    },
+    "quantity-surveyor": {
+      "name": "Quantity Surveyor",
+      "initial": true,
+      "postings": 94,
+      "byMonth": {
+        "2025-03": 36,
+        "2025-04": 52,
+        "2025-05": 6
+      },
+      "precision": 95.7,
+      "categories": {
+        "Construction": 91.5,
+        "Engineering": 4.3,
+        "Manufacturing, Transport & Logistics": 1.1,
+        "Consulting & Strategy": 1.1,
+        "Accounting": 1.1
+      },
+      "overlaps": {
+        "candidate procurement-executive": 1
+      },
+      "entryLevel": 18.1,
+      "described": 94,
+      "skills": {
+        "communication": 52.1,
+        "negotiation": 51.1,
+        "cad": 31.9,
+        "project-management": 19.1,
+        "excel": 17,
+        "accounting": 5.3,
+        "auditing": 4.3,
+        "internal-control": 4.3,
+        "agile": 3.2,
+        "databases": 3.2,
+        "prototyping": 1.1,
+        "legal-writing": 1.1,
+        "ml-math": 1.1,
+        "engineering-math": 1.1
+      },
+      "datasetSkills": {
+        "construction": 68.1,
+        "quantity surveying": 64.9,
+        "communication": 43.6,
+        "registration": 40.4,
+        "procurement": 34,
+        "negotiation": 31.9,
+        "management": 29.8,
+        "cost control": 26.6,
+        "problem solving": 26.6,
+        "cost estimation": 22.3,
+        "autocad": 21.3,
+        "planning": 16,
+        "microsoft office": 16,
+        "construction management": 14.9,
+        "cost management": 13.8
+      },
+      "examples": [
+        "QUANTITY SURVEYOR",
+        "Assistant Quantity Surveyor",
+        "Quantity Surveyor (Fresh Graduates)",
+        "Quantity Surveyor",
+        "QUANTITY SURVEYOR",
+        "Quantity Surveyor / Executive, Contract",
+        "Senior Quantity Surveyor (Kuala Lumpur, Up to MYR20,000)",
+        "Quantity Surveyor"
+      ]
+    },
+    "hr-executive": {
+      "name": "Human Resources Executive",
+      "initial": true,
+      "postings": 204,
+      "byMonth": {
+        "2025-03": 89,
+        "2025-04": 106,
+        "2025-05": 9
+      },
+      "precision": 77,
+      "categories": {
+        "Human Resources & Recruitment": 77,
+        "Accounting": 10.8,
+        "Administration & Office Support": 7.4,
+        "Manufacturing, Transport & Logistics": 1.5,
+        "Hospitality & Tourism": 1
+      },
+      "overlaps": {},
+      "entryLevel": 22.1,
+      "described": 204,
+      "skills": {
+        "communication": 68.6,
+        "auditing": 21.6,
+        "excel": 20.6,
+        "accounting": 11.8,
+        "databases": 9.8,
+        "negotiation": 9.3,
+        "sql": 5.4,
+        "market-analysis": 3.9,
+        "internal-control": 2.9,
+        "data-visualization": 2.5,
+        "food-safety": 2,
+        "roadmapping": 1.5,
+        "cooking-technique": 1.5,
+        "statistics": 1.5,
+        "html-css": 1
+      },
+      "datasetSkills": {
+        "communication": 61.3,
+        "management": 57.4,
+        "registration": 37.7,
+        "business administration": 33.8,
+        "employee relations": 30.4,
+        "employee engagement": 26,
+        "performance management": 23.5,
+        "problem solving": 20.6,
+        "payroll processing": 19.6,
+        "microsoft office": 18.6,
+        "confidentiality": 17.2,
+        "operations": 16.7,
+        "talent acquisition": 16.7,
+        "human resource management": 15.2,
+        "leadership": 14.2
+      },
+      "examples": [
+        "Senior HR Executive",
+        "HR Business Partner - Asia Pacific Region",
+        "HR Admin (Chinese Speaking)",
+        "Assistant HR Manager",
+        "HR Executive",
+        "Finance & Payroll Manager 财务与薪资经理 (Tanjung Malim, Perak)",
+        "Senior HR Manager",
+        "HR Manager"
+      ]
+    },
+    "procurement-executive": {
+      "name": "Procurement & Supply Chain Executive",
+      "initial": false,
+      "postings": 179,
+      "byMonth": {
+        "2025-03": 78,
+        "2025-04": 94,
+        "2025-05": 7
+      },
+      "precision": 85.5,
+      "categories": {
+        "Manufacturing, Transport & Logistics": 85.5,
+        "Retail & Consumer Products": 4.5,
+        "Administration & Office Support": 3.9,
+        "Accounting": 2.2,
+        "Construction": 1.1
+      },
+      "overlaps": {
+        "candidate quantity-surveyor": 1
+      },
+      "entryLevel": 23.5,
+      "described": 179,
+      "skills": {
+        "negotiation": 70.4,
+        "communication": 66.5,
+        "auditing": 20.1,
+        "market-analysis": 19.6,
+        "excel": 19,
+        "databases": 11.2,
+        "project-management": 7.3,
+        "internal-control": 6.1,
+        "food-safety": 5,
+        "roadmapping": 3.4,
+        "accounting": 2.8,
+        "cad": 2.2,
+        "sql": 2.2,
+        "data-visualization": 1.7,
+        "statistics": 1.1
+      },
+      "datasetSkills": {
+        "procurement": 66.5,
+        "purchasing": 63.7,
+        "communication": 54.7,
+        "negotiation": 48,
+        "registration": 36.9,
+        "management": 33,
+        "supply chain management": 31.8,
+        "supply chain": 31.3,
+        "logistics": 30.7,
+        "problem solving": 27.9,
+        "planning": 25.7,
+        "operations": 25.7,
+        "sales": 18.4,
+        "business administration": 17.3,
+        "supplier management": 15.6
+      },
+      "examples": [
+        "Purchasing Executive",
+        "Procurement Engineer (Electromechanical Sourcing)",
+        "Procurement Executive",
+        "Procurement Specialist",
+        "Supply Chain Executive",
+        "Senior Purchaser",
+        "Purchaser",
+        "Senior Buyer (Direct & Indirect)"
+      ]
+    },
+    "business-analyst": {
+      "name": "Business Analyst",
+      "initial": false,
+      "postings": 44,
+      "byMonth": {
+        "2025-03": 16,
+        "2025-04": 27,
+        "2025-05": 1
+      },
+      "precision": 90.9,
+      "categories": {
+        "Information & Communication Technology": 86.4,
+        "Banking & Financial Services": 4.5,
+        "Real Estate & Property": 2.3,
+        "Sales": 2.3,
+        "Accounting": 2.3
+      },
+      "overlaps": {},
+      "entryLevel": 11.4,
+      "described": 44,
+      "skills": {
+        "communication": 75,
+        "sql": 31.8,
+        "agile": 29.5,
+        "excel": 20.5,
+        "backend-language": 18.2,
+        "data-visualization": 15.9,
+        "databases": 15.9,
+        "project-management": 13.6,
+        "accounting": 11.4,
+        "auditing": 9.1,
+        "data-cleaning": 6.8,
+        "internal-control": 6.8,
+        "roadmapping": 6.8,
+        "python": 6.8,
+        "negotiation": 6.8
+      },
+      "datasetSkills": {
+        "communication": 59.1,
+        "business requirements": 52.3,
+        "problem solving": 43.2,
+        "management": 40.9,
+        "computer science": 38.6,
+        "registration": 34.1,
+        "information technology": 31.8,
+        "acceptance testing": 25,
+        "business analysis": 22.7,
+        "decision making": 22.7,
+        "analytical skills": 20.5,
+        "finance": 20.5,
+        "planning": 20.5,
+        "collaboration": 18.2,
+        "business objectives": 15.9
+      },
+      "examples": [
+        "System Analyst - Analytics Development",
+        "Business Analyst (UK Support)",
+        "System Analyst | Contract",
+        "IT Business Analyst",
+        "Senior/System Analyst - SAP ABAP",
+        "Business Analyst",
+        "Assistant Manager/ Senior Executive, Business Analyst",
+        "Senior Analyst, Business Analyst"
+      ]
+    },
+    "mechanical-engineer": {
+      "name": "Mechanical Engineer",
+      "initial": false,
+      "postings": 29,
+      "byMonth": {
+        "2025-03": 15,
+        "2025-04": 13,
+        "2025-05": 1
+      },
+      "precision": 100,
+      "categories": {
+        "Engineering": 100
+      },
+      "overlaps": {
+        "candidate electrical-engineer": 2
+      },
+      "entryLevel": 24.1,
+      "described": 29,
+      "skills": {
+        "cad": 62.1,
+        "communication": 44.8,
+        "project-management": 24.1,
+        "prototyping": 10.3,
+        "auditing": 10.3,
+        "excel": 10.3,
+        "accounting": 6.9,
+        "internal-control": 6.9,
+        "cloud-deploy": 6.9,
+        "engineering-math": 6.9,
+        "roadmapping": 3.4,
+        "medical-ethics": 3.4,
+        "html-css": 3.4,
+        "negotiation": 3.4
+      },
+      "datasetSkills": {
+        "mechanical engineering": 58.6,
+        "communication": 37.9,
+        "commissioning": 34.5,
+        "installation": 34.5,
+        "autocad": 34.5,
+        "problem solving": 31,
+        "management": 24.1,
+        "registration": 24.1,
+        "automation": 20.7,
+        "mechanical systems": 20.7,
+        "machinery": 20.7,
+        "technical support": 20.7,
+        "construction": 20.7,
+        "fabrication": 17.2,
+        "procurement": 17.2
+      },
+      "examples": [
+        "Senior Mechanical Design Engineer",
+        "Sr Mechanical Engineers (Design & Commissioning Industrial Production Lines)",
+        "Mechanical Engineer",
+        "Mechanical Design Engineer",
+        "Mechanical Engineer (Chinese speaking only)",
+        "Senior Mechanical Design Engineer",
+        "Mechanical Engineer 机械工程师",
+        "ASSISTANT MECHANICAL DESIGN ENGINEER"
+      ]
+    },
+    "sales-executive": {
+      "name": "Sales & Business Development Executive",
+      "initial": false,
+      "postings": 694,
+      "byMonth": {
+        "2025-03": 266,
+        "2025-04": 398,
+        "2025-05": 30
+      },
+      "precision": 88.5,
+      "categories": {
+        "Sales": 81.7,
+        "Retail & Consumer Products": 5.2,
+        "Healthcare & Medical": 3.2,
+        "Real Estate & Property": 1.9,
+        "Engineering": 1.6
+      },
+      "overlaps": {
+        "candidate customer-service": 1,
+        "candidate digital-marketer": 2
+      },
+      "entryLevel": 22.8,
+      "described": 694,
+      "skills": {
+        "communication": 65,
+        "negotiation": 37,
+        "market-analysis": 26.4,
+        "excel": 13.3,
+        "databases": 5.3,
+        "project-management": 3.2,
+        "auditing": 2.2,
+        "accounting": 1.9,
+        "roadmapping": 1.6,
+        "agile": 1.4,
+        "internal-control": 1.3,
+        "clinical-knowledge": 1.3,
+        "sql": 0.9,
+        "food-safety": 0.9,
+        "cad": 0.9
+      },
+      "datasetSkills": {
+        "sales": 94.8,
+        "communication": 57.6,
+        "marketing": 42.2,
+        "registration": 39.2,
+        "management": 29,
+        "negotiation": 25.8,
+        "customer service": 21.2,
+        "business development": 19.3,
+        "presentations": 13.8,
+        "problem solving": 13.3,
+        "market research": 10.5,
+        "microsoft office": 9.5,
+        "product knowledge": 9.4,
+        "operations": 9.4,
+        "collaboration": 9.4
+      },
+      "examples": [
+        "Business Development Executive",
+        "Property Sales Executive",
+        "Business Development Executive",
+        "SOLAR SALES REPRESENTATIVE",
+        "Sales Executive/Business Development (Mandarin Speaker)",
+        "Sales Executive",
+        "Sales Engineer/Specialist",
+        "Sales Representative (Trilingual speaker - Man&Can&Eng)"
+      ]
+    },
+    "customer-service": {
+      "name": "Customer Service Executive",
+      "initial": false,
+      "postings": 142,
+      "byMonth": {
+        "2025-03": 57,
+        "2025-04": 84,
+        "2025-05": 1
+      },
+      "precision": 73.9,
+      "categories": {
+        "Call Centre & Customer Service": 72.5,
+        "Manufacturing, Transport & Logistics": 8.5,
+        "Administration & Office Support": 7,
+        "Sales": 4.2,
+        "Banking & Financial Services": 1.4
+      },
+      "overlaps": {
+        "candidate sales-executive": 1
+      },
+      "entryLevel": 28.2,
+      "described": 142,
+      "skills": {
+        "communication": 74.6,
+        "excel": 18.3,
+        "negotiation": 6.3,
+        "auditing": 4.9,
+        "databases": 4.2,
+        "project-management": 2.8,
+        "roadmapping": 2.1,
+        "internal-control": 2.1,
+        "clinical-knowledge": 1.4,
+        "accounting": 1.4,
+        "javascript": 0.7,
+        "market-analysis": 0.7,
+        "sql": 0.7,
+        "html-css": 0.7,
+        "statistics": 0.7
+      },
+      "datasetSkills": {
+        "customer service": 76.1,
+        "communication": 68.3,
+        "registration": 33.1,
+        "problem solving": 26.8,
+        "sales": 25.4,
+        "management": 24.6,
+        "customer inquiries": 22.5,
+        "microsoft office": 20.4,
+        "operations": 17.6,
+        "logistics": 14.8,
+        "customer support": 14.1,
+        "professionalism": 11.3,
+        "marketing": 9.2,
+        "career development": 8.5,
+        "collaboration": 7.7
+      },
+      "examples": [
+        "Customer Service Specialist - Mandarin Speaker ONLY",
+        "LOGISTIC CUSTOMER SERVICE EXECUTIVES Mandarin",
+        "Customer Service Executive",
+        "Customer Support Specialist",
+        "Customer Service Specialist - Digital Investment",
+        "Customer Service Executive - Banking Industry",
+        "CUSTOMER CARE EXECUTIVE",
+        "Mandarin Customer Service Representative 客服专员 (April/May)"
+      ]
+    }
+  }
+}

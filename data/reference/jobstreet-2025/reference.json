@@ -1,0 +1,365 @@
+{
+  "source": {
+    "name": "JobStreet Malaysia job postings 2025 (Hugging Face seemarn/jobstreet)",
+    "platform": "JobStreet",
+    "url": "https://huggingface.co/datasets/seemarn/jobstreet",
+    "revision": "c1f4a140d60f405a9736c1fb0de0a0b2dbde7804",
+    "file": "jobstreet_all_job_dataset_2025_skills_ner_clustered.csv",
+    "sha256": "b59db2797edf7567b34aa9cbd64dfc5818d2c870811cbf071f5710aaceb17263",
+    "licence": "not stated by the dataset; aggregates only, no posting text is redistributed",
+    "rows": 9566
+  },
+  "generatedAt": "2026-10-30T07:42:43.012Z",
+  "method": "Careers and skills found by the crawler's normalize() and game config (src/crawler/src), the same rules as the LinkedIn / Indeed collection",
+  "period": {
+    "from": "2025-03-03",
+    "to": "2025-05-08",
+    "note": "Listing dates; May 2025 only runs to 05-08"
+  },
+  "postings": 9566,
+  "rejected": 0,
+  "described": 9566,
+  "months": {
+    "2025-03": 3993,
+    "2025-04": 5179,
+    "2025-05": 394
+  },
+  "unmapped": 9221,
+  "ambiguous": 2,
+  "careers": {
+    "data-analyst": {
+      "postings": 18,
+      "share": 0.2,
+      "byMonth": {
+        "2025-03": 9,
+        "2025-04": 8,
+        "2025-05": 1
+      },
+      "described": 18,
+      "skills": {
+        "communication": 72.2,
+        "sql": 72.2,
+        "data-visualization": 66.7,
+        "statistics": 55.6,
+        "python": 50,
+        "excel": 50,
+        "data-cleaning": 44.4,
+        "databases": 33.3,
+        "ml-math": 16.7,
+        "agile": 11.1,
+        "cloud-deploy": 11.1,
+        "auditing": 11.1,
+        "git": 5.6,
+        "accounting": 5.6,
+        "accessibility": 5.6,
+        "legal-research": 5.6,
+        "project-management": 5.6,
+        "backend-language": 5.6,
+        "roadmapping": 5.6,
+        "internal-control": 5.6
+      }
+    },
+    "frontend-developer": {
+      "postings": 13,
+      "share": 0.1,
+      "byMonth": {
+        "2025-03": 2,
+        "2025-04": 10,
+        "2025-05": 1
+      },
+      "described": 13,
+      "skills": {
+        "html-css": 84.6,
+        "javascript": 84.6,
+        "communication": 61.5,
+        "react": 61.5,
+        "git": 30.8,
+        "accessibility": 30.8,
+        "backend-language": 30.8,
+        "testing": 30.8,
+        "prototyping": 30.8,
+        "api-integration": 23.1,
+        "rest-api": 23.1,
+        "databases": 15.4,
+        "agile": 15.4,
+        "visual-design": 15.4,
+        "cloud-deploy": 15.4,
+        "negotiation": 7.7,
+        "project-management": 7.7,
+        "figma": 7.7
+      }
+    },
+    "backend-developer": {
+      "postings": 18,
+      "share": 0.2,
+      "byMonth": {
+        "2025-03": 7,
+        "2025-04": 11
+      },
+      "described": 18,
+      "skills": {
+        "backend-language": 72.2,
+        "sql": 72.2,
+        "databases": 66.7,
+        "communication": 55.6,
+        "rest-api": 44.4,
+        "testing": 44.4,
+        "python": 33.3,
+        "cloud-deploy": 27.8,
+        "api-integration": 22.2,
+        "agile": 22.2,
+        "project-management": 22.2,
+        "git": 11.1,
+        "statistics": 11.1,
+        "negotiation": 5.6,
+        "excel": 5.6,
+        "prototyping": 5.6,
+        "javascript": 5.6,
+        "visual-design": 5.6
+      }
+    },
+    "ui-ux-designer": {
+      "postings": 11,
+      "share": 0.1,
+      "byMonth": {
+        "2025-03": 3,
+        "2025-04": 8
+      },
+      "described": 11,
+      "skills": {
+        "user-research": 45.5,
+        "prototyping": 45.5,
+        "communication": 36.4,
+        "visual-design": 36.4,
+        "figma": 27.3,
+        "usability-testing": 18.2,
+        "html-css": 18.2,
+        "javascript": 18.2,
+        "react": 18.2,
+        "project-management": 18.2,
+        "market-analysis": 18.2,
+        "data-visualization": 9.1,
+        "accessibility": 9.1,
+        "python": 9.1,
+        "git": 9.1,
+        "backend-language": 9.1,
+        "cad": 9.1,
+        "agile": 9.1,
+        "excel": 9.1,
+        "roadmapping": 9.1
+      }
+    },
+    "ml-engineer": {
+      "postings": 6,
+      "share": 0.1,
+      "byMonth": {
+        "2025-03": 4,
+        "2025-04": 1,
+        "2025-05": 1
+      },
+      "described": 6,
+      "skills": {
+        "python": 83.3,
+        "communication": 66.7,
+        "ml-frameworks": 66.7,
+        "databases": 50,
+        "cloud-deploy": 50,
+        "mlops": 50,
+        "data-cleaning": 33.3,
+        "ml-math": 33.3,
+        "statistics": 33.3,
+        "prototyping": 16.7,
+        "sql": 16.7,
+        "roadmapping": 16.7,
+        "git": 16.7,
+        "testing": 16.7
+      }
+    },
+    "product-manager": {
+      "postings": 12,
+      "share": 0.1,
+      "byMonth": {
+        "2025-03": 6,
+        "2025-04": 6
+      },
+      "described": 12,
+      "skills": {
+        "roadmapping": 66.7,
+        "market-analysis": 58.3,
+        "agile": 41.7,
+        "communication": 33.3,
+        "project-management": 25,
+        "user-research": 16.7,
+        "git": 8.3,
+        "api-integration": 8.3,
+        "excel": 8.3,
+        "negotiation": 8.3,
+        "sql": 8.3
+      }
+    },
+    "forward-deployed-engineer": {
+      "postings": 0,
+      "share": 0,
+      "byMonth": {},
+      "described": 0,
+      "skills": {}
+    },
+    "data-scientist": {
+      "postings": 6,
+      "share": 0.1,
+      "byMonth": {
+        "2025-03": 3,
+        "2025-04": 2,
+        "2025-05": 1
+      },
+      "described": 6,
+      "skills": {
+        "communication": 100,
+        "sql": 83.3,
+        "python": 83.3,
+        "data-visualization": 66.7,
+        "cloud-deploy": 50,
+        "ml-math": 50,
+        "statistics": 50,
+        "backend-language": 33.3,
+        "databases": 33.3,
+        "agile": 16.7,
+        "market-analysis": 16.7,
+        "data-cleaning": 16.7,
+        "auditing": 16.7,
+        "project-management": 16.7,
+        "excel": 16.7,
+        "accounting": 16.7,
+        "prototyping": 16.7
+      }
+    },
+    "auditor": {
+      "postings": 46,
+      "share": 0.5,
+      "byMonth": {
+        "2025-03": 18,
+        "2025-04": 25,
+        "2025-05": 3
+      },
+      "described": 46,
+      "skills": {
+        "auditing": 97.8,
+        "accounting": 73.9,
+        "communication": 71.7,
+        "internal-control": 37,
+        "excel": 17.4,
+        "project-management": 8.7,
+        "databases": 2.2,
+        "lesson-planning": 2.2,
+        "python": 2.2,
+        "backend-language": 2.2,
+        "assessment": 2.2
+      }
+    },
+    "lawyer": {
+      "postings": 12,
+      "share": 0.1,
+      "byMonth": {
+        "2025-04": 6,
+        "2025-03": 6
+      },
+      "described": 12,
+      "skills": {
+        "communication": 66.7,
+        "negotiation": 58.3,
+        "legal-research": 33.3,
+        "legal-writing": 25,
+        "internal-control": 16.7,
+        "excel": 8.3,
+        "databases": 8.3
+      }
+    },
+    "teacher": {
+      "postings": 121,
+      "share": 1.3,
+      "byMonth": {
+        "2025-03": 46,
+        "2025-04": 67,
+        "2025-05": 8
+      },
+      "described": 121,
+      "skills": {
+        "communication": 58.7,
+        "lesson-planning": 42.1,
+        "ml-math": 16.5,
+        "classroom-management": 11.6,
+        "accounting": 5.8,
+        "assessment": 4.1,
+        "excel": 3.3,
+        "auditing": 3.3,
+        "statistics": 1.7,
+        "cooking-technique": 1.7,
+        "cad": 1.7,
+        "agile": 1.7,
+        "python": 1.7,
+        "clinical-knowledge": 1.7,
+        "accessibility": 0.8,
+        "patient-care": 0.8,
+        "javascript": 0.8,
+        "visual-design": 0.8,
+        "databases": 0.8,
+        "project-management": 0.8
+      }
+    },
+    "doctor": {
+      "postings": 5,
+      "share": 0.1,
+      "byMonth": {
+        "2025-03": 3,
+        "2025-04": 2
+      },
+      "described": 5,
+      "skills": {
+        "clinical-knowledge": 60,
+        "patient-care": 20,
+        "medical-ethics": 20
+      }
+    },
+    "chef": {
+      "postings": 59,
+      "share": 0.6,
+      "byMonth": {
+        "2025-03": 19,
+        "2025-04": 38,
+        "2025-05": 2
+      },
+      "described": 59,
+      "skills": {
+        "cooking-technique": 66.1,
+        "food-safety": 57.6,
+        "menu-planning": 33.9,
+        "communication": 32.2,
+        "databases": 3.4,
+        "excel": 3.4,
+        "negotiation": 1.7,
+        "market-analysis": 1.7,
+        "auditing": 1.7,
+        "cloud-deploy": 1.7,
+        "accounting": 1.7
+      }
+    },
+    "civil-engineer": {
+      "postings": 16,
+      "share": 0.2,
+      "byMonth": {
+        "2025-03": 9,
+        "2025-04": 7
+      },
+      "described": 16,
+      "skills": {
+        "communication": 75,
+        "cad": 62.5,
+        "engineering-math": 43.8,
+        "project-management": 25,
+        "auditing": 12.5,
+        "excel": 6.3,
+        "assessment": 6.3
+      }
+    }
+  }
+}

@@ -1,0 +1,743 @@
+{
+  "source": {
+    "name": "Anthropic Economic Index",
+    "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+    "files": [
+      "labor_market_impacts/task_penetration.csv",
+      "labor_market_impacts/job_exposure.csv",
+      "release_2025_03_27/automation_vs_augmentation_by_task.csv",
+      "release_2025_03_27/onet_task_statements.csv"
+    ],
+    "license": "CC-BY (data)",
+    "downloadedAt": "2026-10-30",
+    "method": "every task of the career's O*NET occupations matching the skill (reviewed, none ranked by penetration); per task penetration x share of automation (directive, feedback_loop) or augmentation (task_iteration, validation, learning) interactions; per skill the mean over its tasks, then over the careers that need it",
+    "limits": "Usage of Claude on US O*NET tasks: a signal of where AI enters work, not jobs lost and not Malaysian data."
+  },
+  "skills": {
+    "sql": {
+      "automation": 0.4052,
+      "augmentation": 0.5559,
+      "tasks": [
+        "Create business intelligence tools or systems, including design of related databases, spreadsheets, or outputs.",
+        "Maintain or update business intelligence tools, databases, dashboards, systems, or methods."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 加词边界；[AI 任务初审 2026-10-30] 2 条都是 BI 工具/数据库相关，全部保留"
+    },
+    "excel": {
+      "automation": 0.4365,
+      "augmentation": 0.4858,
+      "tasks": [
+        "Create business intelligence tools or systems, including design of related databases, spreadsheets, or outputs."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 只有 1 条任务（含 spreadsheets），相关，保留；样本很薄"
+    },
+    "statistics": {
+      "automation": 0.1691,
+      "augmentation": 0.296,
+      "tasks": [
+        "Adapt statistical methods to solve specific problems in many fields, such as economics, biology, and engineering.",
+        "Analyze and interpret statistical data to identify significant differences in relationships among sources of information.",
+        "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy.",
+        "Process large amounts of data for statistical modeling and graphic analysis, using computers.",
+        "Report results of statistical analyses in peer-reviewed papers and technical manuals.",
+        "Report results of statistical analyses, including information in the form of graphs, charts, and tables."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 6 条都是统计分析，全部保留"
+    },
+    "python": {
+      "automation": 0.329,
+      "augmentation": 0.5784,
+      "tasks": [
+        "Analyze problems to develop solutions involving computer hardware and software.",
+        "Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance.",
+        "Review and analyze computer printouts and performance indicators to locate code problems, and correct errors by correcting codes.",
+        "Use object-oriented programming languages, as well as client and server applications development processes and multimedia and Internet technology."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 script 误匹配 description/prescription；program 改为 programm（避免匹配“项目/计划 programs”）；[AI 任务初审 2026-10-30] 删除督导、采购、网络维护、硬件设计、需求分析，只保留写/改代码的任务"
+    },
+    "data-cleaning": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除写设计文档的任务；剩下的“评估统计方法的有效性/准确性”是最接近的，但不是严格意义的数据清洗"
+    },
+    "data-visualization": {
+      "automation": 0.4346,
+      "augmentation": 0.512,
+      "tasks": [
+        "Maintain or update business intelligence tools, databases, dashboards, systems, or methods.",
+        "Process large amounts of data for statistical modeling and graphic analysis, using computers.",
+        "Provide technical support for existing reports, dashboards, or other tools.",
+        "Report results of statistical analyses, including information in the form of graphs, charts, and tables."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 report：撰写报告属于写作，不是可视化；[AI 任务初审 2026-10-30] 4 条都是图表/仪表板，全部保留"
+    },
+    "communication": {
+      "automation": 0.0366,
+      "augmentation": 0.1254,
+      "tasks": [
+        "Advise clients concerning business transactions, claim liability, advisability of prosecuting or defending lawsuits, or legal rights and obligations.",
+        "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
+        "Advise patients and community members concerning diet, activity, hygiene, and disease prevention.",
+        "Advise surgeon of a patient's risk status and recommend appropriate intervention to minimize risk.",
+        "Communicate with customers, competitors, suppliers, professional organizations, or others to stay abreast of industry or business trends.",
+        "Communicate with network personnel or Web site hosting agencies to address hardware or software issues affecting Web sites.",
+        "Confer with clients regarding the nature of the information processing or computation needs a computer program is to address.",
+        "Confer with clients to discuss and determine layout design.",
+        "Confer with colleagues with specialties in appropriate areas of legal issue to establish and verify bases for legal proceedings.",
+        "Confer with company officials about financial and regulatory matters.",
+        "Confer with management or development teams to prioritize needs, resolve conflicts, develop content criteria, or choose solutions.",
+        "Confer with other staff members to plan and schedule lessons promoting learning, following approved curricula.",
+        "Confer with parents or guardians, other teachers, counselors, and administrators to resolve students' behavioral and academic problems.",
+        "Consult with management to ensure agreement on system principles.",
+        "Consult with users, management, vendors, and technicians to assess computing needs and system requirements.",
+        "Establish clear objectives for all lessons, units, and projects and communicate those objectives to students.",
+        "Explain procedures and discuss test results or prescribed treatments with patients.",
+        "Instruct through lectures, discussions, and demonstrations in one or more subjects, such as English, mathematics, or social studies.",
+        "Meet with customers to discuss menus for special occasions, such as weddings, parties, or banquets.",
+        "Meet with other professionals to discuss individual students' needs and progress.",
+        "Meet with parents and guardians to discuss their children's progress and to determine priorities for their children and their resource needs.",
+        "Prepare or present public reports on topics such as bid proposals, deeds, environmental impact statements, or property and right-of-way descriptions.",
+        "Present and summarize cases to judges and juries.",
+        "Present evidence to defend clients or prosecute defendants in criminal or civil litigation.",
+        "Probate wills and represent and advise executors and administrators of estates.",
+        "Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware.",
+        "Provide consulting services to other doctors caring for patients with special or difficult problems."
+      ],
+      "note": "[AI 规则初审 2026-10-30] present 加词边界，避免匹配 represent（律师代表客户是核心法律工作）；[AI 任务初审 2026-10-30] 删除只是字面命中的任务：画草图、食物摆盘（presentation）、持续学习/参会、法律分析（advisability）、使用教具"
+    },
+    "html-css": {
+      "automation": 0.3846,
+      "augmentation": 0.3089,
+      "tasks": [
+        "Create searchable indices for Web page content.",
+        "Create web models or prototypes that include physical, interface, logical, or data models.",
+        "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
+        "Develop Web site maps, application models, image templates, or page templates that meet project goals, user needs, or industry standards.",
+        "Develop and document style guidelines for Web site content.",
+        "Identify or maintain links to and from other Web sites and check links to ensure proper functioning.",
+        "Perform or direct Web site updates.",
+        "Write supporting code for Web applications or Web sites."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 只保留建站、写页面代码、页面模板、样式指南、链接维护；删除备份、数据库、商业策略、测试、SEO、写规格文档、技术选型"
+    },
+    "javascript": {
+      "automation": 0.4318,
+      "augmentation": 0.4956,
+      "tasks": [
+        "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
+        "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
+        "Write supporting code for Web applications or Web sites."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 同 python：修 script / program 误匹配；[AI 任务初审 2026-10-30] 只保留写代码、评估代码、用脚本语言建站"
+    },
+    "react": {
+      "automation": 0.2192,
+      "augmentation": 0.228,
+      "tasks": [
+        "Create web models or prototypes that include physical, interface, logical, or data models.",
+        "Write supporting code for Web applications or Web sites."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 user：太宽，与 user-research 重叠；[AI 任务初审 2026-10-30] 删除数据库任务"
+    },
+    "accessibility": {
+      "automation": 0.1783,
+      "augmentation": 0.3129,
+      "tasks": [
+        "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
+        "Incorporate technical considerations into Web site design plans, such as budgets, equipment, performance requirements, or legal issues including accessibility and privacy."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 2 条：浏览器/设备兼容性检查、网站设计考虑无障碍。是最接近的任务，保留；上一轮你没通过这个技能，请再确认"
+    },
+    "backend-language": {
+      "automation": 0.3951,
+      "augmentation": 0.4803,
+      "tasks": [
+        "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure.",
+        "Develop data models for applications, metadata tables, views or related database structures.",
+        "Develop or maintain archived procedures, procedural codes, or queries for applications.",
+        "Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 规则与 python 统一（program→programm）；删除督导、沟通、安装、选型、测试任务，只保留写/改代码与数据模型"
+    },
+    "databases": {
+      "automation": 0.1846,
+      "augmentation": 0.424,
+      "tasks": [
+        "Create and enforce database development standards.",
+        "Demonstrate database technical functionality, such as performance, security and reliability.",
+        "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure.",
+        "Develop and document database architectures.",
+        "Develop data models for applications, metadata tables, views or related database structures.",
+        "Develop database architectural strategies at the modeling, design and implementation stages to address business or industry requirements.",
+        "Document and communicate database schemas, using accepted notations.",
+        "Identify and correct deviations from database development standards.",
+        "Identify, evaluate and recommend hardware or software technologies to achieve desired database performance.",
+        "Plan and install upgrades of database management system software to enhance database performance.",
+        "Set up database clusters, backup, or recovery processes.",
+        "Test changes to database applications or systems."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 12 条都是数据库工作，全部保留"
+    },
+    "rest-api": {
+      "automation": 0.3496,
+      "augmentation": 0.4739,
+      "tasks": [
+        "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 排除 user interface（那是前端，不是 API）；[AI 任务初审 2026-10-30] 只有 1 条（数据库应用的接口与数据传输机制），相关，保留；样本很薄"
+    },
+    "cloud-deploy": {
+      "automation": 0.3216,
+      "augmentation": 0.4612,
+      "tasks": [
+        "Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.",
+        "Coordinate installation of software system.",
+        "Plan and install upgrades of database management system software to enhance database performance.",
+        "Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除机房供电、温湿度设备采购（硬件设施）和写代码任务"
+    },
+    "testing": {
+      "automation": 0.2991,
+      "augmentation": 0.1805,
+      "tasks": [
+        "Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance.",
+        "Test changes to database applications or systems."
+      ],
+      "note": "[AI 规则初审 2026-10-30] test 加词边界，避免匹配 latest/contest/attest；[AI 任务初审 2026-10-30] 2 条都是修错/测试，保留"
+    },
+    "user-research": {
+      "automation": 0.0688,
+      "augmentation": 0.213,
+      "tasks": [
+        "Analyze user needs to determine technical requirements.",
+        "Collaborate with management or users to develop e-commerce strategies and to integrate these strategies with Web sites.",
+        "Confer with clients to discuss and determine layout design.",
+        "Consult with users, management, vendors, and technicians to assess computing needs and system requirements.",
+        "Evaluate data processing proposals to assess project feasibility and requirements.",
+        "Identify problems uncovered by testing or customer feedback, and correct problems or refer problems to appropriate personnel for correction."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 need：会匹配所有 “as needed”；[AI 任务初审 2026-10-30] 删除只因 client/user 字眼命中的制作和技术支持任务；保留与客户/用户沟通需求、分析用户需求、处理用户反馈"
+    },
+    "prototyping": {
+      "automation": 0.0659,
+      "augmentation": 0.1467,
+      "tasks": [
+        "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
+        "Create web models or prototypes that include physical, interface, logical, or data models.",
+        "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
+        "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 model（ML/统计模型），加 wireframe/storyboard；上轮未通过，需人工确认；[AI 任务初审 2026-10-30] 删除印刷排版流程和客户沟通；保留设计概念、草图、版式、网页原型。上一轮你没通过这个技能，请再确认"
+    },
+    "figma": {
+      "automation": 0.1406,
+      "augmentation": 0.1958,
+      "tasks": [
+        "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
+        "Determine size and arrangement of illustrative material and copy, and select style and size of type.",
+        "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
+        "Draw and print charts, graphs, illustrations, and other artwork, using computer.",
+        "Key information into computer equipment to create layouts for client or supervisor."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉 design：几乎匹配设计师全部任务，失去区分度；[AI 任务初审 2026-10-30] 只保留数字化设计与排版任务；删除手绘草图、印刷流程、电视广播图像、客户沟通"
+    },
+    "visual-design": {
+      "automation": 0.1005,
+      "augmentation": 0.1399,
+      "tasks": [
+        "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
+        "Determine size and arrangement of illustrative material and copy, and select style and size of type.",
+        "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
+        "Draw and print charts, graphs, illustrations, and other artwork, using computer.",
+        "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes.",
+        "Produce still and animated graphics for on-air and taped portions of television news broadcasts, using electronic video equipment.",
+        "Study illustrations and photographs to plan presentation of materials, products, or services."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除印刷制作流程和客户沟通，保留视觉设计本身"
+    },
+    "ml-math": {
+      "automation": 0.1593,
+      "augmentation": 0.3018,
+      "tasks": [
+        "Adapt statistical methods to solve specific problems in many fields, such as economics, biology, and engineering.",
+        "Analyze and interpret statistical data to identify significant differences in relationships among sources of information.",
+        "Conduct logical analyses of business, scientific, engineering, and other technical problems, formulating mathematical models of problems for solution by computers.",
+        "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy.",
+        "Examine theories, such as those of probability and inference, to discover mathematical bases for new or improved methods of obtaining and evaluating numerical data.",
+        "Process large amounts of data for statistical modeling and graphic analysis, using computers.",
+        "Report results of statistical analyses in peer-reviewed papers and technical manuals.",
+        "Report results of statistical analyses, including information in the form of graphs, charts, and tables."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 8 条都是数学/统计建模，全部保留"
+    },
+    "ml-frameworks": {
+      "automation": 0.3733,
+      "augmentation": 0.5431,
+      "tasks": [
+        "Conduct logical analyses of business, scientific, engineering, and other technical problems, formulating mathematical models of problems for solution by computers.",
+        "Process large amounts of data for statistical modeling and graphic analysis, using computers."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除“维护模型文档模板库”（model 指文档模板，不是 ML 模型）"
+    },
+    "mlops": {
+      "automation": 0.4617,
+      "augmentation": 0.5105,
+      "tasks": [
+        "Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉单独的 model 和 maintain：与 ml-frameworks 几乎重复、会匹配 maintain records；[AI 任务初审 2026-10-30] 删除网络维护、预算监控、生产库存系统；只剩 1 条（测试、维护、监控程序与系统），样本很薄"
+    },
+    "roadmapping": {
+      "automation": 0.0874,
+      "augmentation": 0.1574,
+      "tasks": [
+        "Develop and interpret organizational goals, policies, and procedures.",
+        "Direct daily operations of department, analyzing workflow, establishing priorities, developing standards and setting deadlines.",
+        "Review project plans to plan and coordinate project activity."
+      ],
+      "note": "[AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation；[AI 任务初审 2026-10-30] 删除 IT 基础设施/灾备任务，保留计划、目标、优先级"
+    },
+    "agile": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Review project plans to plan and coordinate project activity."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 只有 1 条（审查项目计划、协调项目活动），保留；样本很薄"
+    },
+    "market-analysis": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Evaluate data processing proposals to assess project feasibility and requirements.",
+        "Stay abreast of advances in technology."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 原规则 0 匹配；11-3021（IT 经理）任务里没有 market 字眼，放宽到供应商评估、行业/新技术跟踪、成本效益和可行性分析；[AI 任务初审 2026-10-30] 删除与 user-research/沟通重复的任务；保留跟踪技术进展、评估项目可行性。产品经理映射到 IT 经理本身较弱"
+    },
+    "accounting": {
+      "automation": 0.2575,
+      "augmentation": 0.3422,
+      "tasks": [
+        "Analyze business operations, trends, costs, revenues, financial commitments, and obligations to project future revenues and expenses or to provide advice.",
+        "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology.",
+        "Establish tables of accounts and assign entries to proper accounts.",
+        "Examine inventory to verify journal and ledger entries.",
+        "Inspect account books and accounting systems for efficiency, effectiveness, and use of accepted accounting procedures to record transactions.",
+        "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除归属审计、内控、沟通、代理出庭的任务，只保留记账、报表、会计系统、财务分析"
+    },
+    "auditing": {
+      "automation": 0.0992,
+      "augmentation": 0.1029,
+      "tasks": [
+        "Audit payroll and personnel records to determine unemployment insurance premiums, workers' compensation coverage, liabilities, and compliance with tax laws.",
+        "Conduct pre-implementation audits to determine if systems and programs under development will work as planned.",
+        "Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity.",
+        "Examine inventory to verify journal and ledger entries.",
+        "Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations.",
+        "Examine whether the organization's objectives are reflected in its management activities, and whether employees understand the objectives.",
+        "Inspect account books and accounting systems for efficiency, effectiveness, and use of accepted accounting procedures to record transactions.",
+        "Inspect cash on hand, notes receivable and payable, negotiable securities, and canceled checks to confirm records are accurate.",
+        "Prepare detailed reports on audit findings.",
+        "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards.",
+        "Report to management about asset utilization and audit results, and recommend changes in operations and financial activities.",
+        "Review taxpayer accounts, and conduct audits on-site, by correspondence, or by summoning taxpayer to office.",
+        "Supervise auditing of establishments, and determine scope of investigation required."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 13 条都是审计工作，全部保留"
+    },
+    "internal-control": {
+      "automation": 0.2129,
+      "augmentation": 0.2531,
+      "tasks": [
+        "Audit payroll and personnel records to determine unemployment insurance premiums, workers' compensation coverage, liabilities, and compliance with tax laws.",
+        "Collect and analyze data to detect deficient controls, duplicated effort, extravagance, fraud, or non-compliance with laws, regulations, and management policies.",
+        "Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity.",
+        "Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations."
+      ],
+      "note": "[AI 规则初审 2026-10-30] control 加词边界，避免匹配 controller；[AI 任务初审 2026-10-30] 删除报税任务"
+    },
+    "legal-research": {
+      "automation": 0.0185,
+      "augmentation": 0.1696,
+      "tasks": [
+        "Analyze the probable outcomes of cases, using knowledge of legal precedents.",
+        "Help develop federal and state programs, draft and interpret laws and legislation, and establish enforcement procedures.",
+        "Interpret laws, rulings and regulations for individuals and businesses.",
+        "Study Constitution, statutes, decisions, regulations, and ordinances of quasi-judicial bodies to determine ramifications for cases."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 4 条都是法律研究/解释，全部保留"
+    },
+    "legal-writing": {
+      "automation": 0.1458,
+      "augmentation": 0.1035,
+      "tasks": [
+        "Help develop federal and state programs, draft and interpret laws and legislation, and establish enforcement procedures.",
+        "Prepare legal briefs and opinions, and file appeals in state and federal courts of appeal.",
+        "Search for and examine public and other legal records to write opinions or establish ownership."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 3 条都是法律文书写作，全部保留"
+    },
+    "negotiation": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Negotiate settlements of civil disputes."
+      ],
+      "note": "[AI 规则初审 2026-10-30] mediat 加词边界，避免匹配 immediately/intermediate；[AI 任务初审 2026-10-30] 只有 1 条（谈判民事和解），保留"
+    },
+    "lesson-planning": {
+      "automation": 0.1683,
+      "augmentation": 0.195,
+      "tasks": [
+        "Adapt teaching methods and instructional materials to meet students' varying needs and interests.",
+        "Confer with other staff members to plan and schedule lessons promoting learning, following approved curricula.",
+        "Establish clear objectives for all lessons, units, and projects and communicate those objectives to students.",
+        "Plan and conduct activities for a balanced program of instruction, demonstration, and work time that provides students with opportunities to observe, question, and investigate.",
+        "Plan and supervise class projects, field trips, visits by guest speakers, or other experiential activities, and guide students in learning from those activities.",
+        "Prepare materials and classrooms for class activities.",
+        "Prepare objectives and outlines for courses of study, following curriculum guidelines or requirements of states and schools."
+      ],
+      "note": "[AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation；[AI 任务初审 2026-10-30] 删除器材安全、教具使用、物资管理任务"
+    },
+    "classroom-management": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Confer with parents or guardians, other teachers, counselors, and administrators to resolve students' behavioral and academic problems.",
+        "Enforce all administration policies and rules governing students.",
+        "Establish and enforce rules for behavior and procedures for maintaining order among students."
+      ],
+      "note": "[AI 规则初审 2026-10-30] order 只匹配独立单词且排除 in order to，避免匹配 disorder/border；[AI 任务初审 2026-10-30] 删除备课物资任务；“观察评估学生表现”归入 assessment（它的替代度 0.80 原本把课堂管理拉高了）"
+    },
+    "assessment": {
+      "automation": 0.4664,
+      "augmentation": 0.1626,
+      "tasks": [
+        "Assign and grade class work and homework.",
+        "Observe and evaluate students' performance, behavior, social development, and physical health.",
+        "Prepare, administer, and grade tests and assignments to evaluate students' progress."
+      ],
+      "note": "[AI 规则初审 2026-10-30] test 加词边界；grade 排除 grade level（年级不是评分）；[AI 任务初审 2026-10-30] 删除年级（grades）误匹配、家长/同事沟通、学校项目评估"
+    },
+    "clinical-knowledge": {
+      "automation": 0.0396,
+      "augmentation": 0.067,
+      "tasks": [
+        "Analyze records, reports, test results, or examination information to diagnose medical condition of patient.",
+        "Immunize patients to protect them from preventable diseases.",
+        "Make diagnoses when different illnesses occur together or in situations where the diagnosis may be obscure.",
+        "Monitor patients' conditions and progress and reevaluate treatments as necessary.",
+        "Operate on patients to remove, repair, or improve functioning of diseased or injured body parts and systems.",
+        "Order, perform, and interpret tests and analyze records, reports, and examination information to diagnose patients' condition.",
+        "Prescribe or administer medication, therapy, and other specialized medical care to treat or prevent illness, disease, or injury.",
+        "Prescribe or administer treatment, therapy, medication, vaccination, and other specialized medical care to treat or prevent illness, disease, or injury.",
+        "Provide and manage long-term, comprehensive medical care, including diagnosis and nonsurgical treatment of diseases, for adult patients in an office or hospital."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除归属沟通、行政报告、公共卫生项目管理、科研的任务，保留诊断、治疗、开药、手术、监测"
+    },
+    "patient-care": {
+      "automation": 0.049,
+      "augmentation": 0.1157,
+      "tasks": [
+        "Advise patients and community members concerning diet, activity, hygiene, and disease prevention.",
+        "Advise surgeon of a patient's risk status and recommend appropriate intervention to minimize risk.",
+        "Analyze records, reports, test results, or examination information to diagnose medical condition of patient.",
+        "Explain procedures and discuss test results or prescribed treatments with patients.",
+        "Immunize patients to protect them from preventable diseases.",
+        "Monitor patients' conditions and progress and reevaluate treatments as necessary.",
+        "Operate on patients to remove, repair, or improve functioning of diseased or injured body parts and systems.",
+        "Order, perform, and interpret tests and analyze records, reports, and examination information to diagnose patients' condition.",
+        "Provide and manage long-term, comprehensive medical care, including diagnosis and nonsurgical treatment of diseases, for adult patients in an office or hospital.",
+        "Refer patient to medical specialist or other practitioner when necessary.",
+        "Refer patients to medical specialists or other practitioners when necessary."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除医生之间会诊（不直接面对病人）"
+    },
+    "cooking-technique": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Demonstrate new cooking techniques or equipment to staff.",
+        "Instruct cooks or other workers in the preparation, cooking, garnishing, or presentation of food.",
+        "Prepare and cook foods of all types, either on a regular basis or for special guests or functions."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 原来 cook 匹配 supervise cooks（管理任务），prepar 匹配 prepare budgets；改为只匹配烹饪动作；[AI 任务初审 2026-10-30] 删除成本估算和菜单规划，保留烹饪、示范和指导烹饪技巧"
+    },
+    "food-safety": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Inspect supplies, equipment, or work areas to ensure conformance to established standards.",
+        "Monitor sanitation practices to ensure that employees follow standards and regulations."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 2 条都是卫生检查，保留"
+    },
+    "menu-planning": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Analyze recipes to assign prices to menu items, based on food, labor, and overhead costs.",
+        "Collaborate with other personnel to plan and develop recipes or menus, taking into account such factors as seasonal availability of ingredients or the likely number of customers.",
+        "Meet with customers to discuss menus for special occasions, such as weddings, parties, or banquets."
+      ],
+      "note": "[AI 规则初审 2026-10-30] 去掉单独的 cost：与 project-management 的预算重叠；[AI 任务初审 2026-10-30] 删除采购议价"
+    },
+    "engineering-math": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Analyze manufacturing processes or byproducts to identify engineering solutions to minimize the output of carbon or other pollutants.",
+        "Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data.",
+        "Compute load and grade requirements, water flow rates, or material stress factors to determine design specifications.",
+        "Estimate quantities and cost of materials, equipment, or labor to determine project feasibility."
+      ],
+      "note": "[AI 规则初审 2026-10-30] comput 改为 compute/computation，避免匹配 computer-aided（那是 cad）；[AI 任务初审 2026-10-30] 4 条都是工程计算/分析，全部保留"
+    },
+    "project-management": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Coordinate planning, budgeting, or purchasing for all the food operations within establishments such as clubs, hotels, or restaurant chains.",
+        "Determine production schedules and staff requirements necessary to ensure timely delivery of services.",
+        "Estimate quantities and cost of materials, equipment, or labor to determine project feasibility.",
+        "Identify environmental risks and develop risk management strategies for civil engineering projects.",
+        "Inspect project sites to monitor progress and ensure conformance to design specifications and safety or sanitation standards.",
+        "Manage and direct the construction, operations, or maintenance activities at project site.",
+        "Supervise or coordinate activities of cooks or workers engaged in food preparation."
+      ],
+      "note": "[AI 任务初审 2026-10-30] 删除交通/环境研究，保留项目现场管理、排期、预算、协调"
+    }
+  },
+  "careers": {
+    "data-analyst": {
+      "onet": [
+        "15-1199.08",
+        "15-2041.00"
+      ],
+      "soc": "15-2051",
+      "title": "Data Scientists",
+      "observedExposure": 0.4605,
+      "tasks": 35,
+      "tasksWithoutPenetration": 9
+    },
+    "frontend-developer": {
+      "onet": [
+        "15-1134.00"
+      ],
+      "soc": "15-1254",
+      "title": "Web Developers",
+      "observedExposure": 0.4802,
+      "tasks": 37,
+      "tasksWithoutPenetration": 3
+    },
+    "backend-developer": {
+      "onet": [
+        "15-1132.00",
+        "15-1133.00",
+        "15-1199.06"
+      ],
+      "soc": "15-1252",
+      "title": "Software Developers",
+      "observedExposure": 0.288,
+      "tasks": 49,
+      "tasksWithoutPenetration": 17
+    },
+    "ui-ux-designer": {
+      "onet": [
+        "27-1024.00",
+        "15-1134.00"
+      ],
+      "soc": "15-1255",
+      "title": "Web and Digital Interface Designers",
+      "observedExposure": 0.249,
+      "tasks": 54,
+      "tasksWithoutPenetration": 5
+    },
+    "ml-engineer": {
+      "onet": [
+        "15-1111.00",
+        "15-2041.00"
+      ],
+      "soc": "15-1221",
+      "title": "Computer and Information Research Scientists",
+      "observedExposure": 0.3404,
+      "tasks": 33,
+      "tasksWithoutPenetration": 8
+    },
+    "product-manager": {
+      "onet": [
+        "11-3021.00"
+      ],
+      "soc": "11-3021",
+      "title": "Computer and Information Systems Managers",
+      "observedExposure": 0.1559,
+      "tasks": 17,
+      "tasksWithoutPenetration": 0
+    },
+    "forward-deployed-engineer": {
+      "onet": [
+        "15-1132.00",
+        "15-1121.00"
+      ],
+      "soc": "15-1252",
+      "title": "Software Developers",
+      "observedExposure": 0.288,
+      "tasks": 36,
+      "tasksWithoutPenetration": 12
+    },
+    "data-scientist": {
+      "onet": [
+        "15-2041.00",
+        "15-1199.08"
+      ],
+      "soc": "15-2051",
+      "title": "Data Scientists",
+      "observedExposure": 0.4605,
+      "tasks": 35,
+      "tasksWithoutPenetration": 9
+    },
+    "auditor": {
+      "onet": [
+        "13-2011.02",
+        "13-2011.01"
+      ],
+      "soc": "13-2011",
+      "title": "Accountants and Auditors",
+      "observedExposure": 0.3478,
+      "tasks": 36,
+      "tasksWithoutPenetration": 13
+    },
+    "lawyer": {
+      "onet": [
+        "23-1011.00"
+      ],
+      "soc": "23-1011",
+      "title": "Lawyers",
+      "observedExposure": 0.1673,
+      "tasks": 22,
+      "tasksWithoutPenetration": 2
+    },
+    "teacher": {
+      "onet": [
+        "25-2031.00"
+      ],
+      "soc": "25-2031",
+      "title": "Secondary School Teachers, Except Special and Career/Technical Education",
+      "observedExposure": 0.2901,
+      "tasks": 32,
+      "tasksWithoutPenetration": 3
+    },
+    "doctor": {
+      "onet": [
+        "29-1063.00",
+        "29-1062.00"
+      ],
+      "soc": "29-1216",
+      "title": "General Internal Medicine Physicians",
+      "observedExposure": 0.084,
+      "tasks": 28,
+      "tasksWithoutPenetration": 4
+    },
+    "chef": {
+      "onet": [
+        "35-1011.00"
+      ],
+      "soc": "35-1011",
+      "title": "Chefs and Head Cooks",
+      "observedExposure": 0.0,
+      "tasks": 21,
+      "tasksWithoutPenetration": 1
+    },
+    "civil-engineer": {
+      "onet": [
+        "17-2051.00"
+      ],
+      "soc": "17-2051",
+      "title": "Civil Engineers",
+      "observedExposure": 0.0081,
+      "tasks": 17,
+      "tasksWithoutPenetration": 4
+    }
+  },
+  "crossCheck": {
+    "spearman": 0.77,
+    "careers": [
+      [
+        "data-analyst",
+        0.4605,
+        0.6235
+      ],
+      [
+        "frontend-developer",
+        0.4802,
+        0.6834
+      ],
+      [
+        "backend-developer",
+        0.288,
+        0.714
+      ],
+      [
+        "ui-ux-designer",
+        0.249,
+        0.2055
+      ],
+      [
+        "ml-engineer",
+        0.3404,
+        0.703
+      ],
+      [
+        "product-manager",
+        0.1559,
+        0.2749
+      ],
+      [
+        "forward-deployed-engineer",
+        0.288,
+        0.7979
+      ],
+      [
+        "data-scientist",
+        0.4605,
+        0.7264
+      ],
+      [
+        "auditor",
+        0.3478,
+        0.4704
+      ],
+      [
+        "lawyer",
+        0.1673,
+        0.1499
+      ],
+      [
+        "teacher",
+        0.2901,
+        0.2886
+      ],
+      [
+        "doctor",
+        0.084,
+        0.1444
+      ],
+      [
+        "chef",
+        0.0,
+        0.0324
+      ],
+      [
+        "civil-engineer",
+        0.0081,
+        0.0405
+      ]
+    ]
+  }
+}

@@ -10,16 +10,16 @@ CareerSphere 是结合 3D 世界探索、AI 职业准备、学习进度追踪及
 
 主要阅读范围：
 
-- `GamePlat/game/package.json`、`vite.config.js`：依赖、构建与开发服务。
-- `GamePlat/game/sources/Career/`：职业界面、API 客户端、三语支持。
-- `GamePlat/game/sources/Game/`：渲染、角色动画、物理、导航、资源加载等关键模块。
-- `GamePlat/game/server/`：路由、AI 功能、存档、游戏规则、市场和外部集成。
-- `GamePlat/game/n8n/market/`：岗位市场工作流与统计管线。
-- `GamePlat/game/animation/`、`world-building/`、`scripts/`：角色和场景资产工具。
+- `src/game/package.json`、`vite.config.js`：依赖、构建与开发服务。
+- `src/game/sources/Career/`：职业界面、API 客户端、三语支持。
+- `src/game/sources/Game/`：渲染、角色动画、物理、导航、资源加载等关键模块。
+- `src/game/server/`：路由、AI 功能、存档、游戏规则、市场和外部集成。
+- `src/game/n8n/market/`：岗位市场工作流与统计管线。
+- `src/game/animation/`、`world-building/`、`scripts/`：角色和场景资产工具。
 - `chatbot/app/`、`chatbot/tests/`：多渠道聊天服务、SQLite、日报与测试。
 - 项目说明、Replit 配置和浏览器验证脚本。
 
-`GamePlat/site/` 是参考镜像；`skills/` 包含工具、第三方源码与示例，不能把这些目录中的全部技术都当作主应用实际使用的技术栈。3D 基础源自 Bruno Simon 的 Folio 2025；项目在此基础上扩展角色、地图和职业平台等功能。
+`src/site/` 是参考镜像；`skills/` 包含工具、第三方源码与示例，不能把这些目录中的全部技术都当作主应用实际使用的技术栈。3D 基础源自 Bruno Simon 的 Folio 2025；项目在此基础上扩展角色、地图和职业平台等功能。
 
 ## 2. 各方面的 technical skills
 

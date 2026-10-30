@@ -13,7 +13,7 @@ All six remote branches were fetched and inspected before publishing the market 
 | n8n-market-trends | `f582b55` | Already included in main. |
 | Whatsapp---Replit-AI | `1c047f5` | Inspect nine branch-only commits; retain the `.deps/` chatbot ignore rule selectively. |
 
-The WhatsApp branch's other changes synchronize older GamePlat/chatbot versions and switch the repository deployment entry point to the standalone Python bot. Main already contains the later application changes and the current game deployment entry point. Its root Python dependency files were added and then removed within that branch. The old `Lightnings.js` file was intentionally removed on main in `f8123a2`. Merging the entire branch would restore obsolete code or deployment settings, so those changes are not applied.
+The WhatsApp branch's other changes synchronize older src/chatbot versions and switch the repository deployment entry point to the standalone Python bot. Main already contains the later application changes and the current game deployment entry point. Its root Python dependency files were added and then removed within that branch. The old `Lightnings.js` file was intentionally removed on main in `f8123a2`. Merging the entire branch would restore obsolete code or deployment settings, so those changes are not applied.
 
 The FDE recent-postings detail card is removed from both market and career detail views. The FDE career, heatmap row, and NEW badge remain available.
 

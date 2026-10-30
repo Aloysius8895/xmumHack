@@ -17,7 +17,7 @@
 
 ## Tasks
 
-- [x] Add `GamePlat/game/server/telegram-expert.js` and route `POST /api/integrations/expert`. Validate channel, sender, action, message ID and question; derive target from the loaded save, ignore client target choices, reuse `features.askMentor({ elite: true })`, and cache event responses. Use normal save persistence and cloud idempotency without learning reports.
+- [x] Add `src/game/server/telegram-expert.js` and route `POST /api/integrations/expert`. Validate channel, sender, action, message ID and question; derive target from the loaded save, ignore client target choices, reuse `features.askMentor({ elite: true })`, and cache event responses. Use normal save persistence and cloud idempotency without learning reports.
 - [x] Add game integration tests for authentication, intro, actual selected target, history, target switching, missing target/expert, no game progress, and duplicate/replayed deliveries.
 - [x] Add chatbot session CRUD in `app/db.py` with a SQLite table and matching typed `/v1/chat/expert-session` operations in Lambda/schema. Keep expert history to six turns and only permit the defined state shape.
 - [x] Add `chatbot/app/expert.py` for mode routing, `/expert` and `/exit`; add `career_api.expert` and connect it in `telegram_channel.py`. Reuse the owner binding, keep normal chat unchanged when no expert session exists, and clear pending report confirmations on mode entry/exit.
