@@ -23,6 +23,18 @@ Thumbs.db
 # Development reference libraries are kept outside the finished application.
 /skills/
 
+# Local player saves (progress and registered names). data/crawler holds public job adverts and may be committed.
+/data/game/
+# Official PDFs are large; their download links are in data/official-signals/raw/SOURCE.md
+/data/official-signals/raw/*.pdf
+
+# Hackathon research crawler and its outputs (kept out of the submission repository)
+/collect/
+
 # Local tooling and test scratch data
 /.local/
 /src/tools/bin/*.exe
+
+# Claude Code personal settings
+.claude/settings.local.json
+/data/reference/*/raw/

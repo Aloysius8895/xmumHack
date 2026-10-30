@@ -3,10 +3,11 @@ export const localDay=iso=>new Date(Date.parse(iso)+OFFSET).toISOString().slice(
 const round=x=>Math.round(x*100)/100;
 const counts=rows=>{const m=new Map();for(const r of rows)m.set(r.role,(m.get(r.role)||0)+1);return [...m].map(([id,count])=>({id,count})).sort((a,b)=>b.count-a.count);};
 const days=(from,to)=>{const out=[];for(let n=from;n<to;n+=DAY)out.push(localDay(new Date(n).toISOString()));return out;};
-export function summarize(store,{now=new Date().toISOString(),runId}={}){
+// `rows`: summarize only these records of the run (an incremental export publishes its new and changed ones)
+export function summarize(store,{now=new Date().toISOString(),runId,rows:only}={}){
  const latest=runId?store.run(runId):store.latestRun();
  if(!latest)return {status:'no_data',isDemo:false,roles:[],skills:[],trend:{status:'insufficient_history',growthPct:null}};
- const rows=store.records(latest.id),described=rows.filter(r=>r.descriptionAvailable),skills=new Map();
+ const rows=only??store.records(latest.id),described=rows.filter(r=>r.descriptionAvailable),skills=new Map();
  for(const r of described)for(const s of r.skills){const k=r.role+':'+s.id,v=skills.get(k)||{role:r.role,id:s.id,name:s.name,count:0};v.count++;skills.set(k,v);}
  const skillStats=[...skills.values()].map(s=>{const denominator=described.filter(r=>r.role===s.role).length;return {...s,denominator,ratePct:round(100*s.count/denominator)};});
  const todayStart=Math.floor((Date.parse(now)+OFFSET)/DAY)*DAY-OFFSET,start=todayStart-7*DAY,previousStart=start-7*DAY;

@@ -1,0 +1,57 @@
+{
+  "about": "Probe collection for the candidate careers (prompt 01c stage 2): LinkedIn public search only (Indeed and Ricebowl answered HTTP 403 browser verification, not bypassed), postings of the last month, up to 5 result pages (about 50 postings) per career. Counts are a floor, not the market size; a count near the cap means at least that many. Kept apart from the game's accumulated window.",
+  "runId": "7901fac6-d1c1-44e4-8a77-458d3fbe3078",
+  "collectedAt": "2026-10-30T07:58:13.106Z",
+  "status": "capped",
+  "requests": 84,
+  "accepted": 545,
+  "pagesPerQuery": 5,
+  "approximateCap": 50,
+  "candidates": {
+    "accountant": {
+      "postings": 50,
+      "nearCap": true
+    },
+    "software-engineer": {
+      "postings": 39,
+      "nearCap": false
+    },
+    "electrical-engineer": {
+      "postings": 33,
+      "nearCap": false
+    },
+    "digital-marketer": {
+      "postings": 27,
+      "nearCap": false
+    },
+    "quantity-surveyor": {
+      "postings": 29,
+      "nearCap": false
+    },
+    "hr-executive": {
+      "postings": 30,
+      "nearCap": false
+    },
+    "procurement-executive": {
+      "postings": 39,
+      "nearCap": false
+    },
+    "business-analyst": {
+      "postings": 48,
+      "nearCap": true
+    },
+    "mechanical-engineer": {
+      "postings": 28,
+      "nearCap": false
+    },
+    "sales-executive": {
+      "postings": 42,
+      "nearCap": false
+    },
+    "customer-service": {
+      "postings": 44,
+      "nearCap": false
+    }
+  },
+  "unmapped": 136
+}

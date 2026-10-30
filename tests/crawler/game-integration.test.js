@@ -44,8 +44,8 @@ test('date-only source precision is preserved without inventing a UTC timestamp'
  assert.equal(sample(1).payload.jobs[0].postedDate,'2026-10-01');
  assert.equal(sample(1).payload.jobs[0].postedAt,null);
 });
-test('real export contract updates heatmap, FDE and same-career skill denominator',()=>{
- directory();const {payload}=sample(3);receiveCrawler(payload,payload.run.id);
+test('real export contract updates heatmap, FDE and same-career skill denominator',async()=>{
+ directory();const {payload}=sample(3);await receiveCrawler(payload,payload.run.id);
  const market=crawlerMarket();
  assert.equal(market.postings,3);assert.equal(market.denominator,2);
  assert.equal(market.careers['forward-deployed-engineer'].postings,2);
@@ -65,37 +65,65 @@ test('HTTP publication authenticates, acknowledges and deduplicates a repeated r
   assert.equal(fs.readdirSync(process.env.SAVE_DIR).length,0,'ingestion stays outside player transactions');
  }finally{await new Promise(ok=>server.close(ok));}
 });
-test('demo, fixtures, incomplete runs, unknown IDs and count mismatches cannot replace healthy data',()=>{
- directory();const {payload}=sample(3);receiveCrawler(payload);
+test('demo, fixtures, incomplete runs, unknown IDs and count mismatches cannot replace healthy data',async()=>{
+ directory();const {payload}=sample(3);await receiveCrawler(payload);
  for(const mutate of [p=>{p.isDemo=true;},p=>{p.scope.sources[0].type='fixture';},p=>{p.run.status='partial';},p=>{p.scope.roles[0]='ai-engineer';},p=>{p.summary.sampleSize=999;},p=>{p.jobs[0].country='SG';},p=>{p.summary.quality.tasks[0].error='HTTP 403';}]){
-  const changed=structuredClone(payload);mutate(changed);assert.throws(()=>receiveCrawler(changed));assert.equal(crawlerMarket().postings,3);
+  const changed=structuredClone(payload);mutate(changed);await assert.rejects(receiveCrawler(changed));assert.equal(crawlerMarket().postings,3);
  }
 });
-test('a conflicting run ID, header mismatch and stale delivery are rejected',()=>{
- directory();const {payload}=sample(1);receiveCrawler(payload);
+test('a conflicting run ID, header mismatch and stale delivery are rejected',async()=>{
+ directory();const {payload}=sample(1);await receiveCrawler(payload);
  const conflict=structuredClone(payload);conflict.jobs[0].title+=' revised';
- assert.throws(()=>receiveCrawler(conflict),{code:'crawler-run-id-conflict'});
- assert.throws(()=>receiveCrawler(payload,'another-run'),{code:'crawler-bad-run-id'});
- assert.throws(()=>receiveCrawler(sample(1,{at:'2026-09-01T00:00:00.000Z'}).payload),{code:'crawler-stale-run'});
+ await assert.rejects(receiveCrawler(conflict),{code:'crawler-run-id-conflict'});
+ await assert.rejects(receiveCrawler(payload,'another-run'),{code:'crawler-bad-run-id'});
+ await assert.rejects(receiveCrawler(sample(1,{at:'2026-09-01T00:00:00.000Z'}).payload),{code:'crawler-stale-run'});
 });
-test('same-month snapshots replace counts, later months append, and a scope change resets comparison',()=>{
- directory();receiveCrawler(sample(1,{at:'2026-09-01T00:00:00.000Z'}).payload);
- receiveCrawler(sample(2,{at:'2026-09-24T00:00:00.000Z'}).payload);
- receiveCrawler(sample(1,{at:'2026-10-24T00:00:00.000Z'}).payload);
+test('same-month runs accumulate into one month, later months append, and a scope change resets comparison',async()=>{
+ directory();await receiveCrawler(sample(1,{at:'2026-09-01T00:00:00.000Z'}).payload);
+ await receiveCrawler(sample(2,{at:'2026-09-24T00:00:00.000Z'}).payload);
+ await receiveCrawler(sample(1,{at:'2026-10-24T00:00:00.000Z'}).payload);
  assert.deepEqual(crawlerMarket().trends.periods,['2026-09','2026-10']);
  assert.deepEqual(crawlerMarket().trends.careers.find(c=>c.id==='forward-deployed-engineer').ads,[2,1]);
- receiveCrawler(sample(1,{at:'2026-10-25T00:00:00.000Z',c:{...config,datePosted:'week'}}).payload);
+ await receiveCrawler(sample(1,{at:'2026-10-25T00:00:00.000Z',c:{...config,datePosted:'week'}}).payload);
  assert.deepEqual(crawlerMarket().trends.periods,['2026-10']);
 });
-test('uncovered roles remain unknown while a healthy observed zero stays zero',()=>{
- directory();receiveCrawler(sample(0,{c:{...config,roles:config.roles.filter(r=>r.id==='forward-deployed-engineer')}}).payload);
+test('uncovered roles remain unknown while a healthy observed zero stays zero',async()=>{
+ directory();await receiveCrawler(sample(0,{c:{...config,roles:config.roles.filter(r=>r.id==='forward-deployed-engineer')}}).payload);
  const market=crawlerMarket();assert.equal(market.careers['forward-deployed-engineer'].postings,0);
  assert.equal(market.careers['data-analyst'].postings,null);
  assert.equal(market.skillMarket.sql.share,null);
 });
-test('corrupt publication file retains the last consistent in-memory snapshot',()=>{
- directory();receiveCrawler(sample(1).payload);assert.equal(crawlerMarket().postings,1);
+test('corrupt publication file retains the last consistent in-memory snapshot',async()=>{
+ directory();await receiveCrawler(sample(1).payload);assert.equal(crawlerMarket().postings,1);
  fs.writeFileSync(crawlerFile(),'{incomplete');assert.equal(crawlerMarket().postings,1);
+});
+test('an incremental publication adds new postings and refreshes seen ones without touching the rest of the window',async()=>{
+ directory();await receiveCrawler(sample(3,{at:'2026-10-20T00:00:00.000Z'}).payload);
+ const s=new Store(':memory:');stores.push(s);const at='2026-10-24T02:00:00.000Z',id=s.beginRun(scopeHash(config),config,false,at);
+ s.ingest(id,normalize({sourceId:'ad-9',title:'Data Analyst',company:'New employer',location:'Penang, Malaysia',country:'MY',description:'SQL and Python',url:'https://www.linkedin.com/jobs/view/9',postedAt:'2026-10-23'},'linkedin',config),at);
+ for(const role of config.roles)for(const query of role.queries)s.addTask(id,{source:'linkedin',query,status:'complete',pages:1,records:1,error:null});
+ s.finishRun(id,'complete',{incremental:true,trigger:'refresh',since:'2026-10-20T00:00:00.000Z',unchanged:1,skippedDetails:1,undatedAds:0,deltaKeys:{new:['linkedin:ad-9'],changed:[],seen:['linkedin:ad-0']}},at);
+ const payload=exportRun(s,id);assert.equal(payload.schemaVersion,'1.2');assert.equal(payload.jobs.length,1);
+ const bad=structuredClone(payload);bad.delta.new=5;await assert.rejects(receiveCrawler(bad),{code:'crawler-delta-mismatch'});
+ await receiveCrawler(payload);
+ const state=readCrawlerState();
+ assert.equal(state.postings.length,4);
+ assert.equal(state.postings.find(p=>p.key==='linkedin:ad-0').lastSeenAt,at);
+ assert.equal(state.postings.find(p=>p.key==='linkedin:ad-1').lastSeenAt,'2026-10-20T00:00:00.000Z');
+ assert.equal(crawlerMarket().postings,4);
+ assert.deepEqual([crawlerStatus().lastRun.trigger,crawlerStatus().lastRun.new,crawlerStatus().lastRun.unchanged],['refresh',1,1]);
+});
+test('the crawler state and the daily schedule endpoints need the integration token',async()=>{
+ directory();await receiveCrawler(sample(1,{at:'2026-10-24T02:00:00.000Z'}).payload);
+ const server=createServer((req,res)=>handle(req,res));server.listen(0,'127.0.0.1');await once(server,'listening');
+ const base='http://127.0.0.1:'+server.address().port,auth={authorization:'Bearer '+process.env.INTEGRATION_TOKEN};
+ try{
+  assert.equal((await fetch(base+'/api/integrations/crawler/state')).status,401);
+  const state=await (await fetch(base+'/api/integrations/crawler/state',{headers:auth})).json();
+  assert.equal(state.since,'2026-10-24T02:00:00.000Z');assert.match(state.known['linkedin:ad-0'],/^[0-9a-f]{64}$/);
+  assert.equal((await fetch(base+'/api/integrations/crawl/schedule',{method:'POST'})).status,401);
+  assert.equal((await fetch(base+'/api/integrations/crawl/schedule/some-run')).status,401);
+ }finally{await new Promise(ok=>server.close(ok));}
 });
 test('failed backend acknowledgement is persisted and POST is not retried',async()=>{
  const {store,id}=sample(1);let calls=0;

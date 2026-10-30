@@ -24,6 +24,9 @@ import { marketCollector, CollectionError } from './market-collection.js'
 import { receiveCrawler, CrawlerError } from './crawler-ingestion.js'
 import { crawlerStatus } from './crawler-market.js'
 import { sampleRefresh, RefreshError } from './crawler-refresh.js'
+import { knownListings, loadWindow, refreshIfStale } from './market-window.js'
+import * as scenarios from './scenarios.js'
+import { snapshot, updateLog } from './update-log.js'
 import { localizePostingSkills } from './posting-skill-localization.js'
 
 const MAX_BODY = 15 * 1024 * 1024 // base64 of a 10 MB file
@@ -204,6 +207,39 @@ const routes = {
         return { ok: true }
     },
     'GET /api/integrations/market/collection': async () => marketCollector.status(),
+
+    // Future scenario: a preset name, or explicit { k, H } inside the limits (scenarios.js)
+    'POST /api/scenario': async (save, body) =>
+    {
+        if(body.preset !== undefined)
+        {
+            if(!scenarios.PRESETS[body.preset])
+                throw new HttpError(400, 'bad-scenario')
+            save.scenario = { preset: body.preset }
+        }
+        else if(scenarios.validParams(body))
+            save.scenario = { k: body.k, H: body.H }
+        else
+            throw new HttpError(400, 'bad-scenario')
+        return { scenario: scenarios.scenarioOf(save) }
+    },
+    'GET /api/forecast': async (save) => ({ forecast: scenarios.forecast(save), compare: scenarios.compare(save) }),
+    'GET /api/update-log': async (save) => ({ updateLog: updateLog(save, scenarios.forecast(save)) }),
+    // Marks the changes as read: the next log compares with the data as it is now
+    'POST /api/update-log/seen': async (save) =>
+    {
+        save.dataView = snapshot()
+        return { updateLog: updateLog(save, scenarios.forecast(save)) }
+    },
+    // What the player wants to learn, in their words: kept as catalog skills; an empty text clears it
+    'POST /api/learning-direction': async (save, body) =>
+    {
+        if(typeof body.text !== 'string' || body.text.length > 1000)
+            throw new HttpError(400, 'bad-learning-direction')
+        const text = body.text.trim()
+        save.learningDirection = text ? { text, ...await features.mapLearningDirection({ text }), setAt: new Date().toISOString() } : null
+        return { learningDirection: save.learningDirection }
+    },
 
     'POST /api/lang': async (save, body) =>
     {
@@ -389,6 +425,21 @@ const routes = {
         save.player.name = name
     },
 
+    // Intro username: a name seen for the first time (case-insensitive) is a new user, who gets the beginner tour
+    'POST /api/register': async (save, body) =>
+    {
+        const name = friends.cleanName(body.name)
+        if(!name)
+            throw new HttpError(400, 'empty-name')
+        const key = name.toLocaleLowerCase()
+        save.users ??= []
+        const newUser = !save.users.some((user) => user.name.toLocaleLowerCase() === key)
+        if(newUser)
+            save.users.push({ name, registeredAt: new Date().toISOString() })
+        save.player.name = name
+        return { newUser }
+    },
+
     'POST /api/friends': async (save, body) =>
     {
         const result = friends.addFriend(save, text(body.code, 2000))
@@ -519,6 +570,7 @@ async function stream(request, response, route)
 export async function handle(request, response)
 {
     watchCollectedMarket()
+    refreshIfStale()
     const url = new URL(request.url, 'http://localhost')
     if(!url.pathname.startsWith('/api/'))
         return false
@@ -542,7 +594,41 @@ export async function handle(request, response)
         catch(error)
         {
             send(response,error instanceof RefreshError||error instanceof HttpError?error.status:500,
-                {error:error instanceof RefreshError||error instanceof HttpError?error.code:'crawler-refresh-failed'})
+                {error:error instanceof RefreshError||error instanceof HttpError?error.code:'crawler-refresh-failed',...(error instanceof RefreshError?error.detail:{})})
+        }
+        return true
+    }
+
+    // The daily workflow (n8n) starts a scheduled collection: incremental like Refresh, never held by its cooldown
+    const scheduledRun=/^\/api\/integrations\/crawl\/schedule\/([\w-]{1,100})$/.exec(url.pathname)
+    if((request.method==='POST'&&url.pathname==='/api/integrations/crawl/schedule')||(request.method==='GET'&&scheduledRun))
+    {
+        try
+        {
+            integrations.authorize(request)
+            if(request.method==='POST')send(response,202,await sampleRefresh.start({trigger:'schedule'}))
+            else send(response,200,await sampleRefresh.poll(scheduledRun[1]))
+        }
+        catch(error)
+        {
+            send(response,error instanceof RefreshError||error instanceof IntegrationError?error.status:500,
+                {error:error instanceof RefreshError||error instanceof IntegrationError?error.code:'crawler-schedule-failed'})
+        }
+        return true
+    }
+
+    // What the crawler needs for an incremental run when it is started without it (watermark and known listings)
+    if(request.method==='GET'&&url.pathname==='/api/integrations/crawler/state')
+    {
+        try
+        {
+            integrations.authorize(request)
+            const window=await loadWindow()
+            send(response,200,{since:window?.lastSuccessfulCollectionAt??null,known:knownListings(window)})
+        }
+        catch(error)
+        {
+            send(response,error instanceof IntegrationError?error.status:500,{error:error instanceof IntegrationError?error.code:'crawler-state-failed'})
         }
         return true
     }
@@ -552,7 +638,7 @@ export async function handle(request, response)
         try
         {
             integrations.authorize(request)
-            const result=request.method==='GET'?crawlerStatus():receiveCrawler(await readBody(request),request.headers['idempotency-key'])
+            const result=request.method==='GET'?crawlerStatus():await receiveCrawler(await readBody(request),request.headers['idempotency-key'])
             if(request.method==='POST'&&!result.duplicate) live.changed()
             send(response,200,result)
         }

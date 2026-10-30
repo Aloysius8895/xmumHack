@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import {parseEnv} from 'node:util';
 import {randomBytes} from 'node:crypto';
-import {gameConfig} from './game-config.js';
+import {gameConfig,browserSourcesFromEnv} from './game-config.js';
 import {jsearchSettings} from './provider-env.js';
 
 const gameFile=new URL('../../game/.env',import.meta.url),crawlerFile=new URL('../.env',import.meta.url);
@@ -23,7 +23,7 @@ if(!game.MARKET_CRAWLER_URL)gameText=set(gameText,'MARKET_CRAWLER_URL','http://1
 if(!game.MARKET_CRAWLER_TOKEN)gameText=set(gameText,'MARKET_CRAWLER_TOKEN',crawler.CRAWLER_TOKEN);
 fs.writeFileSync(gameFile,gameText);
 const providerSettings=jsearchSettings({readGame:true});
-const config=gameConfig({jsearch:Boolean(providerSettings.key),apiProvider:providerSettings.provider});fs.writeFileSync(new URL('../config/game.market.json',import.meta.url),JSON.stringify(config,null,2)+'\n');
+const config=gameConfig({jsearch:Boolean(providerSettings.key),apiProvider:providerSettings.provider,browserSources:browserSourcesFromEnv()});fs.writeFileSync(new URL('../config/game.market.json',import.meta.url),JSON.stringify(config,null,2)+'\n');
 console.log(JSON.stringify({configured:true,careers:config.roles.length,skills:config.skills.length,platforms:['linkedin','indeed','ricebowl'],jsearchEnabled:Boolean(providerSettings.key),
  server:'127.0.0.1:'+crawler.PORT,gameTokenReused:tokenReused,credentialsPrinted:false,
  next:'Run npm run crawler:serve from src/game, then use Refresh in Trends.'},null,2));

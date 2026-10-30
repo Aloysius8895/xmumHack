@@ -81,7 +81,8 @@ export const SKILL_PATTERNS = {
     'figma':              /\b(figma|adobe xd)\b/i,
     'visual-design':      /\b(visual design|ui design|typography|colou?r theory|design systems?|graphic design|photoshop|illustrator)\b/i,
     'usability-testing':  /\b(usability test\w*|user testing|heuristic evaluation)\b/i,
-    'ml-math':            /\b(linear algebra|calculus|mathematics|mathematical|optimi[sz]ation)\b/i,
+    // "optimization" alone is mostly SEO or process optimisation, not ML maths
+    'ml-math':            /\b(linear algebra|calculus|mathematics|mathematical (modell?ing|optimi[sz]ation)|probability theory|(convex|numerical) optimi[sz]ation)\b/i,
     'ml-frameworks':      /\b(pytorch|tensorflow|keras|scikit-learn|sklearn|hugging ?face|xgboost|lightgbm|jax)\b/i,
     'mlops':              /\b(mlops|model deployment|deploy\w* (ml |machine learning )?models?|mlflow|kubeflow|sagemaker|vertex ai|model monitoring|model serving)\b/i,
     'roadmapping':        /\b(roadmaps?|roadmapping|prioriti[sz]ation|product strategy|product vision|backlog)\b/i,
@@ -89,7 +90,8 @@ export const SKILL_PATTERNS = {
     'market-analysis':    /\b(market (research|analysis)|competitive analysis|competitor analysis|market trends?|go-to-market|customer insights?)\b/i,
     // Skills of the search catalog careers (server/careers.js EXTRA_CAREERS, not searched here), counted when a posting asks for them
     'accounting':         /\b(accounting|bookkeeping|mfrs|ifrs|gaap|financial statements?|general ledger|acca|cpa)\b/i,
-    'auditing':           /\b(audit(s|ing|or)?|assurance|isa standards?)\b/i,
+    // "quality assurance" is QA, not audit
+    'auditing':           /\b(audit(s|ing|or)?|(?<!quality )assurance|isa standards?)\b/i,
     'internal-control':   /\b(internal controls?|risk assessment|sox|compliance testing|risk management)\b/i,
     'legal-research':     /\b(legal research|case law|statutes?|westlaw|lexis)\b/i,
     'legal-writing':      /\b(legal (drafting|writing)|draft(ing)? (contracts?|agreements?)|pleadings?)\b/i,
@@ -97,7 +99,8 @@ export const SKILL_PATTERNS = {
     'lesson-planning':    /\b(lesson plans?|lesson planning|curriculum (design|development)|syllabus)\b/i,
     'classroom-management': /\b(classroom management|classroom routines?|behaviou?r management)\b/i,
     'assessment':         /\b(student assessments?|formative assessments?|grading|rubrics?)\b/i,
-    'clinical-knowledge': /\b(clinical|diagnos\w+|mbbs|medical degree)\b/i,
+    // "diagnose" alone is mostly equipment fault finding
+    'clinical-knowledge': /\b(clinical|mbbs|medical degree|(patient|differential) diagnos\w+|diagnos\w+ (and|&) treat\w*)\b/i,
     'patient-care':       /\b(patient care|patient management|bedside manner)\b/i,
     'medical-ethics':     /\b(medical ethics|informed consent|patient confidentiality)\b/i,
     'cooking-technique':  /\b(culinary|cooking|knife skills|kitchen techniques?)\b/i,

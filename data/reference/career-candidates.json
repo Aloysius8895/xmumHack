@@ -1,0 +1,82 @@
+{
+  "about": "Candidate careers for the data-driven selection (prompt 01c, stage 2). Title rules are case-insensitive regular expressions in the crawler's syntax. expectedCategories are JobStreet categories a correct match should fall in: the share of matches inside them is the rule's precision check. Accepted careers move to src/crawler/config/career-titles.json.",
+  "candidates": {
+    "accountant": {
+      "name": "Accountant",
+      "initial": true,
+      "title": "\\b(accountants?|accounting (executive|officer|assistant|clerk|manager|supervisor|analyst)|accounts (executive|officer|assistant|clerk|manager|supervisor|payable|receivable)|account (assistant|clerk|officer)|finance (executive|officer|assistant|analyst)|bookkeepers?)\\b",
+      "query": "accountant",
+      "expectedCategories": ["Accounting"]
+    },
+    "software-engineer": {
+      "name": "Software Engineer",
+      "initial": true,
+      "title": "\\b(software (engineer|developer)s?|(full[ -]?stack|web|mobile|android|ios|\\.net|php|application) (developer|engineer)s?|programmers?)\\b",
+      "query": "software engineer",
+      "expectedCategories": ["Information & Communication Technology"]
+    },
+    "electrical-engineer": {
+      "name": "Electrical & Electronics Engineer",
+      "initial": true,
+      "title": "\\b(electrical|electronics?|e&e|power|instrumentation|c&i|control (and|&) instrumentation|automation|plc|hardware|embedded|firmware)( (and|&) (electronics?|instrumentation))?( design)? engineers?\\b|\\bchargem[ae]n\\b",
+      "query": "electrical engineer",
+      "expectedCategories": ["Engineering", "Manufacturing, Transport & Logistics", "Construction"]
+    },
+    "digital-marketer": {
+      "name": "Digital Marketing Executive",
+      "initial": true,
+      "title": "\\b(digital|social media|online|performance|content|e-?commerce|search engine) marketing\\b|\\bsocial media (executive|specialist|manager|officer|coordinator|strategist)\\b|\\bseo (executive|specialist|manager|analyst)\\b|\\bdigital marketers?\\b",
+      "query": "digital marketing executive",
+      "expectedCategories": ["Marketing & Communications", "Advertising, Arts & Media", "Sales"]
+    },
+    "quantity-surveyor": {
+      "name": "Quantity Surveyor",
+      "initial": true,
+      "title": "\\bquantity surveyors?\\b|\\bqs (executive|engineer|manager|assistant)\\b|^qs\\b",
+      "query": "quantity surveyor",
+      "expectedCategories": ["Construction", "Real Estate & Property", "Engineering"]
+    },
+    "hr-executive": {
+      "name": "Human Resources Executive",
+      "initial": true,
+      "title": "\\b(human resources?|hr|talent acquisition|recruitment|payroll|people) (executive|officer|assistant|specialist|generalist|manager|admin|administrator|business partner|coordinator|associate)\\b|\\b(recruiters?|hrbp|hr generalist)\\b",
+      "query": "human resources executive",
+      "expectedCategories": ["Human Resources & Recruitment"]
+    },
+    "procurement-executive": {
+      "name": "Procurement & Supply Chain Executive",
+      "initial": false,
+      "title": "\\b(purchasing|procurement|sourcing|supply chain) (executive|officer|assistant|specialist|manager|analyst|coordinator|engineer)\\b|\\b(purchasers?|buyers?)\\b",
+      "query": "procurement executive",
+      "expectedCategories": ["Manufacturing, Transport & Logistics"]
+    },
+    "business-analyst": {
+      "name": "Business Analyst",
+      "initial": false,
+      "title": "\\bbusiness (systems )?analysts?\\b|\\bsystems? analysts?\\b",
+      "query": "business analyst",
+      "expectedCategories": ["Information & Communication Technology", "Consulting & Strategy", "Banking & Financial Services"]
+    },
+    "mechanical-engineer": {
+      "name": "Mechanical Engineer",
+      "initial": false,
+      "title": "\\bmechanical (design )?engineers?\\b",
+      "query": "mechanical engineer",
+      "expectedCategories": ["Engineering", "Manufacturing, Transport & Logistics", "Construction"]
+    },
+    "sales-executive": {
+      "name": "Sales & Business Development Executive",
+      "initial": false,
+      "title": "\\bsales (executive|representative|consultant|engineer|advisor|manager|coordinator|officer|specialist)s?\\b|\\bbusiness development (executive|manager|representative|officer)\\b",
+      "query": "sales executive",
+      "expectedCategories": ["Sales", "Retail & Consumer Products", "Engineering"]
+    },
+    "customer-service": {
+      "name": "Customer Service Executive",
+      "initial": false,
+      "title": "\\bcustomer (service|support|care|experience) (executive|officer|representative|associate|agent|specialist|assistant)s?\\b|\\bcall cent(er|re) (agent|executive|officer)\\b",
+      "query": "customer service executive",
+      "expectedCategories": ["Call Centre & Customer Service", "Retail & Consumer Products", "Hospitality & Tourism"]
+    }
+  }
+}

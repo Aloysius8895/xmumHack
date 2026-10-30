@@ -3,6 +3,7 @@ import { t, pick } from '../Career/i18n.js'
 
 /**
  * Playable characters, picked on the intro circle before the reveal (A / D to browse, Enter to confirm)
+ * The player first enters a username: a name the server has never seen is a new user and gets the beginner tour
  * path is relative to static/, null = empty slot (not playable yet)
  * Models are rigged with animation/build.py (clips: idle, walk, run, jump, crouch, crouchWalk...)
  * The map portrait is static/ui/avatars/<id>.png (animation/portrait.py)
@@ -17,6 +18,7 @@ export const CHARACTERS = [
 ]
 
 const STORAGE_KEY = 'playerCharacter'
+const USERNAME_KEY = 'playerUsername' // Last username, prefilled on the next visit
 
 export class CharacterSelect
 {
@@ -40,6 +42,7 @@ export class CharacterSelect
         this.index = CHARACTERS.indexOf(CharacterSelect.getSaved())
         this.selected = CHARACTERS[this.index] // Character in play this session (portraits read it, localStorage can be unavailable)
         this.active = false
+        this.signingIn = false
         this.onConfirm = null
 
         // Loaded gltf promises by id, the saved one is already loaded as playerCharacter
@@ -64,7 +67,15 @@ export class CharacterSelect
         this.element = document.createElement('div')
         this.element.className = 'character-select'
         this.element.innerHTML = /* html */`
-            <div class="character-select-title"></div>
+            <form class="character-select-signin" novalidate>
+                <div class="character-select-title js-signin-title"></div>
+                <div class="character-select-signin-row">
+                    <input class="character-select-input" type="text" name="username" maxlength="24" autocomplete="username" spellcheck="false">
+                    <button class="character-select-submit" type="submit"></button>
+                </div>
+                <div class="character-select-hint js-signin-hint"></div>
+            </form>
+            <div class="character-select-title js-title"></div>
             <div class="character-select-row">
                 <button class="character-select-arrow js-prev" type="button"><span class="character-select-key">A</span>◀</button>
                 <div class="character-select-card">
@@ -81,7 +92,12 @@ export class CharacterSelect
         this.game.domElement.appendChild(this.element)
 
         this.elements = {
-            title: this.element.querySelector('.character-select-title'),
+            signIn: this.element.querySelector('.character-select-signin'),
+            signInTitle: this.element.querySelector('.js-signin-title'),
+            input: this.element.querySelector('.character-select-input'),
+            submit: this.element.querySelector('.character-select-submit'),
+            signInHint: this.element.querySelector('.js-signin-hint'),
+            title: this.element.querySelector('.js-title'),
             card: this.element.querySelector('.character-select-card'),
             index: this.element.querySelector('.character-select-index'),
             name: this.element.querySelector('.character-select-name'),
@@ -91,6 +107,11 @@ export class CharacterSelect
 
         this.element.querySelector('.js-prev').addEventListener('click', () => this.move(- 1))
         this.element.querySelector('.js-next').addEventListener('click', () => this.move(1))
+        this.elements.signIn.addEventListener('submit', (event) =>
+        {
+            event.preventDefault()
+            this.signIn()
+        })
     }
 
     setInputs()
@@ -115,13 +136,72 @@ export class CharacterSelect
     open(onConfirm)
     {
         this.onConfirm = onConfirm
-        this.active = true
-        this.element.classList.add('is-visible')
-        this.select(this.index)
+        this.signingIn = true
+        this.element.classList.add('is-visible', 'is-signing-in')
+        this.renderSignIn()
+
+        try
+        {
+            this.elements.input.value = localStorage.getItem(USERNAME_KEY) ?? ''
+        }
+        catch {}
+        this.elements.input.focus()
 
         // Warm up the other models so browsing is instant
         for(const character of CHARACTERS)
             this.load(character)
+    }
+
+    renderSignIn(hint = t('signIn.hint'), isError = false)
+    {
+        this.elements.signInTitle.textContent = t('signIn.title')
+        this.elements.input.placeholder = t('signIn.placeholder')
+        this.elements.submit.textContent = t('signIn.submit')
+        this.elements.signInHint.textContent = hint
+        this.elements.signInHint.classList.toggle('is-error', isError)
+    }
+
+    // Register the username, then browse the characters. The tour (CareerTour.maybeStart) starts for a new user
+    async signIn()
+    {
+        if(!this.signingIn || this.elements.submit.disabled)
+            return
+
+        const name = this.elements.input.value.replace(/\s+/g, ' ').trim()
+        if(!name)
+        {
+            this.renderSignIn(t('signIn.empty'), true)
+            this.elements.input.focus()
+            return
+        }
+
+        this.elements.submit.disabled = true
+        try
+        {
+            const { newUser } = await this.game.career.api.register(name)
+            this.game.career.tour.newUser = newUser
+        }
+        catch
+        {
+            this.renderSignIn(t('signIn.failed'), true)
+            return
+        }
+        finally
+        {
+            this.elements.submit.disabled = false
+        }
+
+        try
+        {
+            localStorage.setItem(USERNAME_KEY, name)
+        }
+        catch {}
+
+        this.elements.input.blur()
+        this.signingIn = false
+        this.active = true
+        this.element.classList.remove('is-signing-in')
+        this.select(this.index)
     }
 
     load(character)

@@ -54,7 +54,7 @@ KerjayaKu connects career exploration, recruitment samples and personalised lear
 - **Market trends and emerging roles** — Explore occupation rankings, monthly demand heatmaps and skill mentions, including Forward Deployed Engineer (FDE). The Market Overview includes coverage information and an optional Refresh action to request a new recruitment sample.
 - **Career pet and learning logs** — Record completed work and learning reports to update roadmap progress and the pet's career affinity.
 - **AI guidance and messaging** — Ask career mentors for guidance and send learning updates through the Telegram companion. Expert perspectives are AI interpretations, rather than conversations with the real individuals.
-- **Multilingual onboarding** — English, Chinese and Malay interface support, with a first-visit tutorial that can be replayed.
+- **Multilingual onboarding** — English, Chinese and Malay interface support. Players enter a username before choosing a character; a username used for the first time starts the beginner tutorial, which can be replayed from Settings.
 - **SDG connections** — Connect career and learning choices with relevant Sustainable Development Goals.
 
 ### Tech Stack
@@ -143,6 +143,32 @@ Replit / local Node.js game API
 The game API keeps provider credentials on the server. The messaging service, sampling service and n8n workflows are separate processes; the main Replit Run command starts the game and its API.
 
 ---
+
+## Device Requirements
+
+KerjayaKu runs in the browser as a real-time 3D world, so the player's device matters more than for a typical web page.
+
+### Player device (browser)
+
+| Item | Requirement |
+| --- | --- |
+| Device | **Recommended:** desktop or laptop with a dedicated GPU or a recent integrated GPU. Phones and tablets are supported with touch controls and start on low graphics quality. |
+| Browser | **Recommended:** latest Google Chrome or Microsoft Edge (version 113 or later) with WebGPU enabled. Other current browsers use the WebGL 2 fallback, which works with lower performance. Hardware acceleration must be turned on. |
+| Network | Stable broadband connection. The first visit downloads about **210 MB** of 3D models, textures and audio; later visits use the browser cache. |
+| Screen | 1280 × 720 or larger recommended. Panels and the beginner tutorial adapt to narrow screens down to 320 px wide. |
+| Controls | Keyboard and mouse (WASD / arrow keys, Enter, mouse drag and scroll), a gamepad, or the on-screen touch joystick. |
+| Storage | Browser storage (cookies / local storage) allowed, so language, character and last username are remembered. The game still runs without it. |
+
+The game watches its frame rate: if high quality cannot hold about 45 fps, it switches to low quality automatically. Quality can also be changed manually in the options menu.
+
+### Server / development machine
+
+| Item | Requirement |
+| --- | --- |
+| Runtime | **Node.js 24+** and npm |
+| Ports | **5000** (game and API in development and on Replit); **8788** for the optional sampling service |
+| Optional services | Python 3 with `pip` for the messaging companion and data processing; Google Chrome for browser-based recruitment sources |
+| Disk | About 1 GB free for dependencies, assets and the production build |
 
 ## How to Run
 

@@ -1,5 +1,21 @@
 # 游戏招聘采集与 Refresh
 
+## 2026-10-30 Incremental collection, accumulated window and cloud deployment
+
+**The game server keeps the data; the crawler keeps no state.** The game's `market-window` document holds the postings seen in the last 30 days (deduplicated by platform and platform id), the monthly aggregates, the last 20 runs and the watermark (the start time of the last successful collection). It is stored in PostgreSQL when `DATABASE_URL` is set, otherwise as `market-window.json` in the crawler data folder, by default the repository's `data/crawler/`. The old single-run `market.json` is converted into a window the first time it is read.
+
+**Incremental collection.** When a scheduled run or a Refresh starts, the game hands the crawler the watermark and the listing fingerprints it already has (`known`). `POST /api/crawl` accepts only `trigger`, `since` and `known`. The crawler asks the platforms only for adverts posted since the watermark (JSearch `date_posted`, LinkedIn `f_TPR`, Indeed `fromage`), with a 2-hour buffer and a 30-day cap; JSearch's `today` is never used because its meaning is undocumented. Known listings whose search-page fields did not change keep their detail pages unfetched and are reported as `seen`. Incremental runs are published as schema 1.2: only new and changed postings, plus `seen` and the `delta` counts. The dynamic time filter does not change the scope, so monthly comparisons are unaffected. An empty LinkedIn result page (`<!DOCTYPE html><!---->`) is an observed zero; any other unrecognised page still fails the source.
+
+**Refresh and the schedule.** For 30 minutes after any collection finishes, a player's Refresh returns 429 with `cooldownUntil`; a running collection is still shared. The daily schedule calls `POST /api/integrations/crawl/schedule` (`INTEGRATION_TOKEN`), is never held by the cooldown, and is polled with `GET /api/integrations/crawl/schedule/<runId>`. `CRAWL_SCHEDULE_MYT` (default `08:00`, `off` disables it) only feeds the "next automatic update" shown in the UI; n8n does the triggering. A crawler started without state calls `GET /api/integrations/crawler/state`; if that fails too, it runs a full collection.
+
+**n8n.** The regenerated `n8n/daily-crawl.json` calls the published app (default `https://xmum-hackfinal.replit.app`; set `GAME_BASE_URL` when generating it). After importing, set Header Auth to `Authorization: Bearer <INTEGRATION_TOKEN>`, check the URL, then activate it.
+
+**Cloud deployment.** The `.replit` deployment runs `npm run server:cloud` (`server/start-with-crawler.js`): the game and the crawler side by side, the crawler on `127.0.0.1:8788` (never exposed) and restarted if it exits. The crawler's settings are derived from the game's existing environment (`MARKET_CRAWLER_TOKEN`, `INTEGRATION_TOKEN`, `MARKET_CRAWLER_URL`, `RAPIDAPI_KEY`), and only platforms that need no browser run in the cloud: LinkedIn and Indeed through JSearch when a key is set, otherwise LinkedIn public pages only. Ricebowl stays local. Moving local data into the database: `cd src/game && npm run migrate:pg` (safe to repeat; anything already in the database is kept).
+
+Known risks: a `cloudrun` deployment may only get CPU while serving a request, so the background collection after Refresh's 202 can slow down or pause; with several instances a poll can reach another instance (`crawler-run-not-found`; the UI keeps the current data). Both need testing on the published app; if collection is unreliable, use a Reserved VM or a maximum of one instance.
+
+---
+
 `src/crawler` 已接入 `src/game`。Trends（市场热度）新增 **Refresh · 重新采样** 按钮：点击后创建新的采集运行，异步显示进度，完成校验与发布后自动更新热力图、排行和技能统计。它会执行新的网络请求，不只是重新加载旧 JSON。
 
 ## 2026-10-25 采样提速

@@ -1,6 +1,6 @@
 # CareerSphere 马来西亚招聘数据
 
-最新更新（2026-10-24）：已接入 14 个职业，包括带 NEW 标记的 FDE。处理样本为 564 则广告、251 则可用完整描述、1,160 条技能关联。近 30 天定向采集发现 FDE 6 则、5 家公司；4—9 月检索另回收 7 月 1 则、8 月 2 则、9 月 1 则历史广告。4—6 月未取得 FDE 实测历史，按用户授权使用 Mock 趋势补位，界面不显示 Mock 标签。参见 [FDE 需求与偏差报告](derived/fde-demand/FDE_RESEARCH.md)、[逐月来源](derived/fde-demand/fde_history_coverage.csv) 和 [档案说明](historical/fde_2026/README.md)。
+最新更新（2026-10-24）：已接入 14 个职业，包括带 NEW 标记的 FDE。处理样本为 564 则广告、251 则可用完整描述、1,160 条技能关联。近 30 天定向采集发现 FDE 6 则、5 家公司；4—9 月检索另回收 7 月 1 则、8 月 2 则、9 月 1 则历史广告。4—6 月未取得 FDE 实测历史。按决定 D5（2026-10-30），游戏不再显示任何模拟月份：没有采集数据的月份留空，FDE 等职业的曲线从有真实数据的月份开始画（`derived/` 里的 Mock 预览文件只留作记录）。参见 [FDE 需求与偏差报告](derived/fde-demand/FDE_RESEARCH.md)、[逐月来源](derived/fde-demand/fde_history_coverage.csv) 和 [档案说明](historical/fde_2026/README.md)。
 
 新增：[2026 年 4 月起的真实历史统计](historical/2026-04_onwards/README.md)。已保存 DOSM 官方 4—6 月总量、Techmap 4—9 月独立供应商统计及官方职业季度数据；项目职业和技能月度历史缺失处保留空值。
 

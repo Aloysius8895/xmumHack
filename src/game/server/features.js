@@ -193,6 +193,44 @@ ${text ?? ''}
 }
 
 /**
+ * 1b. The player's learning direction in their own words, as catalog skill ids (no new skills, no queries).
+ * Phrases that match no catalog skill are returned apart, not guessed.
+ */
+export async function mapLearningDirection({ text })
+{
+    const known = (ids) => [ ...new Set(ids) ].filter((id) => SKILLS[id])
+    if(isMock())
+        return { skillIds: known(spotSkills(text ?? '')), unmatched: [] }
+
+    const result = await ask({
+        system: `${PLATFORM}\n\nTask: map what the player says they want to learn to the skills of the catalog.`,
+        content: [ { type: 'text', text:
+`Skill ids:
+${skillCatalog()}
+
+Return the ids of what the text asks to learn. A broad field maps to the catalog skills that are part of it (a field of
+study to its core skills), and is then not unmatched. Only a phrase that no catalog skill is part of goes in "unmatched",
+word for word; never stretch it to a skill.
+
+<player_text>
+${text ?? ''}
+</player_text>` } ],
+        schema: {
+            type: 'object',
+            properties: {
+                skillIds: { type: 'array', items: { type: 'string', enum: [ ...SKILL_IDS ] } },
+                unmatched: { type: 'array', items: { type: 'string' } },
+            },
+            required: [ 'skillIds', 'unmatched' ],
+            additionalProperties: false,
+        },
+        effort: 'low',
+        maxTokens: 2000,
+    })
+    return { skillIds: known(result.skillIds), unmatched: result.unmatched.map((phrase) => phrase.trim()).filter(Boolean).slice(0, 10) }
+}
+
+/**
  * 2. Customise mode: requirements of an uploaded job posting compared to the profile
  */
 export async function analyzePosting({ text, file, careerId, profile, lang })
@@ -351,7 +389,6 @@ export async function generateCareer({ query, posting, lang })
             name: { zh: name, en: name, ms: name },
             summary: { zh: `（演示模式）根据「${name}」生成的职业。`, en: `(Demo mode) Career generated from "${name}".`, ms: `(Mod demo) Kerjaya dijana daripada "${name}".` },
             skills: ids.map((id, index) => ({ skillId: id, name: SKILLS[id], description: SKILLS[id], icon: 'compass', difficulty: 3, level: index < 2 ? 3 : 2, weight: index < 2 ? 3 : 2 })),
-            demand: 'medium',
             effortMonths: [ 6, 12 ],
             petName: 'Nova',
             sdgs: [], // sdg.careerSdgs falls back to the skills' targets
@@ -372,7 +409,7 @@ ${skillCatalog()}
 
 For each skill: skillId (a known id, or "new" for a skill not in the list), its name and a one-sentence description (zh, en, ms),
 an icon among ${ICONS.join(', ')}, difficulty 1-5, the level the job needs (1 basic, 2 working, 3 solid) and its weight (1-3).
-Also: a short summary of the job, market demand (high, medium, low), a realistic preparation range in months for a motivated beginner,
+Also: a short summary of the job, a realistic preparation range in months for a motivated beginner,
 and a short, friendly name for the career's pet companion. If the request is not a real occupation, describe the closest real one.
 Finally 1 to 3 UN SDG targets this job directly moves, only from this list (id: target), each with one sentence on how the job moves it
 (zh, en, ms). Pick only targets the daily work really contributes to, not loose associations:
@@ -399,7 +436,6 @@ ${TARGET_IDS.map((id) => `${id}: ${TARGETS[id].en}`).join('\n')}`,
                         additionalProperties: false,
                     },
                 },
-                demand: { type: 'string', enum: [ 'high', 'medium', 'low' ] },
                 effortMonths: { type: 'array', items: { type: 'integer' } },
                 petName: { type: 'string' },
                 sdgs: {
@@ -415,7 +451,7 @@ ${TARGET_IDS.map((id) => `${id}: ${TARGETS[id].en}`).join('\n')}`,
                     },
                 },
             },
-            required: [ 'name', 'summary', 'skills', 'demand', 'effortMonths', 'petName', 'sdgs' ],
+            required: [ 'name', 'summary', 'skills', 'effortMonths', 'petName', 'sdgs' ],
             additionalProperties: false,
         },
         effort: 'medium',

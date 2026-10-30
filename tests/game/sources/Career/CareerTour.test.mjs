@@ -2,21 +2,19 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { CareerTour } from '../../../../src/game/sources/Career/CareerTour.js'
 
-function fixture(seen = null)
+// newUser: what the intro username step (CharacterSelect.signIn) got from POST /api/register
+function fixture(newUser = true)
 {
     let starts = 0
     const tour = Object.assign(Object.create(CareerTour.prototype), {
         api: { state: null }, ui: { game: { reveal: { step: 0 } } },
-        active: false, autoStartHandled: false,
+        active: false, autoStartHandled: false, newUser,
         start() { starts++; this.active = true },
     })
-    globalThis.localStorage = { getItem: () => seen }
     return { tour, starts: () => starts }
 }
 
-test.afterEach(() => { delete globalThis.localStorage })
-
-test('first visit starts after character reveal when the API loaded first', () =>
+test('a new user starts the tour after the character reveal when the API loaded first', () =>
 {
     const { tour, starts } = fixture()
     tour.api.state = {}
@@ -30,7 +28,7 @@ test('first visit starts after character reveal when the API loaded first', () =
     assert.equal(starts(), 1)
 })
 
-test('slow API loading starts the first tour after the world has already appeared', () =>
+test('slow API loading starts the tour of a new user after the world has already appeared', () =>
 {
     const { tour, starts } = fixture()
     tour.ui.game.reveal.step = 2
@@ -41,9 +39,9 @@ test('slow API loading starts the first tour after the world has already appeare
     assert.equal(starts(), 1)
 })
 
-test('completed or skipped tours do not automatically repeat for returning visitors', () =>
+test('a returning username does not get the tour automatically, whatever character is picked', () =>
 {
-    const { tour, starts } = fixture('1')
+    const { tour, starts } = fixture(false)
     tour.ui.game.reveal.step = 2
     tour.api.state = {}
     tour.maybeStart()
@@ -53,18 +51,6 @@ test('completed or skipped tours do not automatically repeat for returning visit
 test('live state updates do not restart a tour that finished in this visit', () =>
 {
     const { tour, starts } = fixture()
-    tour.ui.game.reveal.step = 2
-    tour.api.state = {}
-    tour.maybeStart()
-    tour.active = false
-    tour.maybeStart()
-    assert.equal(starts(), 1)
-})
-
-test('unavailable browser storage still allows one beginner tour per visit', () =>
-{
-    const { tour, starts } = fixture()
-    globalThis.localStorage.getItem = () => { throw new Error('Storage disabled') }
     tour.ui.game.reveal.step = 2
     tour.api.state = {}
     tour.maybeStart()

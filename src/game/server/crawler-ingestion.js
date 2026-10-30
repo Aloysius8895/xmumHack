@@ -1,9 +1,7 @@
-import fs from 'node:fs'
-import path from 'node:path'
-import crypto from 'node:crypto'
-import {fileURLToPath} from 'node:url'
 import {allCareers,SKILLS} from './careers.js'
 import {allowedPlatformUrl} from '../../crawler/src/sources/public.js'
+import {hash,mergeRun,readWindow,storageEnabled,updateWindow,windowFile} from './market-window.js'
+export {malaysiaMonth} from './market-window.js'
 
 export class CrawlerError extends Error
 {
@@ -15,14 +13,15 @@ const string = (value,max=2000) => typeof value==='string' && value.length>0 && 
 const instant = value => typeof value==='string' && /^\d{4}-\d{2}-\d{2}T/.test(value) && Number.isFinite(Date.parse(value))
 const date = value => typeof value==='string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0,10)===value
 const ids = list => Array.isArray(list) && list.length>0 && list.length<=200 && list.every(x=>string(x,100)) && new Set(list).size===list.length
-const url = value => { try { const u=new URL(value); return ['https:','http:'].includes(u.protocol) && !u.username && !u.password } catch { return false } }
-const stable = value => Array.isArray(value) ? value.map(stable) : object(value) ? Object.fromEntries(Object.keys(value).sort().map(key=>[key,stable(value[key])])) : value
-const hash = value => crypto.createHash('sha256').update(JSON.stringify(stable(value))).digest('hex')
-export const malaysiaMonth = iso => new Date(Date.parse(iso)+8*3600000).toISOString().slice(0,7)
+const listingHash = value => value===undefined || value===null || (typeof value==='string' && /^[0-9a-f]{64}$/.test(value))
 
+/**
+ * Schema 1.1: a full run, every observed job. Schema 1.2: an incremental run, the new and changed jobs plus `seen`,
+ * the unchanged postings observed again (their detail pages were skipped), and the `delta` counts.
+ */
 export function validateCrawlerPayload(body,key)
 {
-    if(!object(body)||body.schemaVersion!=='1.1') fail('crawler-bad-schema')
+    if(!object(body)||!['1.1','1.2'].includes(body.schemaVersion)) fail('crawler-bad-schema')
     if(body.isDemo!==false||body.summary?.isDemo!==false) fail('crawler-demo-not-accepted')
     const {run,scope,summary,jobs}=body
     if(!object(run)||!string(run.id,100)||!/^[\w-]+$/.test(run.id)||body.idempotencyKey!==run.id||(key&&key!==run.id)) fail('crawler-bad-run-id')
@@ -45,12 +44,20 @@ export function validateCrawlerPayload(body,key)
         if((job.postedAt!==null&&!instant(job.postedAt))||(job.postedDate!=null&&!date(job.postedDate))) fail('crawler-bad-posted-date')
         if(!Array.isArray(job.skills)||job.skills.length>scope.skills.length||new Set(job.skills.map(s=>s.id)).size!==job.skills.length||job.skills.some(s=>!object(s)||!scope.skills.includes(s.id)||!string(s.evidence,2000)||s.requirement!=='mentioned')||(!job.descriptionAvailable&&job.skills.length)) fail('crawler-bad-job-skills')
         if(!Array.isArray(job.sources)||!job.sources.length||job.sources.some(s=>!object(s)||!sourceIds.has(s.source)||!string(s.sourceId)||(s.url!==null&&!allowedPlatformUrl(s.url,s.source)))) fail('crawler-bad-job-sources')
+        if(!listingHash(job.listingHash)) fail('crawler-bad-listing-hash')
         for(const source of job.sources)
         {
             const identity=JSON.stringify([source.source,source.sourceId])
             if(sourceKeys.has(identity)) fail('crawler-duplicate-source-job')
             sourceKeys.add(identity)
         }
+    }
+    if(body.schemaVersion==='1.2')
+    {
+        if(!['schedule','refresh','manual'].includes(run.trigger)||(run.since!==null&&!instant(run.since))) fail('crawler-bad-incremental-run')
+        if(!Array.isArray(body.seen)||body.seen.length>20000||body.seen.some(s=>!object(s)||!sourceIds.has(s.source)||!string(s.sourceId,300))) fail('crawler-bad-seen')
+        if(!object(body.delta)||['new','changed','unchanged','skippedDetails','undatedAds'].some(k=>!Number.isInteger(body.delta[k])||body.delta[k]<0)) fail('crawler-bad-delta')
+        if(body.delta.new+body.delta.changed!==jobs.length) fail('crawler-delta-mismatch')
     }
     if(!object(summary)||summary.runId!==run.id||summary.scopeHash!==run.scopeHash||summary.status!==run.status||summary.sampleSize!==jobs.length||summary.descriptionCount!==jobs.filter(j=>j.descriptionAvailable).length) fail('crawler-summary-mismatch')
     const tasks=summary.quality?.tasks
@@ -72,54 +79,29 @@ export function validateCrawlerPayload(body,key)
     return structuredClone(body)
 }
 
-export function crawlerFile()
-{
-    if(process.env.CRAWLER_DATA_DIR==='off') return null
-    const root=process.env.CRAWLER_DATA_DIR??(process.env.SAVE_DIR?path.join(process.env.SAVE_DIR,'crawler'):fileURLToPath(new URL('./data/crawler/',import.meta.url)))
-    return path.join(root,'market.json')
-}
-let previous=null, signature='', previousFile=''
-export function readCrawlerState()
-{
-    const file=crawlerFile()
-    if(!file) return null
-    try
-    {
-        const stat=fs.statSync(file), version=`${file}:${stat.mtimeMs}:${stat.size}`
-        if(version===signature) return previous
-        const envelope=JSON.parse(fs.readFileSync(file,'utf8'))
-        if(envelope.sha256!==hash(envelope.data)||!envelope.data.latest) throw new Error('checksum')
-        validateCrawlerPayload(envelope.data.latest)
-        previous=envelope.data; signature=version; previousFile=file
-        return previous
-    }
-    catch { return previousFile===file?previous:null }
-}
+/** File of the accumulated window when it lives on disk (no database), null when ingestion is off */
+export const crawlerFile = () => windowFile()
 
-export function receiveCrawler(body,key)
+/** The accumulated window (market-window.js): latest run, postings of the last 30 days, months, receipts */
+export const readCrawlerState = () => readWindow()
+
+/** Merges a published run into the window. Repeats are acknowledged, conflicts and older runs refused. */
+export async function receiveCrawler(body,key)
 {
-    const payload=validateCrawlerPayload(body,key), file=crawlerFile()
-    if(!file) fail('crawler-ingestion-disabled',503)
-    const old=readCrawlerState(), fingerprint=hash(payload), receipt=old?.receipts?.find(r=>r.id===payload.run.id)
-    if(receipt)
+    const payload=validateCrawlerPayload(body,key)
+    if(!storageEnabled()) fail('crawler-ingestion-disabled',503)
+    const fingerprint=hash(payload), runId=payload.run.id
+    return updateWindow(window=>
     {
-        if(receipt.hash!==fingerprint) fail('crawler-run-id-conflict',409)
-        return {accepted:true,runId:payload.run.id,duplicate:true}
-    }
-    if(old?.latest&&Date.parse(payload.run.finishedAt)<=Date.parse(old.latest.run.finishedAt)) fail('crawler-stale-run',409)
-    const data={latest:payload,receipts:[...(old?.receipts??[]),{id:payload.run.id,hash:fingerprint}].slice(-500),
-        months:old?.latest?.run.scopeHash===payload.run.scopeHash?[...(old.months??[])]:[]}
-    const period=malaysiaMonth(payload.run.finishedAt)
-    const counts=Object.fromEntries(payload.scope.roles.map(id=>[id,payload.jobs.filter(j=>j.role===id).length]))
-    const described=payload.jobs.filter(j=>j.descriptionAvailable)
-    const shares=Object.fromEntries(payload.scope.skills.map(id=>[id,described.length?Math.round(described.filter(j=>j.skills.some(s=>s.id===id)).length/described.length*1000)/10:null]))
-    data.months=data.months.filter(month=>month.period!==period)
-    data.months.push({period,runId:payload.run.id,collectedAt:payload.run.finishedAt,counts,shares})
-    data.months.sort((a,b)=>a.period.localeCompare(b.period)); data.months=data.months.slice(-24)
-    fs.mkdirSync(path.dirname(file),{recursive:true})
-    const temporary=file+'.'+crypto.randomUUID()+'.tmp'
-    try { fs.writeFileSync(temporary,JSON.stringify({sha256:hash(data),data})); fs.renameSync(temporary,file) }
-    finally { if(fs.existsSync(temporary))fs.unlinkSync(temporary) }
-    signature=''
-    return {accepted:true,runId:payload.run.id,duplicate:false}
+        const receipt=window?.receipts?.find(r=>r.id===runId)
+        if(receipt)
+        {
+            if(receipt.hash!==fingerprint) fail('crawler-run-id-conflict',409)
+            return {result:{accepted:true,runId,duplicate:true},window:null}
+        }
+        if(window?.latest&&Date.parse(payload.run.finishedAt)<=Date.parse(window.latest.run.finishedAt)) fail('crawler-stale-run',409)
+        const next=mergeRun(window,payload)
+        next.receipts=[...(window?.receipts??[]),{id:runId,hash:fingerprint}].slice(-200)
+        return {result:{accepted:true,runId,duplicate:false},window:next}
+    })
 }

@@ -10,7 +10,10 @@ const GROWTH = {
     doctor: 0.015, 'civil-engineer': -0.035, chef: -0.07,
 }
 
-/** User-authorized mock backfill for the heatmap only. Original observations remain authoritative. */
+/**
+ * User-authorized mock backfill, formerly shown in the heatmap. The game no longer displays it (decision D5: months without
+ * collected data stay empty); only the offline exports in src/data/scripts still use it. Observations remain authoritative.
+ */
 export function buildMockMarketHistory(trends = {}, shown = [])
 {
     const result = { method: 'seeded-career-profile-v1', count: 0, cells: Object.create(null) }

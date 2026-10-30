@@ -1,0 +1,488 @@
+{
+  "about": "v2 (2026-10-30): for each career, every task statement of its O*NET occupations that matches a skill's pattern counts for that skill, including tasks with no observed AI use. Nothing is ranked by penetration. A reviewer removes irrelevant tasks with exclude and sets reviewed: true.",
+  "reviewer": "Aloysius Ting",
+  "careers": {
+    "data-analyst": {
+      "onet": [
+        "15-1199.08",
+        "15-2041.00"
+      ],
+      "soc": "15-2051",
+      "skills": [
+        "sql",
+        "data-cleaning",
+        "data-visualization",
+        "excel",
+        "statistics",
+        "python",
+        "communication"
+      ]
+    },
+    "frontend-developer": {
+      "onet": [
+        "15-1134.00"
+      ],
+      "soc": "15-1254",
+      "skills": [
+        "html-css",
+        "javascript",
+        "react",
+        "git",
+        "accessibility",
+        "api-integration"
+      ]
+    },
+    "backend-developer": {
+      "onet": [
+        "15-1132.00",
+        "15-1133.00",
+        "15-1199.06"
+      ],
+      "soc": "15-1252",
+      "skills": [
+        "backend-language",
+        "databases",
+        "rest-api",
+        "git",
+        "testing",
+        "cloud-deploy"
+      ]
+    },
+    "ui-ux-designer": {
+      "onet": [
+        "27-1024.00",
+        "15-1134.00"
+      ],
+      "soc": "15-1255",
+      "skills": [
+        "user-research",
+        "prototyping",
+        "figma",
+        "visual-design",
+        "usability-testing",
+        "communication"
+      ]
+    },
+    "ml-engineer": {
+      "onet": [
+        "15-1111.00",
+        "15-2041.00"
+      ],
+      "soc": "15-1221",
+      "skills": [
+        "python",
+        "ml-math",
+        "ml-frameworks",
+        "data-cleaning",
+        "mlops",
+        "sql"
+      ]
+    },
+    "product-manager": {
+      "onet": [
+        "11-3021.00"
+      ],
+      "soc": "11-3021",
+      "skills": [
+        "roadmapping",
+        "user-research",
+        "communication",
+        "market-analysis",
+        "agile",
+        "sql"
+      ]
+    },
+    "forward-deployed-engineer": {
+      "onet": [
+        "15-1132.00",
+        "15-1121.00"
+      ],
+      "soc": "15-1252",
+      "skills": [
+        "python",
+        "api-integration",
+        "communication",
+        "rest-api",
+        "cloud-deploy",
+        "mlops",
+        "ml-frameworks",
+        "sql"
+      ]
+    },
+    "data-scientist": {
+      "onet": [
+        "15-2041.00",
+        "15-1199.08"
+      ],
+      "soc": "15-2051",
+      "skills": [
+        "python",
+        "statistics",
+        "ml-frameworks",
+        "sql",
+        "data-visualization",
+        "communication"
+      ]
+    },
+    "auditor": {
+      "onet": [
+        "13-2011.02",
+        "13-2011.01"
+      ],
+      "soc": "13-2011",
+      "skills": [
+        "accounting",
+        "auditing",
+        "internal-control",
+        "excel",
+        "communication"
+      ]
+    },
+    "lawyer": {
+      "onet": [
+        "23-1011.00"
+      ],
+      "soc": "23-1011",
+      "skills": [
+        "legal-research",
+        "legal-writing",
+        "negotiation",
+        "communication"
+      ]
+    },
+    "teacher": {
+      "onet": [
+        "25-2031.00"
+      ],
+      "soc": "25-2031",
+      "skills": [
+        "lesson-planning",
+        "classroom-management",
+        "assessment",
+        "communication"
+      ]
+    },
+    "doctor": {
+      "onet": [
+        "29-1063.00",
+        "29-1062.00"
+      ],
+      "soc": "29-1216",
+      "skills": [
+        "clinical-knowledge",
+        "patient-care",
+        "medical-ethics",
+        "communication"
+      ]
+    },
+    "chef": {
+      "onet": [
+        "35-1011.00"
+      ],
+      "soc": "35-1011",
+      "skills": [
+        "cooking-technique",
+        "food-safety",
+        "menu-planning",
+        "project-management",
+        "communication"
+      ]
+    },
+    "civil-engineer": {
+      "onet": [
+        "17-2051.00"
+      ],
+      "soc": "17-2051",
+      "skills": [
+        "engineering-math",
+        "cad",
+        "project-management",
+        "communication"
+      ]
+    }
+  },
+  "skills": {
+    "sql": {
+      "pattern": "\\bsql\\b|quer(y|ies)|database",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "excel": {
+      "pattern": "spreadsheet",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "statistics": {
+      "pattern": "statistic",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "python": {
+      "pattern": "program|\\bcode|software|script",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "data-cleaning": {
+      "pattern": "clean|data quality|validat|verif|accura|integrity",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "data-visualization": {
+      "pattern": "chart|graph|visuali|dashboard|report",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "communication": {
+      "pattern": "present|communicat|explain|consult|advis|discuss|confer",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "html-css": {
+      "pattern": "\\bweb|html|page",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "javascript": {
+      "pattern": "\\bcode|program|web application|script",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "react": {
+      "pattern": "interface|front|web application|user",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "git": {
+      "pattern": "version|source code|configuration management",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "accessibility": {
+      "pattern": "accessib|usab|compatib|disab",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "api-integration": {
+      "pattern": "interface|integrat|\\bapi\\b",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "backend-language": {
+      "pattern": "program|\\bcode|software|application",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "databases": {
+      "pattern": "database",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "rest-api": {
+      "pattern": "interface|web service|\\bapi\\b",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "cloud-deploy": {
+      "pattern": "deploy|install|configur|server|cloud|network",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "testing": {
+      "pattern": "test|debug|error",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "user-research": {
+      "pattern": "\\buser|client|customer|need|requirement|survey|interview",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "prototyping": {
+      "pattern": "prototype|mock|sketch|layout|model",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "figma": {
+      "pattern": "layout|graphic|illustrat|design",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "visual-design": {
+      "pattern": "visual|colou?r|graphic|illustrat|layout|typograph",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "usability-testing": {
+      "pattern": "usab|\\buser|test",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "ml-math": {
+      "pattern": "mathemat|statistic|model|algorithm",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "ml-frameworks": {
+      "pattern": "machine learning|model|algorithm|data mining",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "mlops": {
+      "pattern": "deploy|monitor|maintain|model",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "roadmapping": {
+      "pattern": "plan|strateg|priorit|goal",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "agile": {
+      "pattern": "coordinat|team|schedul|collaborat",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "market-analysis": {
+      "pattern": "market|competit|trend|customer",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "accounting": {
+      "pattern": "account|financial|ledger|statement",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "auditing": {
+      "pattern": "audit|examin|inspect",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "internal-control": {
+      "pattern": "control|risk|complian|fraud",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "legal-research": {
+      "pattern": "research|statute|regulation|case law|precedent|interpret",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "legal-writing": {
+      "pattern": "prepare|draft|writ|document",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "negotiation": {
+      "pattern": "negotiat|settle|mediat|agreement",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "lesson-planning": {
+      "pattern": "plan|lesson|curricul|instruction|material",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "classroom-management": {
+      "pattern": "classroom|behavio|disciplin|order|rules",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "assessment": {
+      "pattern": "evaluat|assess|grade|test|progress",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "clinical-knowledge": {
+      "pattern": "diagnos|treat|prescri|disease|clinical|condition|examin",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "patient-care": {
+      "pattern": "patient",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "medical-ethics": {
+      "pattern": "ethic|confidential|consent|privacy",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "cooking-technique": {
+      "pattern": "cook|prepar|dish|season|ingredient",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "food-safety": {
+      "pattern": "sanit|safety|hygien|clean|inspect|storage",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "menu-planning": {
+      "pattern": "menu|recipe|cost|price",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "engineering-math": {
+      "pattern": "calculat|comput|estimat|analy",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "cad": {
+      "pattern": "drawing|\\bcad\\b|computer-aided|blueprint",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    },
+    "project-management": {
+      "pattern": "project|schedul|budget|coordinat",
+      "reviewed": false,
+      "exclude": [],
+      "note": null
+    }
+  }
+}

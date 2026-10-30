@@ -1,4 +1,4 @@
-"""Fresh/returning visitors use isolated API fixtures; no player save or AI request is changed."""
+"""New/returning usernames use isolated API fixtures; no player save or AI request is changed."""
 import json
 import subprocess
 import sys
@@ -17,10 +17,21 @@ console.log(JSON.stringify(view(createSave(),{mock:true,model:'tour UI fixture',
 fixture = json.loads(subprocess.check_output(['node', '--input-type=module', '-e', fixture_code],
                                             cwd=ROOT / 'game', text=True, encoding='utf-8'))
 results = {'page_errors': [], 'isolated_api_no_player_save_writes': True}
+registered = set()  # Usernames the fixture /api/register has seen (lowercase, like the server)
 
 
 def ready(page):
     page.wait_for_function('window.game?.career?.api.state && game.reveal.step === 2', timeout=90000)
+
+
+def sign_in(page, name):
+    page.wait_for_function('window.game?.characterSelect?.signingIn && game.career?.api.state', timeout=90000)
+    expect(page.locator('.career-tour')).not_to_be_visible()
+    page.locator('.character-select-input').fill(name)
+    page.keyboard.press('Enter')
+    page.wait_for_function('game.characterSelect.active')
+    page.keyboard.press('Enter')
+    ready(page)
 
 
 def install_api(page, slow=False):
@@ -31,6 +42,10 @@ def install_api(page, slow=False):
                 assert not page.evaluate('game.career.tour.active')
                 results['slow_api_waits_until_world_ready'] = True
             route.fulfill(json={'state': fixture})
+        elif route.request.url.endswith('/api/register'):
+            key = ' '.join(json.loads(route.request.post_data)['name'].split()).lower()
+            route.fulfill(json={'newUser': key not in registered, 'state': fixture})
+            registered.add(key)
         else:
             route.abort()
     page.route('**/api/**', api)
@@ -46,25 +61,23 @@ with sync_playwright() as p:
         page = context.new_page()
         install_api(page)
         page.goto('http://localhost:5000/', wait_until='domcontentloaded')
-        page.wait_for_function('window.game?.characterSelect?.active && game.career?.api.state', timeout=90000)
-        expect(page.locator('.career-tour')).not_to_be_visible()
-        page.keyboard.press('Enter')
-        ready(page)
+        sign_in(page, 'Tour Tester')
         expect(page.locator('.career-tour')).to_be_visible()
         assert page.evaluate('game.career.tour.active && game.career.api.demo && game.career.ui.touring')
         page.evaluate('game.career.tour.stopTyping()')
         page.screenshot(path=str(OUT / 'first-visit-desktop.png'))
-        results['first_visit_after_character_confirmation'] = True
+        results['new_username_after_character_confirmation'] = True
 
         page.locator('.career-tour .js-skip').click()
         expect(page.locator('.career-tour')).not_to_be_visible()
-        assert page.evaluate('localStorage.getItem("tourSeen")') == '1'
         assert page.evaluate('!game.career.api.demo && !game.career.ui.touring')
-        page.goto('http://localhost:5000/?tour-check=returning#skip', wait_until='domcontentloaded')
-        ready(page)
+        page.goto('http://localhost:5000/?tour-check=returning', wait_until='domcontentloaded')
+        assert page.locator('.character-select-input').input_value() == 'Tour Tester'
+        page.evaluate('localStorage.setItem("playerCharacter", "Edixon")')
+        sign_in(page, '  tour tester ')
         expect(page.locator('.career-tour')).not_to_be_visible()
         assert page.evaluate('game.career.tour.autoStartHandled && !game.career.tour.active')
-        results['skip_persists_and_return_visit_stays_quiet'] = True
+        results['returning_username_stays_quiet'] = True
 
         page.evaluate('game.career.ui.openPanel("settings")')
         page.locator('[data-action="tutorial"]').click()
@@ -81,6 +94,8 @@ with sync_playwright() as p:
     install_api(page, slow=True)
     page.goto('http://localhost:5000/#skip', wait_until='domcontentloaded')
     ready(page)
+    # #skip has no username step: start the tour as the Settings replay does
+    page.evaluate('game.career.tour.start()')
     expect(page.locator('.career-tour')).to_be_visible()
     page.evaluate('''() => {
         const tour = game.career.tour;

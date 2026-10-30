@@ -136,13 +136,15 @@ test('new skills of a generated career are registered for the save, then dropped
             { skillId: null, name: { zh: '花材知识', en: 'Flower knowledge', ms: 'Pengetahuan bunga' }, description: { zh: '认识花材的特性与花期。', en: 'Know flowers and their seasons well.', ms: 'Kenali bunga dan musimnya dengan baik.' }, icon: 'layers', difficulty: 2, level: 3, weight: 3 },
             { skillId: 'communication', name: SKILLS.communication, description: SKILLS.communication, icon: 'message', difficulty: 2, level: 2, weight: 2 },
         ],
-        demand: 'low',
         effortMonths: [ 3, 6 ],
         petName: 'Petal',
     })
     assert.deepEqual(career.skills.map((skill) => skill.id), [ 'custom-flower-knowledge', 'communication' ])
     assert.equal(SKILLS['custom-flower-knowledge'].en, 'Flower knowledge')
-    assert.equal(SKILL_DETAILS['custom-flower-knowledge'].heat, 30)
+    // No authored demand: heat only ever comes from collected postings (game.view)
+    assert.equal(SKILL_DETAILS['custom-flower-knowledge'].heat, undefined)
+    assert.equal(SKILL_DETAILS['custom-flower-knowledge'].difficulty, 2)
+    assert.equal(career.market, undefined)
     assert.equal(getCareer(career.id).name.en, 'Florist')
 
     useCustom(store.createSave())

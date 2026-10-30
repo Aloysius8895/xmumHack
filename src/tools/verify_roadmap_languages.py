@@ -30,7 +30,7 @@ with sync_playwright() as p:
         '--enable-gpu', '--ignore-gpu-blocklist', '--use-angle=d3d11',
     ])
     context = browser.new_context(viewport={'width': 1440, 'height': 1000})
-    context.add_init_script("localStorage.setItem('careerLang','en'); localStorage.setItem('tourSeen','1');")
+    context.add_init_script("localStorage.setItem('careerLang','en');")
     page = context.new_page()
     page.on('pageerror', lambda error: results['page_errors'].append(str(error)))
     first_state_headers = []

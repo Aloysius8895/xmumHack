@@ -9,10 +9,11 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
-const DIRECTORY = process.env.SAVE_DIR ?? path.join(here, 'data')
+// Default: the repository's data/game folder (until a database is configured, see persistence.js)
+const DIRECTORY = process.env.SAVE_DIR ?? path.resolve(here, '..', '..', '..', 'data', 'game')
 const FILE = path.join(DIRECTORY, 'save.json')
 
-export const SAVE_VERSION = 4
+export const SAVE_VERSION = 6
 
 function newPlayer()
 {
@@ -27,6 +28,10 @@ const MIGRATIONS = {
     2: (data) => ({ ...data, mastery: {}, digests: [] }),
     // Mentors on the map can be swapped: the map list, the progress kept per career, AI generated careers
     3: (data) => ({ ...data, map: null, careers: {}, customCareers: [], customSkills: {}, pendingTarget: null }),
+    // Usernames registered on the intro screen (the beginner tour starts for a name seen for the first time)
+    4: (data) => ({ ...data, users: data.player?.name ? [ { name: data.player.name, registeredAt: null } ] : [] }),
+    // Future scenarios (server/scenarios.js), the market data the player last looked at and their learning direction (server/update-log.js)
+    5: (data) => ({ ...data, scenario: { preset: 'moderate' }, dataView: null, learningDirection: null }),
 }
 
 export function createSave()
@@ -42,6 +47,7 @@ export function createSave()
         points: 0,
         player: newPlayer(), // { id, name } shared in the friend code
         friends: [],    // [{ id, name, points, sharedAt, addedAt }] from friend codes
+        users: [],      // [{ name, registeredAt }] usernames registered on the intro screen
         mastery: {},    // { skillId: 0-100 } from the daily digests of the chat agent
         digests: [],    // [{ date, summary, skills, at }] latest first
         challenges: [], // legacy history retained for save compatibility; no new exams are created
@@ -50,6 +56,9 @@ export function createSave()
         customCareers: [], // careers the AI generated (search, job postings), same shape as server/careers.js CAREERS
         customSkills: {},  // { skillId: { name: { zh, en, ms }, detail } } new skills of those careers
         pendingTarget: null, // { requestedCareerId, posting, suggestedCareerId, newCareer, at } posting fitting another career, waiting for the player
+        scenario: { preset: 'moderate' }, // { preset } or { k, H } future AI adoption scenario (server/scenarios.js)
+        dataView: null,    // { seenAt, seenWindowAt, denominator, shares, signals } market data last looked at (server/update-log.js)
+        learningDirection: null, // { text, skillIds, unmatched, setAt } what the player wants to learn, as catalog skills
     }
 }
 

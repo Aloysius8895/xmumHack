@@ -169,6 +169,84 @@
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
 
+/* Username step first (CharacterSelect.signIn), the character browser after it */
+.character-select-signin {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+}
+
+.character-select.is-signing-in .character-select-signin {
+    display: flex;
+}
+
+.character-select.is-signing-in > :not(.character-select-signin) {
+    display: none;
+}
+
+.character-select-signin-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.character-select-input {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: var(--select-glass-shine);
+    color: #ffffff;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    outline: none;
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+.character-select-input::placeholder {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.character-select-input:focus {
+    box-shadow: var(--select-glass-shine), 0 0 0 2px rgba(255, 101, 155, 0.75), 0 0 18px var(--select-pink-glow);
+}
+
+.character-select-submit {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border: 1px solid var(--select-glass-border);
+    border-radius: 999px;
+    background: var(--select-pink);
+    box-shadow: var(--select-glass-shine), 0 4px 14px rgba(20, 10, 30, 0.2);
+    color: #ffffff;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: box-shadow 0.15s, transform 0.15s, opacity 0.15s;
+}
+
+.character-select-submit:hover {
+    box-shadow: var(--select-glass-shine), 0 0 18px var(--select-pink-glow);
+    transform: scale(1.04);
+}
+
+.character-select-submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.character-select-hint.is-error {
+    color: #ffd2e1;
+    font-weight: 700;
+}
+
 /* Narrow screens: above the 16+ badge (style/ageRating.styl) instead of over it */
 @media (max-width: 640px) {
     .character-select {

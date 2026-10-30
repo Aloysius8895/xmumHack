@@ -5,40 +5,10 @@ import * as persistence from './persistence.js'
 /**
  * Trends panel data: new job ads per career and month, and the share of ads asking for each skill
  * Live months are pushed once a month by the n8n workflow (POST /api/integrations/trends, receiveTrends below) and
- * kept in server/data/trends.json. Until the first push the panel shows DEMO_TRENDS, flagged as demo data.
+ * kept in server/data/trends.json. Until the first push there is no month (empty: true), never authored numbers.
  */
 const MAX_MONTHS = 24
 const ID = /^[a-z0-9][a-z0-9-]{0,47}$/
-
-const name = (en, zh, ms) => ({ zh, en, ms })
-
-/** Authored demo numbers (NOT recruitment statistics), Apr - Sep 2026 */
-export const DEMO_TRENDS = {
-    source: 'demo',
-    periods: [ '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09' ],
-    careers: [
-        { id: 'frontend-developer',    name: name('Frontend Developer', '前端工程师', 'Pembangun Frontend'),                ads: [ 400, 430, 410, 455, 480, 510 ] },
-        { id: 'data-analyst',          name: name('Data Analyst', '数据分析师', 'Penganalisis Data'),                       ads: [ 300, 315, 345, 375, 410, 450 ] },
-        { id: 'cloud-engineer',        name: name('Cloud Engineer', '云工程师', 'Jurutera Awan'),                           ads: [ 250, 265, 280, 300, 335, 365 ] },
-        { id: 'ml-engineer',           name: name('AI Engineer', 'AI 工程师', 'Jurutera AI'),                               ads: [ 120, 145, 180, 220, 265, 320 ] },
-        { id: 'cybersecurity-analyst', name: name('Cybersecurity Analyst', '网络安全分析师', 'Penganalisis Keselamatan Siber'), ads: [ 200, 210, 235, 260, 285, 310 ] },
-        { id: 'ui-ux-designer',        name: name('UI/UX Designer', 'UI/UX 设计师', 'Pereka UI/UX'),                        ads: [ 260, 255, 250, 245, 240, 235 ] },
-        { id: 'qa-engineer',           name: name('QA Engineer', '测试工程师', 'Jurutera QA'),                              ads: [ 180, 190, 195, 205, 215, 225 ] },
-        { id: 'data-entry-clerk',      name: name('Data Entry Clerk', '数据录入员', 'Kerani Kemasukan Data'),               ads: [ 240, 230, 220, 205, 190, 175 ] },
-    ],
-    skills: [
-        { id: 'sql',                share: [ 34, 35, 35, 36, 37, 38 ] },
-        { id: 'python',             share: [ 28, 29, 31, 32, 34, 36 ] },
-        { id: 'javascript',         share: [ 30, 30, 31, 31, 32, 32 ] },
-        { id: 'excel',              share: [ 27, 26, 26, 25, 24, 24 ] },
-        { id: 'cloud-deploy',       share: [ 18, 19, 21, 22, 24, 26 ] },
-        { id: 'react',              share: [ 22, 23, 23, 24, 25, 25 ] },
-        { id: 'ml-frameworks',      share: [ 9, 10, 12, 14, 16, 19 ] },
-        { id: 'data-visualization', share: [ 15, 15, 16, 17, 17, 18 ] },
-        { id: 'testing',            share: [ 14, 14, 15, 15, 16, 16 ] },
-        { id: 'figma',              share: [ 12, 12, 11, 11, 11, 10 ] },
-    ],
-}
 
 function localized(value, fallback)
 {
@@ -120,14 +90,7 @@ export function trendsView(data = store.loadTrends())
     const skillName = (id, given) => given ?? SKILLS[id] ?? { zh: titleCase(id), en: titleCase(id), ms: titleCase(id) }
 
     if(!data.months.length)
-        return {
-            demo: true,
-            source: DEMO_TRENDS.source,
-            collectedAt: null,
-            periods: DEMO_TRENDS.periods,
-            careers: withLinks(DEMO_TRENDS.careers),
-            skills: DEMO_TRENDS.skills.map((skill) => ({ ...skill, name: skillName(skill.id) })),
-        }
+        return { demo: false, empty: true, source: null, collectedAt: null, periods: [], careers: [], skills: [] }
 
     const periods = data.months.map((month) => month.period)
     const series = (key, value, label) =>

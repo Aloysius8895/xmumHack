@@ -125,12 +125,15 @@ export class CareerApi
     {
         const response=await fetch(`./api/market/sample/${path}`,{method,cache:'no-store',headers:{'X-Career-Client':this.clientId,...(method==='POST'?{'Content-Type':'application/json'}:{})},...(method==='POST'?{body:'{}'}:{})})
         const payload=await response.json().catch(()=>({error:'crawler-request-failed'}))
-        if(!response.ok)throw Object.assign(new Error(payload.error),{code:payload.error})
+        // cooldownUntil: the time a Refresh is possible again after the last collection
+        if(!response.ok)throw Object.assign(new Error(payload.error),{code:payload.error,cooldownUntil:payload.cooldownUntil??null})
         return payload
     }
     startMarketSample() {return this.sampleRequest('POST','refresh')}
     marketSampleStatus(runId) {return this.sampleRequest('GET',encodeURIComponent(runId))}
     setLang(lang) { return this.request('POST', 'lang', { lang }) }
+    markUpdatesSeen() { return this.request('POST', 'update-log/seen', {}) }
+    setLearningDirection(text) { return this.request('POST', 'learning-direction', { text }) }
     extractProfile(text, file) { return this.request('POST', 'profile/extract', { text, file }) }
     setSkills(skills) { return this.request('POST', 'profile/skills', { skills }) }
     setTarget(careerId, mode, text, file, replace = false, sourceUrl = '') { return this.request('POST', 'target', { careerId, mode, text, file, replace, sourceUrl }) }
@@ -188,6 +191,7 @@ export class CareerApi
         return answer
     }
     setPlayerName(name) { return this.request('POST', 'player', { name }) }
+    register(name) { return this.request('POST', 'register', { name }) }
     addFriend(code) { return this.request('POST', 'friends', { code }) }
     removeFriend(id) { return this.request('POST', 'friends/remove', { id }) }
     reset() { return this.request('POST', 'reset', {}) }

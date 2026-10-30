@@ -1,5 +1,5 @@
 {
-  "name": "CareerSphere - Crawl and publish verified sample",
+  "name": "CareerSphere - Daily incremental collection through the game",
   "nodes": [
     {
       "id": "manual",
@@ -34,7 +34,7 @@
     },
     {
       "id": "start",
-      "name": "Start crawl",
+      "name": "Start scheduled collection",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -43,14 +43,14 @@
       ],
       "parameters": {
         "method": "POST",
-        "url": "http://127.0.0.1:8788/api/crawl",
+        "url": "https://xmum-hackfinal.replit.app/api/integrations/crawl/schedule",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "{}",
         "options": {
-          "timeout": 10000
+          "timeout": 15000
         }
       }
     },
@@ -79,11 +79,11 @@
       ],
       "parameters": {
         "method": "GET",
-        "url": "={{ 'http://127.0.0.1:8788' + $('Start crawl').first().json.statusUrl }}",
+        "url": "={{ 'https://xmum-hackfinal.replit.app/api/integrations/crawl/schedule/' + $('Start scheduled collection').first().json.runId }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "options": {
-          "timeout": 10000
+          "timeout": 15000
         }
       }
     },
@@ -97,7 +97,7 @@
         80
       ],
       "parameters": {
-        "jsCode": "const run=$input.first().json;\nif($runIndex>=75)throw new Error('Crawler did not finish and publish within the polling budget');\nconst publishable=['complete','capped'].includes(run.status)||(run.status==='partial'&&run.report?.publishable===true);\nconst pending=run.status==='running'||(publishable&&['pending','publishing'].includes(run.publication?.status));\nif(!pending&&(!publishable||run.publication?.status!=='published'))throw new Error('Collection/publication failed: '+run.status+' / '+(run.publication?.status||'missing'));\nreturn [{json:{...run,pending}}];"
+        "jsCode": "const run=$input.first().json;\nif($runIndex>=75)throw new Error('Collection did not finish and publish within the polling budget');\nif(run.status==='failed')throw new Error('Collection/publication failed: '+(run.error||'unknown'));\nreturn [{json:{...run,pending:run.status!=='published'}}];"
       }
     },
     {
@@ -138,7 +138,7 @@
       "main": [
         [
           {
-            "node": "Start crawl",
+            "node": "Start scheduled collection",
             "type": "main",
             "index": 0
           }
@@ -149,14 +149,14 @@
       "main": [
         [
           {
-            "node": "Start crawl",
+            "node": "Start scheduled collection",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Start crawl": {
+    "Start scheduled collection": {
       "main": [
         [
           {

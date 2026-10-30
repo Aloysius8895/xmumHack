@@ -125,18 +125,17 @@ test('skill popularity of the first week has no change yet', async () =>
     assert.equal(skillTrend(null, { latest: null, previous: null, history: [] }), null)
 })
 
-test('skill trends fall back to the reference data until the workflow pushes', async () =>
+test('skill trends are empty until the workflow pushes, never authored', async () =>
 {
-    const { skillTrendOrReference, skillMarket } = await import('../../../src/game/server/market-trends.js')
+    const { skillTrendOrEmpty, skillMarket, marketSnapshot } = await import('../../../src/game/server/market-trends.js')
     const empty = { latest: null, previous: null, history: [] }
-    const reference = skillTrendOrReference('data-analyst', [ 'sql', 'excel', 'python' ], empty)
-    assert.equal(reference.live, false)
-    assert.deepEqual(reference.skills.map((skill) => [ skill.id, skill.trend ]), [ [ 'python', 'rising' ], [ 'sql', 'stable' ], [ 'excel', 'falling' ] ])
-    assert.deepEqual(skillMarket([ 'python' ], empty).python, { live: false, trend: 'rising', period: '2026-10' })
+    assert.deepEqual(skillTrendOrEmpty('data-analyst', empty), { period: null, live: false, skills: [] })
+    assert.deepEqual(skillMarket([ 'python' ], empty).python, { live: false, share: null, change: null, period: null })
+    assert.equal(marketSnapshot('data-analyst', empty), null)
 
     const week = { period: '2026-10-19', careers: { 'data-analyst': { postings: 10, topSkills: { python: 4 } } } }
     const market = { latest: week, previous: null, history: [ week ] }
-    assert.equal(skillTrendOrReference('data-analyst', [ 'python' ], market).live, true)
+    assert.equal(skillTrendOrEmpty('data-analyst', market).live, true)
     assert.deepEqual(skillMarket([ 'python', 'sql' ], market), {
         python: { live: true, share: 40, change: null, period: '2026-10-19' },
         sql: { live: true, share: 0, change: null, period: '2026-10-19' },
@@ -184,11 +183,10 @@ test('saves from version 2 get the mastery fields', () =>
     assert.deepEqual(save.digests, [])
 })
 
-test('trends show demo data until the workflow pushes a month, then the pushed months', async () =>
+test('trends are empty until the workflow pushes a month, then show the pushed months', async () =>
 {
     const { trendsView } = await import('../../../src/game/server/trends.js')
-    assert.equal(trendsView().demo, true)
-    assert.equal(trendsView().careers.length, 8)
+    assert.deepEqual(trendsView(), { demo: false, empty: true, source: null, collectedAt: null, periods: [], careers: [], skills: [] })
 
     assert.equal((await call('/api/integrations/trends', { period: '2026-9', careers: { 'data-analyst': { ads: 1 } } })).status, 400)
     assert.equal((await call('/api/integrations/trends', { period: '2026-09', careers: { 'Bad Id': { ads: 1 } } })).status, 400)

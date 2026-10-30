@@ -29,8 +29,9 @@ test('every catalog skill has complete localized card metadata', () =>
         for(const { id } of career.skills)
         {
             const detail = SKILL_DETAILS[id]
-            assert.ok(['high', 'medium', 'low'].includes(detail.demand), id)
-            assert.ok(Number.isInteger(detail.heat) && detail.heat >= 0 && detail.heat <= 100, id)
+            // Demand and heat are never authored here: they come from collected postings only
+            assert.equal(detail.demand, undefined, id)
+            assert.equal(detail.heat, undefined, id)
             assert.ok(Number.isInteger(detail.difficulty) && detail.difficulty >= 1 && detail.difficulty <= 5, id)
             assert.match(detail.icon, /^[a-z]+$/)
             for(const lang of ['zh', 'en', 'ms'])

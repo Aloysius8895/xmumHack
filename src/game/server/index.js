@@ -11,6 +11,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { handle } from './app.js'
 import { status } from './ai.js'
+import { loadWindow } from './market-window.js'
+import { backend } from './persistence.js'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const DIST = path.resolve(here, '..', 'dist')
@@ -43,6 +45,9 @@ function serveStatic(request, response)
     fs.createReadStream(file).pipe(response)
 }
 
+// The accumulated market window is read synchronously by the views: load it before the first request
+await loadWindow().catch((error) => console.error('[market-window] not loaded:', error?.code ?? error?.message))
+
 http.createServer(async (request, response) =>
 {
     if(!(await handle(request, response)))
@@ -50,5 +55,5 @@ http.createServer(async (request, response) =>
 }).listen(PORT, HOST, () =>
 {
     const ai = status()
-    console.log(`Career game on http://${HOST}:${PORT}  (AI: ${ai.mock ? 'mock' : `${ai.provider}/${ai.model}`}${!ai.mock && !ai.keyConfigured ? ', provider credentials missing' : ''})`)
+    console.log(`Career game on http://${HOST}:${PORT}  (AI: ${ai.mock ? 'mock' : `${ai.provider}/${ai.model}`}${!ai.mock && !ai.keyConfigured ? ', provider credentials missing' : ''}; storage: ${backend()})`)
 })

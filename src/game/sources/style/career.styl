@@ -3808,6 +3808,140 @@ html:not(.is-started) .career-ui {
     font-size: 14px;
 }
 
+// Last year's JobStreet months (own colour scale), set apart from this year's months by a divider
+.career-heatmap th.is-reference {
+    white-space: nowrap;
+
+    small {
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        opacity: 0.7;
+    }
+}
+
+.career-heatmap .is-reference-end {
+    border-right: 4px solid var(--line-soft);
+}
+
+.career-reference-note {
+    font-size: 14px;
+}
+
+.career-mycol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+        min-width: 84px;
+        padding: 6px 8px;
+        border: 2px solid var(--line-soft);
+        border-radius: 10px;
+        background: var(--face-white);
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    li.is-listed {
+        border-color: #1F6B35;
+    }
+
+    // An opened edition takes the full row so its quote stays readable
+    li.is-listed:has(details[open]) {
+        flex-basis: 100%;
+    }
+
+    li.is-limited {
+        opacity: 0.6;
+    }
+
+    summary {
+        cursor: pointer;
+    }
+
+    blockquote {
+        margin: 6px 0;
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+}
+
+.career-mycol-period {
+    display: block;
+    font-weight: 700;
+}
+
+.career-updates {
+    margin: 12px 0 16px;
+    padding: 10px 12px;
+    border: 2px solid var(--line-soft);
+    border-radius: 12px;
+    background: var(--face-white);
+    font-size: 16px;
+    line-height: 1.65;
+
+    h3 {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    ul {
+        margin: 8px 0;
+        padding-left: 20px;
+    }
+
+    li {
+        overflow-wrap: anywhere;
+    }
+
+    .career-button {
+        min-height: 40px;
+        font-size: 14px;
+    }
+}
+
+.career-updates-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 12px;
+}
+
+.career-updates-direction {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 2px solid var(--line-soft);
+
+    label {
+        display: block;
+        font-size: 14px;
+    }
+
+    input {
+        flex: 1;
+        min-width: 0;
+        min-height: 40px;
+        padding: 6px 10px;
+        font: inherit;
+        font-size: 14px;
+    }
+}
+
+.career-updates-direction-row {
+    display: flex;
+    gap: 8px;
+    margin: 6px 0;
+}
+
+.career-updates-note {
+    font-size: 14px;
+}
+
 .career-sampling-content[hidden] {
     display: none;
 }
@@ -4455,4 +4589,5 @@ button.career-trend-row:hover {
 }
 
 .career-market-refresh-message { font-size: 16px; line-height: 1.65; margin: 12px 0 0; overflow-wrap: anywhere; }
+.career-market-refresh-timing { font-size: 14px; line-height: 1.5; margin: 8px 0 0; opacity: .8; overflow-wrap: anywhere; }
 .career-market-refresh-message:empty { display: none; }

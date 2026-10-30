@@ -1,6 +1,5 @@
 import { pick, t } from './i18n.js'
 
-const STORAGE_KEY = 'tourSeen'
 const TYPING_SPEED = 22 // ms per character
 
 const esc = (text) => String(text).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
@@ -43,6 +42,7 @@ export class CareerTour
         this.ui = ui
         this.active = false
         this.autoStartHandled = false
+        this.newUser = false // Set by the intro username step (CharacterSelect.signIn): first time the server sees the name
         this.panel = null
 
         // say: string ids typed one page each; target: menu button that glows; focus: elements to spotlight while
@@ -170,20 +170,15 @@ export class CareerTour
         return this.api.state
     }
 
-    // The reveal and initial API request can finish in either order.
+    // New users only. The reveal and initial API request can finish in either order.
     maybeStart()
     {
         if(this.autoStartHandled || this.active || !this.state || this.ui.game.reveal?.step !== 2)
             return
 
         this.autoStartHandled = true
-        try
-        {
-            if(localStorage.getItem(STORAGE_KEY) === '1')
-                return
-        }
-        catch {}
-        this.start()
+        if(this.newUser)
+            this.start()
     }
 
     start()
@@ -224,12 +219,6 @@ export class CareerTour
         this.spot.classList.remove('is-visible')
         this.pointer.classList.remove('is-visible')
         this.focused = null
-
-        try
-        {
-            localStorage.setItem(STORAGE_KEY, '1')
-        }
-        catch {}
     }
 
     go(index)

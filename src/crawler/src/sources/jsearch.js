@@ -1,6 +1,7 @@
 import {fetchJson} from '../http.js';
 import {jsearchSettings} from '../provider-env.js';
 import {allowedPlatformUrl} from './public.js';
+import {listingHash} from '../normalize.js';
 export function parseSearch(p){if(p?.status&&p.status!=='OK')throw new Error('Provider returned non-OK status');if(!p?.data||!Array.isArray(p.data.jobs))throw new Error('Unexpected JSearch schema: expected data.jobs[]');if(p.data.cursor!=null&&typeof p.data.cursor!=='string')throw new Error('Unexpected cursor type');return {jobs:p.data.jobs,cursor:p.data.cursor||null};}
 export function mapJob(j){return {sourceId:j.job_id,title:j.job_title,company:j.employer_name,location:j.job_location||[j.job_city,j.job_state].filter(Boolean).join(', '),country:j.job_country,description:j.job_description,url:j.job_apply_link,postedAt:j.job_posted_at_datetime_utc,employmentType:j.job_employment_type,remote:j.job_is_remote,salary:j.job_min_salary!=null||j.job_max_salary!=null?{min:j.job_min_salary??null,max:j.job_max_salary??null,currency:j.job_salary_currency??null,period:j.job_salary_period??null}:null,providerRaw:j};}
 export function mapPlatformJob(job,platform){
@@ -17,7 +18,7 @@ export function mapPlatformJob(job,platform){
  const identity=platform==='indeed'?(u.searchParams.get('jk')||u.searchParams.get('vjk')):platform==='linkedin'?u.pathname.match(/(\d+)\/?$/)?.[1]:u.pathname.match(/\/job\/([A-Za-z0-9]+)/)?.[1];
  return {...mapped,url:link,sourceId:identity||mapped.sourceId,retrievalMethod:'jsearch'};
 }
-export async function collectJsearch({source,config,budget,onRecord,onTask,fetchImpl,requestCache=new Map()}){
+export async function collectJsearch({source,config,budget,onRecord,onTask,fetchImpl,requestCache=new Map(),known=new Map(),onSeen=async()=>{}}){
  const {provider,key}=jsearchSettings();
  if(!['rapidapi','openwebninja'].includes(provider))throw new Error('Invalid JSEARCH_PROVIDER');
  if(!key)throw new Error('Missing JSEARCH_API_KEY / RAPIDAPI_KEY; use npm run demo for offline fixtures');
@@ -33,7 +34,11 @@ export async function collectJsearch({source,config,budget,onRecord,onTask,fetch
     const cacheKey=provider+':'+u.href;
     if(!requestCache.has(cacheKey))requestCache.set(cacheKey,fetchJson(u,{headers,budget,fetchImpl}));
     const result=parseSearch(await requestCache.get(cacheKey));task.pages++;
-    for(const j of result.jobs){task.records++;const mapped=platform?mapPlatformJob(j,platform):mapJob(j);if(!mapped){task.filteredOutsidePlatform++;continue;}await onRecord(mapped);task.eligibleRecords++;}
+    for(const j of result.jobs){task.records++;const mapped=platform?mapPlatformJob(j,platform):mapJob(j);if(!mapped){task.filteredOutsidePlatform++;continue;}
+     // Already stored by the game and unchanged: report it as seen again instead of sending it again
+     if(known.get(source.id+':'+mapped.sourceId)===listingHash(mapped))await onSeen({source:source.id,sourceId:mapped.sourceId,detailSkipped:false});
+     else await onRecord(mapped);
+     task.eligibleRecords++;}
     if(!result.cursor){task.status='complete';break;}
     if(seen.has(result.cursor))throw new Error('Provider repeated a cursor');seen.add(result.cursor);cursor=result.cursor;task.status='capped';
    }

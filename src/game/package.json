@@ -1,5 +1,5 @@
 {
-  "name": "bruno-simon-folio-2025",
+  "name": "chill",
   "version": "0.0.0",
   "main": "index.js",
   "type": "module",
@@ -9,6 +9,8 @@
     "preview": "vite preview",
     "compress": "node scripts/compress.js static/",
     "server": "node server/index.js",
+    "server:cloud": "node server/start-with-crawler.js",
+    "migrate:pg": "node server/scripts/migrate-to-pg.js",
     "n8n:build": "node n8n/build-all.mjs",
     "test": "node ../../tests/run.mjs game",
     "n8n:test": "node ../../tests/run.mjs workflows",
@@ -42,6 +44,7 @@
     "msgpack-lite": "^0.1.26",
     "normalize-wheel": "^1.0.1",
     "pdf-parse": "2.4.5",
+    "pg": "^8.23.1",
     "seedrandom": "^3.0.5",
     "sharp": "^0.34.5",
     "stats-gl": "^3.6.0",

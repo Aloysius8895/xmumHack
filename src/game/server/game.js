@@ -9,13 +9,17 @@ import { postingSkillLocalization } from './posting-skill-localization.js'
 import { SKILL_DETAILS } from './skill-details.js'
 import { expertOf } from './experts.js'
 import { friendCode, leaderboard } from './friends.js'
-import { marketSnapshot, skillMarket, skillTrendOrReference } from './market-trends.js'
+import { marketSnapshot, skillMarket, skillTrendOrEmpty } from './market-trends.js'
 import { GOALS, PLATFORM_TARGETS, SKILL_TARGETS, SOURCE as SDG_SOURCE, TARGETS, TARGET_IDS, careerSdgs, contribution } from './sdg.js'
 import { loadMarket } from './store.js'
 import { trendsView } from './trends.js'
 import { collectedMarket } from './collected-market.js'
 import { crawlerStatus } from './crawler-market.js'
 import { withHistoricalMarket } from './historical-market.js'
+import { referenceMarket } from './reference-market.js'
+import { mycolTimeline } from './official-signals.js'
+import { compare, defaultInputs, forecast, scenarioOf } from './scenarios.js'
+import { updateLog } from './update-log.js'
 import { createHash } from 'node:crypto'
 
 export const RULES = {
@@ -180,7 +184,7 @@ export function adoptPostingSkills(save)
                 const description = String(requirement.note || text).slice(0, 300)
                 save.customSkills[id] = {
                     name: localized?.name ?? { zh: name, en: name, ms: name },
-                    detail: { icon: 'compass', demand: 'medium', heat: 60, difficulty: 3, description: localized?.description ?? { zh: description, en: description, ms: description } },
+                    detail: { icon: 'compass', difficulty: 3, description: localized?.description ?? { zh: description, en: description, ms: description } },
                     ...(localized ? { localizationVersion: 1 } : {}),
                 }
                 changed = true
@@ -322,7 +326,6 @@ export function addCustomCareer(save, spec)
     save.customSkills ??= {}
     const index = save.customCareers.length
     const id = `custom-${slug(spec.name.en)}-${Date.now().toString(36).slice(- 4)}`
-    const heat = { high: 80, medium: 60, low: 30 }
 
     const skills = []
     for(const skill of spec.skills.slice(0, 7))
@@ -334,7 +337,7 @@ export function addCustomCareer(save, spec)
             if(!SKILLS[skillId] && !save.customSkills[skillId])
                 save.customSkills[skillId] = {
                     name: skill.name,
-                    detail: { icon: skill.icon, demand: spec.demand, heat: heat[spec.demand] ?? 60, difficulty: Math.max(1, Math.min(5, skill.difficulty)), description: skill.description },
+                    detail: { icon: skill.icon, difficulty: Math.max(1, Math.min(5, skill.difficulty)), description: skill.description },
                 }
         }
         if(!skills.some((item) => item.id === skillId))
@@ -348,7 +351,6 @@ export function addCustomCareer(save, spec)
         summary: spec.summary,
         color: CUSTOM_COLORS[index % CUSTOM_COLORS.length],
         skills,
-        market: { demand: spec.demand, heat: heat[spec.demand] ?? 60, trend: 'stable' },
         effortMonths: [ Math.max(1, Math.min(spec.effortMonths[0], spec.effortMonths[1])), Math.max(spec.effortMonths[0], spec.effortMonths[1]) ],
         pet: { name: spec.petName.slice(0, 20) || 'Nova', species: PET_SPECIES[index % PET_SPECIES.length] },
         // SDG targets the AI picked from sdg.js TARGETS (anything else dropped), none: sdg.careerSdgs uses the skills
@@ -506,6 +508,14 @@ export function setTaskDone(save, taskId, done)
     return true
 }
 
+/** The chosen scenario's forecast and both presets' ranks, computed once from the same inputs */
+function scenarioView(save)
+{
+    const inputs = defaultInputs()
+    const current = forecast(save, scenarioOf(save), inputs)
+    return { scenario: scenarioOf(save), forecast: current, scenarioCompare: compare(save, inputs), updateLog: updateLog(save, current) }
+}
+
 /**
  * What the client sees (hidden rubric removed, derived values computed)
  */
@@ -519,9 +529,10 @@ export function view(save, ai, documents = {})
         summary: career.summary,
         emerging: Boolean(career.emerging),
         color: career.color,
+        // Collected postings only: a career without any has heat null (shown as "no data"), never an authored value
         market: collected?.careers[career.id]
-            ? { ...career.market, heat: collected.careers[career.id].heat, trend: 'unknown', sample: true, snapshot: collected.careers[career.id], skills: collected.careers[career.id].skills }
-            : { ...career.market, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrReference(career.id, career.skills.map((skill) => skill.id), market) },
+            ? { heat: collected.careers[career.id].heat, trend: 'unknown', sample: true, snapshot: collected.careers[career.id], skills: collected.careers[career.id].skills }
+            : { heat: null, trend: 'unknown', sample: false, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrEmpty(career.id, market) },
         effortMonths: career.effortMonths,
         pet: career.pet,
         affinity: affinityOf(save, career.id),
@@ -531,6 +542,7 @@ export function view(save, ai, documents = {})
         custom: Boolean(career.custom),
         expert: expertOf(career.id), // Industry elite the mentor can hand over to (experts.js), null if none
         sdgs: careerSdgs(career),
+        mycol: mycolTimeline(career.id), // MyCOL editions: listed / not listed / limited scope (official-signals.js)
     }))
 
     const pending = save.pendingTarget && {
@@ -575,14 +587,19 @@ export function view(save, ai, documents = {})
         ai,
         rules: RULES,
         skillNames: SKILLS,
-        skillDetails: collected ? Object.fromEntries(Object.entries(SKILL_DETAILS).map(([id, detail]) => [id, { ...detail, heat: collected.skillMarket[id]?.share ?? null, sample: true }])) : SKILL_DETAILS,
+        // Heat = share of the collected postings asking for the skill; null without collected data
+        skillDetails: Object.fromEntries(Object.entries(SKILL_DETAILS).map(([ id, { demand: _authored, ...detail } ]) => [ id, { ...detail, heat: collected?.skillMarket[id]?.share ?? null, sample: Boolean(collected) } ])),
         profile: save.profile,
         careers,
         map: { slots: mapSlots(save), replaceCandidate: replaceCandidate(save) },
         pending,
-        marketSkills: collected?.skills ?? skillTrendOrReference(null, SKILL_IDS, market),
+        marketSkills: collected?.skills ?? skillTrendOrEmpty(null, market),
         skillMarket: collected?.skillMarket ?? skillMarket(SKILL_IDS, market),
-        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus()}),
+        // reference: last year's JobStreet counts, a separate column (reference-market.js)
+        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus(),reference:referenceMarket()}),
+        // Future scenarios (scenarios.js): every career ranked under the chosen scenario, and both presets' ranks
+        ...scenarioView(save),
+        learningDirection: save.learningDirection ?? null,
         automation: save.automation ?? null,
         target: save.target,
         pet,

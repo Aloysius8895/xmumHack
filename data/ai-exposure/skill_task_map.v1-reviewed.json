@@ -1,0 +1,154 @@
+{
+  "about": "Catalog skill -> O*NET tasks of the Anthropic Economic Index. Drafted by Claude on 2026-10-30 from keyword candidates; each entry is used only after a team member sets reviewed: true (checkpoint 2). Tasks are the exact task statements of the source files.",
+  "reviewer": "Aloysius Ting",
+  "careers": {
+    "data-analyst": { "soc": "15-2051", "title": "Data Scientists", "note": "O*NET puts Business Intelligence Analysts (15-2051.01) under this code" },
+    "frontend-developer": { "soc": "15-1254", "title": "Web Developers", "note": null },
+    "backend-developer": { "soc": "15-1252", "title": "Software Developers", "note": null },
+    "ui-ux-designer": { "soc": "15-1255", "title": "Web and Digital Interface Designers", "note": null },
+    "ml-engineer": { "soc": "15-1221", "title": "Computer and Information Research Scientists", "note": "closest code; the SOC has no separate ML engineer" },
+    "product-manager": { "soc": "11-3021", "title": "Computer and Information Systems Managers", "note": "approximate; the SOC has no product manager" },
+    "forward-deployed-engineer": { "soc": "15-1252", "title": "Software Developers", "note": "approximate; a new role without its own code" },
+    "data-scientist": { "soc": "15-2051", "title": "Data Scientists", "note": null },
+    "auditor": { "soc": "13-2011", "title": "Accountants and Auditors", "note": null },
+    "lawyer": { "soc": "23-1011", "title": "Lawyers", "note": null },
+    "teacher": { "soc": "25-2031", "title": "Secondary School Teachers, Except Special and Career/Technical Education", "note": null },
+    "doctor": { "soc": "29-1216", "title": "General Internal Medicine Physicians", "note": null },
+    "chef": { "soc": "35-1011", "title": "Chefs and Head Cooks", "note": null },
+    "civil-engineer": { "soc": "17-2051", "title": "Civil Engineers", "note": null }
+  },
+  "skills": {
+    "sql": { "reviewed": true, "reason": "写数据库查询是 SQL 的核心工作", "tasks": [
+      "write computer programs or scripts to be used in querying databases.",
+      "extend existing software programs, web-based interactive tools, or database queries as sequence management and analysis needs evolve." ] },
+    "excel": { "reviewed": true, "reason": "用电子表格制图、制作报表和文件", "tasks": [
+      "draw charts and graphs, using computer spreadsheets, to illustrate technical reports.",
+      "prepare invoices, reports, memos, letters, financial statements, and other documents, using word processing, spreadsheet, database, or presentation software." ] },
+    "statistics": { "reviewed": true, "reason": "用统计方法分析数据并报告结果", "tasks": [
+      "analyze data from surveys, old records, or case studies, using statistical software.",
+      "compute and analyze data, using statistical formulas and computers or calculators.",
+      "report results of statistical analyses, including information in the form of graphs, charts, and tables." ] },
+    "python": { "reviewed": true, "reason": "用程序语言做数据分析和写分析程序", "tasks": [
+      "perform system analysis, data analysis or programming, using a variety of computer languages and procedures.",
+      "design and create special programs for tasks such as statistical analysis and data entry and cleaning." ] },
+    "data-cleaning": { "reviewed": true, "reason": "写程序做数据录入和清洗", "tasks": [
+      "design and create special programs for tasks such as statistical analysis and data entry and cleaning." ] },
+    "data-visualization": { "reviewed": true, "reason": "把分析结果做成图表和报告", "tasks": [
+      "compile reports, charts, or graphs that describe and interpret findings of analyses.",
+      "prepare documentation or presentations, including charts, photos, or graphs." ] },
+    "communication": { "reviewed": true, "reason": "向客户或管理层报告和解释发现", "tasks": [
+      "present and explain proposals, reports, or findings to clients.",
+      "produce reports or presentations that outline findings, explain risk positions, or recommend changes." ] },
+    "html-css": { "reviewed": true, "reason": "用 HTML 等网页语言开发和维护网页", "tasks": [
+      "develop transactional web applications, using web programming software and knowledge of programming languages, such as hypertext markup language (html) and extensible markup language (xml).",
+      "review or update web page content or links in a timely manner, using appropriate tools." ] },
+    "javascript": { "reviewed": true, "reason": "为网页应用写程序代码", "tasks": [
+      "write supporting code for web applications or web sites.",
+      "develop transactional web applications, using web programming software and knowledge of programming languages, such as hypertext markup language (html) and extensible markup language (xml)." ] },
+    "react": { "reviewed": true, "reason": "开发网页应用的用户界面", "tasks": [
+      "write supporting code for web applications or web sites.",
+      "design customer interface of online storefront, using web programming or e-commerce software." ] },
+    "git": { "reviewed": true, "reason": "AEI 数据中没有版本控制相关的 O*NET 任务，不硬套；显示「无来源」", "tasks": [] },
+    "accessibility": { "reviewed": false, "reason": "让网页在不同设备和浏览器上可用", "tasks": [
+      "optimize digital assets, such as text, graphics, or multimedia assets, for search engine optimization (seo) or for display and usability on internet-connected devices.",
+      "evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems." ] },
+    "api-integration": { "reviewed": true, "reason": "设计系统之间的接口和数据传输", "tasks": [
+      "identify methods for interfacing web application technologies with enterprise resource planning or other system software.",
+      "design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure." ] },
+    "backend-language": { "reviewed": true, "reason": "用面向对象语言开发服务器端应用", "tasks": [
+      "use object-oriented programming languages, as well as client and server applications development processes and multimedia and internet technology.",
+      "develop new software applications or customize existing applications to meet specific scientific project needs." ] },
+    "databases": { "reviewed": true, "reason": "设计和维护数据库结构", "tasks": [
+      "design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure.",
+      "create and maintain accessible, retrievable computer archives and databases, incorporating current advances in electronic information storage technology." ] },
+    "rest-api": { "reviewed": true, "reason": "网页应用与其他系统之间的接口（O*NET 没有专门的 REST 任务，只找到这一条）", "tasks": [
+      "identify methods for interfacing web application technologies with enterprise resource planning or other system software." ] },
+    "cloud-deploy": { "reviewed": true, "reason": "配置服务器、安装和维护软件", "tasks": [
+      "configure servers to meet functional specifications.",
+      "perform ongoing hardware and software maintenance operations, including installing or upgrading hardware or software." ] },
+    "testing": { "reviewed": true, "reason": "测试程序、更新自动化测试脚本", "tasks": [
+      "update automated test scripts to ensure currency.",
+      "test programs or databases, correct errors, and make necessary modifications.",
+      "test system modifications to prepare for implementation." ] },
+    "user-research": { "reviewed": true, "reason": "设计调查、整理访谈和调查结果", "tasks": [
+      "develop criteria for the design and modification of survey instruments.",
+      "compile, record, and code results or data from interview or survey, using computer or specified form." ] },
+    "prototyping": { "reviewed": false, "reason": "制作网页模型和原型（AEI 未观察到 AI 使用，渗透率为 0）", "tasks": [
+      "create web models or prototypes that include physical, interface, logical, or data models." ] },
+    "figma": { "reviewed": true, "reason": "制作网页图形、版面和用户界面", "tasks": [
+      "develop graphics and layouts for product illustrations, company logos, and web sites.",
+      "design customer interface of online storefront, using web programming or e-commerce software." ] },
+    "visual-design": { "reviewed": true, "reason": "运用线条、色彩等视觉元素做设计", "tasks": [
+      "integrate and develop visual elements, such as line, space, mass, color, and perspective, to produce desired effects, such as the illustration of ideas, emotions, or moods.",
+      "design complex graphics and animation, using independent judgment, creativity, and computer equipment." ] },
+    "usability-testing": { "reviewed": true, "reason": "评估软件可用性并向开发者反馈", "tasks": [
+      "provide feedback and recommendations to developers on software usability and functionality." ] },
+    "ml-math": { "reviewed": true, "reason": "建立数学和统计模型", "tasks": [
+      "develop mathematical or statistical models of phenomena to be used for analysis or for computational simulation.",
+      "formulate mathematical or simulation models of problems, relating constants and variables, restrictions, alternatives, conflicting objectives, and their numerical parameters." ] },
+    "ml-frameworks": { "reviewed": true, "reason": "开发和应用机器学习算法", "tasks": [
+      "develop or apply data mining and machine learning algorithms.",
+      "process large amounts of data for statistical modeling and graphic analysis, using computers." ] },
+    "mlops": { "reviewed": true, "reason": "测试、维护和监控上线的程序与系统", "tasks": [
+      "test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems." ] },
+    "roadmapping": { "reviewed": true, "reason": "制定产品和业务计划、验证产品潜力", "tasks": [
+      "develop or revise business plans for online business, emphasizing factors such as product line, pricing, inventory, or marketing strategy.",
+      "plan or conduct market or public opinion research to test products or determine potential for product success, communicating results to client or management." ] },
+    "agile": { "reviewed": true, "reason": "协调团队和外部人员推进系统计划（O*NET 没有敏捷开发的专门任务）", "tasks": [
+      "coordinate implementation of computer system plan with establishment personnel and outside vendors." ] },
+    "market-analysis": { "reviewed": true, "reason": "收集和分析竞争对手与市场情况", "tasks": [
+      "gather data on competitors and analyze their prices, sales, and method of marketing and distribution.",
+      "monitor market conditions, product innovations, and competitors' products, prices, and sales." ] },
+    "accounting": { "reviewed": true, "reason": "记账、整理财务记录和编制财务报表", "tasks": [
+      "classify, record, and summarize numerical and financial data to compile and keep financial records, using journals and ledgers or computers.",
+      "perform accounting duties, such as recording daily cash flow, preparing bank deposits, or generating financial statements." ] },
+    "auditing": { "reviewed": true, "reason": "编写审计发现和审计报表", "tasks": [
+      "prepare detailed reports on audit findings.",
+      "compile statistical, financial, accounting, or auditing reports and tables pertaining to such matters as cash receipts, expenditures, accounts payable and receivable, and profits and losses." ] },
+    "internal-control": { "reviewed": true, "reason": "检查记录的合规性、评估风险", "tasks": [
+      "review records for completeness, accuracy, and compliance with regulations.",
+      "analyze and classify risks and investments to determine their potential impacts on companies." ] },
+    "legal-research": { "reviewed": true, "reason": "研究法律、法规和判例", "tasks": [
+      "research and analyze laws, regulations, policies, and precedent decisions to prepare for hearings and to determine conclusions.",
+      "apply relevant laws, regulations, policies, or precedents to reach conclusions." ] },
+    "legal-writing": { "reviewed": true, "reason": "起草诉状、合同和法律备忘录", "tasks": [
+      "prepare legal documents, including briefs, pleadings, appeals, wills, contracts, and real estate closing statements.",
+      "prepare briefs, legal memoranda, or statements of issues involved in cases, including appropriate suggestions or recommendations." ] },
+    "negotiation": { "reviewed": true, "reason": "谈判交易和合同条款", "tasks": [
+      "negotiate the sale, lease, or development of property and complete or review appropriate documents and forms.",
+      "prepare contracts or negotiate revisions to contractual agreements with architects, consultants, clients, suppliers, or subcontractors." ] },
+    "lesson-planning": { "reviewed": true, "reason": "编写教学目标、大纲和教案", "tasks": [
+      "prepare instructional program objectives, outlines, and lesson plans.",
+      "develop instructional materials, such as lesson plans, handouts, or examinations." ] },
+    "classroom-management": { "reviewed": true, "reason": "主持和引导课堂讨论（AEI 未观察到 AI 使用）", "tasks": [
+      "initiate, facilitate, and moderate classroom discussions." ] },
+    "assessment": { "reviewed": true, "reason": "出题、评分、评估学生进度", "tasks": [
+      "prepare, administer, and grade tests and assignments to evaluate students' progress.",
+      "evaluate and grade students' class work, performances, projects, assignments, and papers." ] },
+    "clinical-knowledge": { "reviewed": true, "reason": "根据检查结果诊断、制定治疗方案", "tasks": [
+      "analyze records, reports, test results, or examination information to diagnose medical condition of patient.",
+      "develop individualized treatment plans for patients, considering patient preferences, clinical data, or the risks and benefits of therapies." ] },
+    "patient-care": { "reviewed": true, "reason": "记录病史、与其他医护人员交接病人信息（实际照护病人的动作不在 AEI 数据中）", "tasks": [
+      "document patients' medical histories and assessment findings.",
+      "write information in medical records or provide narrative summaries to communicate patient information to other health care providers." ] },
+    "medical-ethics": { "reviewed": true, "reason": "保护病人隐私、遵守保密的伦理规范", "tasks": [
+      "develop or implement policies or practices to ensure the privacy, confidentiality, or security of patient information.",
+      "follow ethical codes that protect the confidentiality of information." ] },
+    "cooking-technique": { "reviewed": true, "reason": "烹调食物（AEI 未观察到 AI 使用，渗透率为 0）", "tasks": [
+      "bake, roast, broil, and steam meats, fish, vegetables, and other foods.",
+      "read food order slips or receive verbal instructions as to food required by patron, and prepare and cook food according to instructions." ] },
+    "food-safety": { "reviewed": true, "reason": "按卫生和安全规范准备食物（AEI 未观察到 AI 使用）", "tasks": [
+      "prepare daily food items, and cook simple foods and beverages, such as sandwiches, salads, soups, pizza, or coffee, using proper safety precautions and sanitary measures." ] },
+    "menu-planning": { "reviewed": true, "reason": "规划菜单定价、开发食谱", "tasks": [
+      "plan and price menu items.",
+      "create specialty dishes and develop recipes to be used in dining facilities." ] },
+    "engineering-math": { "reviewed": true, "reason": "用计算机做复杂的工程计算（O*NET 没有专门的结构力学计算任务）", "tasks": [
+      "perform complex calculations as part of the analysis and evaluation of data, using computers." ] },
+    "cad": { "reviewed": true, "reason": "用 CAD 绘制图纸、读懂技术图纸", "tasks": [
+      "prepare scale drawings or architectural designs, using computer-aided design or other tools.",
+      "read and interpret blueprints, technical drawings, schematics, or computer-generated reports." ] },
+    "project-management": { "reviewed": true, "reason": "制定和监控项目进度、预算和计划", "tasks": [
+      "prepare or monitor project schedules, budgets, or cost control systems.",
+      "develop or update project plans for information technology projects including information such as project objectives, technologies, systems, information specifications, schedules, funding, and staffing." ] }
+  }
+}
