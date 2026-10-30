@@ -1,4 +1,4 @@
-modules = ["nodejs-22", "python-base-3.13"]
+modules = ["nodejs-24", "python-3.11"]
 run = "cd src/game && npm run dev"
 
 [[ports]]
@@ -47,3 +47,7 @@ outputType = "webview"
 AI_PROVIDER = "deepseek"
 AI_MOCK = "0"
 DEEPSEEK_MODEL = "deepseek-flash"
+
+[nix]
+channel = "stable-25_05"
+packages = ["cacert", "gitFull", "glibcLocales", "playwright-driver"]
