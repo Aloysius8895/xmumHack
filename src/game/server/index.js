@@ -50,6 +50,12 @@ await loadWindow().catch((error) => console.error('[market-window] not loaded:',
 
 http.createServer(async (request, response) =>
 {
+    if(request.method === 'GET' && request.url === '/healthz')
+    {
+        response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' })
+        response.end(JSON.stringify({ ok: true }))
+        return
+    }
     if(!(await handle(request, response)))
         serveStatic(request, response)
 }).listen(PORT, HOST, () =>

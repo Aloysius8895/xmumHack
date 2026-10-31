@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: kerjayaku-demo
+    runtime: node
+    plan: free
+    region: singapore
+    repo: https://github.com/Aloysius8895/xmumHack
+    branch: roadmap
+    buildCommand: npm ci --include=dev && npm --prefix src/game ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "24.22.1"
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: AI_PROVIDER
+        value: deepseek
+      - key: AI_MOCK
+        value: "0"
+      - key: DEEPSEEK_MODEL
+        value: deepseek-flash
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: VITE_GAME_PUBLIC
+        value: "1"
+      - key: VITE_MUSIC
+        value: "1"
+      - key: VITE_WHISPERS_COUNT
+        value: "30"
