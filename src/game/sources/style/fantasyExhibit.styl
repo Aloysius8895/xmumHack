@@ -56,7 +56,7 @@
 
 .career-ui.is-fantasy-exhibit .is-building-screen .career-panel-header {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto auto;
     position: relative;
     flex: 0 0 auto;
     gap: 3px 16px;
@@ -93,9 +93,31 @@
     font-weight: 600;
 }
 
+/* Back to the board (BuildingScreen.setZoomed), left of the close button; enlarged mode only */
+.career-ui .career-zoom {
+    display: none;
+}
+
+.career-ui.is-fantasy-exhibit .career-zoom {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid #d5bde8;
+    border-radius: 10px;
+    background: #f0e3fa;
+    color: #5b2b99;
+}
+
+.career-ui.is-fantasy-exhibit .career-zoom:hover { background: #e6d2f7; }
+
 .career-ui.is-fantasy-exhibit .career-close {
     position: static;
-    grid-column: 2;
+    grid-column: 3;
     grid-row: 1 / span 2;
     align-self: center;
     display: grid;
@@ -168,7 +190,8 @@
     box-shadow: none;
 }
 
-.career-ui.is-fantasy-exhibit .exhibit-room-nav {
+.career-ui.is-fantasy-exhibit .exhibit-room-nav,
+.career-ui.is-plain-board .exhibit-room-nav {
     display: block;
     position: absolute;
     inset: 0;
@@ -179,7 +202,8 @@
     pointer-events: none;
 }
 
-.career-ui.is-fantasy-exhibit .exhibit-room-button {
+.career-ui.is-fantasy-exhibit .exhibit-room-button,
+.career-ui.is-plain-board .exhibit-room-button {
     position: absolute;
     top: 50%;
     left: -70px;
@@ -200,10 +224,19 @@
     pointer-events: auto;
 }
 
-.career-ui.is-fantasy-exhibit .exhibit-room-button::before { content: '\2190'; display: block; margin-bottom: 6px; font-size: 28px; line-height: 1; }
-.career-ui.is-fantasy-exhibit .exhibit-room-button[data-direction="1"] { left: auto; right: -70px; }
-.career-ui.is-fantasy-exhibit .exhibit-room-button[data-direction="1"]::before { content: '\2192'; }
-.career-ui.is-fantasy-exhibit .exhibit-room-button:hover { background: #7a40d2; }
+.career-ui.is-fantasy-exhibit .exhibit-room-button::before,
+.career-ui.is-plain-board .exhibit-room-button::before { content: '\2190'; display: block; margin-bottom: 6px; font-size: 28px; line-height: 1; }
+.career-ui.is-fantasy-exhibit .exhibit-room-button[data-direction="1"],
+.career-ui.is-plain-board .exhibit-room-button[data-direction="1"] { left: auto; right: -70px; }
+.career-ui.is-fantasy-exhibit .exhibit-room-button[data-direction="1"]::before,
+.career-ui.is-plain-board .exhibit-room-button[data-direction="1"]::before { content: '\2192'; }
+.career-ui.is-fantasy-exhibit .exhibit-room-button:hover,
+.career-ui.is-plain-board .exhibit-room-button:hover { background: #7a40d2; }
+
+/* Board mode on a plain board (the lab): the buttons are projected with the board, so they are drawn larger */
+.career-ui.is-plain-board:not(.is-fantasy-exhibit) .exhibit-room-button { left: -150px; width: 120px; min-height: 130px; border-radius: 14px; font-size: 22px; }
+.career-ui.is-plain-board:not(.is-fantasy-exhibit) .exhibit-room-button[data-direction="1"] { left: auto; right: -150px; }
+.career-ui.is-plain-board:not(.is-fantasy-exhibit) .exhibit-room-button::before { font-size: 48px; }
 
 .career-ui.is-fantasy-exhibit .building-screen-footer {
     display: flex;

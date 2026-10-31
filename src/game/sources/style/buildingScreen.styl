@@ -7,9 +7,26 @@
     display: flex;
 }
 
-.career-ui.is-building-view .career-menu,
-.is-building-visit .career-minimap {
+.is-building-visit .career-minimap,
+.career-ui.is-building-view .career-hud {
     display: none;
+}
+
+/* The top bar stays in buildings, centered above the exhibit (CareerUI fitBar keeps it clear of the zoom and exit
+   buttons, BuildingScreen keeps its height free of the board) rather than sliding beside a side panel */
+.career-ui.is-building-view .career-panel.is-open ~ .career-menu.is-bar .career-rail {
+    left: var(--career-bar-center, 50%);
+    transform: translateX(-50%);
+}
+
+.career-ui.is-building-view .career-panel.is-open ~ .career-menu.is-bar:not(.is-compact) .career-rail-item span {
+    display: inline;
+}
+
+/* Navigation steps need their real menu target even while the exhibit is open. */
+.career-ui.is-building-view.is-touring[data-tour-target] .career-menu {
+    display: block;
+    z-index: 6;
 }
 
 .career-ui .career-panel.is-building-screen {
@@ -186,7 +203,8 @@
 
 /* Original workshop furniture owns the frame, title, arrows and pagination. */
 .career-ui.is-workshop-exhibit .career-panel-header,
-.career-ui.is-workshop-exhibit .building-screen-footer {
+.career-ui.is-workshop-exhibit .building-screen-footer,
+.career-ui.is-workshop-exhibit:not(.is-fantasy-exhibit):not(.is-plain-board) .exhibit-room-nav {
     display: none;
 }
 
@@ -230,10 +248,39 @@
     outline-offset: 3px;
 }
 
-.building-exhibit-exit {
+.building-exhibit-actions {
     position: absolute;
     top: unquote("max(18px, env(safe-area-inset-top))");
     right: unquote("max(18px, env(safe-area-inset-right))");
+    display: flex;
+    gap: 10px;
+}
+
+.building-exhibit-zoom {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    border: 2px solid #bba5ff;
+    border-radius: 10px;
+    color: #fff !important;
+    background: #302052;
+    box-shadow: 0 4px 0 #171020;
+    pointer-events: auto;
+}
+
+.building-exhibit-zoom svg,
+.career-zoom svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+}
+
+.building-exhibit-zoom:hover { background: #473078; }
+
+.building-exhibit-exit {
     display: flex;
     gap: 12px;
     align-items: center;

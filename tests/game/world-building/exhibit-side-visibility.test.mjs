@@ -56,8 +56,9 @@ test('original wooden side signs and arrows remain in view, in front of the fram
         const surface = objects.get('refImages')
         surface.geometry.computeBoundingBox()
         const camera = new THREE.PerspectiveCamera(25, width / height, 0.1, 200)
+        const screen = {surface}
         const stage = {
-            surface, game: {viewport: {width, height}, view: {camera}},
+            surface, screen, workshop: screen, game: {viewport: {width, height}, view: {camera}},
             sideFurniture: ['refPrevious', 'refNext'].map(name => {
                 const object = objects.get(name)
                 return {object, scale: object.scale.clone(), position: object.position.clone()}

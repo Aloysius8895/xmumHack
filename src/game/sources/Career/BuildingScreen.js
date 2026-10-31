@@ -7,6 +7,10 @@ import { displaySize, screenTransform, signAspect } from './ScreenProjection.js'
 import { exhibitLayout } from './ExhibitLayout.js'
 import { LegacyExhibit } from './LegacyExhibit.js'
 
+// Share of the view the board fills in board mode: the building stays visible around it (enlarging is for reading)
+const BOARD_FILL = 0.66
+const ZOOM_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21M10.5 7.5v6M7.5 10.5h6"/></svg>'
+
 /** Shared workshop visit: keep the camera and navigation lifecycle while presenting live
  * career content in the viewport-fitted illustrated fantasy frame.
  */
@@ -18,6 +22,10 @@ export class BuildingScreen
         this.area = game.world.areas.projects
         this.surface = this.area.references.items.get('images')[0]
         this.legacyExhibit = new LegacyExhibit(this.area)
+        // The workshop's signs carry the captions; the camera frames the visited building's own screen when it has one.
+        this.workshop = { area: this.area, surface: this.surface, exhibit: this.legacyExhibit }
+        this.screens = new Map([[this.area, this.workshop]])
+        this.screen = this.workshop
         this.labels = new Map()
         // One atlas/material for all wooden sign captions: changing categories only redraws text,
         // rather than compiling new GPU materials when a room opens for the first time.
@@ -34,7 +42,11 @@ export class BuildingScreen
         this.signMaterial.opacityNode = texture(this.atlasTexture).r
         this.controls = document.createElement('div')
         this.controls.className = 'building-exhibit-controls building-only'
-        this.controls.innerHTML = '<button type="button" class="building-exhibit-exit" data-action="close">Esc <span>×</span></button>'
+        this.controls.innerHTML = `<div class="building-exhibit-actions">
+            <button type="button" class="building-exhibit-zoom" data-action="building-zoom">${ZOOM_ICON}</button>
+            <button type="button" class="building-exhibit-exit" data-action="close">Esc <span>×</span></button>
+        </div>`
+        this.zoomed = false
         ui.root.appendChild(this.controls)
         this.hotspots = []
         this.bindArrow('arrowPreviousProject', 'building-room', -1)
@@ -58,21 +70,7 @@ export class BuildingScreen
             })
         this.sideFurniture = ['previous', 'next'].map(name => this.area.references.items.get(name)?.[0])
             .filter(Boolean).map(object => ({ object, scale: object.scale.clone(), position: object.position.clone() }))
-        const titleText = this.findText('title')
-        this.titleFurniture = titleText && { object: titleText, scale: titleText.scale.clone() }
-        this.headerFurniture = ['title', 'url'].map(name => {
-            const object = this.area.references.items.get(name)?.[0]
-            return object && { name, object, scale: object.scale.clone(), position: object.position.clone() }
-        }).filter(Boolean)
-        const brandRow = this.area.references.items.get('url')?.[0]
-        if(brandRow)
-        {
-            this.brandBoard = new THREE.Mesh(new THREE.PlaneGeometry(4, 0.30),
-                new THREE.MeshBasicNodeMaterial({ color: '#35204f', side: THREE.DoubleSide }))
-            this.brandBoard.position.z = 0.02
-            this.brandBoard.visible = false
-            brandRow.add(this.brandBoard)
-        }
+        Object.assign(this.workshop, this.header(this.area))
         // White arrow icons stay visible against the purple blocks, regardless of the day/night tint.
         this.arrowMaterial = new THREE.MeshBasicNodeMaterial({color: '#ffffff'})
         for(const name of ['arrowPreviousProject', 'arrowNextProject', 'arrowPreviousImage', 'arrowNextImage'])
@@ -92,6 +90,7 @@ export class BuildingScreen
         game.viewport.events.on('change', () =>
         {
             if(!this.station) return
+            this.reserve = this.topReserve()
             this.layout()
             const framing = this.framing()
             game.view.cinematic.position.copy(framing.position)
@@ -99,10 +98,10 @@ export class BuildingScreen
         })
     }
 
-    findText(name)
+    findText(name, area = this.area)
     {
         let mesh = null
-        this.area.references.items.get(name)?.[0]?.traverse(child =>
+        area.references.items.get(name)?.[0]?.traverse(child =>
         {
             if(child.isMesh && /^text/.test(child.name)) mesh ??= child
         })
@@ -120,12 +119,7 @@ export class BuildingScreen
             const row = this.labels.size
             if(row >= 10) return
             label = { row, text: null, ratio: signAspect(size) }
-            mesh.geometry = mesh.geometry.clone()
-            const uv = mesh.geometry.attributes.uv
-            for(let i = 0; i < uv.count; i++)
-                uv.setXY(i, uv.getX(i), (row * 192 + 4 + uv.getY(i) * 184) / 2048)
-            uv.needsUpdate = true
-            mesh.material = this.signMaterial
+            this.mapRow(mesh, row)
             this.labels.set(mesh, label)
         }
         const context = this.atlasContext, y = label.row * 192
@@ -163,6 +157,48 @@ export class BuildingScreen
         context.fillText(text, virtualWidth / 2, 92)
         context.restore()
         this.atlasTexture.needsUpdate = true
+    }
+
+    /** Point a sign's caption at one atlas row */
+    mapRow(mesh, row)
+    {
+        mesh.geometry = mesh.geometry.clone()
+        const uv = mesh.geometry.attributes.uv
+        for(let i = 0; i < uv.count; i++)
+            uv.setXY(i, uv.getX(i), (row * 192 + 4 + uv.getY(i) * 184) / 2048)
+        uv.needsUpdate = true
+        mesh.material = this.signMaterial
+    }
+
+    /** A sign that always reads like another one (same size) shows that sign's atlas row, without a row of its own */
+    shareLabel(mesh, source)
+    {
+        const label = this.labels.get(source)
+        if(mesh && label && !this.labels.has(mesh)) this.mapRow(mesh, label.row)
+    }
+
+    /** Title and brand planks above a screen, with their original transforms to restore after a visit */
+    header(area)
+    {
+        const titleText = this.findText('title', area)
+        const brandRow = area.references.items.get('url')?.[0]
+        let brandBoard = null
+        if(brandRow)
+        {
+            brandBoard = new THREE.Mesh(new THREE.PlaneGeometry(4, 0.30),
+                new THREE.MeshBasicNodeMaterial({ color: '#35204f', side: THREE.DoubleSide }))
+            brandBoard.position.z = 0.02
+            brandBoard.visible = false
+            brandRow.add(brandBoard)
+        }
+        return {
+            titleText: titleText && { object: titleText, scale: titleText.scale.clone() },
+            header: ['title', 'url'].map(name => {
+                const object = area.references.items.get(name)?.[0]
+                return object && { name, object, scale: object.scale.clone(), position: object.position.clone() }
+            }).filter(Boolean),
+            brandBoard,
+        }
     }
 
     clearLegacyBlackboard()
@@ -209,17 +245,124 @@ export class BuildingScreen
     show(station)
     {
         this.station = station
-        this.area.frustum.alwaysVisible = true
-        this.area.frustum.test()
-        this.applySideFurniture()
-        this.surface.visible = true
-        this.layout()
-        this.legacyExhibit.hide()
+        this.screen = this.screenFor(station)
+        this.screen.area.frustum.alwaysVisible = true
+        this.screen.area.frustum.test()
+        if(this.screen === this.workshop) this.applySideFurniture()
+        this.applyHeader(this.screen)
+        this.screen.surface.visible = true
         const { game, ui } = this
-        ui.root.classList.add('is-building-view', 'is-building-entering', 'is-workshop-exhibit', 'is-fantasy-exhibit')
+        ui.root.classList.add('is-building-view', 'is-building-entering', 'is-workshop-exhibit')
         ui.panelElement.classList.add('is-building-screen')
+        // A screen without the workshop's wooden side signs gets the panel's own previous/next buttons
+        ui.root.classList.toggle('is-plain-board', this.screen !== this.workshop)
         game.domElement.classList.add('is-building-visit')
+        ui.fitBar()
+        this.reserve = this.topReserve()
+        this.layout()
+        // Phones start enlarged: projected onto the board, the text would be too small to read.
+        this.setZoomed(game.viewport.width < 600, { animate: false })
         return this.framing()
+    }
+
+    /** Height kept clear for the top navigation bar, which stays on screen in buildings */
+    topReserve()
+    {
+        const bottom = this.ui.rail?.offsetHeight ? this.ui.rail.getBoundingClientRect().bottom : 0
+        return bottom > 0 ? Math.min(bottom + 12, this.game.viewport.height * 0.4) : 0
+    }
+
+    /**
+     * Board mode projects the live panel onto the building's screen, enlarged mode centers it over the view. Kept while
+     * changing rooms, reset when leaving. The switch pops out of (or back into) the board's on-screen rectangle.
+     */
+    setZoomed(zoomed, { animate = true } = {})
+    {
+        const panel = this.ui.panelElement
+        this.zoomAnimation?.cancel()
+        this.zoomAnimation = null
+        const from = animate ? this.boardRect() : null
+        const motion = from && panel.animate && !globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+        const apply = (on) =>
+        {
+            this.zoomed = on
+            this.ui.root.classList.toggle('is-fantasy-exhibit', on)
+            if(on) this.screen.exhibit.hide()
+            else
+            {
+                this.screen.exhibit.restore()
+                for(const property of ['left', 'top', '--exhibit-width']) panel.style.removeProperty(property)
+                this.layout()
+            }
+            this.update()
+        }
+        if(zoomed || !motion) apply(zoomed)
+        if(!motion) return
+        const box = exhibitLayout(this.game.viewport.width, this.game.viewport.height, this.reserve)
+        const board = `translate(${from.left - box.left}px, ${from.top - box.top}px) scale(${from.width / box.width}, ${from.height / box.height})`
+        const frames = [ { transform: board, opacity: 0.6 }, { transform: 'none', opacity: 1 } ]
+        const animation = this.zoomAnimation = panel.animate(zoomed ? frames : frames.reverse(), { duration: 300, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)', fill: 'forwards' })
+        animation.onfinish = () =>
+        {
+            if(this.zoomAnimation !== animation) return
+            if(!zoomed) apply(false)
+            animation.cancel()
+            this.zoomAnimation = null
+        }
+    }
+
+    /** On-screen rectangle of the building's screen, null outside a visit */
+    boardRect()
+    {
+        if(!this.station || !this.corners) return null
+        const surface = this.screen.surface
+        surface.updateWorldMatrix(true, false)
+        const points = this.corners.map(corner => this.project(corner.clone().applyMatrix4(surface.matrixWorld)))
+        const left = Math.min(...points.map(p => p.x)), top = Math.min(...points.map(p => p.y))
+        const width = Math.max(...points.map(p => p.x)) - left, height = Math.max(...points.map(p => p.y)) - top
+        return width > 0 && height > 0 ? { left, top, width, height } : null
+    }
+
+    /** Changing rooms inside a visit: fly to the new room's own screen when it has another one (Profile: the lab) */
+    moveTo(screen)
+    {
+        const previous = this.screen
+        previous.exhibit.restore()
+        this.restoreHeader(previous)
+        previous.area.frustum.alwaysVisible = false
+        this.screen = screen
+        screen.area.frustum.alwaysVisible = true
+        screen.area.frustum.test()
+        if(screen === this.workshop) this.applySideFurniture()
+        this.applyHeader(screen)
+        this.ui.root.classList.toggle('is-plain-board', screen !== this.workshop)
+        screen.surface.visible = true
+        if(this.zoomed) screen.exhibit.hide()
+        this.layout()
+        this.fly(this.framing())
+    }
+
+    fly({ position, target })
+    {
+        const cinematic = this.game.view.cinematic
+        this.dolly?.kill()
+        this.dolly = gsap.to(cinematic.position, { x: position.x, y: position.y, z: position.z, duration: 1.2, ease: 'power2.inOut', overwrite: true })
+        gsap.to(cinematic.target, { x: target.x, y: target.y, z: target.z, duration: 1.2, ease: 'power2.inOut', overwrite: true })
+    }
+
+    /** The station's own building when it has a screen (Profile: the lab), otherwise the shared workshop. */
+    screenFor(station)
+    {
+        const area = this.game.world.areas[station.building]
+        const surface = area?.references.items.get('images')?.[0]
+        if(!surface) return this.workshop
+        if(!this.screens.has(area))
+        {
+            this.screens.set(area, { area, surface, exhibit: new LegacyExhibit(area), ...this.header(area) })
+            // Its title and brand planks repeat the workshop's captions (current room, team name)
+            for(const name of [ 'title', 'url' ]) this.shareLabel(this.findText(name, area), this.findText(name))
+        }
+        return this.screens.get(area)
     }
 
     applySideFurniture()
@@ -236,8 +379,14 @@ export class BuildingScreen
             const side = Math.sign(position.clone().sub(center).dot(right))
             object.position.addScaledVector(right, -side * 0.07)
         }
-        if(this.titleFurniture) this.titleFurniture.object.scale.copy(this.titleFurniture.scale).multiplyScalar(0.50)
-        for(const { name, object, scale, position } of this.headerFurniture ?? [])
+    }
+
+    /** Compact title and brand planks above the visited screen */
+    applyHeader(screen)
+    {
+        const title = screen.titleText
+        if(title) title.object.scale.copy(title.scale).multiplyScalar(0.50)
+        for(const { name, object, scale, position } of screen.header ?? [])
         {
             object.scale.copy(scale)
             object.position.copy(position)
@@ -246,8 +395,19 @@ export class BuildingScreen
         }
         // Counter the board's vertical compression on its caption: letters stay proportional.
         // Blender exports this caption in XZ; local Z is the visible vertical axis.
-        if(this.titleFurniture) this.titleFurniture.object.scale.z /= 0.55
-        if(this.brandBoard) this.brandBoard.visible = true
+        if(title) title.object.scale.z /= 0.55
+        if(screen.brandBoard) screen.brandBoard.visible = true
+    }
+
+    restoreHeader(screen)
+    {
+        if(screen.brandBoard) screen.brandBoard.visible = false
+        if(screen.titleText) screen.titleText.object.scale.copy(screen.titleText.scale)
+        for(const { object, scale, position } of screen.header ?? [])
+        {
+            object.scale.copy(scale)
+            object.position.copy(position)
+        }
     }
 
     layout()
@@ -255,8 +415,9 @@ export class BuildingScreen
         // Compact header furniture above leaves room for a taller content screen.
         this.size = displaySize(this.game.viewport.width)
         this.size = { ...this.size, height: this.size.height * 1.18 }
-        this.surface.geometry.computeBoundingBox()
-        const {min, max} = this.surface.geometry.boundingBox
+        const surface = this.screen.surface
+        surface.geometry.computeBoundingBox()
+        const {min, max} = surface.geometry.boundingBox
         const z = max.z + 0.015
         const top = max.y + (max.y - min.y) * 0.10
         const bottom = min.y - (max.y - min.y) * 0.08
@@ -268,20 +429,27 @@ export class BuildingScreen
 
     framing()
     {
-        this.surface.updateWorldMatrix(true, false)
-        const center = this.surface.geometry.boundingBox.getCenter(new THREE.Vector3()).applyMatrix4(this.surface.matrixWorld)
-        const quaternion = this.surface.getWorldQuaternion(new THREE.Quaternion())
+        const surface = this.screen.surface
+        surface.updateWorldMatrix(true, false)
+        const center = surface.geometry.boundingBox.getCenter(new THREE.Vector3()).applyMatrix4(surface.matrixWorld)
+        const quaternion = surface.getWorldQuaternion(new THREE.Quaternion())
         const normal = new THREE.Vector3(0, 0, 1).applyQuaternion(quaternion)
         const aspect = this.game.viewport.width / this.game.viewport.height
         const tangent = Math.tan(THREE.MathUtils.degToRad(this.game.view.camera.fov / 2))
         const bounds = new THREE.Box3()
-        for(const corner of this.corners ?? []) bounds.expandByPoint(corner.clone().applyMatrix4(this.surface.matrixWorld))
-        for(const {object} of this.headerFurniture ?? []) bounds.union(new THREE.Box3().setFromObject(object))
+        for(const corner of this.corners ?? []) bounds.expandByPoint(corner.clone().applyMatrix4(surface.matrixWorld))
+        for(const {object} of this.screen.header ?? []) bounds.union(new THREE.Box3().setFromObject(object))
         const height = bounds.isEmpty() ? 0 : bounds.max.y - bounds.min.y
-        const distance = Math.max(8.2, height / (2 * tangent * 0.94), 5.4 / (2 * tangent * aspect * 0.94))
+        // The top navigation bar keeps its height: fit the board in the view below it
+        const viewportHeight = this.game.viewport.height
+        const reserve = this.reserve ?? 0
+        const free = (viewportHeight - reserve) / viewportHeight
+        const distance = Math.max(8.2, height / (2 * tangent * BOARD_FILL * free), 5.4 / (2 * tangent * aspect * BOARD_FILL))
         // Keep the camera square to the screen: a flat rectangle and unstretched text.
         const target = center.clone()
         if(!bounds.isEmpty()) target.y = (bounds.min.y + bounds.max.y) / 2
+        // Raising camera and target together lowers the board by half the bar's height on screen
+        target.y += reserve * distance * tangent / viewportHeight
         const position = target.clone().addScaledVector(normal, distance)
         return { position, target }
     }
@@ -302,6 +470,8 @@ export class BuildingScreen
     {
         if(!this.station || !this.ui.panel) return
         const panel = this.ui.panel.name
+        const screen = this.screenFor({ building: BUILDING_DESTINATIONS[panel] })
+        if(screen !== this.screen) this.moveTo(screen)
         const rooms = Object.keys(BUILDING_DESTINATIONS)
         const index = rooms.indexOf(panel)
         const previous = rooms[(index - 1 + rooms.length) % rooms.length]
@@ -321,6 +491,9 @@ export class BuildingScreen
         }
         const exit = this.controls.querySelector('.building-exhibit-exit')
         exit.setAttribute('aria-label', t('common.close'))
+        const zoom = this.controls.querySelector('.building-exhibit-zoom')
+        zoom.setAttribute('aria-label', t('exhibit.zoomIn'))
+        zoom.title = t('exhibit.zoomIn')
         for(const { button, data } of this.hotspots)
         {
             if(button.dataset.action === 'building-room')
@@ -348,24 +521,22 @@ export class BuildingScreen
     hide()
     {
         this.dolly?.kill()
-        if(this.brandBoard) this.brandBoard.visible = false
+        this.zoomAnimation?.cancel()
+        this.zoomAnimation = null
+        this.zoomed = false
         this.station = null
-        this.legacyExhibit.restore()
+        this.screen.exhibit.restore()
+        this.restoreHeader(this.screen)
         for(const { object, scale, position } of this.sideFurniture)
         {
             object.scale.copy(scale)
             object.position.copy(position)
         }
-        if(this.titleFurniture) this.titleFurniture.object.scale.copy(this.titleFurniture.scale)
-        for(const { object, scale, position } of this.headerFurniture ?? [])
-        {
-            object.scale.copy(scale)
-            object.position.copy(position)
-        }
-        this.area.frustum.alwaysVisible = false
+        this.screen.area.frustum.alwaysVisible = false
         const { ui } = this
-        ui.root.classList.remove('is-building-view', 'is-building-entering', 'is-workshop-exhibit', 'is-fantasy-exhibit')
+        ui.root.classList.remove('is-building-view', 'is-building-entering', 'is-workshop-exhibit', 'is-fantasy-exhibit', 'is-plain-board')
         ui.panelElement.classList.remove('is-building-screen')
+        this.reserve = 0
         for(const property of ['left', 'top', 'width', 'height', 'transform', '--exhibit-width']) ui.panelElement.style.removeProperty(property)
         this.game.domElement.classList.remove('is-building-visit')
         ui.fitBar()
@@ -384,8 +555,7 @@ export class BuildingScreen
         // workshop, but reading and hitting controls no longer depend on projected mesh bounds.
         if(this.ui.root.classList.contains('is-fantasy-exhibit'))
         {
-            this.legacyExhibit?.hide()
-            const bounds = exhibitLayout(this.game.viewport.width, this.game.viewport.height)
+            const bounds = exhibitLayout(this.game.viewport.width, this.game.viewport.height, this.reserve)
             Object.assign(this.ui.panelElement.style, {
                 left: `${bounds.left}px`, top: `${bounds.top}px`, width: `${bounds.width}px`,
                 height: `${bounds.height}px`, transform: 'none',
@@ -395,8 +565,9 @@ export class BuildingScreen
         }
         else
         {
-            this.surface.updateWorldMatrix(true, false)
-            const points = this.corners.map(corner => this.project(corner.clone().applyMatrix4(this.surface.matrixWorld)))
+            const surface = this.screen.surface
+            surface.updateWorldMatrix(true, false)
+            const points = this.corners.map(corner => this.project(corner.clone().applyMatrix4(surface.matrixWorld)))
             const matrix = screenTransform(points, this.size.width, this.size.height)
             if(matrix) this.ui.panelElement.style.transform = `matrix3d(${matrix.join(',')})`
         }
@@ -404,6 +575,9 @@ export class BuildingScreen
         // uses viewport layout. Keep them aligned throughout camera movement and resizing.
         for(const { mesh, button } of this.hotspots ?? [])
         {
+            // The side signs and arrows belong to the workshop: no hit regions while another building is shown
+            button.hidden = this.screen !== this.workshop
+            if(button.hidden) continue
             const bounds = new THREE.Box3().setFromObject(mesh)
             const corners = []
             for(const x of [bounds.min.x, bounds.max.x])

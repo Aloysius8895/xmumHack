@@ -2,7 +2,7 @@ import { Game } from '../../Game.js'
 import { AltarArea } from './AltarArea.js'
 import { CookieArea } from './CookieArea.js'
 import { LandingArea } from './LandingArea.js'
-import { StaticArea } from './StaticArea.js'
+import { ProfileBoardArea } from './StaticArea.js'
 import { TrendsArea } from './TrendsArea.js'
 import { CareerArea } from './CareerArea.js'
 import { SocialArea } from './SocialArea.js'
@@ -26,7 +26,7 @@ export class Areas
             [ 'bowling', BowlingArea ],
             // [ 'career', CareerArea ], // Career timeline lines removed
             [ 'cookie', CookieArea ],
-            [ 'lab', StaticArea ], // Ambient lab props; original content browser stays retired
+            [ 'lab', ProfileBoardArea ], // Ambient lab props and the Profile screen's title planks; original content browser stays retired
             [ 'landing', LandingArea ],
             [ 'projects', TrendsArea ], // Plain building that opens the job market trends (ProjectsArea: the original interactive projects)
             [ 'social', SocialArea ],
