@@ -12,6 +12,9 @@ shares over the interactions with enough data (1 - filtered). A task with penetr
 uses the mean split of its career's tasks. A skill is the mean of its tasks within each career, then the mean over
 the careers that need it. Tasks missing from the penetration file are left out and counted.
 
+A career marked "reviewed": false (one added after the review) shows in the review sheet and the draft only: its tasks
+do not reach exposure.json until it is reviewed, so the values already reviewed do not move.
+
 Writes, in data/ai-exposure:
     exposure.json        reviewed skills only: the file the game reads (server/ai-exposure.js)
     exposure.draft.json  every skill with tasks, for the review; the game never reads it
@@ -85,7 +88,7 @@ def mean(values):
     return round(sum(values) / len(values), 4) if values else None
 
 
-def build(root):
+def build(root, reviewed_careers_only=False):
     mapping = json.loads((root / 'skill_task_map.json').read_text(encoding='utf-8'))
     penetration, split, occupations, jobs = read_sources(root / 'raw')
     errors, per_skill, careers = [], {skill: {} for skill in mapping['skills']}, {}
@@ -95,6 +98,7 @@ def build(root):
             errors.append(f'{career}: no O*NET tasks for {entry["onet"]}')
             continue
         all_rows, missing = task_rows(tasks, penetration, split)
+        counted = not (reviewed_careers_only and entry.get('reviewed') is False)
         for skill in entry['skills']:
             rule = mapping['skills'].get(skill)
             if rule is None:
@@ -102,10 +106,11 @@ def build(root):
                 continue
             excluded = {norm(t) for t in rule.get('exclude', [])}
             rows = [r for r in all_rows if re.search(rule['pattern'], r['task'], re.I) and norm(r['task']) not in excluded]
-            if rows:
+            if rows and counted:
                 per_skill[skill][career] = rows
         job = jobs.get(entry['soc'])
         careers[career] = {'onet': entry['onet'], 'soc': entry['soc'], 'title': job['title'] if job else None,
+                           'reviewed': entry.get('reviewed') is not False,
                            'observedExposure': job['observedExposure'] if job else None,
                            'tasks': len(tasks), 'tasksWithoutPenetration': len(missing),
                            'allTasks': {'automation': mean(r['automation'] for r in all_rows), 'augmentation': mean(r['augmentation'] for r in all_rows)}}
@@ -163,7 +168,7 @@ def review_sheet(skills, careers, check, rho):
         if row['note']:
             lines += [f'Reviewer note: {row["note"]}', '']
         for career, rows in row['careers'].items():
-            lines += [f'**{career}**', '', '| O*NET task | Penetration | Automation | Augmentation |', '|---|---|---|---|']
+            lines += [f'**{career}**' + ('' if careers[career]['reviewed'] else ' (career to review: not counted yet)'), '', '| O*NET task | Penetration | Automation | Augmentation |', '|---|---|---|---|']
             lines += [f'| {r["task"]}{" ※" if r["splitFromCareer"] else ""} | {r["penetration"]} | {r["automation"]} | {r["augmentation"]} |' for r in rows]
             lines.append('')
     lines.append('※ The task has a penetration but no interaction split; its automation and augmentation shares are the mean of the career\'s other tasks.')
@@ -175,14 +180,15 @@ def main(argv=None):
     parser.add_argument('--root', type=Path, default=DEFAULT_ROOT)
     args = parser.parse_args(argv)
     skills, careers, errors = build(args.root)
+    reviewed_skills, _, _ = build(args.root, reviewed_careers_only=True)
     if errors:
         print('\n'.join(errors), file=sys.stderr)
         return 1
     mapping = json.loads((args.root / 'skill_task_map.json').read_text(encoding='utf-8'))
     check, rho = career_check(skills, careers, mapping)
     public = {career: {k: v for k, v in row.items() if k != 'allTasks'} for career, row in careers.items()}
-    for name, reviewed_only in (('exposure.json', True), ('exposure.draft.json', False)):
-        (args.root / name).write_text(json.dumps({'source': SOURCE, 'skills': usable(skills, reviewed_only), 'careers': public,
+    for name, values, reviewed_only in (('exposure.json', reviewed_skills, True), ('exposure.draft.json', skills, False)):
+        (args.root / name).write_text(json.dumps({'source': SOURCE, 'skills': usable(values, reviewed_only), 'careers': public,
                                                   'crossCheck': {'spearman': rho, 'careers': check}}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     (args.root / 'REVIEW.md').write_text(review_sheet(skills, careers, check, rho), encoding='utf-8')
     print(json.dumps({'skills': len(skills), 'withTasks': sum(1 for r in skills.values() if r['tasks']),

@@ -134,6 +134,38 @@ export const CAREER_SDGS = {
         { target: '11.2', why: name('建设安全、可持续的公共交通系统。', 'Builds safe, sustainable public transport systems.', 'Membina sistem pengangkutan awam yang selamat dan mampan.') },
         { target: '6.1', why: name('建造供水和排水系统，让社区获得安全的饮用水。', 'Builds water supply and drainage so communities get safe drinking water.', 'Membina sistem bekalan air dan saliran supaya komuniti mendapat air minuman selamat.') },
     ],
+    'accountant': [
+        { target: '16.6', why: name('准确透明的账目让企业和机构更负责任。', 'Accurate, transparent accounts make companies and institutions accountable.', 'Akaun yang tepat dan telus menjadikan syarikat dan institusi bertanggungjawab.') },
+        { target: '12.6', why: name('协助公司把可持续信息纳入财务报告。', 'Helps companies bring sustainability information into their financial reports.', 'Membantu syarikat memasukkan maklumat kemampanan ke dalam laporan kewangan.') },
+    ],
+    'software-engineer': [
+        { target: '9.c', why: name('开发让更多人用得上的数字服务。', 'Builds digital services more people can use.', 'Membina perkhidmatan digital yang boleh digunakan lebih ramai orang.') },
+        { target: '9.5', why: name('把新技术做成可靠的软件，提升企业的技术能力。', 'Turns new technology into reliable software that raises companies\' technical capability.', 'Menjadikan teknologi baharu perisian yang boleh dipercayai untuk meningkatkan keupayaan teknikal syarikat.') },
+    ],
+    'electrical-engineer': [
+        { target: '9.1', why: name('建设和维护可靠的电力与工业基础设施。', 'Builds and maintains reliable power and industrial infrastructure.', 'Membina dan menyelenggara infrastruktur kuasa dan industri yang boleh dipercayai.') },
+        { target: '8.2', why: name('用自动化和设备维护提升生产力。', 'Raises productivity through automation and equipment upkeep.', 'Meningkatkan produktiviti melalui automasi dan penyelenggaraan peralatan.') },
+    ],
+    'digital-marketer': [
+        { target: '8.3', why: name('帮助中小企业和创业者在网上找到客户。', 'Helps small businesses and entrepreneurs reach customers online.', 'Membantu perniagaan kecil dan usahawan mencapai pelanggan dalam talian.') },
+        { target: '8.2', why: name('用数据改进营销，提高企业的生产力。', 'Improves marketing with data to raise business productivity.', 'Menambah baik pemasaran dengan data untuk meningkatkan produktiviti perniagaan.') },
+    ],
+    'quantity-surveyor': [
+        { target: '9.1', why: name('控制成本，让基础设施项目可靠地完成。', 'Keeps costs under control so infrastructure projects are delivered reliably.', 'Mengawal kos supaya projek infrastruktur disiapkan dengan boleh dipercayai.') },
+        { target: '16.5', why: name('公开透明的招标和结算减少贪污的机会。', 'Open, transparent tendering and final accounts leave less room for corruption.', 'Tender dan akaun akhir yang terbuka dan telus mengurangkan ruang untuk rasuah.') },
+    ],
+    'hr-executive': [
+        { target: '8.5', why: name('让员工得到公平的薪资和体面的工作条件。', 'Gives employees fair pay and decent working conditions.', 'Memberi pekerja gaji yang adil dan keadaan kerja yang wajar.') },
+        { target: '10.3', why: name('以公平的招聘确保机会均等。', 'Ensures equal opportunity through fair hiring.', 'Memastikan peluang sama rata melalui pengambilan yang adil.') },
+    ],
+    'sales-executive': [
+        { target: '8.3', why: name('为企业带来新客户，支持业务成长和就业。', 'Brings in new customers that let businesses grow and hire.', 'Membawa pelanggan baharu yang membolehkan perniagaan berkembang dan mengambil pekerja.') },
+        { target: '8.2', why: name('用 CRM 和数据提升销售效率。', 'Raises sales productivity with CRM tools and data.', 'Meningkatkan produktiviti jualan dengan alat CRM dan data.') },
+    ],
+    'customer-service': [
+        { target: '8.2', why: name('快速解决客户问题，提升服务业的生产力。', 'Solves customer issues quickly, raising productivity in services.', 'Menyelesaikan isu pelanggan dengan cepat, meningkatkan produktiviti perkhidmatan.') },
+        { target: '8.5', why: name('客服是许多年轻人进入职场的第一份工作。', 'Customer service is the first job for many young people entering work.', 'Khidmat pelanggan ialah pekerjaan pertama bagi ramai anak muda yang memasuki alam kerja.') },
+    ],
 }
 
 /**
@@ -187,6 +219,26 @@ export const SKILL_TARGETS = {
     'engineering-math': [ '9.1' ],
     'cad': [ '9.1', '11.2' ],
     'project-management': [ '8.2' ],
+    'accounting-software': [ '8.2' ],
+    'accounts-payable-receivable': [ '16.6' ],
+    'taxation': [ '16.6' ],
+    'electrical-systems': [ '9.1' ],
+    'equipment-maintenance': [ '9.1' ],
+    'plc-automation': [ '9.5' ],
+    'social-media-marketing': [ '8.3' ],
+    'digital-advertising': [ '8.3' ],
+    'web-analytics': [ '17.18' ],
+    'content-writing': [ '8.3' ],
+    'quantity-surveying': [ '9.1' ],
+    'cost-estimation': [ '9.1' ],
+    'contract-administration': [ '16.5' ],
+    'employee-relations': [ '8.5' ],
+    'recruitment': [ '10.3' ],
+    'payroll': [ '8.5' ],
+    'sales-prospecting': [ '8.3' ],
+    'customer-support': [ '8.2' ],
+    'crm-systems': [ '8.2' ],
+    'workplace-languages': [ '4.4' ],
 }
 
 // Targets of a career: its authored tags, the ones an AI-generated career picked from TARGETS, or its skills' main targets

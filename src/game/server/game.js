@@ -16,9 +16,12 @@ import { trendsView } from './trends.js'
 import { collectedMarket } from './collected-market.js'
 import { crawlerStatus } from './crawler-market.js'
 import { withHistoricalMarket } from './historical-market.js'
-import { referenceMarket } from './reference-market.js'
+import { referenceMarkets } from './reference-market.js'
+import { referenceTrend } from './reference-trend.js'
+import { nationalEstimate } from './national-estimate.js'
 import { mycolTimeline } from './official-signals.js'
-import { compare, defaultInputs, forecast, scenarioOf } from './scenarios.js'
+import { PRESETS, compare, defaultInputs, forecast, scenarioOf } from './scenarios.js'
+import { noRegretSkeleton, skeletonChanges } from './no-regret.js'
 import { updateLog } from './update-log.js'
 import { createHash } from 'node:crypto'
 
@@ -369,21 +372,42 @@ export function gapsFor(save)
 }
 
 /**
- * Roadmap: ids, MP (1 MP = 1 estimated hour of focused effort) and clean prerequisites
+ * Prerequisites of a No-Regret layout (no-regret.js): core stages in a line, the first stage of each branch after the
+ * last core stage, branch stages in a line; later stages wait for the chosen branch (stageStatus), not stored here
+ */
+function layoutPrerequisites(stages, index)
+{
+    const stage = stages[index]
+    const before = stages.slice(0, index)
+    const lastOf = (filter) => before.map((other, position) => ({ other, position })).filter(({ other }) => filter(other)).at(- 1)?.position
+    const previous = stage.kind === 'branch' ? lastOf((other) => other.kind === 'branch' && other.branch === stage.branch) ?? lastOf((other) => other.kind === 'core')
+        : stage.kind === 'later' ? lastOf((other) => other.kind === 'later')
+        : lastOf((other) => other.kind === 'core')
+    return previous === undefined ? [] : [ previous ]
+}
+
+/**
+ * Roadmap: ids, MP (1 MP = 1 estimated hour of focused effort) and clean prerequisites. A No-Regret plan keeps each
+ * stage's kind (core / branch / later), branch, code-written basis and gains, the branch followed (chosenBranch) and
+ * the skeleton it came from (forecastBasis, for the re-plan prompt)
  */
 export function buildRoadmap(plan)
 {
-    const stages = plan.stages.slice(0, RULES.maxStages)
+    const layout = plan.stages.some((stage) => stage.kind)
+    // A layout is bounded by no-regret.js (core 3, two branches of 2, later 1), the walked path stays within maxStages
+    const stages = layout ? plan.stages : plan.stages.slice(0, RULES.maxStages)
     return {
         generatedAt: new Date().toISOString(),
         overview: plan.overview,
+        ...(layout ? { chosenBranch: plan.chosenBranch ?? 'moderate', branchChosenBy: 'scenario', forecastBasis: plan.forecastBasis ?? null } : {}),
         stages: stages.map((stage, index) => ({
             id: `s${index + 1}`,
             title: stage.title,
             why: stage.why,
             skillIds: stage.skillIds.filter((id) => SKILLS[id]),
             requirementRefs: stage.requirementRefs,
-            prerequisites: stage.prerequisiteIndexes.filter((other) => other >= 0 && other < index).map((other) => `s${other + 1}`),
+            ...(layout ? { kind: stage.kind, branch: stage.branch ?? null, basis: stage.basis ?? [], gains: stage.gains ?? {} } : {}),
+            prerequisites: (layout ? layoutPrerequisites(stages, index) : stage.prerequisiteIndexes.filter((other) => other >= 0 && other < index)).map((other) => `s${other + 1}`),
             tasks: stage.tasks.slice(0, RULES.maxTasksPerStage).map((task, taskIndex) => ({
                 id: `s${index + 1}t${taskIndex + 1}`,
                 title: task.title,
@@ -406,15 +430,28 @@ function stageProgress(stage)
     return Math.round(stage.tasks.reduce((sum, task) => sum + task.mp * task.progress, 0) / total)
 }
 
+/** What a stage waits for: its stored prerequisites, and for a later stage the end of the chosen branch (or the core) */
+function waitsFor(roadmap, stage)
+{
+    if(stage.kind !== 'later' || stage.prerequisites.length)
+        return stage.prerequisites
+    const line = roadmap.stages.filter((other) => other.kind === 'branch' && other.branch === roadmap.chosenBranch)
+    const end = line.at(- 1) ?? roadmap.stages.filter((other) => other.kind === 'core').at(- 1)
+    return end ? [ end.id ] : []
+}
+
 function stageStatus(roadmap, stage)
 {
     const complete = (item) => item.cleared || (item.tasks.length > 0 && item.tasks.every((task) => task.progress >= 100))
+    // The branch not followed can be read, it does not count (a roadmap without kinds behaves as before)
+    if(stage.kind === 'branch' && stage.branch !== roadmap.chosenBranch)
+        return 'alternative'
     if(complete(stage))
         return 'cleared'
     // Unlocked early by the player (confirmed in the roadmap), prerequisites are a recommendation, not a wall
     if(stage.forced)
         return 'active'
-    const ready = stage.prerequisites.every((id) =>
+    const ready = waitsFor(roadmap, stage).every((id) =>
     {
         const previous = roadmap.stages.find((other) => other.id === id)
         return previous && complete(previous)
@@ -440,7 +477,8 @@ export function forceStage(save, stageId)
 
 function findTask(roadmap, taskId)
 {
-    for(const stage of roadmap.stages)
+    // Tasks of the branch not followed can be read, never progressed
+    for(const stage of roadmap.stages.filter((item) => !(item.kind === 'branch' && item.branch !== roadmap.chosenBranch)))
         for(const task of stage.tasks)
             if(task.id === taskId)
                 return task
@@ -509,11 +547,44 @@ export function setTaskDone(save, taskId, done)
 }
 
 /** The chosen scenario's forecast and both presets' ranks, computed once from the same inputs */
+/**
+ * Re-plan prompt: the No-Regret skeleton of the roadmap (forecastBasis) against the current data. Skills the player
+ * no longer lacks are left out of both sides, so learning never triggers it; only a changed core, branch order or
+ * later set does. Never re-plans by itself (that calls the AI and starts a new roadmap): the player decides.
+ */
+function replanSuggestion(save, inputs)
+{
+    const basis = save.roadmap?.forecastBasis
+    if(!basis || !save.target)
+        return null
+    const now = noRegretSkeleton(save, inputs)
+    if(!now)
+        return null
+    const gaps = new Set([ ...now.core, ...now.later, ...Object.values(now.branches).flat() ])
+    const keep = (ids) => (ids ?? []).filter((id) => gaps.has(id))
+    const before = { core: keep(basis.core), later: keep(basis.later), branches: Object.fromEntries(Object.entries(basis.branches ?? {}).map(([ preset, ids ]) => [ preset, keep(ids) ])) }
+    const changedSkills = skeletonChanges(before, now)
+    return changedSkills.length ? { changedSkills, reason: 'trend-data' } : null
+}
+
+// The client needs how many tasks an exposure rests on, not their text (that stays in data/ai-exposure)
+const lighter = (row) => ({ ...row, sources: { ...row.sources, exposure: row.sources.exposure ? { taskCount: row.sources.exposure.tasks.length, name: row.sources.exposure.source?.name ?? null } : null } })
+
 function scenarioView(save)
 {
     const inputs = defaultInputs()
     const current = forecast(save, scenarioOf(save), inputs)
-    return { scenario: scenarioOf(save), forecast: current, scenarioCompare: compare(save, inputs), updateLog: updateLog(save, current) }
+    // Each skill's status under both presets, for the "declining in both scenarios" list
+    const statuses = Object.fromEntries(Object.keys(PRESETS).map((preset) => [ preset, forecast(save, { scenario: preset, ...PRESETS[preset] }, inputs).skills ]))
+    const skillStatus = Object.fromEntries(current.skills.map((skill) => [ skill.id, Object.fromEntries(Object.entries(statuses).map(([ preset, skills ]) => [ preset, skills.find((row) => row.id === skill.id)?.status ?? null ])) ]))
+    return {
+        scenario: scenarioOf(save),
+        forecast: { ...current, skills: current.skills.map(lighter), careers: current.careers.map((career) => ({ ...career, skills: career.skills.map(lighter) })) },
+        scenarioCompare: compare(save, inputs),
+        skillStatus,
+        replanSuggested: replanSuggestion(save, inputs),
+        updateLog: updateLog(save, current),
+    }
 }
 
 /**
@@ -529,8 +600,8 @@ export function view(save, ai, documents = {})
         summary: career.summary,
         emerging: Boolean(career.emerging),
         color: career.color,
-        // Collected postings only: a career without any has heat null (shown as "no data"), never an authored value
-        market: collected?.careers[career.id]
+        // Collected postings only: a career outside the collection (postings null) has heat null, shown as "no data"
+        market: collected?.careers[career.id]?.postings != null
             ? { heat: collected.careers[career.id].heat, trend: 'unknown', sample: true, snapshot: collected.careers[career.id], skills: collected.careers[career.id].skills }
             : { heat: null, trend: 'unknown', sample: false, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrEmpty(career.id, market) },
         effortMonths: career.effortMonths,
@@ -575,6 +646,7 @@ export function view(save, ai, documents = {})
             ...stage,
             title: localText(stage.title, save.lang),
             why: localText(stage.why, save.lang),
+            ...(stage.basis ? { basis: stage.basis.map((text) => localText(text, save.lang)) } : {}),
             tasks: stage.tasks.map((task) => ({ ...task, title: localText(task.title, save.lang), why: localText(task.why, save.lang) })),
             status: stageStatus(save.roadmap, stage),
             progress: stageProgress(stage),
@@ -595,8 +667,8 @@ export function view(save, ai, documents = {})
         pending,
         marketSkills: collected?.skills ?? skillTrendOrEmpty(null, market),
         skillMarket: collected?.skillMarket ?? skillMarket(SKILL_IDS, market),
-        // reference: last year's JobStreet counts, a separate column (reference-market.js)
-        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus(),reference:referenceMarket()}),
+        // references: past JobStreet months (reference-market.js); yearOnYear: their 2024→2025 change (reference-trend.js)
+        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus(),references:referenceMarkets(),yearOnYear:referenceTrend(),nationalEstimate:nationalEstimate()}),
         // Future scenarios (scenarios.js): every career ranked under the chosen scenario, and both presets' ranks
         ...scenarioView(save),
         learningDirection: save.learningDirection ?? null,

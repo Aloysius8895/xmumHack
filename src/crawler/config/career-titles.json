@@ -14,12 +14,28 @@
     "teacher": "\\b(teacher|lecturer|educator)\\b",
     "doctor": "\\b(medical officer|medical doctor|physician|general practitioner)\\b",
     "chef": "\\bchef\\b",
-    "civil-engineer": "\\b(civil|structural) engineer\\b"
+    "civil-engineer": "\\b(civil|structural) engineer\\b",
+    "accountant": "\\b(accountants?|accounting (executive|officer|assistant|clerk|manager|supervisor|analyst)|accounts (executive|officer|assistant|clerk|manager|supervisor|payable|receivable)|account (assistant|clerk|officer)|finance (executive|officer|assistant|analyst)|bookkeepers?)\\b",
+    "software-engineer": "\\b(software (engineer|developer)s?|(full[ -]?stack|web|mobile|android|ios|\\.net|php|application) (developer|engineer)s?|programmers?)\\b",
+    "electrical-engineer": "\\b(electrical|electronics?|e&e|power|instrumentation|c&i|control (and|&) instrumentation|automation|plc|hardware|embedded|firmware)( (and|&) (electronics?|instrumentation))?( design)? engineers?\\b|\\bchargem[ae]n\\b",
+    "digital-marketer": "\\b(digital|social media|online|performance|content|e-?commerce|search engine) marketing\\b|\\bsocial media (executive|specialist|manager|officer|coordinator|strategist)\\b|\\bseo (executive|specialist|manager|analyst)\\b|\\bdigital marketers?\\b",
+    "quantity-surveyor": "\\bquantity surveyors?\\b|\\bqs (executive|engineer|manager|assistant)\\b|^qs\\b",
+    "hr-executive": "\\b(human resources?|hr|talent acquisition|recruitment|payroll|people) (executive|officer|assistant|specialist|generalist|manager|admin|administrator|business partner|coordinator|associate)\\b|\\b(recruiters?|hrbp|hr generalist)\\b",
+    "sales-executive": "\\bsales (executive|representative|consultant|engineer|advisor|manager|coordinator|officer|specialist)s?\\b|\\bbusiness development (executive|manager|representative|officer)\\b",
+    "customer-service": "\\bcustomer (service|support|care|experience) (executive|officer|representative|associate|agent|specialist|assistant)s?\\b|\\bcall cent(er|re) (agent|executive|officer)\\b"
   },
   "queries": {
     "ml-engineer": "machine learning engineer",
     "forward-deployed-engineer": "forward deployed engineer",
     "ui-ux-designer": "UI UX designer",
-    "doctor": "medical officer"
+    "doctor": "medical officer",
+    "accountant": "accountant",
+    "software-engineer": "software engineer",
+    "electrical-engineer": "electrical engineer",
+    "digital-marketer": "digital marketing executive",
+    "quantity-surveyor": "quantity surveyor",
+    "hr-executive": "human resources executive",
+    "sales-executive": "sales executive",
+    "customer-service": "customer service executive"
   }
 }

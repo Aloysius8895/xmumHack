@@ -6,7 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src' / 'data' / 'scripts'))
 import pandas as pd
 from collect_linkedin import Collector, parse_detail, parse_search
-from process_jobs import CATALOG, classify, deduplicate, extract_skills, location_status
+from process_jobs import CATALOG, TITLE_PATTERNS, classify, deduplicate, extract_skills, location_status
 
 
 class JobDataTests(unittest.TestCase):
@@ -16,7 +16,8 @@ class JobDataTests(unittest.TestCase):
         self.assertIsNone(classify('Field Development Engineer (FDE)', '')[0])
 
     def test_catalog_identity_and_ambiguous_software(self):
-        self.assertEqual(len(CATALOG['careers']), 14)
+        # This offline pipeline keeps its title rules for the original careers; every one of them is in the catalog
+        self.assertLessEqual(set(TITLE_PATTERNS), {career['id'] for career in CATALOG['careers']})
         self.assertEqual(classify('Senior Front-end Developer', 'Build UI')[0], 'frontend-developer')
         self.assertEqual(classify('Software Engineer', 'Build software')[0], None)
         self.assertEqual(classify('Software Engineer', 'Build backend APIs')[0], 'backend-developer')

@@ -1,0 +1,21 @@
+{
+  "id": "jobstreet-2024",
+  "name": "JobStreet Job Postings Dataset (Hugging Face azrai99/job-dataset)",
+  "platform": "JobStreet",
+  "author": "Azrai Mahadan",
+  "url": "https://huggingface.co/datasets/azrai99/job-dataset",
+  "revision": "b1937baac3ad7a2c7f18d0e24b14b00683a49f1d",
+  "file": "jobstreet_all_job_dataset.csv",
+  "sha256": "4bdd026944f1c2527402ca5ee7b83d63b3a82e6acaa4c78898a9ee90430b45c7",
+  "licence": "CC BY 4.0",
+  "rows": 59306,
+  "collection": {
+    "from": "2024-02-22",
+    "to": "2024-06-20",
+    "partialMonths": [
+      "2024-02",
+      "2024-06"
+    ],
+    "rule": "from the first day with at least 20% of the median daily count of the busiest month to the last listing"
+  }
+}

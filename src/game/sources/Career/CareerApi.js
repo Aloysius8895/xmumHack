@@ -132,6 +132,7 @@ export class CareerApi
     startMarketSample() {return this.sampleRequest('POST','refresh')}
     marketSampleStatus(runId) {return this.sampleRequest('GET',encodeURIComponent(runId))}
     setLang(lang) { return this.request('POST', 'lang', { lang }) }
+    setScenario(preset) { return this.request('POST', 'scenario', { preset }) }
     markUpdatesSeen() { return this.request('POST', 'update-log/seen', {}) }
     setLearningDirection(text) { return this.request('POST', 'learning-direction', { text }) }
     extractProfile(text, file) { return this.request('POST', 'profile/extract', { text, file }) }

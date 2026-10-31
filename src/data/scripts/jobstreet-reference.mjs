@@ -1,7 +1,8 @@
 /**
- * Stage 2 of the JobStreet 2025 reference (stage 1: import_jobstreet_reference.py): every row goes through the
+ * Stage 2 of the JobStreet references (stage 1: import_jobstreet_reference.py): every row goes through the
  * crawler's own normalize() with the crawler's game config, so careers and skills are found exactly as in our
- * LinkedIn / Indeed collection. Writes, in data/reference/jobstreet-2025:
+ * LinkedIn / Indeed collection. Postings listed outside the dataset's collection window (source.json) are left out:
+ * older adverts still open when it was scraped do not show the demand of their month. Writes, in the dataset folder:
  *   reference.json   per career: postings, by month, described postings, skill shares (the heatmap's reference column)
  *   candidates.json  per candidate career (data/reference/career-candidates.json): counts, rule precision against
  *                    JobStreet's own category, overlaps, entry-level share, skills (for the career selection)
@@ -41,10 +42,10 @@ export async function* readRows(file)
             yield JSON.parse(line)
 }
 
-export async function build(rows, candidates)
+export async function build(rows, candidates, window = null)
 {
     const { base, probe } = configs(candidates)
-    const total = { postings: 0, rejected: 0, unmapped: 0, ambiguous: 0, described: 0, months: {} }
+    const total = { postings: 0, rejected: 0, outsideCollection: 0, unmapped: 0, ambiguous: 0, described: 0, months: {} }
     const careers = Object.fromEntries(base.roles.map((role) => [ role.id, { postings: 0, byMonth: {}, described: 0, skills: {} } ]))
     const found = Object.fromEntries(Object.keys(candidates).map((id) => [ id, { postings: 0, byMonth: {}, inCategory: 0, categories: {}, overlaps: {}, entryLevel: 0, described: 0, skills: {}, datasetSkills: {}, examples: [] } ]))
     let from = null, to = null
@@ -54,6 +55,11 @@ export async function build(rows, candidates)
         if(job.rejection)
         {
             total.rejected++
+            continue
+        }
+        if(window && (!job.postedDate || job.postedDate < window.from || job.postedDate > window.to))
+        {
+            total.outsideCollection++
             continue
         }
         total.postings++
@@ -105,8 +111,8 @@ export async function build(rows, candidates)
     }
 
     const reference = {
-        period: { from, to, note: 'Listing dates; May 2025 only runs to 05-08' },
-        postings: total.postings, rejected: total.rejected, described: total.described, months: total.months,
+        period: { from, to, partialMonths: window?.partialMonths ?? [], note: 'Listing dates within the collection window' },
+        postings: total.postings, rejected: total.rejected, outsideCollection: total.outsideCollection, described: total.described, months: total.months,
         unmapped: total.unmapped, ambiguous: total.ambiguous,
         careers: Object.fromEntries(Object.entries(careers).map(([ id, row ]) => [ id, {
             postings: row.postings, share: round(row.postings / total.postings), byMonth: row.byMonth,
@@ -130,12 +136,12 @@ if(process.argv[1] === fileURLToPath(import.meta.url))
     const root = at > 0 ? path.resolve(process.argv[at + 1]) : path.join(REPO, 'data', 'reference', 'jobstreet-2025')
     const source = JSON.parse(fs.readFileSync(path.join(root, 'source.json'), 'utf8'))
     const { candidates } = JSON.parse(fs.readFileSync(CANDIDATES, 'utf8'))
-    const result = await build(readRows(path.join(root, 'raw', 'rows.jsonl')), candidates)
+    const result = await build(readRows(path.join(root, 'raw', 'rows.jsonl')), candidates, source.collection ?? null)
     const generatedAt = new Date().toISOString()
     const method = 'Careers and skills found by the crawler\'s normalize() and game config (src/crawler/src), the same rules as the LinkedIn / Indeed collection'
     fs.writeFileSync(path.join(root, 'reference.json'), JSON.stringify({ source, generatedAt, method, ...result.reference }, null, 2) + '\n')
     fs.writeFileSync(path.join(root, 'candidates.json'), JSON.stringify({ source, generatedAt, method, candidates: result.candidates }, null, 2) + '\n')
-    console.log(JSON.stringify({ postings: result.reference.postings, unmapped: result.reference.unmapped, ambiguous: result.reference.ambiguous,
+    console.log(JSON.stringify({ postings: result.reference.postings, outsideCollection: result.reference.outsideCollection, months: result.reference.months, unmapped: result.reference.unmapped, ambiguous: result.reference.ambiguous,
         careers: Object.fromEntries(Object.entries(result.reference.careers).map(([ id, row ]) => [ id, row.postings ])),
         candidates: Object.fromEntries(Object.entries(result.candidates).map(([ id, row ]) => [ id, `${row.postings} (precision ${row.precision}%, entry ${row.entryLevel}%)` ])) }, null, 1))
 }

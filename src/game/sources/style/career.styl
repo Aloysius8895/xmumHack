@@ -3824,6 +3824,235 @@ html:not(.is-started) .career-ui {
     border-right: 4px solid var(--line-soft);
 }
 
+// Future scenarios (ScenarioView.js): toggle, card score, why-this-score, assumptions, skill radar
+.career-scenario {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    border: 2px solid var(--line-soft);
+    border-radius: 12px;
+    background: var(--face-white);
+}
+
+.career-scenario-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.career-scenario-title {
+    font-weight: 700;
+}
+
+.career-scenario-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.career-scenario-button {
+    min-height: 40px;
+    padding: 6px 12px;
+    border: 2px solid var(--line-soft);
+    border-radius: 10px;
+    background: transparent;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+
+    &.is-active {
+        border-color: currentColor;
+        font-weight: 700;
+        box-shadow: inset 0 -3px 0 currentColor;
+    }
+}
+
+.career-tag.is-estimate {
+    font-style: italic;
+}
+
+.career-tag.is-low {
+    opacity: 0.8;
+}
+
+.career-card-score {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+
+    em {
+        font-style: normal;
+    }
+
+    .is-up {
+        color: #1F6B35;
+    }
+
+    .is-down {
+        color: #A3271A;
+    }
+}
+
+.career-score,
+.career-assumptions,
+.career-radar {
+    margin: 12px 0 16px;
+    padding: 10px 12px;
+    border: 2px solid var(--line-soft);
+    border-radius: 12px;
+    background: var(--face-white);
+    line-height: 1.6;
+
+    h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+    }
+
+    h4 {
+        margin: 10px 0 4px;
+        font-size: 15px;
+    }
+
+    dl div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 10px;
+        margin: 4px 0;
+    }
+
+    dt {
+        font-weight: 700;
+    }
+
+    dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+}
+
+.career-score-formula {
+    font-weight: 700;
+}
+
+.career-score-skills {
+    margin: 6px 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+        border-top: 1px solid var(--line-soft);
+        padding: 4px 0;
+    }
+
+    summary {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 4px 10px;
+        cursor: pointer;
+    }
+
+    li.is-rising .career-score-value {
+        color: #1F6B35;
+    }
+
+    li.is-declining .career-score-value {
+        color: #A3271A;
+    }
+
+    dl {
+        margin: 6px 0 2px 14px;
+        font-size: 14px;
+    }
+}
+
+.career-score-value {
+    margin-left: auto;
+    font-weight: 700;
+}
+
+.career-radar-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 8px 16px;
+
+    ol {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    li {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .is-up em {
+        color: #1F6B35;
+    }
+
+    .is-down em {
+        color: #A3271A;
+    }
+
+    em {
+        font-style: normal;
+        font-weight: 700;
+    }
+}
+
+.career-heatmap .is-yoy {
+    border-left: 4px solid var(--line-soft);
+    white-space: nowrap;
+    font-weight: 700;
+
+    small {
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        opacity: 0.7;
+    }
+}
+
+.career-heatmap td.is-yoy.is-up,
+.career-yoy.is-up {
+    color: #1F6B35;
+}
+
+.career-heatmap td.is-yoy.is-down,
+.career-yoy.is-down {
+    color: #A3271A;
+}
+
+// From / to months of the heatmap, side by side, stacked on narrow screens
+.career-range-field {
+    display: flex;
+    flex: 1 1 180px;
+    align-items: center;
+    gap: 4px;
+
+    span {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    select {
+        flex: 1;
+        min-width: 0;
+    }
+
+    @media (max-width: 420px) {
+        display: flex;
+        width: 100%;
+
+        select {
+            flex: 1;
+        }
+    }
+}
+
 .career-reference-note {
     font-size: 14px;
 }

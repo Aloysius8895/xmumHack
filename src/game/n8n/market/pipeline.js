@@ -109,6 +109,27 @@ export const SKILL_PATTERNS = {
     'engineering-math':   /\b(structural (analysis|design)|engineering mechanics|load calculations?|finite element)\b/i,
     'cad':                /\b(autocad|cad|revit|civil 3d|solidworks)\b/i,
     'project-management': /\b(project management|pmp|project planning|project schedul\w+|prince2)\b/i,
+    // Skills of the careers chosen from the JobStreet 2025 and LinkedIn data
+    'accounting-software':/\b(accounting (software|system)s?|sql account(ing)?|autocount|xero|quickbooks|myob|sage ?(300|ubs)?|sap (fi|b1|business one)|ubs accounting)\b/i,
+    'accounts-payable-receivable':/\b(accounts? payables?|accounts? receivables?|ap\/ar|bank reconciliations?|reconciliations?|invoic(e|es|ing)|credit control|debt collection)\b/i,
+    'taxation':           /\b(tax(ation)?|sst|lhdn|e-?invoic\w*|income tax|tax computation|transfer pricing)\b/i,
+    'electrical-systems': /\b(electrical (systems?|installations?|design|wiring|drawings?)|power distribution|switchgears?|high voltage|low voltage|lv\/hv|transformers?|single line diagrams?)\b/i,
+    'equipment-maintenance':/\b(preventive maintenance|corrective maintenance|predictive maintenance|breakdown maintenance|maintenance (schedul\w+|of (equipment|machines?|facilit\w+))|equipment (maintenance|breakdowns?))\b/i,
+    'plc-automation':     /\b(plc|scada|hmi|automation systems?|industrial automation|control systems?|instrumentation)\b/i,
+    'social-media-marketing':/\b(social media|facebook|instagram|tiktok|xiaohongshu|community management|influencers?|kols?)\b/i,
+    'digital-advertising':/\b(google ads|facebook ads|meta ads|paid (ads|media|social)|ppc|sem|performance marketing|ad campaigns?|media buying)\b/i,
+    'web-analytics':      /\b(google analytics|ga4|web analytics|analytics tools?|search console|conversion rates?|kpis? (tracking|reporting)|seo)\b/i,
+    'content-writing':    /\b(copywriting|content (creation|writing|planning|strategy)|copywriter|write (engaging )?content|blog posts?|captions?)\b/i,
+    'quantity-surveying': /\b(quantity surveying|bills? of quantit\w+|bq|boq|taking[- ]off|measurement of (works|quantities)|interim (claims|valuations?)|final accounts?|variation orders?)\b/i,
+    'cost-estimation':    /\b(cost (estimat\w+|control|plans?|planning|management)|estimat(e|es|ing) (costs?|quantities)|budget (control|estimat\w+)|value engineering|tender (pricing|estimat\w+))\b/i,
+    'contract-administration':/\b(contract (administration|management|documents?)|tender(s|ing)?|procurement|sub-?contract\w*|pam contract|cidb|conditions of contract)\b/i,
+    'employee-relations': /\b(employee relations?|industrial relations?|employee engagement|grievances?|disciplinary|domestic inquiry|employment act|labou?r law)\b/i,
+    'recruitment':        /\b(recruitment|talent acquisition|recruiting|hiring process|interview (scheduling|coordination)|sourcing candidates?|(employee|new hire|staff) onboarding)\b/i,
+    'payroll':            /\b(payroll|salary (processing|computation)|(epf|socso|eis|pcb|kwsp|perkeso)[ ,/&a-z]{0,25}(submission|contribution|filing|payment)s?)\b/i,
+    'sales-prospecting':  /\b(prospect\w*|lead generation|generate leads|cold call\w*|new business|business development|sales (targets?|pipeline|funnel)|closing (deals|sales))\b/i,
+    'customer-support':   /\b(customer (service|support|care|inquir\w+|enquir\w+|complaints?|satisfaction)|after[- ]sales|handle (complaints|enquiries|inquiries)|helpdesk)\b/i,
+    'crm-systems':        /\b(crm|salesforce|hubspot|zoho|customer relationship management)\b/i,
+    'workplace-languages':/\b(mandarin|chinese speak\w*|cantonese|bahasa (malaysia|melayu)|malay (language|speak\w*)|bilingual|multilingual)\b/i,
 }
 
 /**

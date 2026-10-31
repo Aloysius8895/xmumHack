@@ -5,6 +5,8 @@
  *
  *   adoption        D = 1 − e^(−k·H/τ)
  *   demand          T = clamp(e^(growth·H), 0.5, 2)            growth from skill-momentum.js, 1 when unknown
+ *                   (the JobStreet 2024→2025 change is shown to players but not used here: two points from different
+ *                   collectors, extrapolated over H years, would outweigh the skill fit)
  *   skill value     V = T × (1 − a·D) × (1 + β·u·D)            a, u from ai-exposure.js (automation, augmentation), 0 when unknown
  *   fit             Σ w·min(cur, req)/req·V ÷ Σ w·V            w = required level × weight, as careers.matchCareer
  *   outlook         clamp(V̄·Tc − 0.5, 0, 1)                    V̄ = Σ w·V ÷ Σ w, Tc the career's demand term

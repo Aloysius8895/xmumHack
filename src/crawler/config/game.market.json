@@ -158,6 +158,86 @@
       "queries": [
         "Civil Engineer jobs in Malaysia"
       ]
+    },
+    {
+      "id": "accountant",
+      "name": "Accountant",
+      "titlePatterns": [
+        "\\b(accountants?|accounting (executive|officer|assistant|clerk|manager|supervisor|analyst)|accounts (executive|officer|assistant|clerk|manager|supervisor|payable|receivable)|account (assistant|clerk|officer)|finance (executive|officer|assistant|analyst)|bookkeepers?)\\b"
+      ],
+      "queries": [
+        "accountant jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "software-engineer",
+      "name": "Software Engineer",
+      "titlePatterns": [
+        "\\b(software (engineer|developer)s?|(full[ -]?stack|web|mobile|android|ios|\\.net|php|application) (developer|engineer)s?|programmers?)\\b"
+      ],
+      "queries": [
+        "software engineer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "electrical-engineer",
+      "name": "Electrical & Electronics Engineer",
+      "titlePatterns": [
+        "\\b(electrical|electronics?|e&e|power|instrumentation|c&i|control (and|&) instrumentation|automation|plc|hardware|embedded|firmware)( (and|&) (electronics?|instrumentation))?( design)? engineers?\\b|\\bchargem[ae]n\\b"
+      ],
+      "queries": [
+        "electrical engineer jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "digital-marketer",
+      "name": "Digital Marketing Executive",
+      "titlePatterns": [
+        "\\b(digital|social media|online|performance|content|e-?commerce|search engine) marketing\\b|\\bsocial media (executive|specialist|manager|officer|coordinator|strategist)\\b|\\bseo (executive|specialist|manager|analyst)\\b|\\bdigital marketers?\\b"
+      ],
+      "queries": [
+        "digital marketing executive jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "quantity-surveyor",
+      "name": "Quantity Surveyor",
+      "titlePatterns": [
+        "\\bquantity surveyors?\\b|\\bqs (executive|engineer|manager|assistant)\\b|^qs\\b"
+      ],
+      "queries": [
+        "quantity surveyor jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "hr-executive",
+      "name": "Human Resources Executive",
+      "titlePatterns": [
+        "\\b(human resources?|hr|talent acquisition|recruitment|payroll|people) (executive|officer|assistant|specialist|generalist|manager|admin|administrator|business partner|coordinator|associate)\\b|\\b(recruiters?|hrbp|hr generalist)\\b"
+      ],
+      "queries": [
+        "human resources executive jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "sales-executive",
+      "name": "Sales & Business Development Executive",
+      "titlePatterns": [
+        "\\bsales (executive|representative|consultant|engineer|advisor|manager|coordinator|officer|specialist)s?\\b|\\bbusiness development (executive|manager|representative|officer)\\b"
+      ],
+      "queries": [
+        "sales executive jobs in Malaysia"
+      ]
+    },
+    {
+      "id": "customer-service",
+      "name": "Customer Service Executive",
+      "titlePatterns": [
+        "\\bcustomer (service|support|care|experience) (executive|officer|representative|associate|agent|specialist|assistant)s?\\b|\\bcall cent(er|re) (agent|executive|officer)\\b"
+      ],
+      "queries": [
+        "customer service executive jobs in Malaysia"
+      ]
     }
   ],
   "skills": [
@@ -374,7 +454,7 @@
       "aliases": [
         "Math for ML"
       ],
-      "pattern": "\\b(linear algebra|calculus|mathematics|mathematical|optimi[sz]ation)\\b",
+      "pattern": "\\b(linear algebra|calculus|mathematics|mathematical (modell?ing|optimi[sz]ation)|probability theory|(convex|numerical) optimi[sz]ation)\\b",
       "patternFlags": "i"
     },
     {
@@ -437,7 +517,7 @@
       "aliases": [
         "Audit procedures & standards"
       ],
-      "pattern": "\\b(audit(s|ing|or)?|assurance|isa standards?)\\b",
+      "pattern": "\\b(audit(s|ing|or)?|(?<!quality )assurance|isa standards?)\\b",
       "patternFlags": "i"
     },
     {
@@ -509,7 +589,7 @@
       "aliases": [
         "Clinical knowledge"
       ],
-      "pattern": "\\b(clinical|diagnos\\w+|mbbs|medical degree)\\b",
+      "pattern": "\\b(clinical|mbbs|medical degree|(patient|differential) diagnos\\w+|diagnos\\w+ (and|&) treat\\w*)\\b",
       "patternFlags": "i"
     },
     {
@@ -582,6 +662,186 @@
         "Project management"
       ],
       "pattern": "\\b(project management|pmp|project planning|project schedul\\w+|prince2)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "accounting-software",
+      "name": "Accounting software",
+      "aliases": [
+        "Accounting software"
+      ],
+      "pattern": "\\b(accounting (software|system)s?|sql account(ing)?|autocount|xero|quickbooks|myob|sage ?(300|ubs)?|sap (fi|b1|business one)|ubs accounting)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "accounts-payable-receivable",
+      "name": "Accounts payable & receivable",
+      "aliases": [
+        "Accounts payable & receivable"
+      ],
+      "pattern": "\\b(accounts? payables?|accounts? receivables?|ap\\/ar|bank reconciliations?|reconciliations?|invoic(e|es|ing)|credit control|debt collection)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "taxation",
+      "name": "Malaysian taxation",
+      "aliases": [
+        "Malaysian taxation"
+      ],
+      "pattern": "\\b(tax(ation)?|sst|lhdn|e-?invoic\\w*|income tax|tax computation|transfer pricing)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "electrical-systems",
+      "name": "Electrical systems",
+      "aliases": [
+        "Electrical systems"
+      ],
+      "pattern": "\\b(electrical (systems?|installations?|design|wiring|drawings?)|power distribution|switchgears?|high voltage|low voltage|lv\\/hv|transformers?|single line diagrams?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "equipment-maintenance",
+      "name": "Equipment maintenance",
+      "aliases": [
+        "Equipment maintenance"
+      ],
+      "pattern": "\\b(preventive maintenance|corrective maintenance|predictive maintenance|breakdown maintenance|maintenance (schedul\\w+|of (equipment|machines?|facilit\\w+))|equipment (maintenance|breakdowns?))\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "plc-automation",
+      "name": "PLC & automation",
+      "aliases": [
+        "PLC & automation"
+      ],
+      "pattern": "\\b(plc|scada|hmi|automation systems?|industrial automation|control systems?|instrumentation)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "social-media-marketing",
+      "name": "Social media marketing",
+      "aliases": [
+        "Social media marketing"
+      ],
+      "pattern": "\\b(social media|facebook|instagram|tiktok|xiaohongshu|community management|influencers?|kols?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "digital-advertising",
+      "name": "Digital advertising",
+      "aliases": [
+        "Digital advertising"
+      ],
+      "pattern": "\\b(google ads|facebook ads|meta ads|paid (ads|media|social)|ppc|sem|performance marketing|ad campaigns?|media buying)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "web-analytics",
+      "name": "Web & marketing analytics",
+      "aliases": [
+        "Web & marketing analytics"
+      ],
+      "pattern": "\\b(google analytics|ga4|web analytics|analytics tools?|search console|conversion rates?|kpis? (tracking|reporting)|seo)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "content-writing",
+      "name": "Content & copywriting",
+      "aliases": [
+        "Content & copywriting"
+      ],
+      "pattern": "\\b(copywriting|content (creation|writing|planning|strategy)|copywriter|write (engaging )?content|blog posts?|captions?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "quantity-surveying",
+      "name": "Quantity measurement",
+      "aliases": [
+        "Quantity measurement"
+      ],
+      "pattern": "\\b(quantity surveying|bills? of quantit\\w+|bq|boq|taking[- ]off|measurement of (works|quantities)|interim (claims|valuations?)|final accounts?|variation orders?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "cost-estimation",
+      "name": "Cost estimation & control",
+      "aliases": [
+        "Cost estimation & control"
+      ],
+      "pattern": "\\b(cost (estimat\\w+|control|plans?|planning|management)|estimat(e|es|ing) (costs?|quantities)|budget (control|estimat\\w+)|value engineering|tender (pricing|estimat\\w+))\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "contract-administration",
+      "name": "Contracts & tendering",
+      "aliases": [
+        "Contracts & tendering"
+      ],
+      "pattern": "\\b(contract (administration|management|documents?)|tender(s|ing)?|procurement|sub-?contract\\w*|pam contract|cidb|conditions of contract)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "employee-relations",
+      "name": "Employee relations & labour law",
+      "aliases": [
+        "Employee relations & labour law"
+      ],
+      "pattern": "\\b(employee relations?|industrial relations?|employee engagement|grievances?|disciplinary|domestic inquiry|employment act|labou?r law)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "recruitment",
+      "name": "Recruitment",
+      "aliases": [
+        "Recruitment"
+      ],
+      "pattern": "\\b(recruitment|talent acquisition|recruiting|hiring process|interview (scheduling|coordination)|sourcing candidates?|(employee|new hire|staff) onboarding)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "payroll",
+      "name": "Payroll & statutory contributions",
+      "aliases": [
+        "Payroll & statutory contributions"
+      ],
+      "pattern": "\\b(payroll|salary (processing|computation)|(epf|socso|eis|pcb|kwsp|perkeso)[ ,/&a-z]{0,25}(submission|contribution|filing|payment)s?)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "sales-prospecting",
+      "name": "Prospecting & selling",
+      "aliases": [
+        "Prospecting & selling"
+      ],
+      "pattern": "\\b(prospect\\w*|lead generation|generate leads|cold call\\w*|new business|business development|sales (targets?|pipeline|funnel)|closing (deals|sales))\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "customer-support",
+      "name": "Customer support",
+      "aliases": [
+        "Customer support"
+      ],
+      "pattern": "\\b(customer (service|support|care|inquir\\w+|enquir\\w+|complaints?|satisfaction)|after[- ]sales|handle (complaints|enquiries|inquiries)|helpdesk)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "crm-systems",
+      "name": "CRM systems",
+      "aliases": [
+        "CRM systems"
+      ],
+      "pattern": "\\b(crm|salesforce|hubspot|zoho|customer relationship management)\\b",
+      "patternFlags": "i"
+    },
+    {
+      "id": "workplace-languages",
+      "name": "Workplace languages (Malay / Mandarin)",
+      "aliases": [
+        "Workplace languages (Malay / Mandarin)"
+      ],
+      "pattern": "\\b(mandarin|chinese speak\\w*|cantonese|bahasa (malaysia|melayu)|malay (language|speak\\w*)|bilingual|multilingual)\\b",
       "patternFlags": "i"
     }
   ],

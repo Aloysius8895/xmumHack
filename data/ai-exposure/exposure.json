@@ -522,6 +522,7 @@
       ],
       "soc": "15-2051",
       "title": "Data Scientists",
+      "reviewed": true,
       "observedExposure": 0.4605,
       "tasks": 35,
       "tasksWithoutPenetration": 9
@@ -532,6 +533,7 @@
       ],
       "soc": "15-1254",
       "title": "Web Developers",
+      "reviewed": true,
       "observedExposure": 0.4802,
       "tasks": 37,
       "tasksWithoutPenetration": 3
@@ -544,6 +546,7 @@
       ],
       "soc": "15-1252",
       "title": "Software Developers",
+      "reviewed": true,
       "observedExposure": 0.288,
       "tasks": 49,
       "tasksWithoutPenetration": 17
@@ -555,6 +558,7 @@
       ],
       "soc": "15-1255",
       "title": "Web and Digital Interface Designers",
+      "reviewed": true,
       "observedExposure": 0.249,
       "tasks": 54,
       "tasksWithoutPenetration": 5
@@ -566,6 +570,7 @@
       ],
       "soc": "15-1221",
       "title": "Computer and Information Research Scientists",
+      "reviewed": true,
       "observedExposure": 0.3404,
       "tasks": 33,
       "tasksWithoutPenetration": 8
@@ -576,6 +581,7 @@
       ],
       "soc": "11-3021",
       "title": "Computer and Information Systems Managers",
+      "reviewed": true,
       "observedExposure": 0.1559,
       "tasks": 17,
       "tasksWithoutPenetration": 0
@@ -587,6 +593,7 @@
       ],
       "soc": "15-1252",
       "title": "Software Developers",
+      "reviewed": true,
       "observedExposure": 0.288,
       "tasks": 36,
       "tasksWithoutPenetration": 12
@@ -598,6 +605,7 @@
       ],
       "soc": "15-2051",
       "title": "Data Scientists",
+      "reviewed": true,
       "observedExposure": 0.4605,
       "tasks": 35,
       "tasksWithoutPenetration": 9
@@ -609,6 +617,7 @@
       ],
       "soc": "13-2011",
       "title": "Accountants and Auditors",
+      "reviewed": true,
       "observedExposure": 0.3478,
       "tasks": 36,
       "tasksWithoutPenetration": 13
@@ -619,6 +628,7 @@
       ],
       "soc": "23-1011",
       "title": "Lawyers",
+      "reviewed": true,
       "observedExposure": 0.1673,
       "tasks": 22,
       "tasksWithoutPenetration": 2
@@ -629,6 +639,7 @@
       ],
       "soc": "25-2031",
       "title": "Secondary School Teachers, Except Special and Career/Technical Education",
+      "reviewed": true,
       "observedExposure": 0.2901,
       "tasks": 32,
       "tasksWithoutPenetration": 3
@@ -640,6 +651,7 @@
       ],
       "soc": "29-1216",
       "title": "General Internal Medicine Physicians",
+      "reviewed": true,
       "observedExposure": 0.084,
       "tasks": 28,
       "tasksWithoutPenetration": 4
@@ -650,6 +662,7 @@
       ],
       "soc": "35-1011",
       "title": "Chefs and Head Cooks",
+      "reviewed": true,
       "observedExposure": 0.0,
       "tasks": 21,
       "tasksWithoutPenetration": 1
@@ -660,33 +673,125 @@
       ],
       "soc": "17-2051",
       "title": "Civil Engineers",
+      "reviewed": true,
       "observedExposure": 0.0081,
       "tasks": 17,
       "tasksWithoutPenetration": 4
+    },
+    "accountant": {
+      "onet": [
+        "13-2011.01"
+      ],
+      "soc": "13-2011",
+      "title": "Accountants and Auditors",
+      "reviewed": false,
+      "observedExposure": 0.3478,
+      "tasks": 16,
+      "tasksWithoutPenetration": 8
+    },
+    "software-engineer": {
+      "onet": [
+        "15-1132.00",
+        "15-1133.00"
+      ],
+      "soc": "15-1252",
+      "title": "Software Developers",
+      "reviewed": false,
+      "observedExposure": 0.288,
+      "tasks": 31,
+      "tasksWithoutPenetration": 15
+    },
+    "electrical-engineer": {
+      "onet": [
+        "17-2071.00",
+        "17-2072.00"
+      ],
+      "soc": "17-2071",
+      "title": "Electrical Engineers",
+      "reviewed": false,
+      "observedExposure": 0.059,
+      "tasks": 44,
+      "tasksWithoutPenetration": 3
+    },
+    "digital-marketer": {
+      "onet": [
+        "13-1161.00",
+        "11-2021.00"
+      ],
+      "soc": "13-1161",
+      "title": "Market Research Analysts and Marketing Specialists",
+      "reviewed": false,
+      "observedExposure": 0.6483,
+      "tasks": 33,
+      "tasksWithoutPenetration": 2
+    },
+    "quantity-surveyor": {
+      "onet": [
+        "13-1051.00"
+      ],
+      "soc": "13-1051",
+      "title": "Cost Estimators",
+      "reviewed": false,
+      "observedExposure": 0.0,
+      "tasks": 13,
+      "tasksWithoutPenetration": 4
+    },
+    "hr-executive": {
+      "onet": [
+        "13-1071.00"
+      ],
+      "soc": "13-1071",
+      "title": "Human Resources Specialists",
+      "reviewed": false,
+      "observedExposure": 0.4034,
+      "tasks": 25,
+      "tasksWithoutPenetration": 1
+    },
+    "sales-executive": {
+      "onet": [
+        "41-4012.00"
+      ],
+      "soc": "41-4012",
+      "title": "Sales Representatives, Wholesale and Manufacturing, Except Technical and Scientific Products",
+      "reviewed": false,
+      "observedExposure": 0.6279,
+      "tasks": 20,
+      "tasksWithoutPenetration": 1
+    },
+    "customer-service": {
+      "onet": [
+        "43-4051.00"
+      ],
+      "soc": "43-4051",
+      "title": "Customer Service Representatives",
+      "reviewed": false,
+      "observedExposure": 0.7011,
+      "tasks": 15,
+      "tasksWithoutPenetration": 0
     }
   },
   "crossCheck": {
-    "spearman": 0.77,
+    "spearman": 0.68,
     "careers": [
       [
         "data-analyst",
         0.4605,
-        0.6235
+        0.6356
       ],
       [
         "frontend-developer",
         0.4802,
-        0.6834
+        0.5906
       ],
       [
         "backend-developer",
         0.288,
-        0.714
+        0.6989
       ],
       [
         "ui-ux-designer",
         0.249,
-        0.2055
+        0.2583
       ],
       [
         "ml-engineer",
@@ -696,47 +801,87 @@
       [
         "product-manager",
         0.1559,
-        0.2749
+        0.3526
       ],
       [
         "forward-deployed-engineer",
         0.288,
-        0.7979
+        0.7938
       ],
       [
         "data-scientist",
         0.4605,
-        0.7264
+        0.7405
       ],
       [
         "auditor",
         0.3478,
-        0.4704
+        0.5864
       ],
       [
         "lawyer",
         0.1673,
-        0.1499
+        0.171
       ],
       [
         "teacher",
         0.2901,
-        0.2886
+        0.3097
       ],
       [
         "doctor",
         0.084,
-        0.1444
+        0.1726
       ],
       [
         "chef",
         0.0,
-        0.0324
+        0.0493
       ],
       [
         "civil-engineer",
         0.0081,
-        0.0405
+        0.0617
+      ],
+      [
+        "accountant",
+        0.3478,
+        0.4786
+      ],
+      [
+        "software-engineer",
+        0.288,
+        0.6254
+      ],
+      [
+        "electrical-engineer",
+        0.059,
+        0.1401
+      ],
+      [
+        "digital-marketer",
+        0.6483,
+        0.5751
+      ],
+      [
+        "quantity-surveyor",
+        0.0,
+        0.0352
+      ],
+      [
+        "hr-executive",
+        0.4034,
+        0.3645
+      ],
+      [
+        "sales-executive",
+        0.6279,
+        0.5903
+      ],
+      [
+        "customer-service",
+        0.7011,
+        0.6885
       ]
     ]
   }

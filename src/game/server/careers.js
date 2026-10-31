@@ -56,6 +56,27 @@ export const SKILLS = {
     'engineering-math':   { zh: '工程数学与力学', en: 'Engineering math & mechanics', ms: 'Matematik & mekanik kejuruteraan' },
     'cad':                { zh: 'CAD 制图', en: 'CAD drafting', ms: 'Lukisan CAD' },
     'project-management': { zh: '项目管理', en: 'Project management', ms: 'Pengurusan projek' },
+    // Skills of the careers chosen from the JobStreet 2025 and LinkedIn data (prompt 01c)
+    'accounting-software':         { zh: '会计软件', en: 'Accounting software', ms: 'Perisian perakaunan' },
+    'accounts-payable-receivable': { zh: '应付与应收账款', en: 'Accounts payable & receivable', ms: 'Akaun belum bayar & belum terima' },
+    'taxation':                    { zh: '马来西亚税务', en: 'Malaysian taxation', ms: 'Percukaian Malaysia' },
+    'electrical-systems':          { zh: '电气系统', en: 'Electrical systems', ms: 'Sistem elektrik' },
+    'equipment-maintenance':       { zh: '设备维护', en: 'Equipment maintenance', ms: 'Penyelenggaraan peralatan' },
+    'plc-automation':              { zh: 'PLC 与自动化', en: 'PLC & automation', ms: 'PLC & automasi' },
+    'social-media-marketing':      { zh: '社交媒体营销', en: 'Social media marketing', ms: 'Pemasaran media sosial' },
+    'digital-advertising':         { zh: '数字广告投放', en: 'Digital advertising', ms: 'Pengiklanan digital' },
+    'web-analytics':               { zh: '网站与营销数据分析', en: 'Web & marketing analytics', ms: 'Analitik web & pemasaran' },
+    'content-writing':             { zh: '内容与文案撰写', en: 'Content & copywriting', ms: 'Penulisan kandungan & salinan' },
+    'quantity-surveying':          { zh: '工程量计算', en: 'Quantity measurement', ms: 'Pengukuran kuantiti' },
+    'cost-estimation':             { zh: '成本估算与控制', en: 'Cost estimation & control', ms: 'Anggaran & kawalan kos' },
+    'contract-administration':     { zh: '合约与招标管理', en: 'Contracts & tendering', ms: 'Kontrak & tender' },
+    'employee-relations':          { zh: '员工关系与劳工法', en: 'Employee relations & labour law', ms: 'Perhubungan pekerja & undang-undang buruh' },
+    'recruitment':                 { zh: '招聘', en: 'Recruitment', ms: 'Pengambilan pekerja' },
+    'payroll':                     { zh: '薪资与法定缴款', en: 'Payroll & statutory contributions', ms: 'Gaji & caruman berkanun' },
+    'sales-prospecting':           { zh: '开发客户与销售', en: 'Prospecting & selling', ms: 'Mencari prospek & jualan' },
+    'customer-support':            { zh: '客户服务', en: 'Customer support', ms: 'Khidmat pelanggan' },
+    'crm-systems':                 { zh: 'CRM 系统', en: 'CRM systems', ms: 'Sistem CRM' },
+    'workplace-languages':         { zh: '职场语言（马来语 / 华语）', en: 'Workplace languages (Malay / Mandarin)', ms: 'Bahasa tempat kerja (Melayu / Mandarin)' },
 }
 
 export const SKILL_IDS = Object.keys(SKILLS)
@@ -323,6 +344,211 @@ export const EXTRA_CAREERS = [
         ],
         effortMonths: [ 12, 24 ],
         pet: { name: 'Girder', species: 'turtle' },
+    },
+    {
+        id: 'accountant',
+        name: { zh: '会计师', en: 'Accountant', ms: 'Akauntan' },
+        summary: {
+            zh: '记录和核对公司的每一笔账，按时报税、出财务报表。',
+            en: 'Keeps and checks the books, files taxes and prepares financial statements on time.',
+            ms: 'Menyimpan dan menyemak akaun, memfailkan cukai dan menyediakan penyata kewangan tepat pada masanya.',
+        },
+        introducedAt: '2026-10-30',
+        color: '#5a8f29',
+        // From the JobStreet 2025 postings of the career: skills named in at least 10% of them, most named first;
+        // level and weight 3 when named in 60% or more, 2 from 30%, else 1 (data/reference/jobstreet-2025)
+        skills: [
+            { id: 'accounting', level: 3, weight: 3 },
+            { id: 'accounts-payable-receivable', level: 3, weight: 3 },
+            { id: 'taxation', level: 2, weight: 2 },
+            { id: 'accounting-software', level: 2, weight: 2 },
+            { id: 'communication', level: 2, weight: 2 },
+            { id: 'auditing', level: 2, weight: 2 },
+            { id: 'excel', level: 2, weight: 2 },
+            { id: 'workplace-languages', level: 2, weight: 2 },
+        ],
+        effortMonths: [ 6, 12 ],
+        pet: { name: 'Ledgy', species: 'owl' },
+    },
+    {
+        id: 'software-engineer',
+        name: { zh: '软件工程师', en: 'Software Engineer', ms: 'Jurutera Perisian' },
+        summary: {
+            zh: '设计、编写和维护网站、应用和后台系统。',
+            en: 'Designs, builds and maintains websites, apps and back-end systems.',
+            ms: 'Mereka bentuk, membina dan menyelenggara laman web, aplikasi dan sistem belakang.',
+        },
+        introducedAt: '2026-10-30',
+        color: '#3b6fd8',
+        // From the JobStreet 2025 postings of the career: skills named in at least 10% of them, most named first;
+        // level and weight 3 when named in 60% or more, 2 from 30%, else 1 (data/reference/jobstreet-2025)
+        skills: [
+            { id: 'backend-language', level: 3, weight: 3 },
+            { id: 'communication', level: 2, weight: 2 },
+            { id: 'sql', level: 2, weight: 2 },
+            { id: 'databases', level: 2, weight: 2 },
+            { id: 'javascript', level: 2, weight: 2 },
+            { id: 'html-css', level: 2, weight: 2 },
+            { id: 'cloud-deploy', level: 1, weight: 1 },
+            { id: 'react', level: 1, weight: 1 },
+        ],
+        effortMonths: [ 6, 12 ],
+        pet: { name: 'Bitsy', species: 'penguin' },
+    },
+    {
+        id: 'electrical-engineer',
+        name: { zh: '电机电子工程师', en: 'Electrical & Electronics Engineer', ms: 'Jurutera Elektrik & Elektronik' },
+        shortName: { zh: '电机电子工程师', en: 'E&E Engineer', ms: 'Jurutera E&E' },
+        summary: {
+            zh: '设计、安装和维护电气系统与电子设备，让工厂和建筑安全运作。',
+            en: 'Designs, installs and maintains electrical systems and electronic equipment so plants and buildings run safely.',
+            ms: 'Mereka bentuk, memasang dan menyelenggara sistem elektrik dan peralatan elektronik supaya kilang dan bangunan beroperasi dengan selamat.',
+        },
+        introducedAt: '2026-10-30',
+        color: '#e0a100',
+        // From the JobStreet 2025 postings of the career: skills named in at least 10% of them, most named first;
+        // level and weight 3 when named in 60% or more, 2 from 30%, else 1 (data/reference/jobstreet-2025)
+        skills: [
+            { id: 'communication', level: 2, weight: 2 },
+            { id: 'electrical-systems', level: 2, weight: 2 },
+            { id: 'equipment-maintenance', level: 2, weight: 2 },
+            { id: 'cad', level: 1, weight: 1 },
+            { id: 'plc-automation', level: 1, weight: 1 },
+            { id: 'workplace-languages', level: 1, weight: 1 },
+            { id: 'contract-administration', level: 1, weight: 1 },
+            { id: 'prototyping', level: 1, weight: 1 },
+        ],
+        effortMonths: [ 8, 14 ],
+        pet: { name: 'Volta', species: 'fox' },
+    },
+    {
+        id: 'digital-marketer',
+        name: { zh: '数码营销专员', en: 'Digital Marketing Executive', ms: 'Eksekutif Pemasaran Digital' },
+        shortName: { zh: '数码营销', en: 'Digital Marketing', ms: 'Pemasaran Digital' },
+        summary: {
+            zh: '在社交媒体和搜索平台上推广品牌，用数据衡量成效。',
+            en: 'Promotes brands on social media and search platforms and measures the results with data.',
+            ms: 'Mempromosikan jenama di media sosial dan platform carian serta mengukur hasilnya dengan data.',
+        },
+        introducedAt: '2026-10-30',
+        color: '#d94f8a',
+        // From the JobStreet 2025 postings of the career: skills named in at least 10% of them, most named first;
+        // level and weight 3 when named in 60% or more, 2 from 30%, else 1 (data/reference/jobstreet-2025)
+        skills: [
+            { id: 'social-media-marketing', level: 3, weight: 3 },
+            { id: 'communication', level: 3, weight: 3 },
+            { id: 'web-analytics', level: 3, weight: 3 },
+            { id: 'digital-advertising', level: 2, weight: 2 },
+            { id: 'content-writing', level: 2, weight: 2 },
+            { id: 'workplace-languages', level: 2, weight: 2 },
+            { id: 'visual-design', level: 1, weight: 1 },
+            { id: 'market-analysis', level: 1, weight: 1 },
+        ],
+        effortMonths: [ 3, 6 ],
+        pet: { name: 'Pixel', species: 'bunny' },
+    },
+    {
+        id: 'quantity-surveyor',
+        name: { zh: '工料测量师', en: 'Quantity Surveyor', ms: 'Juruukur Bahan' },
+        shortName: { zh: '工料测量师', en: 'QS', ms: 'Juruukur Bahan' },
+        summary: {
+            zh: '计算工程量和成本，管理招标与合约，让建筑项目不超支。',
+            en: 'Measures quantities and costs and manages tenders and contracts so building projects stay on budget.',
+            ms: 'Mengukur kuantiti dan kos serta mengurus tender dan kontrak supaya projek pembinaan kekal dalam bajet.',
+        },
+        introducedAt: '2026-10-30',
+        color: '#8a5a2b',
+        // From the JobStreet 2025 postings of the career: skills named in at least 10% of them, most named first;
+        // level and weight 3 when named in 60% or more, 2 from 30%, else 1 (data/reference/jobstreet-2025)
+        skills: [
+            { id: 'quantity-surveying', level: 3, weight: 3 },
+            { id: 'contract-administration', level: 3, weight: 3 },
+            { id: 'cost-estimation', level: 3, weight: 3 },
+            { id: 'communication', level: 2, weight: 2 },
+            { id: 'negotiation', level: 2, weight: 2 },
+            { id: 'cad', level: 2, weight: 2 },
+            { id: 'workplace-languages', level: 1, weight: 1 },
+            { id: 'project-management', level: 1, weight: 1 },
+        ],
+        effortMonths: [ 8, 14 ],
+        pet: { name: 'Tally', species: 'turtle' },
+    },
+    {
+        id: 'hr-executive',
+        name: { zh: '人力资源专员', en: 'Human Resources Executive', ms: 'Eksekutif Sumber Manusia' },
+        shortName: { zh: '人力资源', en: 'HR Executive', ms: 'Eksekutif HR' },
+        summary: {
+            zh: '负责招聘、薪资和员工关系，让公司和员工都遵守劳工法。',
+            en: 'Runs recruitment, payroll and employee relations, keeping the company and its people within labour law.',
+            ms: 'Menguruskan pengambilan, gaji dan perhubungan pekerja, memastikan syarikat dan pekerja mematuhi undang-undang buruh.',
+        },
+        introducedAt: '2026-10-30',
+        color: '#7a4fc9',
+        // From the JobStreet 2025 postings of the career: skills named in at least 10% of them, most named first;
+        // level and weight 3 when named in 60% or more, 2 from 30%, else 1 (data/reference/jobstreet-2025)
+        skills: [
+            { id: 'recruitment', level: 3, weight: 3 },
+            { id: 'communication', level: 3, weight: 3 },
+            { id: 'employee-relations', level: 2, weight: 2 },
+            { id: 'payroll', level: 2, weight: 2 },
+            { id: 'workplace-languages', level: 2, weight: 2 },
+            { id: 'excel', level: 1, weight: 1 },
+            { id: 'taxation', level: 1, weight: 1 },
+            { id: 'accounting', level: 1, weight: 1 },
+        ],
+        effortMonths: [ 4, 8 ],
+        pet: { name: 'Hira', species: 'axolotl' },
+    },
+    {
+        id: 'sales-executive',
+        name: { zh: '销售与业务拓展专员', en: 'Sales & Business Development Executive', ms: 'Eksekutif Jualan & Pembangunan Perniagaan' },
+        shortName: { zh: '销售 / 业务拓展', en: 'Sales & BD', ms: 'Jualan & BD' },
+        summary: {
+            zh: '寻找新客户、介绍产品并谈成交易，维持长期的客户关系。',
+            en: 'Finds new customers, presents products, closes deals and keeps long-term client relationships.',
+            ms: 'Mencari pelanggan baharu, membentangkan produk, menutup urusan dan mengekalkan hubungan pelanggan jangka panjang.',
+        },
+        introducedAt: '2026-10-30',
+        color: '#e8642c',
+        // From the JobStreet 2025 postings of the career: skills named in at least 10% of them, most named first;
+        // level and weight 3 when named in 60% or more, 2 from 30%, else 1 (data/reference/jobstreet-2025)
+        skills: [
+            { id: 'sales-prospecting', level: 3, weight: 3 },
+            { id: 'communication', level: 3, weight: 3 },
+            { id: 'customer-support', level: 2, weight: 2 },
+            { id: 'negotiation', level: 2, weight: 2 },
+            { id: 'workplace-languages', level: 2, weight: 2 },
+            { id: 'market-analysis', level: 1, weight: 1 },
+            { id: 'crm-systems', level: 1, weight: 1 },
+            { id: 'excel', level: 1, weight: 1 },
+        ],
+        effortMonths: [ 2, 5 ],
+        pet: { name: 'Deal', species: 'fox' },
+    },
+    {
+        id: 'customer-service',
+        name: { zh: '客服专员', en: 'Customer Service Executive', ms: 'Eksekutif Khidmat Pelanggan' },
+        shortName: { zh: '客服', en: 'Customer Service', ms: 'Khidmat Pelanggan' },
+        summary: {
+            zh: '通过电话、电邮和聊天回应客户，解决问题并留住客户。',
+            en: 'Answers customers by phone, email and chat, solves their problems and keeps them coming back.',
+            ms: 'Menjawab pelanggan melalui telefon, e-mel dan sembang, menyelesaikan masalah mereka dan mengekalkan mereka.',
+        },
+        introducedAt: '2026-10-30',
+        color: '#2a9d8f',
+        // From the JobStreet 2025 postings of the career: skills named in at least 10% of them, most named first;
+        // level and weight 3 when named in 60% or more, 2 from 30%, else 1 (data/reference/jobstreet-2025)
+        skills: [
+            { id: 'customer-support', level: 3, weight: 3 },
+            { id: 'communication', level: 3, weight: 3 },
+            { id: 'workplace-languages', level: 2, weight: 2 },
+            { id: 'excel', level: 1, weight: 1 },
+            { id: 'accounts-payable-receivable', level: 1, weight: 1 },
+            { id: 'crm-systems', level: 1, weight: 1 },
+            { id: 'social-media-marketing', level: 1, weight: 1 },
+        ],
+        effortMonths: [ 1, 3 ],
+        pet: { name: 'Echo', species: 'penguin' },
     },
 ]
 

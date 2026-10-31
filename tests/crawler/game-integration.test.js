@@ -52,7 +52,7 @@ test('real export contract updates heatmap, FDE and same-career skill denominato
  assert.equal(market.careers['forward-deployed-engineer'].skills.denominator,1);
  assert.equal(market.careers['forward-deployed-engineer'].skills.skills.find(s=>s.id==='python').share,100);
  assert.deepEqual(market.trends.careers.find(c=>c.id==='forward-deployed-engineer').ads,[2]);
- assert.equal(market.trends.careers.length,14);assert.equal(market.trends.crawler.weeklyTrend.status,'insufficient_history');
+ assert.equal(market.trends.careers.length,gameConfig().roles.length);assert.equal(market.trends.crawler.weeklyTrend.status,'insufficient_history');
 });
 test('HTTP publication authenticates, acknowledges and deduplicates a repeated run without touching player save',async()=>{
  directory();const {store,id}=sample(3),server=createServer((req,res)=>handle(req,res));server.listen(0,'127.0.0.1');await once(server,'listening');

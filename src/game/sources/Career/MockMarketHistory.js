@@ -11,8 +11,9 @@ const GROWTH = {
 }
 
 /**
- * User-authorized mock backfill, formerly shown in the heatmap. The game no longer displays it (decision D5: months without
- * collected data stay empty); only the offline exports in src/data/scripts still use it. Observations remain authoritative.
+ * User-authorized mock backfill of the heatmap's empty months (user decision 2026-10-30): display only, unlabelled on
+ * screen but marked data-origin="mock"; never used by trends, rising / falling, sorting, the update log or the scenario
+ * model. Observations remain authoritative.
  */
 export function buildMockMarketHistory(trends = {}, shown = [])
 {
@@ -39,6 +40,35 @@ export function buildMockMarketHistory(trends = {}, shown = [])
             result.cells[career.id] ??= Object.create(null)
             result.cells[career.id][period] = { value, mock: true, anchorPeriod, anchorValue }
             result.count++
+        }
+    }
+    return result
+}
+
+/**
+ * Simulated share (%) of each skill in the months it has no collected value, display only like the career cells:
+ * { skillId: { period: share } }, anchored on its latest collected share, a fixed and repeatable path per skill
+ */
+export function buildMockSkillHistory(trends = {}, months = [])
+{
+    const result = Object.create(null)
+    const periods = trends.periods ?? []
+    for(const skill of trends.skills ?? [])
+    {
+        const anchorIndex = (skill.share ?? []).findLastIndex((value) => typeof value === 'number')
+        if(anchorIndex < 0)
+            continue
+        const seed = [ ...skill.id ].reduce((value, letter) => (value * 31 + letter.charCodeAt(0)) >>> 0, 0)
+        const anchor = monthIndex(periods[anchorIndex]), anchorValue = skill.share[anchorIndex]
+        const growth = (seed % 11 - 4) / 100   // -4% to +6% a month
+        const wave = (month) => 1 + 0.05 * Math.sin((month + seed % 12) * 1.3)
+        for(const period of months)
+        {
+            if(typeof skill.share[periods.indexOf(period)] === 'number')
+                continue
+            const month = monthIndex(period)
+            result[skill.id] ??= Object.create(null)
+            result[skill.id][period] = Math.max(0, Math.round(anchorValue * Math.exp(- growth * (anchor - month)) * wave(month) / wave(anchor) * 10) / 10)
         }
     }
     return result

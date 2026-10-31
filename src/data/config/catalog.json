@@ -1,6 +1,6 @@
 {
   "version": "careersphere-catalog-2026-10-24",
-  "source": "GamePlat/game/server/careers.js (allCareers, SKILLS)",
+  "source": "src/game/server/careers.js (allCareers, SKILLS)",
   "careers": [
     {
       "id": "data-analyst",
@@ -168,6 +168,102 @@
       "aliases": [
         "civil engineer",
         "structural engineer"
+      ]
+    },
+    {
+      "id": "accountant",
+      "name": {
+        "zh": "会计师",
+        "en": "Accountant",
+        "ms": "Akauntan"
+      },
+      "aliases": [
+        "accountant",
+        "accounts executive"
+      ]
+    },
+    {
+      "id": "software-engineer",
+      "name": {
+        "zh": "软件工程师",
+        "en": "Software Engineer",
+        "ms": "Jurutera Perisian"
+      },
+      "aliases": [
+        "software engineer",
+        "software developer"
+      ]
+    },
+    {
+      "id": "electrical-engineer",
+      "name": {
+        "zh": "电机电子工程师",
+        "en": "Electrical & Electronics Engineer",
+        "ms": "Jurutera Elektrik & Elektronik"
+      },
+      "aliases": [
+        "electrical engineer",
+        "electronics engineer"
+      ]
+    },
+    {
+      "id": "digital-marketer",
+      "name": {
+        "zh": "数码营销专员",
+        "en": "Digital Marketing Executive",
+        "ms": "Eksekutif Pemasaran Digital"
+      },
+      "aliases": [
+        "digital marketing executive",
+        "social media executive"
+      ]
+    },
+    {
+      "id": "quantity-surveyor",
+      "name": {
+        "zh": "工料测量师",
+        "en": "Quantity Surveyor",
+        "ms": "Juruukur Bahan"
+      },
+      "aliases": [
+        "quantity surveyor",
+        "QS executive"
+      ]
+    },
+    {
+      "id": "hr-executive",
+      "name": {
+        "zh": "人力资源专员",
+        "en": "Human Resources Executive",
+        "ms": "Eksekutif Sumber Manusia"
+      },
+      "aliases": [
+        "HR executive",
+        "human resources executive"
+      ]
+    },
+    {
+      "id": "sales-executive",
+      "name": {
+        "zh": "销售与业务拓展专员",
+        "en": "Sales & Business Development Executive",
+        "ms": "Eksekutif Jualan & Pembangunan Perniagaan"
+      },
+      "aliases": [
+        "sales executive",
+        "business development executive"
+      ]
+    },
+    {
+      "id": "customer-service",
+      "name": {
+        "zh": "客服专员",
+        "en": "Customer Service Executive",
+        "ms": "Eksekutif Khidmat Pelanggan"
+      },
+      "aliases": [
+        "customer service executive",
+        "customer support specialist"
       ]
     }
   ],
@@ -406,6 +502,106 @@
       "zh": "项目管理",
       "en": "Project management",
       "ms": "Pengurusan projek"
+    },
+    "accounting-software": {
+      "zh": "会计软件",
+      "en": "Accounting software",
+      "ms": "Perisian perakaunan"
+    },
+    "accounts-payable-receivable": {
+      "zh": "应付与应收账款",
+      "en": "Accounts payable & receivable",
+      "ms": "Akaun belum bayar & belum terima"
+    },
+    "taxation": {
+      "zh": "马来西亚税务",
+      "en": "Malaysian taxation",
+      "ms": "Percukaian Malaysia"
+    },
+    "electrical-systems": {
+      "zh": "电气系统",
+      "en": "Electrical systems",
+      "ms": "Sistem elektrik"
+    },
+    "equipment-maintenance": {
+      "zh": "设备维护",
+      "en": "Equipment maintenance",
+      "ms": "Penyelenggaraan peralatan"
+    },
+    "plc-automation": {
+      "zh": "PLC 与自动化",
+      "en": "PLC & automation",
+      "ms": "PLC & automasi"
+    },
+    "social-media-marketing": {
+      "zh": "社交媒体营销",
+      "en": "Social media marketing",
+      "ms": "Pemasaran media sosial"
+    },
+    "digital-advertising": {
+      "zh": "数字广告投放",
+      "en": "Digital advertising",
+      "ms": "Pengiklanan digital"
+    },
+    "web-analytics": {
+      "zh": "网站与营销数据分析",
+      "en": "Web & marketing analytics",
+      "ms": "Analitik web & pemasaran"
+    },
+    "content-writing": {
+      "zh": "内容与文案撰写",
+      "en": "Content & copywriting",
+      "ms": "Penulisan kandungan & salinan"
+    },
+    "quantity-surveying": {
+      "zh": "工程量计算",
+      "en": "Quantity measurement",
+      "ms": "Pengukuran kuantiti"
+    },
+    "cost-estimation": {
+      "zh": "成本估算与控制",
+      "en": "Cost estimation & control",
+      "ms": "Anggaran & kawalan kos"
+    },
+    "contract-administration": {
+      "zh": "合约与招标管理",
+      "en": "Contracts & tendering",
+      "ms": "Kontrak & tender"
+    },
+    "employee-relations": {
+      "zh": "员工关系与劳工法",
+      "en": "Employee relations & labour law",
+      "ms": "Perhubungan pekerja & undang-undang buruh"
+    },
+    "recruitment": {
+      "zh": "招聘",
+      "en": "Recruitment",
+      "ms": "Pengambilan pekerja"
+    },
+    "payroll": {
+      "zh": "薪资与法定缴款",
+      "en": "Payroll & statutory contributions",
+      "ms": "Gaji & caruman berkanun"
+    },
+    "sales-prospecting": {
+      "zh": "开发客户与销售",
+      "en": "Prospecting & selling",
+      "ms": "Mencari prospek & jualan"
+    },
+    "customer-support": {
+      "zh": "客户服务",
+      "en": "Customer support",
+      "ms": "Khidmat pelanggan"
+    },
+    "crm-systems": {
+      "zh": "CRM 系统",
+      "en": "CRM systems",
+      "ms": "Sistem CRM"
+    },
+    "workplace-languages": {
+      "zh": "职场语言（马来语 / 华语）",
+      "en": "Workplace languages (Malay / Mandarin)",
+      "ms": "Bahasa tempat kerja (Melayu / Mandarin)"
     }
   },
   "skillPatterns": {
@@ -455,6 +651,26 @@
     "menu-planning": "\\b(menu (planning|development|design)|food cost(ing)?|recipe costing)\\b",
     "engineering-math": "\\b(structural (analysis|design)|engineering mechanics|load calculations?|finite element)\\b",
     "cad": "\\b(autocad|cad|revit|civil 3d|solidworks)\\b",
-    "project-management": "\\b(project management|pmp|project planning|project schedul\\w+|prince2)\\b"
+    "project-management": "\\b(project management|pmp|project planning|project schedul\\w+|prince2)\\b",
+    "accounting-software": "\\b(accounting (software|system)s?|sql account(ing)?|autocount|xero|quickbooks|myob|sage ?(300|ubs)?|sap (fi|b1|business one)|ubs accounting)\\b",
+    "accounts-payable-receivable": "\\b(accounts? payables?|accounts? receivables?|ap\\/ar|bank reconciliations?|reconciliations?|invoic(e|es|ing)|credit control|debt collection)\\b",
+    "taxation": "\\b(tax(ation)?|sst|lhdn|e-?invoic\\w*|income tax|tax computation|transfer pricing)\\b",
+    "electrical-systems": "\\b(electrical (systems?|installations?|design|wiring|drawings?)|power distribution|switchgears?|high voltage|low voltage|lv\\/hv|transformers?|single line diagrams?)\\b",
+    "equipment-maintenance": "\\b(preventive maintenance|corrective maintenance|predictive maintenance|breakdown maintenance|maintenance (schedul\\w+|of (equipment|machines?|facilit\\w+))|equipment (maintenance|breakdowns?))\\b",
+    "plc-automation": "\\b(plc|scada|hmi|automation systems?|industrial automation|control systems?|instrumentation)\\b",
+    "social-media-marketing": "\\b(social media|facebook|instagram|tiktok|xiaohongshu|community management|influencers?|kols?)\\b",
+    "digital-advertising": "\\b(google ads|facebook ads|meta ads|paid (ads|media|social)|ppc|sem|performance marketing|ad campaigns?|media buying)\\b",
+    "web-analytics": "\\b(google analytics|ga4|web analytics|analytics tools?|search console|conversion rates?|kpis? (tracking|reporting)|seo)\\b",
+    "content-writing": "\\b(copywriting|content (creation|writing|planning|strategy)|copywriter|write (engaging )?content|blog posts?|captions?)\\b",
+    "quantity-surveying": "\\b(quantity surveying|bills? of quantit\\w+|bq|boq|taking[- ]off|measurement of (works|quantities)|interim (claims|valuations?)|final accounts?|variation orders?)\\b",
+    "cost-estimation": "\\b(cost (estimat\\w+|control|plans?|planning|management)|estimat(e|es|ing) (costs?|quantities)|budget (control|estimat\\w+)|value engineering|tender (pricing|estimat\\w+))\\b",
+    "contract-administration": "\\b(contract (administration|management|documents?)|tender(s|ing)?|procurement|sub-?contract\\w*|pam contract|cidb|conditions of contract)\\b",
+    "employee-relations": "\\b(employee relations?|industrial relations?|employee engagement|grievances?|disciplinary|domestic inquiry|employment act|labou?r law)\\b",
+    "recruitment": "\\b(recruitment|talent acquisition|recruiting|hiring process|interview (scheduling|coordination)|sourcing candidates?|(employee|new hire|staff) onboarding)\\b",
+    "payroll": "\\b(payroll|salary (processing|computation)|(epf|socso|eis|pcb|kwsp|perkeso)[ ,/&a-z]{0,25}(submission|contribution|filing|payment)s?)\\b",
+    "sales-prospecting": "\\b(prospect\\w*|lead generation|generate leads|cold call\\w*|new business|business development|sales (targets?|pipeline|funnel)|closing (deals|sales))\\b",
+    "customer-support": "\\b(customer (service|support|care|inquir\\w+|enquir\\w+|complaints?|satisfaction)|after[- ]sales|handle (complaints|enquiries|inquiries)|helpdesk)\\b",
+    "crm-systems": "\\b(crm|salesforce|hubspot|zoho|customer relationship management)\\b",
+    "workplace-languages": "\\b(mandarin|chinese speak\\w*|cantonese|bahasa (malaysia|melayu)|malay (language|speak\\w*)|bilingual|multilingual)\\b"
   }
 }

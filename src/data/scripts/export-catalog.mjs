@@ -18,6 +18,14 @@ const aliases = {
   'doctor': ['medical officer', 'medical doctor'],
   'chef': ['chef', 'sous chef'],
   'civil-engineer': ['civil engineer', 'structural engineer'],
+  'accountant': ['accountant', 'accounts executive'],
+  'software-engineer': ['software engineer', 'software developer'],
+  'electrical-engineer': ['electrical engineer', 'electronics engineer'],
+  'digital-marketer': ['digital marketing executive', 'social media executive'],
+  'quantity-surveyor': ['quantity surveyor', 'QS executive'],
+  'hr-executive': ['HR executive', 'human resources executive'],
+  'sales-executive': ['sales executive', 'business development executive'],
+  'customer-service': ['customer service executive', 'customer support specialist'],
 }
 const root = fileURLToPath(new URL('../config/', import.meta.url))
 fs.mkdirSync(root, { recursive: true })
