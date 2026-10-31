@@ -266,8 +266,8 @@ const STRINGS = {
 
     // SDG (server/sdg.js)
     'sdg.title': { zh: '可持续发展目标（SDG）', en: 'Sustainable Development Goals', ms: 'Matlamat Pembangunan Mampan' },
-    'sdg.intro': { zh: '每个职业和技能都对应联合国 17 个可持续发展目标中的具体指标。你为目标职业做的每一步准备，都在推动这些目标。', en: 'Every career and skill is tagged with specific targets of the 17 UN Sustainable Development Goals. Each step you prepare for your target career moves them.', ms: 'Setiap kerjaya dan kemahiran ditanda dengan sasaran khusus 17 Matlamat Pembangunan Mampan PBB. Setiap langkah persediaan anda untuk kerjaya sasaran menggerakkannya.' },
-    'sdg.path': { zh: '你选择的「{career}」路线，目前对各目标的推动进度：', en: 'Your path to {career} and how far it moves each goal so far:', ms: 'Laluan anda ke {career} dan sejauh mana ia menggerakkan setiap matlamat setakat ini:' },
+    'sdg.intro': { zh: '每个职业和技能都对应联合国 17 个可持续发展目标中的具体指标。你为目标职业做的每一步准备，都在推动这些目标。', en: 'Each career and skill contributes to specific UN Sustainable Development Goals (SDGs).', ms: 'Setiap kerjaya dan kemahiran ditanda dengan sasaran khusus 17 Matlamat Pembangunan Mampan PBB. Setiap langkah persediaan anda untuk kerjaya sasaran menggerakkannya.' },
+    'sdg.path': { zh: '你选择的「{career}」路线，目前对各目标的推动进度：', en: 'Your progress towards becoming a {career} and its contribution to each SDG so far.', ms: 'Laluan anda ke {career} dan sejauh mana ia menggerakkan setiap matlamat setakat ini:' },
     'sdg.byCareer': { zh: '这个职业的日常工作直接推动', en: 'The job itself moves this goal', ms: 'Kerja ini sendiri menggerakkan matlamat ini' },
     'sdg.bySkills': { zh: '通过你学的技能推动', en: 'Moved through the skills you learn', ms: 'Digerakkan melalui kemahiran yang anda pelajari' },
     'sdg.byLearning': { zh: '学到就业所需的技能本身就在推动（SDG 4.4、8.5）', en: 'Learning skills for a decent job moves this itself (SDG 4.4, 8.5)', ms: 'Mempelajari kemahiran untuk pekerjaan wajar menggerakkannya sendiri (SDG 4.4, 8.5)' },
@@ -302,8 +302,8 @@ const STRINGS = {
 
     // Profile
     'profile.title': { zh: '能力档案', en: 'Skill profile', ms: 'Profil kemahiran' },
-    'profile.intro': { zh: '用几句话写下你学过、做过的事（课程、项目、实习、兴趣），也可以附上简历。AI 会整理成技能清单，你可以再手动调整。', en: 'Write a few lines about what you have learned or done (courses, projects, internships, hobbies), or attach your CV. The AI turns it into a skill list you can adjust.', ms: 'Tulis beberapa ayat tentang apa yang anda pelajari atau lakukan (kursus, projek, latihan industri, hobi), atau lampirkan CV. AI akan menyusunnya menjadi senarai kemahiran yang boleh anda ubah.' },
-    'profile.placeholder': { zh: '例如：大二资讯系，会用 Excel 做报表，学过一点 SQL，做过一个 React 课程作业……', en: 'e.g. 2nd year IT student, I make reports in Excel, learned some SQL, built a React course project…', ms: 'cth. Pelajar IT tahun 2, buat laporan dengan Excel, belajar sedikit SQL, bina projek kursus React…' },
+    'profile.intro': { zh: '用几句话写下你学过、做过的事（课程、项目、实习、兴趣），也可以附上简历。AI 会整理成技能清单，你可以再手动调整。', en: 'Tell us about your background or portfolio, or attach your CV. The AI will transform it into an editable skills list.', ms: 'Tulis beberapa ayat tentang apa yang anda pelajari atau lakukan (kursus, projek, latihan industri, hobi), atau lampirkan CV. AI akan menyusunnya menjadi senarai kemahiran yang boleh anda ubah.' },
+    'profile.placeholder': { zh: '例如：大二资讯系，会用 Excel 做报表，学过一点 SQL，做过一个 React 课程作业……', en: 'e.g. I know basic SQL, I use Excel', ms: 'cth. Pelajar IT tahun 2, buat laporan dengan Excel, belajar sedikit SQL, bina projek kursus React…' },
     'profile.extract': { zh: '让 AI 整理技能', en: 'Extract my skills', ms: 'Ekstrak kemahiran saya' },
     'profile.skills': { zh: '我的技能', en: 'My skills', ms: 'Kemahiran saya' },
     'profile.empty': { zh: '还没有技能，先在上面描述一下自己吧。', en: 'No skills yet, describe yourself above first.', ms: 'Belum ada kemahiran, terangkan diri anda di atas dahulu.' },
@@ -320,7 +320,7 @@ const STRINGS = {
 
     // Careers
     'careers.title': { zh: '探索职业', en: 'Explore careers', ms: 'Terokai kerjaya' },
-    'careers.intro': { zh: '按当前 AI 普及情景下的匹配分排序（估算，可在上方切换情景）。职业导师分散在世界各地，在小地图上点头像即可传送过去聊天。地图上没有的职业也能在这里搜索并设为目标。', en: 'Sorted by the score under the current AI adoption scenario (an estimate; switch scenarios above). Click a career mentor on the minimap to travel there and talk. Careers without a mentor on the map can be searched and targeted here too.', ms: 'Disusun mengikut skor dalam senario penggunaan AI semasa (anggaran; tukar senario di atas). Klik mentor kerjaya pada peta mini untuk ke sana dan berbual. Kerjaya tanpa mentor di peta juga boleh dicari dan disasarkan di sini.' },
+    'careers.intro': { zh: '按当前 AI 普及情景下的匹配分排序（估算，可在上方切换情景）。职业导师分散在世界各地，在小地图上点头像即可传送过去聊天。地图上没有的职业也能在这里搜索并设为目标。', en: 'Sorted by AI adoption score (estimated). Click a mentor on the minimap to visit and chat, or search for other careers here.', ms: 'Disusun mengikut skor dalam senario penggunaan AI semasa (anggaran; tukar senario di atas). Klik mentor kerjaya pada peta mini untuk ke sana dan berbual. Kerjaya tanpa mentor di peta juga boleh dicari dan disasarkan di sini.' },
     'careers.affinity': { zh: '好感度 {p}%', en: 'Affinity {p}%', ms: 'Keakraban {p}%' },
     'careers.fit': { zh: '档案适配度 {p}%（只看你上传的技能档案）', en: 'Profile match {p}% (from your skill profile only)', ms: 'Padanan profil {p}% (daripada profil kemahiran sahaja)' },
     'careers.affinityHelp': { zh: '好感度 = 档案适配度 + 学习进度：从你的技能档案起步，完成路线任务、发每日汇报会继续上升。', en: 'Affinity = profile match + learning progress: it starts from your skill profile and grows with roadmap tasks and daily reports.', ms: 'Keakraban = padanan profil + kemajuan pembelajaran: bermula daripada profil kemahiran dan meningkat dengan tugasan peta laluan dan laporan harian.' },
@@ -357,7 +357,7 @@ const STRINGS = {
     'mode.confirm': { zh: '确定目标', en: 'Set as target', ms: 'Tetapkan sasaran' },
     'mode.confirmReplace': { zh: '替换导师并设为目标', en: 'Swap a mentor and set as target', ms: 'Tukar mentor dan tetapkan sasaran' },
     'mode.switchWarning': { zh: '换目标后，现在这个职业的宠物、好感度和路线会保存起来，之后换回来就会恢复（学习记录也会保留）。', en: 'Your current career\'s pet, affinity and roadmap are saved when you switch, and come back if you switch back (logs are kept).', ms: 'Haiwan, keakraban dan peta laluan kerjaya semasa disimpan apabila anda menukar, dan kembali jika anda menukar semula (log disimpan).' },
-    'careers.search.placeholder': { zh: '搜索职业或技能，例如：审计师、律师、厨师、SQL', en: 'Search careers or skills, e.g. auditor, lawyer, chef, SQL', ms: 'Cari kerjaya atau kemahiran, cth. juruaudit, peguam, cef, SQL' },
+    'careers.search.placeholder': { zh: '搜索职业或技能，例如：审计师、律师、厨师、SQL', en: 'e.g. auditor, SQL', ms: 'Cari kerjaya atau kemahiran, cth. juruaudit, peguam, cef, SQL' },
     'careers.search.count': { zh: '{n} 个职业', en: '{n} careers', ms: '{n} kerjaya' },
     'careers.search.none': { zh: '职业库里找不到「{q}」。', en: 'No career matches "{q}".', ms: 'Tiada kerjaya sepadan dengan "{q}".' },
     'careers.search.generate': { zh: '用 AI 生成「{q}」职业', en: 'Generate "{q}" with AI', ms: 'Jana "{q}" dengan AI' },
@@ -387,7 +387,7 @@ const STRINGS = {
     // Pet
     'pet.title': { zh: '职业宠物', en: 'Career pet', ms: 'Haiwan kerjaya' },
     'pet.none': { zh: '选择目标职业后，你会获得一只对应的职业宠物陪你一起准备。', en: 'Pick a target career to get a matching career pet that prepares with you.', ms: 'Pilih kerjaya sasaran untuk mendapat haiwan kerjaya yang bersedia bersama anda.' },
-    'pet.affinityNote': { zh: '好感度代表你对这个职业的准备程度：起点是技能档案的适配度，之后完成路线任务、发每日汇报会让它上升。技能卡显示每项技能的进度。', en: 'Affinity shows how ready you are for this career: it starts at your skill profile match and rises as you finish roadmap tasks and send daily reports. Skill cards show the progress of each skill.', ms: 'Keakraban menunjukkan sejauh mana anda bersedia untuk kerjaya ini: bermula pada padanan profil kemahiran dan meningkat apabila anda menyiapkan tugasan peta laluan dan menghantar laporan harian. Kad kemahiran menunjukkan kemajuan setiap kemahiran.' },
+    'pet.affinityNote': { zh: '好感度代表你对这个职业的准备程度：起点是技能档案的适配度，之后完成路线任务、发每日汇报会让它上升。技能卡显示每项技能的进度。', en: 'Affinity measures your career readiness through skill matches, completed tasks, and daily reports. Skill cards track individual progress.', ms: 'Keakraban menunjukkan sejauh mana anda bersedia untuk kerjaya ini: bermula pada padanan profil kemahiran dan meningkat apabila anda menyiapkan tugasan peta laluan dan menghantar laporan harian. Kad kemahiran menunjukkan kemajuan setiap kemahiran.' },
     'pet.skills': { zh: '宠物技能', en: 'Pet skills', ms: 'Kemahiran haiwan' },
     'skill.mastery': { zh: '熟练度', en: 'Proficiency', ms: 'Penguasaan' },
     'skill.heat': { zh: '热度', en: 'Heat', ms: 'Populariti' },
@@ -517,12 +517,12 @@ const STRINGS = {
 
     // Log
     'log.title': { zh: '学习记录', en: 'Learning log', ms: 'Log pembelajaran' },
-    'log.intro': { zh: '用一句话记下今天做了什么，AI 会归类到对应的技能和任务。', en: 'Note what you did today in a sentence, the AI files it under the right skill and task.', ms: 'Catat apa yang anda buat hari ini dalam satu ayat, AI akan menyusunnya ke kemahiran dan tugasan yang betul.' },
+    'log.intro': { zh: '用一句话记下今天做了什么，AI 会归类到对应的技能和任务。', en: 'Log your learning. AI matches it to your tasks.', ms: 'Catat apa yang anda buat hari ini dalam satu ayat, AI akan menyusunnya ke kemahiran dan tugasan yang betul.' },
     'log.placeholder': { zh: '例如：今天研究了 SQL JOIN，完成了三道练习，花了 2 小时。', en: 'e.g. Studied SQL JOINs today and did three exercises, 2 hours.', ms: 'cth. Belajar SQL JOIN hari ini dan buat tiga latihan, 2 jam.' },
     'log.submit': { zh: '记录', en: 'Log it', ms: 'Log' },
-    'log.noRoadmap': { zh: '先生成学习路线，记录才能对应到任务。', en: 'Plan a roadmap first so logs can be matched to tasks.', ms: 'Rancang peta laluan dahulu supaya log boleh dipadankan dengan tugasan.' },
-    'log.channels': { zh: '即将支持：在 WhatsApp / Telegram 直接发消息记录进度。', en: 'Coming soon: log your progress by messaging us on WhatsApp / Telegram.', ms: 'Akan datang: log kemajuan melalui WhatsApp / Telegram.' },
-    'log.note': { zh: '每推进 1% 任务进度得分：高难度技能 ×3、中等 ×2、低难度 ×1。', en: 'Each 1% of task progress scores: hard skills ×3, medium ×2, easy ×1.', ms: 'Setiap 1% kemajuan tugasan memberi mata: kemahiran sukar ×3, sederhana ×2, mudah ×1.' },
+    'log.noRoadmap': { zh: '先生成学习路线，记录才能对应到任务。', en: 'Create a roadmap to start logging.', ms: 'Rancang peta laluan dahulu supaya log boleh dipadankan dengan tugasan.' },
+    'log.channels': { zh: '即将支持：在 WhatsApp / Telegram 直接发消息记录进度。', en: 'Coming soon: log via WhatsApp or Telegram.', ms: 'Akan datang: log kemajuan melalui WhatsApp / Telegram.' },
+    'log.note': { zh: '每推进 1% 任务进度得分：高难度技能 ×3、中等 ×2、低难度 ×1。', en: 'Points per 1% progress: Hard ×3 · Medium ×2 · Easy ×1.', ms: 'Setiap 1% kemajuan tugasan memberi mata: kemahiran sukar ×3, sederhana ×2, mudah ×1.' },
     'log.verdict.vague': { zh: '太笼统，未计入进度', en: 'Too vague, not counted', ms: 'Terlalu umum, tidak dikira' },
     'log.verdict.invalid': { zh: '看不出学习内容，未计入进度', en: 'No learning found, not counted', ms: 'Tiada pembelajaran, tidak dikira' },
     'tour.log.retry': { zh: '嗯…这条看不出你学了什么，所以进度没有前进。AI 会真的检查内容哦！写清楚学了哪个技能、做了什么，再试一次吧。', en: 'Hmm… that log does not show what you learned, so progress did not move. The AI really checks! Say which skill and what you did, then try again.', ms: 'Hmm… log itu tidak menunjukkan apa yang dipelajari, jadi kemajuan tidak bergerak. AI benar-benar menyemak! Nyatakan kemahiran dan apa yang dibuat, cuba lagi.' },

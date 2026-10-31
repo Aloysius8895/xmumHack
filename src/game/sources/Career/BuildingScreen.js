@@ -125,19 +125,35 @@ export class BuildingScreen
             mesh.material = this.signMaterial
             this.labels.set(mesh, label)
         }
-        if(label.text === text) return
-        label.text = text
         const context = this.atlasContext, y = label.row * 192
+        const family = 'Arial, "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif'
+        context.font = `600 118px ${family}`
+        const sideLabels = [this.findText('previous'), this.findText('next')]
+        const isSideLabel = sideLabels.includes(mesh)
+        let availableWidth = label.ratio * 184
+        let measured = context.measureText(text).width
+        if(isSideLabel)
+        {
+            // Fit every category once, so shorter names never grow between rooms.
+            availableWidth = Math.min(...sideLabels.filter(Boolean).map(side => {
+                side.geometry.computeBoundingBox()
+                return signAspect(side.geometry.boundingBox.getSize(new THREE.Vector3())) * 184
+            }))
+            measured = Math.max(...Object.keys(BUILDING_DESTINATIONS)
+                .map(panel => context.measureText(t(`menu.${panel}`)).width))
+        }
+        const widthFill = isSideLabel ? 0.99 : 0.92
+        const fontSize = 118 * Math.min(1, availableWidth * widthFill / Math.max(measured, 1))
+        if(label.text === text && label.fontSize === fontSize) return
+        label.text = text
+        label.fontSize = fontSize
         context.save()
         context.fillStyle = '#000'
         context.fillRect(0, y, 2048, 192)
         const virtualWidth = label.ratio * 184
         context.translate(0, y + 4)
         context.scale(2048 / virtualWidth, 1)
-        context.font = '600 118px Arial, "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif'
-        const measured = context.measureText(text).width
-        const fontSize = 118 * Math.min(1, virtualWidth * 0.92 / Math.max(measured, 1))
-        context.font = `600 ${fontSize}px Arial, "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif`
+        context.font = `600 ${fontSize}px ${family}`
         context.textAlign = 'center'
         context.textBaseline = 'middle'
         context.fillStyle = '#fff'
@@ -206,11 +222,15 @@ export class BuildingScreen
     {
         this.surface.updateWorldMatrix(true, false)
         const normal = new THREE.Vector3(0, 0, 1).applyQuaternion(this.surface.getWorldQuaternion(new THREE.Quaternion()))
+        const right = new THREE.Vector3(1, 0, 0).applyQuaternion(this.surface.getWorldQuaternion(new THREE.Quaternion()))
+        const center = this.surface.getWorldPosition(new THREE.Vector3())
         for(const { object, scale, position } of this.sideFurniture)
         {
-            object.scale.copy(scale).multiplyScalar(0.30)
+            object.scale.copy(scale).multiplyScalar(0.40)
             // Bring the small signs in front of the frame posts instead of letting the posts hide their text.
             object.position.copy(position).addScaledVector(normal, 0.65)
+            const side = Math.sign(position.clone().sub(center).dot(right))
+            object.position.addScaledVector(right, -side * 0.07)
         }
         if(this.titleFurniture) this.titleFurniture.object.scale.copy(this.titleFurniture.scale).multiplyScalar(0.50)
         for(const { name, object, scale, position } of this.headerFurniture ?? [])
