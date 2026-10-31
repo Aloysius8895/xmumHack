@@ -18,7 +18,7 @@ from urllib.request import urlopen
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'verification'
+OUT = ROOT.parent / 'docs' / 'verification'
 LIVE = 'https://bruno-simon.com/'
 DESKTOP = {'viewport': {'width': 1440, 'height': 1000}}
 MOBILE = {'viewport': {'width': 390, 'height': 844}, 'is_mobile': True, 'has_touch': True, 'device_scale_factor': 2}
@@ -31,7 +31,7 @@ def free_port() -> int:
 
 
 def start_server(port: int) -> subprocess.Popen:
-    proc = subprocess.Popen([sys.executable, str(ROOT / 'serve.py'), '--port', str(port)],
+    proc = subprocess.Popen([sys.executable, str(ROOT / 'tools' / 'serve_reference.py'), '--port', str(port)],
                             stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
     for _ in range(50):
         try:
@@ -40,7 +40,7 @@ def start_server(port: int) -> subprocess.Popen:
         except OSError:
             time.sleep(0.2)
     proc.kill()
-    raise RuntimeError('serve.py did not start')
+    raise RuntimeError('serve_reference.py did not start')
 
 
 def run(browser, url: str, prefix: str, device: dict, offline: bool, mobile: bool) -> dict:

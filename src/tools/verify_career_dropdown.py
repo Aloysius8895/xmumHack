@@ -4,7 +4,7 @@ from pathlib import Path
 
 from playwright.sync_api import expect, sync_playwright
 
-OUT = Path(__file__).resolve().parents[1] / 'verification' / 'career-dropdown'
+OUT = Path(__file__).resolve().parents[2] / 'docs' / 'verification' / 'career-dropdown'
 OUT.mkdir(parents=True, exist_ok=True)
 results = {}
 

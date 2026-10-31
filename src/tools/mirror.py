@@ -1,4 +1,4 @@
-"""Download the public bruno-simon.com frontend into template3/site.
+"""Download the public bruno-simon.com frontend into docs/reference/site.
 
 Discovery uses four sources and records each in the manifest:
   crawl   - same-origin URLs observed by the crawler (main.py)
@@ -27,9 +27,10 @@ from urllib.parse import quote, unquote, urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE = ROOT / 'site'
-MANIFEST = ROOT / 'asset-manifest.json'
-LISTING = ROOT / 'tools' / 'static-listing.json'
+REFERENCE = ROOT.parent / 'docs' / 'reference'
+SITE = REFERENCE / 'site'
+MANIFEST = REFERENCE / 'asset-manifest.json'
+LISTING = REFERENCE / 'static-listing.json'
 ORIGIN = 'https://bruno-simon.com/'
 REPO_TREE = 'https://api.github.com/repos/brunosimon/folio-2025/git/trees/main?recursive=1'
 FONTS_CSS = 'https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Nunito:wght@400;700;900&display=block'
@@ -82,7 +83,7 @@ def load_listing(refresh: bool) -> list[str]:
 
 
 def latest_crawl() -> Path | None:
-    runs = sorted(ROOT.glob('bruno-simon_*/network/requests.json'))
+    runs = sorted(REFERENCE.glob('bruno-simon_*/network/requests.json'))
     return runs[-1] if runs else None
 
 
@@ -177,7 +178,7 @@ def main() -> None:
 
     raw_html, html_mime = fetch(ORIGIN, accept_html=True)
     raw = raw_html.decode('utf-8')
-    (ROOT / 'tools' / 'original-index.html').write_text(raw, 'utf-8')
+    (REFERENCE / 'original-index.html').write_text(raw, 'utf-8')
     for ref in re.findall(r'(?:href|src)="([^"]+)"', raw):
         add(normalize(ref), 'html')
 

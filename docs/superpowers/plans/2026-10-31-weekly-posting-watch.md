@@ -18,6 +18,6 @@
 
 ## Results
 
-43 targeted tests pass; production build passes with existing asset and bundle-size warnings. Headless rendering verified the actual tracking form at 1200px and 390px without horizontal overflow. The installed workflow retains its ID and credential references, points to the running game API on port 5000, and is published with the weekly cron. The local n8n service was started and its authenticated webhook completed successfully. Runtime evidence is in `src/verification/market-posting-watch/weekly-restoration.json`.
+43 targeted tests pass; production build passes with existing asset and bundle-size warnings. Headless rendering verified the actual tracking form at 1200px and 390px without horizontal overflow. The installed workflow retains its ID and credential references, points to the running game API on port 5000, and is published with the weekly cron. The local n8n service was started and its authenticated webhook completed successfully. Runtime evidence is in `docs/verification/market-posting-watch/weekly-restoration.json`.
 
 No posting URLs are currently registered in the live save, so the real execution checked zero targets; content-change behavior was verified with isolated fixtures. Both local services must stay running for scheduled checks. No startup task or external notifications were added.

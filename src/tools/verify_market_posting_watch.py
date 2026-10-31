@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
-OUT = Path(__file__).resolve().parents[1] / 'verification/market-posting-watch'
+OUT = Path(__file__).resolve().parents[2] / 'docs' / 'verification/market-posting-watch'
 OUT.mkdir(parents=True, exist_ok=True)
 results = {}
 with sync_playwright() as p:

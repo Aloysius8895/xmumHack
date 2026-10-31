@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
-out = Path(__file__).resolve().parents[1] / "verification/historical-market-ui"
+out = Path(__file__).resolve().parents[2] / "docs" / "verification/historical-market-ui"
 out.mkdir(parents=True, exist_ok=True)
 results = {}
 with sync_playwright() as p:

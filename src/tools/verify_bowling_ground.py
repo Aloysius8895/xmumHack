@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright
 parser = argparse.ArgumentParser()
 parser.add_argument('--baseline', action='store_true')
 args = parser.parse_args()
-out = Path(__file__).resolve().parents[1] / 'verification' / 'bowling-ground'
+out = Path(__file__).resolve().parents[2] / 'docs' / 'verification' / 'bowling-ground'
 out.mkdir(parents=True, exist_ok=True)
 report = {'baseline': args.baseline, 'checks': []}
 

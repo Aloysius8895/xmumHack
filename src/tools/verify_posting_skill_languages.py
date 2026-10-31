@@ -6,7 +6,7 @@ from pathlib import Path
 from playwright.sync_api import expect, sync_playwright
 
 BASE = 'http://localhost:5000'
-OUT = Path(__file__).resolve().parents[1] / 'verification/posting-skill-languages'
+OUT = Path(__file__).resolve().parents[2] / 'docs' / 'verification/posting-skill-languages'
 OUT.mkdir(parents=True, exist_ok=True)
 
 

@@ -5,7 +5,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'verification' / 'character-stuck'
+OUT = ROOT.parent / 'docs' / 'verification' / 'character-stuck'
 OUT.mkdir(parents=True, exist_ok=True)
 fixture = json.loads(subprocess.check_output(['node', '--input-type=module', '-e',
     "import {createSave} from './server/store.js'; import {view} from './server/game.js'; console.log(JSON.stringify(view(createSave(),{mock:true})));"],

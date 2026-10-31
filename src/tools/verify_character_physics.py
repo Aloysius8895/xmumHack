@@ -7,7 +7,7 @@ from playwright.sync_api import sync_playwright
 parser = argparse.ArgumentParser()
 parser.add_argument('--baseline', action='store_true')
 args = parser.parse_args()
-out = Path(__file__).resolve().parents[1] / 'verification' / 'character-stuck'
+out = Path(__file__).resolve().parents[2] / 'docs' / 'verification' / 'character-stuck'
 out.mkdir(parents=True, exist_ok=True)
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True, channel='chromium')

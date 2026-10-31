@@ -15,4 +15,4 @@ Create a production-ready transparent PNG game texture from the APPROVED parchme
 - Data comes from `CareerApi.state.leaderboard`. Unused ranks are localized open slots. Unknown friend portraits use initials; the local player uses the selected character's portrait.
 - Regenerate only the paper plate when changing the painted ornamentation; changing data should remain live canvas text.
 
-Verification: `python src/tools/verify_guild_leaderboard.py` uses an isolated API fixture and writes screenshots to `src/verification/guild-leaderboard/`. It does not change a player's save.
+Verification: `python src/tools/verify_guild_leaderboard.py` uses an isolated API fixture and writes screenshots to `docs/verification/guild-leaderboard/`. It does not change a player's save.

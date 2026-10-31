@@ -83,7 +83,7 @@ n8n.cmd start
 
 - 110 项 server/n8n 测试通过，包含新数据分母/缓存一致性、URL 校验、基线、变更/重试/回退、403、暂存职业、显式重新生成和鉴权测试。
 - 生产构建通过。
-- 桌面/手机浏览器检查通过，无 pageerror；验证文件在 `src/verification/market-posting-watch/`。名称含 fixture 的截图仅为浏览器内的变更提醒测试，不是实际公司变更，也没有写入存档。
+- 桌面/手机浏览器检查通过，无 pageerror；验证文件在 `docs/verification/market-posting-watch/`。名称含 fixture 的截图仅为浏览器内的变更提醒测试，不是实际公司变更，也没有写入存档。
 - 运行时检查、n8n 发布状态和执行记录见同目录 `runtime.json`。
 
 官方参考：[n8n API 鉴权](https://docs.n8n.io/api/authentication/)、[Schedule Trigger](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.scheduletrigger/)。本机 CLI 的 import/publish/execute 选项另经 2.44.6 的 --help 核实。

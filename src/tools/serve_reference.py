@@ -4,8 +4,8 @@ from pathlib import Path
 import argparse
 import mimetypes
 
-ROOT = Path(__file__).resolve().parent
-SITE = ROOT / 'site'
+ROOT = Path(__file__).resolve().parents[2]
+SITE = ROOT / 'docs' / 'reference' / 'site'
 # WebAssembly.instantiateStreaming (Rapier, Draco, Basis) requires application/wasm.
 TYPES = {
     '.wasm': 'application/wasm',

@@ -7,7 +7,7 @@ from pathlib import Path
 from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'verification' / 'guild-leaderboard'
+OUT = ROOT.parent / 'docs' / 'verification' / 'guild-leaderboard'
 OUT.mkdir(parents=True, exist_ok=True)
 fixture_code = """
 import { createSave } from './server/store.js';

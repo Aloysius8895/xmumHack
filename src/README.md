@@ -10,7 +10,11 @@
 | `expert/` | Persona reference cards used by the AI guidance layer |
 | `character/`, `assets/`, `model/` | Editable character and environment source assets |
 | `tools/`, `scripts/` | Verification, asset and maintenance utilities |
-| `site/`, `analysis/`, `bruno-simon_20261020_093901/` | Retained upstream reference material |
-| `verification/` | Existing visual and data verification outputs |
 
 Use the repository-root [README](../README.md) for current commands. Automated Node and Python suites are in [`tests/`](../tests/); source-local fixtures remain with their parsers/workflows. The existing RunPod inference adapter is in [`runpod/provider.js`](../runpod/provider.js).
+
+Archived upstream material and its manifest are in [`docs/reference/`](../docs/reference/).
+Screenshots and verification reports are in [`docs/verification/`](../docs/verification/).
+Reference-mirror launch tools remain in `tools/`; the actual game starts with root `npm run dev`.
+Runtime AEI and recruitment aggregates remain in root [`data/`](../data/), while `src/data/`
+contains processing code, mappings and historical inputs. These paths are deliberate runtime contracts.

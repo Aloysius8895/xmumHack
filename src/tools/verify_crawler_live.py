@@ -8,7 +8,7 @@ base='http://127.0.0.1:5000'
 def request(path,body=None):
     req=urllib.request.Request(base+path,data=json.dumps(body).encode() if body is not None else None,headers={'Content-Type':'application/json'} if body is not None else {})
     with urllib.request.urlopen(req,timeout=20) as response:return json.load(response)
-out=Path(__file__).resolve().parents[1]/'verification/crawler-integration'
+out=Path(__file__).resolve().parents[2]/'docs'/'verification/crawler-integration'
 out.mkdir(parents=True,exist_ok=True)
 before=request('/api/state')['state']['trends']
 run=request('/api/market/sample/refresh',{})

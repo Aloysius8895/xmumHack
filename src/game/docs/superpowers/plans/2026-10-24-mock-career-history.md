@@ -15,7 +15,7 @@ The user explicitly accepted estimates, then requested mock data to preview tren
 
 ## Verification
 
-19 Node regressions passed; production build passed with existing asset-resolution, eval and bundle-size warnings. Browser QA verified 78 internally marked Mock history cells, 13 observed October cells, no visible Mock/approximation labels, rising AI and falling Chef profiles, stable range changes and search, unchanged raw API arrays and the 181-description skill denominator, no invented real movers, correct November rollover, mobile horizontal scrolling, and no JavaScript errors. Screenshots/results are in `src/verification/historical-market-ui/`.
+19 Node regressions passed; production build passed with existing asset-resolution, eval and bundle-size warnings. Browser QA verified 78 internally marked Mock history cells, 13 observed October cells, no visible Mock/approximation labels, rising AI and falling Chef profiles, stable range changes and search, unchanged raw API arrays and the 181-description skill denominator, no invented real movers, correct November rollover, mobile horizontal scrolling, and no JavaScript errors. Screenshots/results are in `docs/verification/historical-market-ui/`.
 
 `node src/data/scripts/export-history-preview.mjs` exports 91 rows to `src/data/derived/history-preview/career_history_preview.json` and `.csv`. Each exported row retains its Mock/observed provenance. Examples from April through October: AI 13,16,17,19,24,29,31; Chef 73,63,57,57,55,47,43; Data Analyst 20,20,23,26,26,26,30. These preview trajectories are authored, not measured changes in the Malaysian job market.
 

@@ -16,7 +16,7 @@
 - Indeed 首页曾为 200，但自动搜索仍显示 Cloudflare 验证。已提供专用会话供用户手动验证，用户反馈仍无法通过。没有声称 Indeed 已采集成功，也没有自动操作验证码。
 - 生产构建通过，保留项目原有资源路径、eval 与大包提示。n8n 新模板含最终发布轮询，未在用户 n8n 实例启用。
 
-证据位于 `src/verification/crawler-integration/`；实际运行、来源失败及完整观察保留在忽略的 `crawler/data/market.sqlite`，公开页面诊断保留在 `crawler/data/browser-diagnostics/`。当前浏览器来源完整运行结果以最新 live-results.json 为准。
+证据位于 `docs/verification/crawler-integration/`；实际运行、来源失败及完整观察保留在忽略的 `crawler/data/market.sqlite`，公开页面诊断保留在 `crawler/data/browser-diagnostics/`。当前浏览器来源完整运行结果以最新 live-results.json 为准。
 
 日期：2026-10-24。Node.js v24.22.1。
 

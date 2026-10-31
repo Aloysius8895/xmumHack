@@ -19,7 +19,7 @@ CareerSphere 是结合 3D 世界探索、AI 职业准备、学习进度追踪及
 - `chatbot/app/`、`chatbot/tests/`：多渠道聊天服务、SQLite、日报与测试。
 - 项目说明、Replit 配置和浏览器验证脚本。
 
-`src/site/` 是参考镜像；`skills/` 包含工具、第三方源码与示例，不能把这些目录中的全部技术都当作主应用实际使用的技术栈。3D 基础源自 Bruno Simon 的 Folio 2025；项目在此基础上扩展角色、地图和职业平台等功能。
+`docs/reference/site/` 是参考镜像；`skills/` 包含工具、第三方源码与示例，不能把这些目录中的全部技术都当作主应用实际使用的技术栈。3D 基础源自 Bruno Simon 的 Folio 2025；项目在此基础上扩展角色、地图和职业平台等功能。
 
 ## 2. 各方面的 technical skills
 

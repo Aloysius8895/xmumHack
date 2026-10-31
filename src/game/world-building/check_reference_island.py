@@ -5,7 +5,7 @@ import sys
 from playwright.sync_api import sync_playwright
 
 ROOT=Path(__file__).resolve().parents[2]
-OUT=ROOT/'verification'/'reference-island-v2'
+OUT=ROOT.parent/'docs'/'verification'/'reference-island-v2'
 OUT.mkdir(parents=True,exist_ok=True)
 
 with sync_playwright() as p:

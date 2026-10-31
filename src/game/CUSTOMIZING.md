@@ -4,7 +4,7 @@
 来源：[brunosimon/folio-2025](https://github.com/brunosimon/folio-2025)，commit `41046b5`，MIT 授权，保留 `license.md`。
 已经去掉上游的 `.git`，现在是我们 repo 的一部分。
 
-`src/site/` 是原站的编译版镜像，只作对照用，不要在那里改。
+`docs/reference/site/` 是原站的编译版镜像，只作对照用，不要在那里改。
 
 ## 运行
 

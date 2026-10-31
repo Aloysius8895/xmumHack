@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 from playwright.sync_api import sync_playwright
 
-OUT=Path(__file__).resolve().parents[2]/'verification'/'cropped-original'
+OUT=Path(__file__).resolve().parents[3]/'docs'/'verification'/'cropped-original'
 OUT.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as p:
     browser=p.chromium.launch(headless=True,channel='chromium',args=['--enable-gpu','--ignore-gpu-blocklist','--use-angle=d3d11'])

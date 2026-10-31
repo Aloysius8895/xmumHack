@@ -8,7 +8,7 @@ from pathlib import Path
 from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'verification/roadmap-languages'
+OUT = ROOT.parent / 'docs' / 'verification/roadmap-languages'
 OUT.mkdir(parents=True, exist_ok=True)
 SAVE = ROOT / 'game/server/data/save.json'
 before_hash = hashlib.sha256(SAVE.read_bytes()).hexdigest() if SAVE.exists() else None

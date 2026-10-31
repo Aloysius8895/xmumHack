@@ -31,4 +31,4 @@ GET /api/integrations/market/collection Authorization: Bearer INTEGRATION_TOKEN
 
 状态及摘要写入 `src/data/runs/market-collection.json`，详细日志在同目录；凭证不写入数据日志。每批原始任务清单仍在 `src/data/raw/linkedin-*/manifest.json`。
 
-导出文件默认 active=false；实例中是否已发布，以 n8n 实际状态及 `src/verification/market-posting-watch/activation-runtime.json` 为准。
+导出文件默认 active=false；实例中是否已发布，以 n8n 实际状态及 `docs/verification/market-posting-watch/activation-runtime.json` 为准。
