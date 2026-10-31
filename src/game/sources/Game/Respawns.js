@@ -38,6 +38,15 @@ export class Respawns
             if(!this.game.mapBounds || insideMap(item.position)) this.items.set(name, item)
         }
 
+        // A separate Pet stop beside the landing plaza, not the existing kiosk entrance.
+        const landing = this.items.get('landing')
+        if(landing)
+            this.items.set('pet', {
+                name: 'pet',
+                position: landing.position.clone().add(new THREE.Vector3(6, 0, 4)),
+                rotation: landing.rotation,
+            })
+
         // Altar island (World/AltarIsland.js), on the plateau at the top of its stairs, facing the lagoon
         if(!location.search.includes('noIsland'))
         {

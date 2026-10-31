@@ -26,7 +26,7 @@ The following walking entrances remain optional; they are not part of the menu f
 | Profile | Lab |
 | Careers | Career |
 | Trends | Projects workshop |
-| Pet | Landing kiosk |
+| Pet | Dedicated Pet stop beside the landing plaza (separate map pin and interaction) |
 | Roadmap | Behind the Scene |
 | SDGs | Altar |
 | Log | Cookie stand |

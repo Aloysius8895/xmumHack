@@ -6,7 +6,7 @@ import { BUILDING_DESTINATIONS, travelToBuilding, leaveAtBuilding } from '../../
 test('map labels and functional entrances agree for Log, Leaderboard and Pet', () =>
 {
     const map = readFileSync(new URL('../../../src/game/sources/Game/Map.js', import.meta.url), 'utf8')
-    for(const [panel, label, building] of [['log', 'Log', 'cookie'], ['leaderboard', 'Leaderboard', 'achievements'], ['pet', 'Pet', 'landing']])
+    for(const [panel, label, building] of [['log', 'Log', 'cookie'], ['leaderboard', 'Leaderboard', 'achievements'], ['pet', 'Pet', 'pet']])
     {
         assert.equal(BUILDING_DESTINATIONS[panel], building)
         assert.ok(map.includes(`name: '${label}', respawnName: '${building}'`))
@@ -24,7 +24,7 @@ test('walking entrances still exist in the retained playable map asset', () =>
         const [x, , z] = node.translation ?? []
         return x >= -18 && x <= 160 && z >= -52 && z <= 84
     }).map(node => node.name.replace(/^respawn/, '').replace(/^./, letter => letter.toLowerCase()))
-    for(const building of Object.values(BUILDING_DESTINATIONS)) assert.ok(retained.includes(building))
+    for(const building of Object.values(BUILDING_DESTINATIONS).filter(name => name !== 'pet')) assert.ok(retained.includes(building))
 })
 
 test('the original workshop provides the display and all physical navigation furniture', () =>
