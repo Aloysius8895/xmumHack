@@ -24,7 +24,7 @@
 | --- | --- |
 | **Team Name** | Chill Chill |
 | **Team Domain** | Domain 1 |
-| **SDG Track (1–17)** | Project alignment: **SDG 4 — Quality Education**, especially Target 4.4; secondary alignment with **SDG 8, Target 8.5**. The officially registered track still needs team confirmation. |
+| **SDG Track (1–17)** | **SDG 4 — Quality Education**, the main SDG of Domain 1, primarily Target 4.4 (relevant skills for decent jobs); secondary alignment with **SDG 8, Target 8.5**. |
 | **Team Leader** | Edixon Teo Zan Wei |
 | **University** | Taylor's University |
 | **Number of Members** | 5 |
@@ -37,7 +37,7 @@
 | Live Demo | [KerjayaKu on Render](https://kerjayaku-demo.onrender.com) |
 | Telegram Companion | [@KerjayaKu_bot](https://t.me/KerjayaKu_bot) |
 | Chatbot Health | [Render Python service](https://kerjayaku-telegram.onrender.com/health) |
-| Pitch Slides | [SDC2026_ChillChill_PitchSlides.pptx](submission/SDC2026_ChillChill_PitchSlides.pptx) |
+| Slide Deck | [Presentation](https://docs.google.com/presentation/d/1MddUwzMtFSRZZmYID8qy4wQ3y4eY9ijR/edit?usp=sharing&ouid=113147406681252215799&rtpof=true&sd=true) |
 | Demo Video | [YouTube demo](https://youtu.be/06NzNKKvYsE?si=GA4b8PcWnC-9z5yu) |
 
 The Render services are currently on the free plan. Idle services can sleep, and local JSON/SQLite data can be lost on restart, redeploy or spin-down. A separately approved [persistent deployment](render.persistent.yaml) is prepared but has not been enabled. See [deployment details](docs/render-deployment.md).
@@ -209,6 +209,16 @@ npm run test:python                        # After installing requirements.txt i
 ```
 
 The [test guide](tests/README.md) lists the isolated suites and browser requirements. Offline tests use synthetic inputs and mocked providers. Deployment health checks do not prove GPU rendering or real Telegram command outcomes.
+
+---
+
+## How We Use RunPod
+
+We redeemed the **US$25 RunPod offer credits** provided through the hackathon and ran a GPU pod (**RTX A5000**, PyTorch template) to test a self-hosted inference path for the game's AI features. The pod served an OpenAI-compatible **vLLM** endpoint, which the game reaches through the provider adapter in [`runpod/provider.js`](runpod/provider.js); the setup notes are in [`runpod/README.md`](runpod/README.md).
+
+The purpose was to check that KerjayaKu is not locked to a single commercial model API: the same skill extraction, roadmap and chat calls can run against a GPU we control, which matters for cost and data residency if the platform is adopted by a university or a TVET provider. The pod was stopped after testing, so the final demo runs on DeepSeek rather than RunPod, and the adapter stays in the repository as a configurable alternative.
+
+Evidence: [RunPod Proof of Use](submission/SDC2026_Chill_chill_Runpod_POU.pdf) (running pod and GPU utilisation screenshots from our own account).
 
 ---
 
