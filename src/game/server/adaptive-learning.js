@@ -4,6 +4,7 @@ import { SKILLS, localText } from './careers.js'
 import { generateRoadmap } from './features.js'
 import { LEARNING_DEFAULTS, MODES, localized, localizedSchema as L, learningContext, learningPrompt, aeiEvidence, effectiveMode } from './learning-rules.js'
 import { trendClassification } from './aei-evidence.js'
+import { ownChoice } from './scenarios.js'
 
 export class LearningError extends Error
 {
@@ -35,10 +36,17 @@ export async function analyzeEvidence(save)
     return analysis
 }
 
+/** The end of the current learning cycle: the next roadmap check-in, or one check-in interval from now */
+function cycleEnd(save, now = Date.now())
+{
+    const due = save.roadmap ? Date.parse(dueFrom(currentReviews(save)[0]?.at ?? save.roadmap.generatedAt) ?? '') : NaN
+    return new Date(Number.isFinite(due) && due > now ? due : now + LEARNING_DEFAULTS.checkpointDays * 86400000).toISOString()
+}
+
 /**
- * The player's scenario: one that differs from the scenario recommended for the target career (aei-evidence.js) is
- * their own choice; choosing the recommended one (or null) follows the recommendation, so it keeps following it when
- * the data change.
+ * The player's scenario. By default the one recommended from the data for the target career (aei-evidence.js).
+ * Choosing the other one holds for this learning cycle (until the next check-in, `until`), then the recommendation
+ * applies again (scenarios.js ownChoice); choosing the recommended one follows it at once.
  */
 export function setLearningMode(save, mode)
 {
@@ -50,7 +58,7 @@ export function setLearningMode(save, mode)
     learning.pending = null
     learning.checkpoint = null
     // Reuse the existing numerical presets; public learning labels are moderate/extreme.
-    save.scenario = mode === null ? null : { preset: mode }
+    save.scenario = mode === null ? null : { preset: mode, until: cycleEnd(save) }
 }
 
 export async function createCheckpoint(save, { refresh = false, checkpointId = null } = {})
@@ -223,7 +231,8 @@ export function learningView(save, now = Date.now())
     const checkpoint = learning.checkpoint?.revision === revisionOf(save) ? learning.checkpoint : null
     const pending = learning.pending?.revision === revisionOf(save) ? learning.pending : null
     const analysis = learning.analysis?.evidenceRevision === context.evidence.revision && learning.analysis?.careerId === save.target?.careerId ? learning.analysis : null
-    return { mode: context.effectiveScenario, userOverride: learning.mode ?? context.scenario.userOverride, recommendedScenario: context.recommendedScenario, trendClassification: context.trendClassification,
+    return { mode: context.effectiveScenario, userOverride: ownChoice(save, now), overrideUntil: context.scenario.overrideUntil ?? null, recommendedScenario: context.recommendedScenario, trendClassification: context.trendClassification,
+        recommendationReason: context.scenario.reason ? localText(context.scenario.reason, lang) : null,
         weeklyHours: context.weeklyHours, checkpointDays: context.checkpointDays, appliedMode: save.roadmap?.learningScenario ?? save.roadmap?.chosenBranch ?? null,
         evidence: context.evidence, analysis: analysis ? localText(analysis.summary, lang) : null,
         checkpointDueAt: dueAt, checkpointDue: Boolean(dueAt && now >= Date.parse(dueAt)),

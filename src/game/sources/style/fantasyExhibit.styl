@@ -1,6 +1,7 @@
-/* Shared fantasy board. Illustration is decoration; every label and control is live HTML. */
+/* Shared content panel. All navigation stays in normal flow; no decorative board artwork. */
 .fantasy-exhibit-frame,
-.fantasy-exhibit-brand {
+.fantasy-exhibit-brand,
+.exhibit-room-nav {
     display: none;
 }
 
@@ -34,128 +35,96 @@
 }
 
 .career-ui.is-fantasy-exhibit .building-exhibit-controls {
-    display: block;
-    z-index: 4;
-    pointer-events: none;
-}
-
-.career-ui.is-fantasy-exhibit .building-exhibit-exit,
-.career-ui.is-fantasy-exhibit .building-exhibit-hit:not([data-action="building-room"]) {
     display: none;
 }
 
-.career-ui.is-fantasy-exhibit .building-exhibit-hit[data-action="building-room"] {
-    display: block;
-    pointer-events: auto;
-}
-
 .career-ui.is-fantasy-exhibit .career-panel.is-building-screen {
-    display: block;
+    display: flex;
+    flex-direction: column;
     z-index: 2;
     padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
+    border: 1px solid #d8bde7;
+    border-radius: 14px;
+    background: #f8f1fc;
+    box-shadow: 0 10px 32px #21103b33;
     overflow: visible;
     color: var(--text);
     font-size: 15px;
     isolation: isolate;
-    --exhibit-text-size: clamp(14px, calc(var(--exhibit-width) * 0.0145), 19px);
-}
-
-.career-ui.is-fantasy-exhibit .fantasy-exhibit-frame {
-    display: block;
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    pointer-events: none;
-    user-select: none;
-    filter: drop-shadow(0 16px 28px #10051e80);
+    --exhibit-text-size: clamp(16px, calc(var(--exhibit-width) * 0.010), 18px);
 }
 
 .career-ui.is-fantasy-exhibit .is-building-screen .career-panel-header {
-    display: flex;
-    position: absolute;
-    left: 32%;
-    top: 4.2%;
-    width: 36%;
-    height: 15%;
-    z-index: 4;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    padding: 0 10px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    position: relative;
+    flex: 0 0 auto;
+    gap: 3px 16px;
+    padding: 14px 20px;
     min-height: 0;
     border: 0;
-    background: transparent;
-    color: #1a0960;
-    text-align: center;
+    border-bottom: 1px solid #decbe9;
+    background: #fffaf5;
+    border-radius: 14px 14px 0 0;
+    color: #211059;
+    text-align: left;
 }
 
 .career-ui.is-fantasy-exhibit .career-panel-header h2 {
     display: block;
-    max-width: 100%;
+    grid-column: 1;
     margin: 0;
-    color: #1a0960;
-    font-size: clamp(23px, calc(var(--exhibit-width) * 0.030), 44px);
-    font-weight: 900;
-    line-height: 1.12;
-    text-wrap: balance;
-    text-shadow: 0 2px 0 #fff6;
+    color: #211059;
+    font-size: clamp(20px, calc(var(--exhibit-width) * 0.018), 30px);
+    font-weight: 800;
+    line-height: 1.2;
+    text-shadow: none;
 }
 
 .career-ui.is-fantasy-exhibit .career-panel-header h2::before,
-.career-ui.is-fantasy-exhibit .building-screen-brand {
-    display: none;
-}
+.career-ui.is-fantasy-exhibit .building-screen-brand { display: none; }
 
 .career-ui.is-fantasy-exhibit .fantasy-exhibit-brand {
     display: block;
-    margin-top: 5px;
-    color: #211059;
-    font-size: clamp(11px, calc(var(--exhibit-width) * 0.014), 20px);
-    font-weight: 750;
-    white-space: nowrap;
+    grid-column: 1;
+    margin: 0;
+    color: #79668e;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .career-ui.is-fantasy-exhibit .career-close {
-    position: absolute;
-    top: 15%;
-    left: 153%;
+    position: static;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
     display: grid;
     place-items: center;
-    width: clamp(42px, calc(var(--exhibit-width) * 0.042), 60px);
-    height: clamp(42px, calc(var(--exhibit-width) * 0.042), 60px);
+    width: 42px;
+    height: 42px;
     min-width: 42px;
     padding: 0;
     margin: 0;
-    border: 3px solid #d0a5ff;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 28%, #fff3ff, #c7a2ff 65%, #9465e7);
-    box-shadow: 0 4px 0 #381278, inset 0 0 0 2px #fff9, 0 0 14px #aa66f966;
-    color: #6424cf !important;
-    font-size: clamp(28px, calc(var(--exhibit-width) * 0.034), 46px);
-    font-weight: 700;
+    border: 1px solid #d5bde8;
+    border-radius: 10px;
+    background: #f0e3fa;
+    box-shadow: none;
+    color: #5b2b99 !important;
+    font-size: 28px;
     line-height: 1;
 }
 
 .career-ui.is-fantasy-exhibit .is-building-screen .career-panel-body {
-    position: absolute;
-    left: 17.1%;
-    top: 21%;
-    width: 65.8%;
-    height: 63.7%;
-    z-index: 2;
-    padding: 18px 20px;
-    border: 1px solid #e6c8e9;
-    border-radius: 4px;
-    background: radial-gradient(ellipse at 20% 0%, #fffdf6, transparent 70%),
-        linear-gradient(135deg, #f5e8f7, #eddef8 45%, #e5cef2);
+    position: relative;
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 16px 20px;
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(135deg, #fffaf4, #f2e9fa);
     color: var(--text);
     font-size: var(--exhibit-text-size);
     line-height: 1.55;
@@ -167,96 +136,102 @@
 }
 
 .career-ui.is-fantasy-exhibit .career-panel-body::-webkit-scrollbar { width: 10px; height: 10px; }
-.career-ui.is-fantasy-exhibit .career-panel-body::-webkit-scrollbar-track { background: #f5e9ff; border-radius: 20px; }
+.career-ui.is-fantasy-exhibit .career-panel-body::-webkit-scrollbar-track { background: #f5e9ff; }
 .career-ui.is-fantasy-exhibit .career-panel-body::-webkit-scrollbar-thumb { background: #9570bf; border: 2px solid #f5e9ff; border-radius: 20px; }
 
 .career-ui.is-fantasy-exhibit .building-screen-sections {
     display: flex;
-    position: absolute;
-    left: 18.5%;
-    top: 22%;
-    z-index: 4;
-    width: 63%;
-    height: 5.5%;
-    min-height: 34px;
-    max-height: none;
-    gap: 6px;
-    padding: 0;
+    position: relative;
+    flex: 0 0 auto;
+    gap: 8px;
+    padding: 10px 20px;
+    min-height: 0;
+    max-height: 64px;
     border: 0;
-    background: transparent;
+    border-bottom: 1px solid #e2d1ed;
+    background: #f6edf9;
     scrollbar-width: thin;
 }
 
 .career-ui.is-fantasy-exhibit .building-screen-sections:empty { display: none; }
-
 .career-ui.is-fantasy-exhibit .building-screen-sections button {
-    flex: 1 0 auto;
-    max-width: none;
-    min-height: 32px;
-    height: 90%;
-    padding: 4px 12px;
-    border: 1px solid #c69ce9;
-    border-radius: 9px;
-    background: linear-gradient(#f9edff, #e7cff7);
-    color: #351083;
-    font-size: clamp(12px, calc(var(--exhibit-width) * 0.013), 17px);
-    font-weight: 750;
-    box-shadow: inset 0 1px 0 #fff, 0 3px 0 #b48bc8;
+    flex: 0 0 auto;
+    min-height: 34px;
+    height: auto;
+    padding: 6px 12px;
+    border: 1px solid #ccb0e1;
+    border-radius: 8px;
+    background: #f0e0fa;
+    color: #482078;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: none;
 }
 
-.career-ui.is-fantasy-exhibit .building-screen-sections button:hover {
-    background: linear-gradient(#8246f3, #5420d1);
-    color: #fff;
-}
-
-.career-ui.is-fantasy-exhibit .is-building-screen:has(.building-screen-sections:not(:empty)) .career-panel-body {
-    top: 28.5%;
-    height: 56.2%;
-}
-
-.career-ui.is-fantasy-exhibit .building-screen-footer {
-    display: flex;
+.career-ui.is-fantasy-exhibit .exhibit-room-nav {
+    display: block;
     position: absolute;
+    inset: 0;
     z-index: 4;
-    left: 26%;
-    top: 85%;
-    width: 48%;
-    height: 5%;
     padding: 0;
-    gap: 12px;
-    justify-content: space-between;
     border: 0;
     background: transparent;
-    color: #f6e3ff;
-    font-size: clamp(11px, calc(var(--exhibit-width) * 0.012), 16px);
-    line-height: 1.2;
+    pointer-events: none;
 }
 
 .career-ui.is-fantasy-exhibit .exhibit-room-button {
-    min-height: 30px;
-    max-width: 42%;
-    padding: 3px 8px;
+    position: absolute;
+    top: 50%;
+    left: -70px;
+    transform: translateY(-50%);
+    width: 60px;
+    min-height: 72px;
+    padding: 10px 4px;
+    border: 1px solid #c7a6df;
+    border-radius: 9px;
+    background: #6531bd;
+    color: #fff !important;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    box-shadow: none;
+    pointer-events: auto;
+}
+
+.career-ui.is-fantasy-exhibit .exhibit-room-button::before { content: '\2190'; display: block; margin-bottom: 6px; font-size: 28px; line-height: 1; }
+.career-ui.is-fantasy-exhibit .exhibit-room-button[data-direction="1"] { left: auto; right: -70px; }
+.career-ui.is-fantasy-exhibit .exhibit-room-button[data-direction="1"]::before { content: '\2192'; }
+.career-ui.is-fantasy-exhibit .exhibit-room-button:hover { background: #7a40d2; }
+
+.career-ui.is-fantasy-exhibit .building-screen-footer {
+    display: flex;
+    position: relative;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    height: auto;
+    min-height: 36px;
+    padding: 4px 20px 10px;
     border: 0;
-    border-radius: 8px;
-    background: #54278380;
-    color: #fff0ce;
-    font-size: inherit;
-    font-weight: 750;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    background: #fffaf5;
+    border-radius: 0 0 14px 14px;
+    color: #79668e;
+    font-size: 13px;
+    line-height: 1.3;
 }
 
 .career-ui.is-fantasy-exhibit .building-screen-hint { display: none; }
-
 .career-ui.is-fantasy-exhibit .exhibit-page-button {
-    flex: 0 0 28px;
-    min-height: 30px;
+    width: 30px;
+    min-height: 28px;
     padding: 0;
-    border: 1px solid #c492f3;
+    border: 1px solid #d4bde4;
     border-radius: 7px;
-    background: #4b1a8f;
-    color: #fff0cc;
+    background: #f0e3fa;
+    color: #502782;
     font-size: 22px;
     line-height: 1;
 }
@@ -323,6 +298,8 @@
 
 .career-ui.is-fantasy-exhibit .career-button,
 .career-ui.is-fantasy-exhibit .career-trend-tab.is-active {
+    align-self: flex-start;
+    max-width: 100%;
     min-height: 40px;
     padding: 9px 16px;
     border: 1px solid #9954ff;
@@ -369,6 +346,20 @@
 
 .career-ui.is-fantasy-exhibit .career-panel-body input::placeholder,
 .career-ui.is-fantasy-exhibit .career-panel-body textarea::placeholder { color: #8c77a8; }
+
+/* Text-field sizing must not turn task checkboxes and radio controls into tall inputs. */
+.career-ui.is-fantasy-exhibit .career-panel-body input[type="checkbox"],
+.career-ui.is-fantasy-exhibit .career-panel-body input[type="radio"] {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    min-height: 0;
+    padding: 0;
+    margin: 4px 0 0;
+    align-self: flex-start;
+    appearance: auto;
+    box-shadow: none;
+}
 
 .career-ui.is-fantasy-exhibit .career-trend-tabs {
     display: flex;
@@ -418,18 +409,15 @@
 
 @media (max-width: 699px) {
     .career-ui.is-fantasy-exhibit .career-panel.is-building-screen { --exhibit-text-size: 14px; }
-    .career-ui.is-fantasy-exhibit .is-building-screen .career-panel-header { left: 29%; width: 42%; }
-    .career-ui.is-fantasy-exhibit .career-panel-header h2 { font-size: 22px; }
-    .career-ui.is-fantasy-exhibit .fantasy-exhibit-brand { font-size: 9px; white-space: normal; }
-    .career-ui.is-fantasy-exhibit .career-close { left: 130%; top: 25%; min-width: 40px; width: 40px; height: 40px; }
-    .career-ui.is-fantasy-exhibit .is-building-screen .career-panel-body { padding: 12px 10px; }
-    .career-ui.is-fantasy-exhibit .career-card,
-    .career-ui.is-fantasy-exhibit .career-notice,
-    .career-ui.is-fantasy-exhibit .career-learning,
-    .career-ui.is-fantasy-exhibit .career-trend-card { padding: 12px 10px; }
-    .career-ui.is-fantasy-exhibit .career-button { padding: 8px 10px; white-space: normal; }
+    .career-ui.is-fantasy-exhibit .is-building-screen .career-panel-header { padding: 10px 12px; }
+    .career-ui.is-fantasy-exhibit .career-panel-header h2 { font-size: 20px; }
+    .career-ui.is-fantasy-exhibit .building-screen-sections { padding: 8px 12px; }
+    .career-ui.is-fantasy-exhibit .is-building-screen .career-panel-body { padding: 12px; }
+    .career-ui.is-fantasy-exhibit .exhibit-room-nav { display: flex; position: relative; flex: 0 0 auto; justify-content: space-between; gap: 12px; padding: 8px 12px; background: #fffaf5; pointer-events: auto; }
+    .career-ui.is-fantasy-exhibit .exhibit-room-button { position: static; transform: none; width: auto; max-width: 48%; min-height: 40px; padding: 8px 12px; }
+    .career-ui.is-fantasy-exhibit .exhibit-room-button::before { display: inline; margin-right: 6px; margin-bottom: 0; font-size: 20px; }
     .career-ui.is-fantasy-exhibit .career-actions { flex-wrap: wrap; }
-    .career-ui.is-fantasy-exhibit .building-screen-footer { left: 18%; width: 64%; gap: 4px; }
+    .career-ui.is-fantasy-exhibit .career-button { white-space: normal; }
 }
 
 @media (prefers-reduced-motion: reduce) {

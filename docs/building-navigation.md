@@ -1,9 +1,8 @@
 # Building navigation and display screens
 
 The top navigation opens the workshop exhibit immediately, with a short camera dolly.
-There is no player teleport, map stop, or Enter step. All categories share the illustrated
-purple fantasy frame, with a live title and brand plaque, parchment content cards and
-purple controls. The original 3D workshop remains visible with no backdrop tint or blur. The frame fits the viewport;
+There is no player teleport, map stop, or Enter step. All categories share one large live content panel, with an integrated title, close button,
+section navigation and previous/next controls. Decorative wooden frame artwork is no longer rendered. The original 3D workshop remains visible with no backdrop tint or blur. The frame fits the viewport;
 live HTML controls and text are not scaled by the world-space camera projection.
 Press **Esc**, gamepad **B**, or the close button to return to the current category's
 corresponding entrance. Switching from Careers to Trends and then exiting leaves the
@@ -18,10 +17,11 @@ and API actions. Its section buttons jump to existing headings. Labelled footer 
 switch functional categories. Small arrows below the display browse careers or scroll the
 current content. Internal links stay on the display.
 
-The original world-space left/right category arrows also remain clickable: their transparent
-HTML hit regions are projected each frame above the decorative board. The active frame has
-no lantern obscuring the left sign. The old world-space page/dot hit regions stay hidden;
-the live board supplies its own page and section controls.
+The retired workshop board, title and side signs are hidden during a visit. Labelled left/right
+category controls are integrated into the content panel and keep using the existing
+`building-room` actions. Footer page controls browse careers or scroll the current content.
+The surrounding game world stays visible. The display fills the available viewport instead
+of constraining live content to the illustration's original aspect ratio.
 
 The following walking entrances remain optional; they are not part of the menu flow:
 

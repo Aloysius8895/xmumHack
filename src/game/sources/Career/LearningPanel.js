@@ -5,7 +5,8 @@ export const LEARNING_STRINGS = {
     'learning.title': { zh: 'AI 变化下的学习安排', en: 'Learning as AI changes', ms: 'Pembelajaran apabila AI berubah' },
     'learning.moderate': { zh: '温和', en: 'Moderate', ms: 'Sederhana' },
     'learning.extreme': { zh: '极端', en: 'Extreme', ms: 'Ekstrem' },
-    'learning.default': { zh: '系统默认：温和。现有 AEI 是任务使用快照，无法判断发展速度；极端是可选的规划假设。', en: 'Default: Moderate. The AEI task-use snapshot cannot establish development speed; Extreme is an optional planning assumption.', ms: 'Lalai: Sederhana. Snapshot penggunaan tugas AEI tidak menentukan kadar perkembangan; Ekstrem ialah andaian perancangan pilihan.' },
+    'learning.default': { zh: '系统根据数据建议：{scenario}。{reason}', en: 'Recommended from the data: {scenario}. {reason}', ms: 'Disyorkan daripada data: {scenario}. {reason}' },
+    'learning.ownChoice': { zh: '你选择了{mode}，作为这一个学习周期的规划假设，到 {date} 后自动回到系统建议；系统的建议和依据保持不变。', en: 'You chose {mode} as the planning assumption for this learning cycle; after {date} the recommendation applies again. The recommendation and its basis stay as they are.', ms: 'Anda memilih {mode} sebagai andaian perancangan untuk kitaran pembelajaran ini; selepas {date} cadangan digunakan semula. Cadangan dan asasnya kekal.' },
     'learning.hours': { zh: '按每周 {hours} 小时估算，复查默认间隔 {days} 天；都属于规划设置。', en: 'Estimated at {hours} hours/week, with a {days}-day check-in interval. These are planning settings.', ms: 'Anggaran {hours} jam/minggu, dengan semakan setiap {days} hari. Ini ialah tetapan perancangan.' },
     'learning.analyze': { zh: '分析 AEI 学习依据', en: 'Analyze AEI learning evidence', ms: 'Analisis bukti pembelajaran AEI' },
     'learning.evidence': { zh: '查看技能映射依据', en: 'View skill-mapping evidence', ms: 'Lihat bukti pemetaan kemahiran' },
@@ -55,9 +56,10 @@ export function renderLearningPanel(state, drafts, { t, esc, skillName, locale =
     const pending = learning.pending
     const evidence = learning.evidence?.skills ?? []
     return `<details class="career-notice career-learning" ${pending || learning.checkpoint || learning.checkpointDue || !state.roadmap ? 'open' : ''}>
-        <summary>${esc(t('learning.title'))} · ${esc(t(`learning.${learning.mode}`))}</summary><div class="career-learning-content"><p>${esc(t('learning.default'))}</p>
-        <div class="career-actions">${[ 'moderate', 'extreme' ].map(mode => button('learning-mode', t(`learning.${mode}`), `data-mode="${mode}" aria-pressed="${learning.mode === mode}"`)).join('')}
-        ${learning.userOverride ? button('learning-default', t('learning.resetMode')) : ''}</div>
+        <summary>${esc(t('learning.title'))} · ${esc(t(`learning.${learning.mode}`))}</summary><div class="career-learning-content">
+        <p>${esc(t('learning.default', { scenario: t(`learning.${learning.recommendedScenario ?? 'moderate'}`), reason: learning.recommendationReason ?? '' }))}</p>
+        ${learning.userOverride ? `<p class="career-muted">${esc(t('learning.ownChoice', { mode: t(`learning.${learning.mode}`), date: learning.overrideUntil ? new Date(learning.overrideUntil).toLocaleDateString(locale) : '—' }))}</p>` : ''}
+        <div class="career-actions">${[ 'moderate', 'extreme' ].map(mode => button('learning-mode', t(`learning.${mode}`), `data-mode="${mode}" aria-pressed="${learning.mode === mode}"`)).join('')}</div>
         <p class="career-muted">${esc(t('learning.hours', { hours: learning.weeklyHours, days: learning.checkpointDays }))}</p>
         ${learning.appliedMode !== learning.mode && state.roadmap ? `<p>${esc(t('learning.changed'))}</p>` : ''}
         <div class="career-learning-analysis">${button('learning-analyze', t('learning.analyze'))}${learning.analysis ? `<p>${esc(learning.analysis)}</p>` : ''}</div>

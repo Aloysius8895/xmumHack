@@ -34,7 +34,8 @@ const text = { zh: '解释和检查', en: 'Explain and verify', ms: 'Terangkan d
 const task = { title: text, why: text, effortHours: 2, skillId: 'python', learningActivity: 'verification', deliverable: text, completionCriteria: text, evidenceRefs: [ 'aei:python', 'invented-source' ] }
 const target = { careerId: 'ml-engineer', mode: 'general' }
 const profile = { skills: [], summary: '' }
-const context = learningContext({ target, profile, learning: { mode: 'extreme' } })
+// The player's choice for this learning cycle, as setLearningMode stores it
+const context = learningContext({ target, profile, scenario: { preset: 'extreme' }, learning: { mode: 'extreme' } })
 const layout = [ { kind: 'core', branch: null, skillIds: [ 'python' ], basis: [ text ], gains: {} } ]
 
 test('the actual provider path receives AEI policy and cannot change the No-Regret layout or cite invented evidence', async () =>

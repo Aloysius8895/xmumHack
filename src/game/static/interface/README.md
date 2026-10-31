@@ -1,6 +1,10 @@
 # Fantasy exhibit frame
 
-Active asset: `fantasy-exhibit-frame-no-lantern.png` (1536 × 1024 RGBA). The built-in imagegen edit removed the left lantern, hook, support arm and glow while preserving the rest of the frame and its transparency. The original asset remains as the source revision. Edit prompt: remove only the upper-left lantern and its attachment, reconstruct the purple upright, make the removed outside area transparent, and preserve the canvas, frame geometry, plaque, leaves, flowers, bolts, rocks and mascot.
+Retained source asset (no longer rendered): `fantasy-exhibit-frame-wide.png` (1536 × 1024 RGBA). Built-in imagegen edits removed the lantern and both bottom rock clusters, slimmed the border and reduced the mascot to free the reading surface. Earlier assets remain as source revisions.
+
+Wide-frame edit prompt: retain the purple wooden fantasy style on a transparent 1536 × 1024 canvas; remove all rocks, the lantern and sprawling bottom leaf piles; move slender left/right posts to the edges and use thin top/bottom rails; leave the large central content opening transparent; retain an empty centered cream title plaque, small upper-corner leaf/flower accents and a small purple mascot on the lower-right wooden rail. The final local edit halved the mascot again and moved it toward the right post to protect the reading area.
+
+Before the panel-only redesign, the illustrated HTML reading area was x 7.1–91.4%, y 15.5–92.5% (section navigation occupies the top part on multi-section pages). The title plaque is x 31–69%, y 0.5–13.5%. The frame stretches to the viewport while the live HTML text remains unscaled.
 
 `fantasy-exhibit-frame.png` is a project-local decorative asset generated with the built-in imagegen tool from the user's second reference image. It is 1536 × 1024 RGBA, with transparent outer space and a transparent reading opening. Live page titles, navigation, close control, cards and data are HTML; no text is baked into the illustration.
 

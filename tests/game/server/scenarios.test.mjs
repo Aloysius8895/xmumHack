@@ -27,13 +27,13 @@ const aina = [ { id: 'excel', level: 2 }, { id: 'statistics', level: 2 }, { id: 
 const save = (skills = aina, extra = {}) => ({ profile: { skills, summary: '' }, scenario: { preset: 'moderate' }, ...extra })
 const { moderate, extreme } = sc.PRESETS
 
-test('adoption grows with speed and horizon; the presets give about 30% and 62%', () =>
+test('adoption grows with speed and horizon; the presets give about 30% and 83%', () =>
 {
     assert.ok(sc.adoption(1.6, 3) > sc.adoption(0.6, 3))
     assert.ok(sc.adoption(0.6, 5) > sc.adoption(0.6, 3))
     assert.ok(sc.adoption(3, 5) < 1 && sc.adoption(0.2, 1) > 0)
     assert.equal(Math.round(sc.adoption(moderate.k, moderate.H) * 100), 30)
-    assert.equal(Math.round(sc.adoption(extreme.k, extreme.H) * 100), 62)
+    assert.equal(Math.round(sc.adoption(extreme.k, extreme.H) * 100), 83)
 })
 
 test('faster adoption lowers a replaced skill and raises an augmented one', () =>
@@ -63,7 +63,7 @@ test('the two presets give the same profile different scores', () =>
 test('the score is the weighted sum of its two parts', () =>
 {
     for(const entry of sc.forecast(save(), { scenario: 'extreme', ...extreme }, ai).careers)
-        assert.ok(Math.abs(entry.score - 100 * (0.6 * entry.fit + 0.4 * entry.outlook)) <= 1, entry.careerId)
+        assert.ok(Math.abs(entry.score - 100 * (sc.WEIGHTS.fit * entry.fit + sc.WEIGHTS.outlook * entry.outlook)) <= 1, entry.careerId)
 })
 
 test('"what would raise it": learning the top gap adds what was promised', () =>
@@ -106,7 +106,7 @@ test('deterministic: the same inputs give the same result', () =>
 
 test('scenario of a save: presets, explicit parameters in range, anything else moderate', () =>
 {
-    assert.equal(sc.scenarioOf({ scenario: { preset: 'extreme' } }).k, 1.6)
+    assert.equal(sc.scenarioOf({ scenario: { preset: 'extreme' } }).k, 3)
     assert.deepEqual(sc.scenarioOf({ scenario: { k: 1.2, H: 5 } }), { scenario: 'custom', k: 1.2, H: 5 })
     assert.equal(sc.scenarioOf({ scenario: { k: 9, H: 2 } }).scenario, 'moderate')
     assert.equal(sc.scenarioOf({}).scenario, 'moderate')

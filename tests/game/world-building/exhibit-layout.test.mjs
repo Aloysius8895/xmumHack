@@ -2,9 +2,9 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { exhibitLayout } from '../../../src/game/sources/Career/ExhibitLayout.js'
 import { BuildingScreen } from '../../../src/game/sources/Career/BuildingScreen.js'
-import * as THREE from '../../../src/game/node_modules/three/build/three.webgpu.js'
+import { LegacyExhibit } from '../../../src/game/sources/Career/LegacyExhibit.js'
 
-test('the illustrated board fits desktop, laptop and portrait viewports without scaling live text', () =>
+test('the centered panel leaves room for desktop arrows and fits portrait viewports', () =>
 {
     for(const [width, height] of [[1920, 1080], [1600, 758], [1366, 768], [900, 593], [390, 844], [320, 568]])
     {
@@ -12,34 +12,29 @@ test('the illustrated board fits desktop, laptop and portrait viewports without 
         assert.ok(board.left >= 0 && board.top >= 0)
         assert.ok(board.left + board.width <= width)
         assert.ok(board.top + board.height <= height)
-        if(!board.compact) assert.equal(board.width / board.height, 1.5)
+        if(!board.compact) { assert.ok(board.left >= 80, 'side arrows fit inside the viewport'); assert.ok(board.height <= height * 0.87, 'show the game background above and below'); }
         else assert.ok(board.height > 500, 'portrait view keeps a tall scrollable reading surface')
     }
 })
 
-test('original left and right arrow hit regions follow the camera with the fantasy frame active', () =>
+test('retired board and side signs are hidden without hiding the workshop or surrounding world', () =>
 {
-    const camera = new THREE.PerspectiveCamera(45, 1600 / 758, 0.1, 100)
-    camera.position.z = 8
-    camera.updateMatrixWorld(true)
-    const hotspots = [-2, 2].map((x, index) =>
-    {
-        const mesh = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.1))
-        mesh.position.x = x
-        return { mesh, button: { dataset: { action: 'building-room', direction: index ? 1 : -1 }, style: {} } }
-    })
-    const stage = { station: {}, hotspots, game: { viewport: { width: 1600, height: 758 }, view: { camera } },
-        ui: { root: { classList: { contains: () => true } }, panelElement: { style: { setProperty() {} } } },
-        project: BuildingScreen.prototype.project }
-    BuildingScreen.prototype.update.call(stage)
-    const positions = hotspots.map(({ button }) => parseFloat(button.style.left))
-    assert.ok(positions[0] < 800 && positions[1] > 800)
-    assert.ok(hotspots.every(({ button }) => parseFloat(button.style.width) >= 24 && parseFloat(button.style.height) >= 24))
-    camera.position.x = 1
-    camera.updateMatrixWorld(true)
-    BuildingScreen.prototype.update.call(stage)
-    assert.ok(hotspots.every(({ button }, index) => parseFloat(button.style.left) < positions[index]))
-    assert.equal(stage.ui.panelElement.style.transform, 'none', 'moving the world arrows does not transform the HTML content')
+    const frame = { name: 'Cube.065', visible: true }
+    const oven = { name: 'refOven', visible: true }
+    const screen = { visible: true }, previous = { visible: true }, next = { visible: false }
+    const exhibit = new LegacyExhibit({ objects: { items: [frame, oven].map(object3D => ({ visual: { object3D } })) },
+        references: { items: new Map([['images', [screen]], ['previous', [previous]], ['next', [next]]]) } })
+    exhibit.hide()
+    assert.ok([frame, screen, previous, next].every(part => part.visible === false))
+    assert.equal(oven.visible, true)
+    frame.visible = true // A scene visibility pass must not bring the retired board back while viewing.
+    exhibit.hide()
+    assert.equal(frame.visible, false)
+    exhibit.restore()
+    assert.equal(frame.visible, true)
+    assert.equal(previous.visible, true)
+    assert.equal(next.visible, false, 'restore preserves a previously hidden part')
+    assert.equal(oven.visible, true)
 })
 
 test('live fantasy screen follows viewport resize without projecting or scaling form controls', () =>
@@ -49,10 +44,10 @@ test('live fantasy screen follows viewport resize without projecting or scaling 
         ui: { root: { classList: { contains: name => name === 'is-fantasy-exhibit' } }, panelElement: { style } } }
     BuildingScreen.prototype.update.call(stage)
     assert.equal(style.transform, 'none')
-    assert.equal(style.width, '1107px')
+    assert.equal(style.width, '1312px')
     stage.game.viewport = { width: 390, height: 844 }
     BuildingScreen.prototype.update.call(stage)
-    assert.equal(style.width, '382px')
-    assert.equal(style.height, '832px')
-    assert.equal(style['--exhibit-width'], '382px')
+    assert.equal(style.width, '366px')
+    assert.equal(style.height, '776px')
+    assert.equal(style['--exhibit-width'], '366px')
 })

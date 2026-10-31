@@ -45,7 +45,7 @@ const analyst = () =>
 test('two presets only, named moderate and extreme, with the numbers kept', () =>
 {
     assert.deepEqual(Object.keys(sc.PRESETS), [ 'moderate', 'extreme' ])
-    assert.deepEqual(sc.PRESETS.extreme, { k: 1.6, H: 3 })
+    assert.deepEqual(sc.PRESETS.extreme, { k: 3, H: 3 })
     assert.equal(sc.normalizePreset('fast'), 'extreme')
     assert.equal(sc.normalizePreset('slow'), null)
     assert.equal(sc.scenarioOf({ scenario: { preset: 'fast' } }).scenario, 'extreme')
@@ -74,7 +74,8 @@ test('API: fast is accepted as extreme, null follows the recommendation again', 
 {
     store.reset()
     assert.equal((await call('/api/scenario', { preset: 'fast' })).status, 200)
-    assert.deepEqual(store.load().scenario, { preset: 'extreme' })
+    assert.equal(store.load().scenario.preset, 'extreme')
+    assert.ok(Date.parse(store.load().scenario.until) > Date.now())
     const state = (await call('/api/scenario', { preset: null })).body.state
     assert.equal(store.load().scenario, null)
     assert.equal(state.scenarioChoice.selectionSource, 'model_default')
@@ -290,7 +291,7 @@ test('how to learn: the extreme scenario moves time to AI collaboration and veri
     assert.ok(extreme.activities.foundation < moderate.activities.foundation)
     assert.ok(extreme.activities.foundation > 0 && extreme.activities.independent_practice > 0)
     assert.ok(Math.abs(Object.values(extreme.activities).reduce((sum, share) => sum + share, 0) - 1) < 0.02)
-    assert.match(extreme.reason.zh, /极端情景（3 年后相关任务约 62% 用上 AI）/)
+    assert.match(extreme.reason.zh, /极端情景（3 年后相关任务约 83% 用上 AI）/)
     // no AI data: the same approach under both scenarios
     const unknown = [ 'moderate', 'extreme' ].map((preset) => learningApproach('git', preset, { exposure: { skills: {} } }))
     assert.deepEqual(unknown[0].activities, unknown[1].activities)
@@ -370,4 +371,35 @@ test("a job posting's skill brings its reviewed prerequisites into the roadmap, 
     assert.match(skeleton.reasons.python.zh, /招聘信息没有写，但它是机器学习框架的基础，所以补进路线/)
     // affinity and progress keep the posting's own skills
     assert.deepEqual(game.targetedCareer(save, getCareer('data-analyst')).skills.map((skill) => skill.id), [ 'ml-frameworks' ])
+})
+
+test('the recommended scenario is on by default; choosing it follows the recommendation, only the other one is an own choice', async () =>
+{
+    store.reset()
+    await call('/api/target', { careerId: 'data-analyst', mode: 'general' })
+    const recommended = trendClassification('data-analyst').recommendedScenario
+    const other = recommended === 'extreme' ? 'moderate' : 'extreme'
+    const initial = sc.scenarioState(store.load())
+    assert.deepEqual([ initial.effectiveScenario, initial.selectionSource ], [ recommended, 'model_default' ])
+    await call('/api/scenario', { preset: other })
+    assert.deepEqual([ sc.scenarioState(store.load()).effectiveScenario, sc.scenarioState(store.load()).selectionSource ], [ other, 'user_override' ])
+    await call('/api/scenario', { preset: recommended })
+    assert.equal(store.load().scenario, null)
+    assert.equal(sc.scenarioState(store.load()).selectionSource, 'model_default')
+})
+
+test('an own choice holds for one learning cycle, then the recommendation computed from the data applies again', () =>
+{
+    const target = { careerId: 'data-analyst', mode: 'general' }
+    const recommended = trendClassification('data-analyst').recommendedScenario
+    const other = recommended === 'extreme' ? 'moderate' : 'extreme'
+    const until = '2026-11-07T00:00:00.000Z'
+    const save = { target, scenario: { preset: other, until } }
+    assert.equal(sc.ownChoice(save, Date.parse(until) - 1), other)
+    assert.equal(sc.ownChoice(save, Date.parse(until)), null)
+    const before = sc.scenarioState({ ...save, scenario: { preset: other, until: new Date(Date.now() + 86400000).toISOString() } })
+    assert.deepEqual([ before.effectiveScenario, before.selectionSource ], [ other, 'user_override' ])
+    const after = sc.scenarioState({ ...save, scenario: { preset: other, until: new Date(Date.now() - 1000).toISOString() } })
+    assert.deepEqual([ after.effectiveScenario, after.selectionSource, after.overrideUntil ], [ recommended, 'model_default', null ])
+    assert.equal(sc.scenarioOf({ ...save, scenario: { preset: other, until: new Date(Date.now() - 1000).toISOString() } }).scenario, recommended)
 })

@@ -29,6 +29,7 @@ import * as scenarios from './scenarios.js'
 import { noRegretSkeleton, presetOf, skeletonStages, stageApproach } from './no-regret.js'
 import { snapshot, updateLog } from './update-log.js'
 import { localizePostingSkills } from './posting-skill-localization.js'
+import { localizeProfileEvidence } from './profile-localization.js'
 import * as learning from './adaptive-learning.js'
 import { learningContext } from './learning-rules.js'
 
@@ -268,15 +269,25 @@ const routes = {
         if(!LANGS.includes(body.lang))
             throw new HttpError(400, 'bad-lang')
         save.lang = body.lang
+        let skills, evidence
         try
         {
-            return await localizePostingSkills(save, features.translatePostingSkills)
+            skills = await localizePostingSkills(save, features.translatePostingSkills)
         }
         catch
         {
             // Language selection still works if translation is offline; a later selection retries the repair.
-            return { translatedSkills: 0, skillTranslationPending: true }
+            skills = { translatedSkills: 0, skillTranslationPending: true }
         }
+        try
+        {
+            evidence = await localizeProfileEvidence(save, features.translateEvidence)
+        }
+        catch
+        {
+            evidence = { translatedEvidence: 0, evidenceTranslationPending: true }
+        }
+        return { ...skills, ...evidence }
     },
 
     'POST /api/profile/extract': async (save, body) =>

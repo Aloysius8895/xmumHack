@@ -5,6 +5,7 @@ import { pick, t } from './i18n.js'
 import { BUILDING_DESTINATIONS } from './BuildingTravel.js'
 import { displaySize, screenTransform, signAspect } from './ScreenProjection.js'
 import { exhibitLayout } from './ExhibitLayout.js'
+import { LegacyExhibit } from './LegacyExhibit.js'
 
 /** Shared workshop visit: keep the camera and navigation lifecycle while presenting live
  * career content in the viewport-fitted illustrated fantasy frame.
@@ -16,6 +17,7 @@ export class BuildingScreen
         Object.assign(this, { game, ui })
         this.area = game.world.areas.projects
         this.surface = this.area.references.items.get('images')[0]
+        this.legacyExhibit = new LegacyExhibit(this.area)
         this.labels = new Map()
         // One atlas/material for all wooden sign captions: changing categories only redraws text,
         // rather than compiling new GPU materials when a room opens for the first time.
@@ -196,6 +198,7 @@ export class BuildingScreen
         this.applySideFurniture()
         this.surface.visible = true
         this.layout()
+        this.legacyExhibit.hide()
         const { game, ui } = this
         ui.root.classList.add('is-building-view', 'is-building-entering', 'is-workshop-exhibit', 'is-fantasy-exhibit')
         ui.panelElement.classList.add('is-building-screen')
@@ -285,8 +288,8 @@ export class BuildingScreen
         const next = rooms[(index + 1) % rooms.length]
         const previousRoom = this.ui.panelElement.querySelector('.js-exhibit-previous')
         const nextRoom = this.ui.panelElement.querySelector('.js-exhibit-next')
-        if(previousRoom) previousRoom.textContent = `← ${t(`menu.${previous}`)}`
-        if(nextRoom) nextRoom.textContent = `${t(`menu.${next}`)} →`
+        if(previousRoom) previousRoom.textContent = t(`menu.${previous}`)
+        if(nextRoom) nextRoom.textContent = t(`menu.${next}`)
         this.setLabel(this.findText('title'), this.ui.panelTitle.textContent)
         this.setLabel(this.findText('previous'), t(`menu.${previous}`))
         this.setLabel(this.findText('next'), t(`menu.${next}`))
@@ -327,6 +330,7 @@ export class BuildingScreen
         this.dolly?.kill()
         if(this.brandBoard) this.brandBoard.visible = false
         this.station = null
+        this.legacyExhibit.restore()
         for(const { object, scale, position } of this.sideFurniture)
         {
             object.scale.copy(scale)
@@ -360,12 +364,14 @@ export class BuildingScreen
         // workshop, but reading and hitting controls no longer depend on projected mesh bounds.
         if(this.ui.root.classList.contains('is-fantasy-exhibit'))
         {
+            this.legacyExhibit?.hide()
             const bounds = exhibitLayout(this.game.viewport.width, this.game.viewport.height)
             Object.assign(this.ui.panelElement.style, {
                 left: `${bounds.left}px`, top: `${bounds.top}px`, width: `${bounds.width}px`,
                 height: `${bounds.height}px`, transform: 'none',
             })
             this.ui.panelElement.style.setProperty('--exhibit-width', `${bounds.width}px`)
+            return
         }
         else
         {

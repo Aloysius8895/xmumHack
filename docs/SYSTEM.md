@@ -128,15 +128,16 @@ described postings). With fewer months the label is "current demand" and no tren
 comparable, so every skill reads "current".
 
 ### 5.2 Scenario model (`scenarios.js`) ✅
-Two presets: moderate (k = 0.6) and extreme (k = 1.6, named `fast` before 2026-10-31; old saves and requests are converted), horizon H = 3 years, τ = 5, β = 0.5.
+Two presets: moderate (k = 0.6) and extreme (k = 3, the top of the allowed range since 2026-10-31, before 1.6; named `fast` before 2026-10-31; old saves and requests are converted), horizon H = 3 years, τ = 5, β = 0.5.
 
-- Adoption D = 1 − e^(−kH/τ) (≈ 0.30 moderate, ≈ 0.62 extreme)
+- Adoption D = 1 − e^(−kH/τ) (≈ 0.30 moderate, ≈ 0.83 extreme)
 - Demand term T = clamp(e^(growth·H), 0.5, 2)
 - Future value of a skill V = T × (1 − a·D) × (1 + β·u·D), with a = automation and u = augmentation from the AI exposure data
 - Fit = Σ w·min(current, required)/required·V ÷ Σ w·V, with w = level × weight
-- Outlook = clamp(mean V × career term − 0.5, 0, 1)
-- **Score = round(100 × (0.6 × fit + 0.4 × outlook))**
-- "How to raise it": gain per skill = 100 × 0.6 × w·V·gap/required ÷ Σ w·V, top 3 shown
+- Outlook = clamp(mean V × career term ÷ 2, 0, 1): 0.5 when neutral. Until 2026-10-31 it was mean V × career term − 0.5, which capped at 1 from 1.5 and gave the same score under both scenarios.
+- **Score = round(100 × (0.5 × fit + 0.5 × outlook))** (0.6 / 0.4 before 2026-10-31)
+- "How to raise it": gain per skill = 100 × 0.5 × w·V·gap/required ÷ Σ w·V, top 3 shown
+- Affinity (pet and career cards) = Σ w·V·progress ÷ Σ w·V, with V under the scenario in force (since 2026-10-31; before, w only). It is a share, so the scenario moves it by a few points at most.
 - Labels: rising above 1.05, declining below 0.95
 
 No personal attributes are used. Parameters are never tuned to force a different ranking.

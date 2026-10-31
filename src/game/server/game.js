@@ -6,6 +6,7 @@
  */
 import { DEFAULT_MAP, SKILLS, SKILL_IDS, allCareers, getCareer, localText, matchCareer, useCustom } from './careers.js'
 import { postingSkillLocalization } from './posting-skill-localization.js'
+import { cleanEvidence, localizedEvidence } from './profile-localization.js'
 import { SKILL_DETAILS } from './skill-details.js'
 import { expertOf } from './experts.js'
 import { friendCode, leaderboard } from './friends.js'
@@ -21,7 +22,7 @@ import { referenceTrend } from './reference-trend.js'
 import { bigPicture } from './big-picture.js'
 import { nationalEstimate } from './national-estimate.js'
 import { mycolTimeline } from './official-signals.js'
-import { PRESETS, compare, defaultInputs, forecast, scenarioOf, scenarioState } from './scenarios.js'
+import { PRESETS, compare, defaultInputs, forecast, scenarioOf, scenarioState, skillValue } from './scenarios.js'
 import { ACTIVITIES as LEARNING_ACTIVITIES, noRegretSkeleton, presetOf, skeletonChanges, withPrerequisites } from './no-regret.js'
 import { updateLog } from './update-log.js'
 import { learningView } from './adaptive-learning.js'
@@ -61,11 +62,11 @@ export function mergeSkills(profile, extracted)
         if(existing)
         {
             existing.level = Math.max(existing.level, skill.level)
-            existing.evidence = skill.evidence || existing.evidence
+            existing.evidence = localizedEvidence(skill.evidence) ?? existing.evidence
         }
         else
         {
-            profile.skills.push({ id, name: skill.name, level: skill.level, evidence: skill.evidence, source: 'ai' })
+            profile.skills.push({ id, name: skill.name, level: skill.level, evidence: cleanEvidence(skill.evidence), source: 'ai' })
         }
     }
 }
@@ -78,7 +79,7 @@ export function setSkills(profile, skills)
             id: skill.id && SKILLS[skill.id] ? skill.id : null,
             name: skill.name.trim().slice(0, 80),
             level: Math.max(0, Math.min(3, Math.round(Number(skill.level) || 0))),
-            evidence: String(skill.evidence ?? '').slice(0, 200),
+            evidence: cleanEvidence(skill.evidence),   // { zh, en, ms }, or one sentence of an older profile
             source: skill.source === 'ai' || skill.source === 'gym' ? skill.source : 'manual',
         }))
 }
@@ -238,13 +239,19 @@ export function skillProgress(save, career)
  * Affinity 0-100 = how ready the player is for the career: skill progress above, weighted like the career match
  * (required level × weight). With no learning yet it equals the match of the profile; tasks and digests raise it.
  */
-export function affinityOf(save, careerId)
+/**
+ * Affinity: how ready the player is for a career, the progress of each required skill weighted by its level, its
+ * weight and (user decision 2026-10-31) its future value under the scenario in force (scenarios.js skillValue), so a
+ * skill that matters more under that scenario counts more. Pass `inputs` to compute many careers from one reading.
+ */
+export function affinityOf(save, careerId, inputs = defaultInputs())
 {
     const found = getCareer(careerId)
     if(!found)
         return 0
     const career = targetedCareer(save, found)
-    const weights = new Map(career.skills.map((skill) => [ skill.id, skill.level * skill.weight ]))
+    const params = scenarioOf(save)
+    const weights = new Map(career.skills.map((skill) => [ skill.id, skill.level * skill.weight * skillValue(skill.id, params, inputs).value ]))
     let total = 0
     let reached = 0
     for(const skill of skillProgress(save, career))
@@ -262,8 +269,9 @@ export function affinityOf(save, careerId)
 export function replaceCandidate(save)
 {
     const lastActive = (careerId) => save.target?.careerId === careerId ? Infinity : Date.parse(save.careers?.[careerId]?.lastActiveAt ?? '') || 0
+    const inputs = defaultInputs()
     return mapSlots(save)
-        .map((careerId, index) => ({ careerId, index, affinity: affinityOf(save, careerId), lastActive: lastActive(careerId) }))
+        .map((careerId, index) => ({ careerId, index, affinity: affinityOf(save, careerId, inputs), lastActive: lastActive(careerId) }))
         .sort((a, b) => a.affinity - b.affinity || a.lastActive - b.lastActive || a.index - b.index)[0].careerId
 }
 
@@ -619,6 +627,7 @@ export function view(save, ai, documents = {})
 {
     const market = documents.market ?? loadMarket()
     const collected = collectedMarket()
+    const inputs = defaultInputs()   // one reading of the scenario data for every career's affinity
     const careers = allCareers().map((career) => ({
         id: career.id,
         name: career.name,
@@ -631,7 +640,7 @@ export function view(save, ai, documents = {})
             : { heat: null, trend: 'unknown', sample: false, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrEmpty(career.id, market) },
         effortMonths: career.effortMonths,
         pet: career.pet,
-        affinity: affinityOf(save, career.id),
+        affinity: affinityOf(save, career.id, inputs),
         match: matchCareer(career, save.profile.skills),
         onMap: isOnMap(save, career.id),
         saved: Boolean(save.careers?.[career.id]),

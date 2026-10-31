@@ -23,3 +23,17 @@ test('new controls and errors have complete three-language labels', () =>
 {
     for(const [ id, entry ] of Object.entries(LEARNING_STRINGS)) for(const lang of [ 'zh', 'en', 'ms' ]) assert.ok(entry[lang]?.trim(), `${id}.${lang}`)
 })
+
+test('the recommended scenario is pressed by default and its basis shown; an own choice says until when, with no reset button', () =>
+{
+    const base = { ...learning, pending: null, checkpoint: null, recommendedScenario: 'extreme', recommendationReason: 'Automation share +22.2 points.' }
+    const followed = renderLearningPanel({ learning: { ...base, mode: 'extreme', userOverride: null } }, {}, { t, esc, skillName: id => id })
+    assert.ok(followed.includes('Recommended from the data: Extreme. Automation share +22.2 points.'))
+    assert.ok(followed.includes('data-mode="extreme" aria-pressed="true"'))
+    assert.ok(!followed.includes('data-action="learning-default"'))
+    assert.ok(!followed.includes('cannot establish development speed'))
+    const own = renderLearningPanel({ learning: { ...base, mode: 'moderate', userOverride: 'moderate', overrideUntil: '2026-11-07T00:00:00.000Z' } }, {}, { t, esc, skillName: id => id, locale: 'en-GB' })
+    assert.ok(own.includes('data-mode="moderate" aria-pressed="true"'))
+    assert.ok(own.includes('You chose Moderate as the planning assumption for this learning cycle; after 07/11/2026 the recommendation applies again'))
+    assert.ok(!own.includes('data-action="learning-default"'))
+})

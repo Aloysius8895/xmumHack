@@ -20,12 +20,12 @@ const state = (scenario = 'moderate', thin = false) => ({
     skillStatus: { excel: { moderate: 'declining', extreme: 'declining' }, sql: { moderate: 'rising', extreme: 'declining' } },
 })
 
-test('the toggle marks the current scenario, always says estimate, and asks for skills when the profile is thin', () =>
+test('the toggle marks the current scenario, carries no estimate or mock tags, and asks for skills when the profile is thin', () =>
 {
-    const html = renderScenarioBar(state(), { t, esc })
+    const html = renderScenarioBar({ ...state(), forecast: { ...state().forecast, mock: true } }, { t, esc })
     assert.match(html, /data-preset="moderate" aria-pressed="true"/)
     assert.match(html, /data-preset="extreme" aria-pressed="false"/)
-    assert.match(html, /估算/)
+    assert.doesNotMatch(html, /is-estimate|is-mock|估算|含模拟数据/)
     assert.doesNotMatch(html, /补充档案/)
     assert.match(renderScenarioBar(state('moderate', true), { t, esc }), /data-panel="profile"/)
 })

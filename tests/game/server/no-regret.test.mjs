@@ -43,7 +43,7 @@ test('core: the skills high under both presets, the biggest mean gain first', ()
 {
     const skeleton = noRegretSkeleton(analyst(), inputs)
     assert.deepEqual(skeleton.core, [ 'sql', 'data-cleaning' ])
-    assert.match(skeleton.reasons.sql.zh, /两个情景下都排在前面（温和 \+17\.1 分，极端 \+18\.8 分）/)
+    assert.match(skeleton.reasons.sql.zh, /两个情景下都排在前面（温和 \+14\.2 分，极端 \+16\.7 分）/)
 })
 
 test('branches: each preset orders the rest by its own gains; a skill declining under both goes last', () =>
@@ -152,5 +152,6 @@ test('switching scenario saves a preference; moving the formal branch requires p
     await call('/api/scenario', { preset: 'extreme' })
     assert.equal(store.load().roadmap.chosenBranch, 'moderate')
     assert.equal((await call('/api/roadmap/branch', { branch: 'slow' })).status, 400)
-    assert.equal(presetOf({ scenario: 'custom', k: 1.3, H: 3 }), 'extreme')
+    assert.equal(presetOf({ scenario: 'custom', k: 2.5, H: 3 }), 'extreme')
+    assert.equal(presetOf({ scenario: 'custom', k: 1.3, H: 3 }), 'moderate')
 })

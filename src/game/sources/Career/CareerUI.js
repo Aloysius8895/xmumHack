@@ -218,7 +218,6 @@ export class CareerUI
         this.root.className = 'career-ui'
         this.root.innerHTML = `
             <section class="career-panel js-career-panel" aria-hidden="true">
-                <img class="fantasy-exhibit-frame building-only" src="/interface/fantasy-exhibit-frame-no-lantern.png" alt="" aria-hidden="true" draggable="false">
                 <header class="career-panel-header">
                     <span class="building-screen-brand building-only">KerjayaKu <span> / </span></span>
                     <h2 class="js-career-panel-title"></h2>
@@ -227,13 +226,15 @@ export class CareerUI
                 </header>
                 <nav class="building-screen-sections building-only js-building-sections"></nav>
                 <div class="career-panel-body js-career-panel-body"></div>
-                <footer class="building-screen-footer building-only">
+                <nav class="exhibit-room-nav building-only">
                     <button type="button" data-action="building-room" data-direction="-1" class="exhibit-room-button js-exhibit-previous">←</button>
+                    <button type="button" data-action="building-room" data-direction="1" class="exhibit-room-button js-exhibit-next">→</button>
+                </nav>
+                <footer class="building-screen-footer building-only">
                     <button type="button" data-action="building-page" data-direction="-1" class="exhibit-page-button" aria-label="${esc(t('exhibit.previousPage'))}">‹</button>
                     <span class="js-building-position"></span>
                     <button type="button" data-action="building-page" data-direction="1" class="exhibit-page-button" aria-label="${esc(t('exhibit.nextPage'))}">›</button>
                     <span class="building-screen-hint">Esc · <span class="js-building-exit"></span></span>
-                    <button type="button" data-action="building-room" data-direction="1" class="exhibit-room-button js-exhibit-next">→</button>
                 </footer>
             </section>
             <section class="career-dialogue js-career-dialogue" aria-hidden="true"></section>
@@ -1030,8 +1031,8 @@ export class CareerUI
     renderBuildingSections()
     {
         this.buildingHeadings = [...this.panelBody.querySelectorAll('h3')]
-        this.root.querySelector('.js-building-sections').innerHTML = this.buildingHeadings.map((heading, index) =>
-            `<button type="button" data-action="building-section" data-section="${index}">${esc(heading.textContent)}</button>`).join('')
+        // No section shortcut tabs above the panel (user decision 2026-10-31): the body scrolls on its own
+        this.root.querySelector('.js-building-sections').innerHTML = ''
         this.root.querySelector('.js-building-position').textContent = t(`menu.${this.panel.name}`)
         this.root.querySelector('.js-building-exit').textContent = t('common.close')
         this.buildingVisit.stage.syncContent()
@@ -1085,7 +1086,7 @@ export class CareerUI
         const list = skills.length
             ? `<ul class="career-skill-list">${skills.map((skill, index) => `
                 <li>
-                    <span class="career-skill-name">${esc(this.skillName(skill.id, skill.name))}<small>${esc(t(`profile.source.${skill.source}`))}${skill.evidence ? ` · ${esc(skill.evidence)}` : ''}</small></span>
+                    <span class="career-skill-name">${esc(this.skillName(skill.id, skill.name))}<small>${esc(t(`profile.source.${skill.source}`))}${skill.evidence ? ` · ${esc(typeof skill.evidence === 'string' ? skill.evidence : pick(skill.evidence))}` : ''}</small></span>
                     <select data-skill-level="${index}" aria-label="${esc(this.skillName(skill.id, skill.name))}">
                         ${[ 0, 1, 2, 3 ].map((level) => `<option value="${level}" ${skill.level === level ? 'selected' : ''}>${esc(t(`level.${level}`))}</option>`).join('')}
                     </select>
@@ -1932,8 +1933,10 @@ export class CareerUI
                                     <input type="checkbox" data-task="${task.id}" ${task.progress >= 100 ? 'checked' : ''} ${locked || alternative ? 'disabled' : ''}>
                                     <span>${esc(task.title)}<small>${esc(task.why)}</small>${task.deliverable ? `<small>${esc(t('learning.deliverable'))}: ${esc(task.deliverable)}</small>` : ''}${task.completionCriteria ? `<small>${esc(t('learning.criteria'))}: ${esc(task.completionCriteria)}</small>` : ''}</span>
                                 </label>
-                                ${task.learningActivity ? `<span class="career-tag is-activity">${esc(t(`roadmap.activity.${task.learningActivity}`))}</span>` : ''}
-                                <span class="career-tag is-mp">${esc(t('roadmap.mp', { n: task.mp }))}</span>
+                                <div class="career-task-meta">
+                                    ${task.learningActivity ? `<span class="career-tag is-activity">${esc(t(`roadmap.activity.${task.learningActivity}`))}</span>` : ''}
+                                    <span class="career-tag is-mp">${esc(t('roadmap.mp', { n: task.mp }))}</span>
+                                </div>
                                 ${bar(task.progress, 'is-thin')}
                             </li>`).join('')}
                         </ul>`}

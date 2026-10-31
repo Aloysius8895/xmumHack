@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { currentExposure } from './ai-exposure.js'
 import { getCareer } from './careers.js'
 import { roadmapInputs } from './roadmap-inputs.js'
-import { normalizePreset, scenarioOf } from './scenarios.js'
+import { normalizePreset, ownChoice, scenarioOf } from './scenarios.js'
 import { roadmapCareer } from './game.js'
 import { skillEvidenceId } from './aei-evidence.js'
 
@@ -46,7 +46,8 @@ export function aeiEvidence(save, exposure = currentExposure())
 
 export function effectiveMode(save)
 {
-    if(MODES.includes(save.learning?.mode)) return save.learning.mode
+    const own = ownChoice(save)
+    if(own) return own
     return normalizePreset(scenarioOf(save).scenario) ?? 'moderate'
 }
 
@@ -54,7 +55,7 @@ export function learningContext(save, mode = effectiveMode(save))
 {
     const inputs = roadmapInputs(save)
     return { ...LEARNING_DEFAULTS, effectiveScenario: mode,
-        selectionSource: MODES.includes(save.learning?.mode) || inputs.userScenarioOverride ? 'user_override' : 'model_default',
+        selectionSource: inputs.userScenarioOverride ? 'user_override' : 'model_default',
         trendClassification: inputs.scenario.trendClassification, recommendedScenario: inputs.scenario.recommendedScenario,
         aeiEvidence: inputs.aeiEvidence, scenario: { ...inputs.scenario, effectiveScenario: mode }, trendClassificationRules: inputs.trendClassificationRules,
         targetCareerId: save.target?.careerId ?? null, evidence: aeiEvidence(save),
