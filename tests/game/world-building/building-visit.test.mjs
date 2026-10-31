@@ -128,3 +128,20 @@ test('projection fits all four screen corners on desktop, perspective and portra
         assert.equal(size.width / size.height, 16 / 9)
     }
 })
+
+for(const phase of ['show', 'enterDirect', 'openPanel'])
+    test(`a ${phase} error restores movement and allows a new visit`, () =>
+    {
+        const s = setup()
+        const owner = phase === 'openPanel' ? s.ui : s.visit.stage
+        const original = owner[phase]
+        owner[phase] = () => { throw new Error('test entrance failure') }
+        assert.equal(s.visit.open({panel: 'careers'}, {direct: true}), false)
+        assert.equal(s.visit.active, false)
+        assert.equal(s.game.view.cinematic.active, false)
+        assert.equal(s.game.view.cinematic.nonIdealRatioOffset, 10)
+        assert.equal(s.game.interactivePoints.temporaryHidden, false)
+        assert.deepEqual([...s.filters], ['wandering'])
+        owner[phase] = original
+        assert.equal(s.visit.open({panel: 'careers'}, {direct: true}), true)
+    })

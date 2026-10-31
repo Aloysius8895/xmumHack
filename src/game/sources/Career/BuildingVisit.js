@@ -23,33 +23,48 @@ export class BuildingVisit
         const generation = this.generation = (this.generation ?? 0) + 1
         this.station = station
         this.exitPanel = station.panel
-        game.clickMove?.cancel()
-        ui.setMenuOpen(false)
-        ui.takeInputs()
-        game.inputs.interactiveButtons.clearItems()
-        game.inputs.interactiveButtons.addItems(['close'])
-        this.restorePoints = !game.interactivePoints.temporaryHidden
-        if(this.restorePoints) game.interactivePoints.temporaryHide()
-        const { position, target } = this.stage.show(station)
-        // Stage fits the camera to the viewport itself (including portrait windows).
         this.previousRatioOffset = game.view.cinematic.nonIdealRatioOffset
-        game.view.cinematic.nonIdealRatioOffset = 0
-        game.view.cinematic.start(position, target)
-        if(direct)
+        try
         {
-            this.stage.enterDirect(position, target)
-            try { ui.openPanel(station.panel); this.stage.reveal() }
-            catch(error) { this.cancel(); throw error }
+            game.clickMove?.cancel()
+            ui.setMenuOpen(false)
+            ui.takeInputs()
+            game.inputs.interactiveButtons.clearItems()
+            game.inputs.interactiveButtons.addItems(['close'])
+            this.restorePoints = !game.interactivePoints.temporaryHidden
+            if(this.restorePoints) game.interactivePoints.temporaryHide()
+            const { position, target } = this.stage.show(station)
+            // Stage fits the camera to the viewport itself (including portrait windows).
+            game.view.cinematic.nonIdealRatioOffset = 0
+            game.view.cinematic.start(position, target)
+            if(direct)
+            {
+                this.stage.enterDirect(position, target)
+                try { ui.openPanel(station.panel); this.stage.reveal() }
+                catch(error) { this.fail(error); return false }
+                return true
+            }
+            this.pending = this.delay(1.5, () =>
+            {
+                if(!this.active || this.generation !== generation) return
+                this.pending = null
+                try { ui.openPanel(station.panel); this.stage.reveal() }
+                catch(error) { this.fail(error) }
+            })
             return true
         }
-        this.pending = this.delay(1.5, () =>
+        catch(error)
         {
-            if(!this.active || this.generation !== generation) return
-            this.pending = null
-            try { ui.openPanel(station.panel); this.stage.reveal() }
-            catch(error) { this.cancel(); throw error }
-        })
-        return true
+            this.fail(error)
+            return false
+        }
+    }
+
+    fail(error)
+    {
+        console.error('Building visit could not open:', error)
+        try { this.cancel() }
+        finally { if(this.active) this.finish() }
     }
 
     cancel()
