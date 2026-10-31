@@ -9,6 +9,7 @@ unchanged. The RunPod proof of use has been restored from `c9f0199^`.
 | Final project and prototype report | [SDC2026_ChillChill_FinalReport.pdf](SDC2026_ChillChill_FinalReport.pdf) |
 | Finalist technology declaration | [SDC2026_ChillChill_TechDeclaration.pdf](SDC2026_ChillChill_TechDeclaration.pdf) |
 | RunPod proof of use | [SDC2026_Chill_chill_Runpod_POU.pdf](SDC2026_Chill_chill_Runpod_POU.pdf) |
+| Pitch slides (final) | [SDC2026_ChillChill_PitchSlides.pptx](SDC2026_ChillChill_PitchSlides.pptx) |
 
 **Sponsor resources used.** The team used the Replit Pro account provided to
 finalists (development environment, hosting and deployment during the hackathon)

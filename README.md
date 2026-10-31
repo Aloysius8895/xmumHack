@@ -37,7 +37,7 @@
 | Live Demo | [KerjayaKu on Render](https://kerjayaku-demo.onrender.com) |
 | Telegram Companion | [@KerjayaKu_bot](https://t.me/KerjayaKu_bot) |
 | Chatbot Health | [Render Python service](https://kerjayaku-telegram.onrender.com/health) |
-| Slide Deck | [Presentation](https://docs.google.com/presentation/d/1MddUwzMtFSRZZmYID8qy4wQ3y4eY9ijR/edit?usp=sharing&ouid=113147406681252215799&rtpof=true&sd=true) |
+| Pitch Slides | [SDC2026_ChillChill_PitchSlides.pptx](submission/SDC2026_ChillChill_PitchSlides.pptx) |
 | Demo Video | [YouTube demo](https://youtu.be/06NzNKKvYsE?si=GA4b8PcWnC-9z5yu) |
 
 The Render services are currently on the free plan. Idle services can sleep, and local JSON/SQLite data can be lost on restart, redeploy or spin-down. A separately approved [persistent deployment](render.persistent.yaml) is prepared but has not been enabled. See [deployment details](docs/render-deployment.md).
