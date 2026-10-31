@@ -3,11 +3,11 @@ export const BUILDING_DESTINATIONS = Object.freeze({
     profile: 'lab',
     careers: 'career',
     market: 'projects',
-    pet: 'cookie',
+    pet: 'landing',
     roadmap: 'behindTheScene',
     sdg: 'altar',
-    log: 'achievements',
-    leaderboard: 'landing',
+    log: 'cookie',
+    leaderboard: 'achievements',
     settings: 'social',
 })
 

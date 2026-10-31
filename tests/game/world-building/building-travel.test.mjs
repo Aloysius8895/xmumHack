@@ -3,6 +3,18 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { BUILDING_DESTINATIONS, travelToBuilding, leaveAtBuilding } from '../../../src/game/sources/Career/BuildingTravel.js'
 
+test('map labels and functional entrances agree for Log, Leaderboard and Pet', () =>
+{
+    const map = readFileSync(new URL('../../../src/game/sources/Game/Map.js', import.meta.url), 'utf8')
+    for(const [panel, label, building] of [['log', 'Log', 'cookie'], ['leaderboard', 'Leaderboard', 'achievements'], ['pet', 'Pet', 'landing']])
+    {
+        assert.equal(BUILDING_DESTINATIONS[panel], building)
+        assert.ok(map.includes(`name: '${label}', respawnName: '${building}'`))
+    }
+    assert.equal(new Set(Object.values(BUILDING_DESTINATIONS)).size, Object.keys(BUILDING_DESTINATIONS).length,
+        'each category must have its own entrance')
+})
+
 test('walking entrances still exist in the retained playable map asset', () =>
 {
     const bytes = readFileSync(new URL('../../../src/game/static/respawns/respawnsReferences-compressed.glb', import.meta.url))

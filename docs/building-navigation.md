@@ -26,11 +26,11 @@ The following walking entrances remain optional; they are not part of the menu f
 | Profile | Lab |
 | Careers | Career |
 | Trends | Projects workshop |
-| Pet | Cookie |
+| Pet | Landing kiosk |
 | Roadmap | Behind the Scene |
 | SDGs | Altar |
-| Log | Achievements lodge |
-| Leaderboard | Landing kiosk |
+| Log | Cookie stand |
+| Leaderboard | Achievements lodge |
 | Settings | Social |
 
 ## Windows development
