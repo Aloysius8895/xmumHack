@@ -5,8 +5,17 @@
  *
  * growth = annualised log growth: least-squares slope of log(share) per month, × 12. Shares, not counts: collecting
  * more often finds more adverts, it does not mean more demand. Official labels (official-signals.js) come first.
+ *
+ * Mock months (prompt 07, data/mock/market-months.json, src/data/scripts/mock-market-months.mjs) fill the months before
+ * the collected ones while fewer than MIN_MONTHS real months are comparable; real months always win, and the mock is no
+ * longer read once MIN_MONTHS real months exist. A result resting on a mock month is marked mock, and its confidence
+ * counts the real months only.
  */
+import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { readWindow } from './market-window.js'
+
+export const MOCK_FILE = fileURLToPath(new URL('../../../data/mock/market-months.json', import.meta.url))
 
 export const MIN_MONTHS = 3
 export const RISING = 1.05      // D13, on the yearly factor e^growth
@@ -48,20 +57,39 @@ function series(months, value)
     {
         const share = value(month)
         if(share > 0)   // log(0) is undefined: a month without the skill is left out of the regression
-            points.push({ x: monthIndex(month.period), y: Math.log(share) })
+            points.push({ x: monthIndex(month.period), y: Math.log(share), mock: month.mock === true })
     }
     const perMonth = points.length >= MIN_MONTHS ? slope(points) : null
     const growth = perMonth === null ? null : Math.round(perMonth * 12 * 10000) / 10000
-    return { growth, label: label(growth), confidence: confidence(points.length), months: points.length }
+    const mockMonths = points.filter((point) => point.mock).length
+    return { growth, label: label(growth), confidence: confidence(points.length - mockMonths), months: points.length,
+        ...(mockMonths ? { mock: true, mockMonths } : {}) }
+}
+
+/**
+ * The comparable real months, preceded by the mock months of periods without real data while fewer than MIN_MONTHS
+ * real months exist. Mock months take the sources and sample size of the latest real month, so they compare with it.
+ */
+export function withMockMonths(real, mockMonths = [])
+{
+    const latest = real.at(-1)
+    if(!latest || real.length >= MIN_MONTHS || !mockMonths.length)
+        return real
+    const periods = new Set(real.map((month) => month.period))
+    const filled = mockMonths
+        .filter((month) => !periods.has(month.period) && monthIndex(month.period) < monthIndex(latest.period))
+        .map((month) => ({ ...month, mock: true, sources: latest.sources, denominator: latest.denominator, thin: false }))
+    return [ ...filled, ...real ].sort((a, b) => monthIndex(a.period) - monthIndex(b.period))
 }
 
 /**
  * { skills: { id: { growth, label, confidence, months, official } }, careers: same, basis: { months, from, through, sources } }
  * official: the official signals of that id (emerging / critical / declining with source and date), first in the UI
  */
-export function momentumFrom(window, { official = [] } = {})
+export function momentumFrom(window, { official = [], mockMonths = [] } = {})
 {
-    const months = comparableMonths(window?.months)
+    const real = comparableMonths(window?.months)
+    const months = withMockMonths(real, mockMonths)
     const latest = window?.months?.at(-1)
     const officialFor = (kind, id) => official.filter((signal) => signal.kind === kind && signal.id === id)
     const skills = {}
@@ -73,18 +101,33 @@ export function momentumFrom(window, { official = [] } = {})
     return {
         skills,
         careers,
-        basis: { months: months.length, from: months[0]?.period ?? null, through: months.at(-1)?.period ?? null, sources: latest?.sources ?? [], metric: 'share_of_described_postings' },
+        basis: { months: months.length, realMonths: real.length, mockMonths: months.length - real.length, from: months[0]?.period ?? null,
+            through: months.at(-1)?.period ?? null, sources: latest?.sources ?? [], metric: 'share_of_described_postings' },
     }
 }
 
 let lastGood = null
+
+/** The mock months of data/mock/market-months.json, none when the file is missing or unreadable */
+export function loadMockMonths(file = MOCK_FILE)
+{
+    try
+    {
+        const document = JSON.parse(fs.readFileSync(file, 'utf8'))
+        return document.mock === true && Array.isArray(document.months) ? document.months.filter((month) => month.mock === true && /^\d{4}-\d{2}$/.test(month.period)) : []
+    }
+    catch
+    {
+        return []
+    }
+}
 
 /** The current momentum; a failure keeps the last good result instead of throwing */
 export function currentMomentum(options = {})
 {
     try
     {
-        lastGood = momentumFrom(readWindow(), options)
+        lastGood = momentumFrom(readWindow(), { mockMonths: loadMockMonths(), ...options })
     }
     catch
     {

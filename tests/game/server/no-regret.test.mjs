@@ -14,7 +14,7 @@ const { handle } = await import('../../../src/game/server/app.js')
 const store = await import('../../../src/game/server/store.js')
 const game = await import('../../../src/game/server/game.js')
 const { SKILLS } = await import('../../../src/game/server/careers.js')
-const { noRegretSkeleton, presetOf, skeletonChanges, skeletonStages } = await import('../../../src/game/server/no-regret.js')
+const { aeiOnlyInputs, noRegretSkeleton, presetOf, skeletonChanges, skeletonStages } = await import('../../../src/game/server/no-regret.js')
 
 async function call(route, body = {})
 {
@@ -120,9 +120,11 @@ test('re-plan: a changed core is suggested, unchanged data or a skill learnt is 
     const save = analyst()
     save.roadmap = { stages: [], chosenBranch: 'moderate', forecastBasis: { core: [ 'excel' ], branches: { moderate: [], extreme: [] }, later: [], identical: true } }
     assert.ok(game.view(save, { mock: true }).replanSuggested.changedSkills.includes('excel'))
-    // the basis of the current data: nothing to suggest
-    const current = noRegretSkeleton(save)
-    save.roadmap.forecastBasis = { core: current.core, branches: current.branches, later: current.later, identical: current.identical }
+    // a basis from before prompt 06 (demand term in) reports its changes as a method change
+    assert.equal(game.view(save, { mock: true }).replanSuggested.reason, 'method-changed')
+    // the basis of the current data, read on AEI only as the roadmap is: nothing to suggest
+    const current = noRegretSkeleton(save, aeiOnlyInputs())
+    save.roadmap.forecastBasis = { core: current.core, branches: current.branches, later: current.later, identical: current.identical, demand: 'neutral' }
     assert.equal(game.view(save, { mock: true }).replanSuggested, null)
 })
 
@@ -131,6 +133,7 @@ test('switching scenario saves a preference; moving the formal branch requires p
     store.reset()
     await call('/api/profile/skills', { skills: [ { id: 'python', name: 'Python', level: 1 } ] })
     await call('/api/target', { careerId: 'data-analyst', mode: 'general' })
+    await call('/api/scenario', { preset: 'moderate' })
     const planned = await call('/api/roadmap', {})
     assert.equal(planned.status, 200)
     const stages = JSON.stringify(store.load().roadmap.stages)

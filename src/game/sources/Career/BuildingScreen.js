@@ -4,9 +4,10 @@ import gsap from 'gsap'
 import { pick, t } from './i18n.js'
 import { BUILDING_DESTINATIONS } from './BuildingTravel.js'
 import { displaySize, screenTransform, signAspect } from './ScreenProjection.js'
+import { exhibitLayout } from './ExhibitLayout.js'
 
-/** The original workshop exhibit: real wooden frame/signs, with the original interactive
- * career content projected onto its screen. No player teleport or replacement floating panel.
+/** Shared workshop visit: keep the camera and navigation lifecycle while presenting live
+ * career content in the viewport-fitted illustrated fantasy frame.
  */
 export class BuildingScreen
 {
@@ -196,7 +197,7 @@ export class BuildingScreen
         this.surface.visible = true
         this.layout()
         const { game, ui } = this
-        ui.root.classList.add('is-building-view', 'is-building-entering', 'is-workshop-exhibit')
+        ui.root.classList.add('is-building-view', 'is-building-entering', 'is-workshop-exhibit', 'is-fantasy-exhibit')
         ui.panelElement.classList.add('is-building-screen')
         game.domElement.classList.add('is-building-visit')
         return this.framing()
@@ -282,6 +283,10 @@ export class BuildingScreen
         const index = rooms.indexOf(panel)
         const previous = rooms[(index - 1 + rooms.length) % rooms.length]
         const next = rooms[(index + 1) % rooms.length]
+        const previousRoom = this.ui.panelElement.querySelector('.js-exhibit-previous')
+        const nextRoom = this.ui.panelElement.querySelector('.js-exhibit-next')
+        if(previousRoom) previousRoom.textContent = `← ${t(`menu.${previous}`)}`
+        if(nextRoom) nextRoom.textContent = `${t(`menu.${next}`)} →`
         this.setLabel(this.findText('title'), this.ui.panelTitle.textContent)
         this.setLabel(this.findText('previous'), t(`menu.${previous}`))
         this.setLabel(this.findText('next'), t(`menu.${next}`))
@@ -335,9 +340,9 @@ export class BuildingScreen
         }
         this.area.frustum.alwaysVisible = false
         const { ui } = this
-        ui.root.classList.remove('is-building-view', 'is-building-entering', 'is-workshop-exhibit')
+        ui.root.classList.remove('is-building-view', 'is-building-entering', 'is-workshop-exhibit', 'is-fantasy-exhibit')
         ui.panelElement.classList.remove('is-building-screen')
-        for(const property of ['left', 'top', 'width', 'height', 'transform']) ui.panelElement.style.removeProperty(property)
+        for(const property of ['left', 'top', 'width', 'height', 'transform', '--exhibit-width']) ui.panelElement.style.removeProperty(property)
         this.game.domElement.classList.remove('is-building-visit')
         ui.fitBar()
     }
@@ -351,11 +356,27 @@ export class BuildingScreen
     update()
     {
         if(!this.station) return
-        this.surface.updateWorldMatrix(true, false)
-        const points = this.corners.map(corner => this.project(corner.clone().applyMatrix4(this.surface.matrixWorld)))
-        const matrix = screenTransform(points, this.size.width, this.size.height)
-        if(matrix) this.ui.panelElement.style.transform = `matrix3d(${matrix.join(',')})`
-        for(const { mesh, button } of this.hotspots)
+        // The frame and live HTML share one viewport rectangle. The camera still visits the
+        // workshop, but reading and hitting controls no longer depend on projected mesh bounds.
+        if(this.ui.root.classList.contains('is-fantasy-exhibit'))
+        {
+            const bounds = exhibitLayout(this.game.viewport.width, this.game.viewport.height)
+            Object.assign(this.ui.panelElement.style, {
+                left: `${bounds.left}px`, top: `${bounds.top}px`, width: `${bounds.width}px`,
+                height: `${bounds.height}px`, transform: 'none',
+            })
+            this.ui.panelElement.style.setProperty('--exhibit-width', `${bounds.width}px`)
+        }
+        else
+        {
+            this.surface.updateWorldMatrix(true, false)
+            const points = this.corners.map(corner => this.project(corner.clone().applyMatrix4(this.surface.matrixWorld)))
+            const matrix = screenTransform(points, this.size.width, this.size.height)
+            if(matrix) this.ui.panelElement.style.transform = `matrix3d(${matrix.join(',')})`
+        }
+        // World-space arrows still need live hit regions, including while the HTML board
+        // uses viewport layout. Keep them aligned throughout camera movement and resizing.
+        for(const { mesh, button } of this.hotspots ?? [])
         {
             const bounds = new THREE.Box3().setFromObject(mesh)
             const corners = []

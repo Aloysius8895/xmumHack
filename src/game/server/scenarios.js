@@ -19,11 +19,12 @@ import { allCareers, SKILLS } from './careers.js'
 import { currentExposure } from './ai-exposure.js'
 import { currentMomentum } from './skill-momentum.js'
 import { careerRecord, currentSignals } from './official-signals.js'
+import { trendClassification } from './aei-evidence.js'
 
-// D10 – D13 (skills/idea/ideas/sdc-domain1-scenarios-2026-10-29/00-README.md)
+// D10 – D13 (skills/idea/ideas/sdc-domain1-scenarios-2026-10-29/00-README.md). Two presets only: no-regret.js walks them
 export const PRESETS = { moderate: { k: 0.6, H: 3 }, extreme: { k: 1.6, H: 3 } }
-// Accept old clients/saves at the boundary without introducing a third enumerable preset.
-export const normalizePreset = (preset) => preset === 'fast' ? 'extreme' : preset
+// Names used before prompt 06, accepted in requests and old saves
+const RENAMED = { fast: 'extreme' }
 export const TAU = 5
 export const BETA = 0.5
 export const WEIGHTS = { fit: 0.6, outlook: 0.4 }
@@ -39,16 +40,52 @@ const lowest = (levels) => levels.reduce((low, level) => RANK[level] < RANK[low]
 export const adoption = (k, H) => 1 - Math.exp(- k * H / TAU)
 export const demandTerm = (growth, H) => growth === null || growth === undefined ? 1 : clamp(Math.exp(growth * H), 0.5, 2)
 
-/** The scenario of a save: a preset name, or explicit { k, H } inside LIMITS (anything else falls back to moderate) */
+/** A preset name as used now ('fast' was renamed 'extreme'), or null when it is no preset */
+export function normalizePreset(name)
+{
+    const preset = RENAMED[name] ?? name
+    return PRESETS[preset] ? preset : null
+}
+
+/**
+ * The scenario of a save: the preset the player chose, explicit { k, H } inside LIMITS, or else the preset recommended
+ * from the AI usage evidence (aei-evidence.js trendClassification)
+ */
 export function scenarioOf(save)
 {
     const chosen = save?.scenario ?? {}
     const preset = normalizePreset(chosen.preset)
-    if(PRESETS[preset])
+    if(preset)
         return { scenario: preset, ...PRESETS[preset] }
     if(validParams(chosen))
         return { scenario: 'custom', k: chosen.k, H: chosen.H }
-    return { scenario: 'moderate', ...PRESETS.moderate }
+    const recommended = trendClassification(save?.target?.careerId ?? null).recommendedScenario
+    return { scenario: recommended, ...PRESETS[recommended] }
+}
+
+/**
+ * Recommended, chosen and effective scenario kept apart: the player's choice wins, the recommendation (from the AI usage
+ * of the target career's tasks) and its basis stay as they were. Explicit { k, H } is no choice between the two
+ * scenarios (userOverride null).
+ */
+export function scenarioState(save)
+{
+    const trend = trendClassification(save?.target?.careerId ?? null)
+    const userOverride = normalizePreset(save?.scenario?.preset)
+    return {
+        trendClassification: trend.trendClassification,
+        recommendedScenario: trend.recommendedScenario,
+        userOverride,
+        effectiveScenario: userOverride ?? trend.recommendedScenario,
+        selectionSource: userOverride ? 'user_override' : 'model_default',
+        reason: trend.reason,
+        evidenceRefs: trend.evidenceRefs,
+        limitations: trend.limitations,
+        change: trend.change ?? null,
+        values: trend.values ?? null,
+        comparability: trend.comparability ?? null,
+        mock: trend.mock ?? false,
+    }
 }
 
 export const validParams = ({ k, H } = {}) => typeof k === 'number' && k >= LIMITS.k[0] && k <= LIMITS.k[1] && LIMITS.H.includes(H)
@@ -84,8 +121,9 @@ export function skillValue(id, params, inputs)
         status: value > RISING ? 'rising' : value < DECLINING ? 'declining' : 'stable',
         parts: { demand: round(demand), automationLoss: round(automationLoss), augmentationGain: round(augmentationGain) },
         sources: {
-            demand: growth === null ? null : { metric: inputs.momentum.basis?.metric ?? null, months: momentum.months, from: inputs.momentum.basis?.from ?? null, through: inputs.momentum.basis?.through ?? null },
-            exposure: exposure ? { tasks: exposure.tasks, source: inputs.exposure.source } : null,
+            demand: growth === null ? null : { metric: inputs.momentum.basis?.metric ?? null, months: momentum.months, from: inputs.momentum.basis?.from ?? null, through: inputs.momentum.basis?.through ?? null,
+                mock: momentum.mock === true, mockMonths: momentum.mockMonths ?? 0 },
+            exposure: exposure ? { tasks: exposure.tasks, source: inputs.exposure.source, mock: exposure.mock === true, method: exposure.method ?? null } : null,
         },
         official: momentum?.official ?? [],
         confidence: known === 2 && momentum.confidence === 'high' ? 'high' : known >= 1 ? 'medium' : 'low',
@@ -158,6 +196,8 @@ export function forecast(save, params = scenarioOf(save), inputs = defaultInputs
         careers,
         skills: Object.keys(SKILLS).map((id) => values.get(id) ?? skillValue(id, params, inputs)),
         sources: { exposure: inputs.exposure?.source ?? null, momentum: inputs.momentum?.basis ?? null },
+        // Some value rests on mock data (data/mock): shown as such, replaced as real data accumulates
+        mock: [ ...values.values() ].some((skill) => skill.sources.demand?.mock || skill.sources.exposure?.mock),
         estimate: true,
     }
 }

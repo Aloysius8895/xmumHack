@@ -490,9 +490,19 @@ ${TARGET_IDS.map((id) => `${id}: ${TARGETS[id].en}`).join('\n')}`,
 // Roadmap texts in the three languages, the client shows the player's current one (game.view)
 const TRILINGUAL = { type: 'object', properties: { zh: { type: 'string' }, en: { type: 'string' }, ms: { type: 'string' } }, required: [ 'zh', 'en', 'ms' ], additionalProperties: false }
 
+const TEMPLATE_TASK = {
+    foundation: (name) => ({ title: { zh: `自学 ${name.zh} 的核心概念`, en: `Study the core concepts of ${name.en}`, ms: `Kaji konsep teras ${name.ms}` }, why: { zh: '打基础', en: 'Foundation', ms: 'Asas' }, effortHours: 6 }),
+    independent_practice: (name) => ({ title: { zh: `不用 AI，完成 5 道 ${name.zh} 练习`, en: `Do 5 ${name.en} exercises without AI`, ms: `Siapkan 5 latihan ${name.ms} tanpa AI` }, why: { zh: '通过练习巩固', en: 'Practice', ms: 'Latihan' }, effortHours: 5 }),
+    ai_collaboration: (name) => ({ title: { zh: `让 AI 起草一个 ${name.zh} 方案，再自己改好`, en: `Have AI draft a ${name.en} solution, then improve it yourself`, ms: `Minta AI merangka penyelesaian ${name.ms}, kemudian perbaiki sendiri` }, why: { zh: '学会和 AI 协作', en: 'Working with AI', ms: 'Bekerja dengan AI' }, effortHours: 5 }),
+    verification: (name) => ({ title: { zh: `检查 AI 给出的 ${name.zh} 结果，找出并改正错误`, en: `Check an AI ${name.en} result, find and fix its mistakes`, ms: `Semak hasil ${name.ms} daripada AI, cari dan betulkan kesilapannya` }, why: { zh: '能判断 AI 对不对', en: 'Judging AI output', ms: 'Menilai hasil AI' }, effortHours: 4 }),
+    transfer: (name) => ({ title: { zh: `用 ${name.zh} 做一个小作品`, en: `Build a small piece of work with ${name.en}`, ms: `Bina hasil kerja kecil dengan ${name.ms}` }, why: { zh: '能放进作品集', en: 'Portfolio evidence', ms: 'Bukti portfolio' }, effortHours: 8 }),
+}
+
 // Demo tasks of a skill: study, practise, build
-function templateTasks(id, mode = 'moderate')
+function templateTasks(id, mode = 'moderate', activities = null)
 {
+    if(activities?.length)
+        return activities.map(activity => ({ ...templateTasks(id, mode)[0], ...TEMPLATE_TASK[activity](SKILLS[id]), learningActivity: activity }))
     const name = SKILLS[id]
     const tasks = [
         { title: { zh: `自学 ${name.zh} 的核心概念`, en: `Study the core concepts of ${name.en}`, ms: `Kaji konsep teras ${name.ms}` }, why: { zh: '打基础', en: 'Foundation', ms: 'Asas' }, effortHours: 6, skillId: id },
@@ -516,20 +526,28 @@ function templateStages(layout, career, mode = 'moderate')
         title: { zh: joinNames(stage.skillIds, 'zh'), en: joinNames(stage.skillIds, 'en'), ms: joinNames(stage.skillIds, 'ms') },
         why: { zh: `${career.name.zh}需要${joinNames(stage.skillIds, 'zh')}。`, en: `${career.name.en} needs ${joinNames(stage.skillIds, 'en')}.`, ms: `${career.name.ms} memerlukan ${joinNames(stage.skillIds, 'ms')}.` },
         requirementRefs: [],
-        tasks: stage.skillIds.flatMap(id => templateTasks(id, stage.branch ?? mode)).slice(0, 4),
+        tasks: stage.skillIds.flatMap(id => templateTasks(id, stage.branch ?? mode, stage.approach?.order.slice(0, 3))).slice(0, 4),
     }))
 }
+
+const describeApproach = (approach) => approach ? ` - learning approach: ${approach.order.map((activity) => `${activity} ${Math.round(approach.activities[activity] * 100)}%`).join(', ')}` : ''
 
 /**
  * The roadmap plan. With `layout` (no-regret.js: stages in order with their kind, branch, skills and code-written
  * basis), the stages, their order and skills are fixed; the AI only writes each stage's title, why and tasks, and a
  * reply with another number of stages falls back to the template. Without a layout, the AI plans the stages itself.
  */
-export async function generateRoadmap({ target, profile, gaps, lang, layout = null, learning = null, adjustment = null })
+export async function generateRoadmap({ target, profile, gaps, lang, layout = null, learning = null, adjustment = null, scenario = null })
 {
     const career = getCareer(target.careerId)
     const context = learning ?? learningContext({ target, profile })
-    const evidenceIds = new Set(context.evidence.skills.map(row => row.evidenceId).filter(Boolean))
+    scenario ??= { effectiveScenario: context.effectiveScenario, selectionSource: context.selectionSource }
+    const customise = target.mode === 'customise' && target.posting
+    const posting = customise
+        ? `\nThe player targets a specific company job posting: "${target.posting.title}" at ${target.posting.company}. Its requirements:\n` +
+          target.posting.requirements.map((requirement, index) => `R${index + 1}. [${requirement.priority}] ${requirement.text} (skill ${requirement.skillId}, level ${requirement.level}, player: ${requirement.status})`).join('\n')
+        : '\nGeneral mode: no specific company, use the general requirements of the career.'
+    const evidenceIds = new Set(context.evidence.skills.flatMap(row => [row.evidenceId, row.stableEvidenceId]).filter(Boolean))
     const cleanTask = task => ({ ...task, evidenceRefs: (task.evidenceRefs ?? []).filter(id => evidenceIds.has(id)) })
     const taskSchema = {
         type: 'object', properties: {
@@ -559,15 +577,24 @@ export async function generateRoadmap({ target, profile, gaps, lang, layout = nu
         const written = await ask({
             system: `${PLATFORM}\n\n${learningPrompt(context)}\n\nTask: write the texts and tasks of a preparation roadmap whose stages are already decided. Write every title and why in Chinese (zh), English (en) and Malay (ms). A branch stage follows its own moderate/extreme label, while core stages retain shared foundations. The priority skeleton is a project computation, not evidence of observed AI speed. Include a deliverable, completion criteria and evidence references in every task.`,
             content: `Target: ${describeCareer(career)}
+${posting}
 
 Player profile:
 ${describeProfile(profile)}
+${scenario ? `
+Planning scenario: ${scenario.effectiveScenario} AI adoption (${scenario.selectionSource === 'user_override' ? "the player's own choice, a planning assumption" : 'the recommended default'}). ${scenario.reason?.en ?? ''}` : ''}
 
-The stages, in this exact order (do not add, drop, merge or reorder them):
-${layout.map((stage, index) => `${index + 1}. ${stage.kind}${stage.branch ? ` (${stage.branch} AI adoption branch)` : ''}: ${stage.skillIds.join(', ')}`).join('\n')}
+The stages, in this exact order (do not add, drop, merge or reorder them), each with how its learning time is shared
+between activities under this scenario (computed from AI usage data):
+${layout.map((stage, index) => `${index + 1}. ${stage.kind}${stage.branch ? ` (${stage.branch} AI adoption branch)` : ''}: ${stage.skillIds.join(', ')}${describeApproach(stage.approach)}`).join('\n')}
 
-For each stage give a title, why it matters for this career, and 2 to 4 self-directed tasks (research, exercises, mini projects; say what to do,
-not how step by step), each with an honest estimate of hours and its main skill id from the stage's skills.`,
+For each stage give a title, why it matters for this career${customise ? ' and which posting requirements (R1, R2...) it covers' : ''}, and 2 to 4 self-directed tasks
+(research, exercises, mini projects; say what to do, not how step by step), each with an honest estimate of hours, its main skill id from
+the stage's skills and its learning activity: foundation (understand concepts), independent_practice (practise without AI),
+ai_collaboration (produce or explore with AI), verification (check and correct results, AI's included) or transfer (reuse the method
+on new data or a new problem). Give the activities with the larger shares more of the stage's tasks, keep at least one foundation or
+independent_practice task in every stage (the fundamentals are never dropped because AI can do them), and never turn learning into
+prompt tricks.${customise ? ' Aim the tasks at what the posting asks for.' : ''}`,
             schema: {
                 type: 'object',
                 properties: {
@@ -575,15 +602,16 @@ not how step by step), each with an honest estimate of hours and its main skill 
                         type: 'array',
                         items: {
                             type: 'object',
-                            properties: {
+                                properties: {
                                 title: TRILINGUAL,
                                 why: TRILINGUAL,
+                                requirementRefs: { type: 'array', items: { type: 'string' } },
                                 tasks: {
                                     type: 'array',
                                     items: taskSchema,
                                 },
                             },
-                            required: [ 'title', 'why', 'tasks' ],
+                            required: [ 'title', 'why', 'requirementRefs', 'tasks' ],
                             additionalProperties: false,
                         },
                     },
@@ -595,8 +623,8 @@ not how step by step), each with an honest estimate of hours and its main skill 
         })
         if(written.stages?.length !== layout.length)
             return { overview, stages: templateStages(layout, career, context.effectiveScenario) }
-        return { overview, stages: layout.map((stage, index) => ({ ...stage, ...written.stages[index], requirementRefs: [],
-            tasks: (written.stages[index].tasks.length && written.stages[index].tasks.every(task => stage.skillIds.includes(task.skillId)) ? written.stages[index].tasks : stage.skillIds.flatMap(id => templateTasks(id, stage.branch ?? context.effectiveScenario)).slice(0, 4)).map(cleanTask) })) }
+        return { overview, stages: layout.map((stage, index) => ({ ...stage, ...written.stages[index], requirementRefs: customise ? written.stages[index].requirementRefs ?? [] : [],
+            tasks: (written.stages[index].tasks.length && written.stages[index].tasks.every(task => stage.skillIds.includes(task.skillId)) ? written.stages[index].tasks : stage.skillIds.flatMap(id => templateTasks(id, stage.branch ?? context.effectiveScenario, stage.approach?.order.slice(0, 3))).slice(0, 4)).map(cleanTask) })) }
     }
 
     if(isMock())
@@ -619,11 +647,6 @@ not how step by step), each with an honest estimate of hours and its main skill 
             }),
         }
     }
-
-    const posting = target.mode === 'customise' && target.posting
-        ? `\nThe player targets a specific posting: "${target.posting.title}" at ${target.posting.company}. Its requirements:\n` +
-          target.posting.requirements.map((requirement, index) => `R${index + 1}. [${requirement.priority}] ${requirement.text} (skill ${requirement.skillId}, level ${requirement.level}, player: ${requirement.status})`).join('\n')
-        : '\nGeneral mode: no specific company, use the general requirements of the career.'
 
     return ask({
         system: `${PLATFORM}\n\n${learningPrompt(context)}\n\nTask: plan an ordered preparation roadmap. The player's current UI language is ${LANGUAGES[lang] ?? LANGUAGES.en}.

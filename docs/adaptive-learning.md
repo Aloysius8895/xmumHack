@@ -29,11 +29,11 @@ rejected. Refreshing does not move the weekly due date or modify submitted revie
   explicitly conservative Moderate planning assumption. The model explains
   task-level evidence; it cannot silently claim it measured industry speed.
 - The user's override persists separately from the independent analysis.
-- The No-Regret learning skeleton defaults to AEI-only inputs: demand is excluded
-  with a neutral factor, not reported as measured flat demand. Career/skill
-  requirements remain inputs. Existing market panels and forecast scoring remain
-  available separately. `modelAnalysis` labels the skeleton as a project skill
-  priority computation, never as AI-trend evidence.
+- Integration with the local roadmap inputs retains reviewed skill prerequisites,
+  scenario-specific activity shares and hiring-demand momentum (including explicitly
+  marked simulated inputs). `aeiOnlyInputs` remains available for neutral-demand
+  comparisons. `modelAnalysis` labels this as project learning priority, never
+  evidence of AI development speed. AEI evidence retains its independent provenance.
 - Zero, missing and thin mappings are not safety guarantees. Notes and task
   coverage are visible in the evidence disclosure.
 - Uniform study effort is assumed to be 10 hours/week. Suggested checkpoint

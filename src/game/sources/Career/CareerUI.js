@@ -218,18 +218,22 @@ export class CareerUI
         this.root.className = 'career-ui'
         this.root.innerHTML = `
             <section class="career-panel js-career-panel" aria-hidden="true">
+                <img class="fantasy-exhibit-frame building-only" src="/interface/fantasy-exhibit-frame-no-lantern.png" alt="" aria-hidden="true" draggable="false">
                 <header class="career-panel-header">
                     <span class="building-screen-brand building-only">KerjayaKu <span> / </span></span>
                     <h2 class="js-career-panel-title"></h2>
+                    <span class="fantasy-exhibit-brand building-only">KerjayaKu · Team Chill Chill</span>
                     <button class="career-close" data-action="close" aria-label="${esc(t('common.close'))}">×</button>
                 </header>
                 <nav class="building-screen-sections building-only js-building-sections"></nav>
                 <div class="career-panel-body js-career-panel-body"></div>
                 <footer class="building-screen-footer building-only">
-                    <button type="button" data-action="building-page" data-direction="-1" class="building-screen-arrow">←</button>
+                    <button type="button" data-action="building-room" data-direction="-1" class="exhibit-room-button js-exhibit-previous">←</button>
+                    <button type="button" data-action="building-page" data-direction="-1" class="exhibit-page-button" aria-label="${esc(t('exhibit.previousPage'))}">‹</button>
                     <span class="js-building-position"></span>
+                    <button type="button" data-action="building-page" data-direction="1" class="exhibit-page-button" aria-label="${esc(t('exhibit.nextPage'))}">›</button>
                     <span class="building-screen-hint">Esc · <span class="js-building-exit"></span></span>
-                    <button type="button" data-action="building-page" data-direction="1" class="building-screen-arrow">→</button>
+                    <button type="button" data-action="building-room" data-direction="1" class="exhibit-room-button js-exhibit-next">→</button>
                 </footer>
             </section>
             <section class="career-dialogue js-career-dialogue" aria-hidden="true"></section>
@@ -631,7 +635,8 @@ export class CareerUI
             case 'market-tab': this.panel.marketTab = data.tab; return this.renderPanel()
             case 'market-sampling-toggle': this.panel.marketSamplingExpanded = !this.panel.marketSamplingExpanded; return this.renderPanel()
             case 'market-refresh': return this.refreshMarketSample()
-            case 'scenario': return this.run(() => this.api.setScenario(data.preset), () => this.renderPanel())
+            // 'default': back to the scenario recommended from the data
+            case 'scenario': return this.run(() => this.api.setScenario(data.preset === 'default' ? null : data.preset), () => this.renderPanel())
             case 'scenario-assumptions': this.panel.assumptionsOpen = !this.panel.assumptionsOpen; return this.renderPanel()
             case 'market-rising': Object.assign(this.panel, { marketTab: 'ranking', marketFilter: 'rising' }); return this.renderPanel()
             case 'mode': this.panel.mode = data.mode; return this.renderPanel()
@@ -647,6 +652,8 @@ export class CareerUI
             case 'target-resolve': return this.resolveTarget(data.choice)
             case 'career-generate': return this.generateCareer()
             case 'file-remove': delete this.files[data.file]; return this.renderPanel()
+            case 'resource-prompt': this.panel.resourcePrompt = data.skill; return this.renderPanel()
+            case 'resource-prompt-close': this.panel.resourcePrompt = null; return this.renderPanel()
             case 'roadmap': return this.generateRoadmap(data.confirm === '1')
             case 'learning-mode': return this.run(() => this.api.setLearningScenario(data.mode))
             case 'learning-default': return this.run(() => this.api.setLearningScenario(null))
@@ -1206,7 +1213,7 @@ export class CareerUI
             // Ranked by the score of the current scenario (server/scenarios.js); affinity still shows on the cards
             .sort((a, b) => (forecastOf(this.state, a.id)?.rank ?? Infinity) - (forecastOf(this.state, b.id)?.rank ?? Infinity) || (b.affinity ?? 0) - (a.affinity ?? 0))
         return [ t('careers.title'), `
-            ${renderScenarioBar(this.state, { t, esc, open: Boolean(this.panel.assumptionsOpen) })}
+            ${renderScenarioBar(this.state, { t, esc, open: Boolean(this.panel.assumptionsOpen), lang: getLang() })}
             ${this.panel.assumptionsOpen ? renderAssumptions(this.state, { t, esc }) : ''}
             <div class="career-search">
                 <input type="search" data-draft="careerSearch" placeholder="${esc(t('careers.search.placeholder'))}" aria-label="${esc(t('careers.search.placeholder'))}" value="${esc(this.drafts.careerSearch ?? '')}">
@@ -1912,6 +1919,7 @@ export class CareerUI
                         </div>
                         <div class="career-map-progress">${bar(stage.progress)}<small>${esc(t('roadmap.tasksDone', { done, total: stage.tasks.length }))}</small></div>
                         <p class="career-map-why">${icon('target')}<span><b>${esc(t('roadmap.why'))}</b>${esc(stage.why)}</span></p>
+                        ${stage.approach?.reason ? `<p class="career-muted">${esc(stage.approach.reason)}</p>` : ''}
                         ${this.renderStageSdgs(stage)}
                         ${this.renderStageResources(stage)}
                         ${stage.requirementRefs.length ? `<p class="career-muted">${esc(t('roadmap.covers', { refs: stage.requirementRefs.join(', ') }))}</p>` : ''}
@@ -1924,6 +1932,7 @@ export class CareerUI
                                     <input type="checkbox" data-task="${task.id}" ${task.progress >= 100 ? 'checked' : ''} ${locked || alternative ? 'disabled' : ''}>
                                     <span>${esc(task.title)}<small>${esc(task.why)}</small>${task.deliverable ? `<small>${esc(t('learning.deliverable'))}: ${esc(task.deliverable)}</small>` : ''}${task.completionCriteria ? `<small>${esc(t('learning.criteria'))}: ${esc(task.completionCriteria)}</small>` : ''}</span>
                                 </label>
+                                ${task.learningActivity ? `<span class="career-tag is-activity">${esc(t(`roadmap.activity.${task.learningActivity}`))}</span>` : ''}
                                 <span class="career-tag is-mp">${esc(t('roadmap.mp', { n: task.mp }))}</span>
                                 ${bar(task.progress, 'is-thin')}
                             </li>`).join('')}
@@ -1990,18 +1999,29 @@ export class CareerUI
     renderStageResources(stage)
     {
         const skillIds = [ ...new Set([ ...stage.skillIds, ...stage.tasks.map((task) => task.skillId) ]) ]
-        const resources = skillIds.map((id) => this.state.skillDetails[id]?.resource).filter(Boolean)
+        const resources = skillIds.map((id) => ({ id, resource: this.state.skillDetails[id]?.resource })).filter(({ resource }) => resource)
         if(!resources.length)
             return ''
+        const promptSkill = resources.find(({ id, resource }) => resource.prompt && id === this.panel.resourcePrompt)?.id
 
         return `
             <div class="career-map-resources">
                 <b>${icon('compass')}${esc(t('roadmap.startHere'))}</b>
-                ${resources.map((resource) => `
+                ${resources.map(({ id, resource }) => resource.prompt ? `
+                <button type="button" data-action="resource-prompt" data-skill="${esc(id)}">
+                    <span>${esc(this.skillName(id, id))}</span>
+                    <small>${esc(t('roadmap.promptButton'))}</small>
+                </button>` : `
                 <a href="${esc(resource.url)}" target="_blank" rel="noopener noreferrer">
                     <span>${esc(resource.title)} ↗</span>
                     <small>${esc(t(resource.open ? 'roadmap.resourceOpen' : 'roadmap.resourceFree'))}</small>
                 </a>`).join('')}
+                ${promptSkill ? `
+                <div class="career-map-resource-prompt">
+                    <label for="career-resource-prompt-${esc(stage.id)}">${esc(t('roadmap.promptTitle', { skill: this.skillName(promptSkill, promptSkill) }))}</label>
+                    <textarea id="career-resource-prompt-${esc(stage.id)}" readonly rows="9">${esc(t('roadmap.promptText', { skill: this.skillName(promptSkill, promptSkill), description: this.state.skillDetails[promptSkill].description?.[getLang()] ?? '' }))}</textarea>
+                    <button type="button" data-action="resource-prompt-close">${esc(t('common.close'))}</button>
+                </div>` : ''}
             </div>`
     }
 

@@ -18,10 +18,11 @@ import { crawlerStatus } from './crawler-market.js'
 import { withHistoricalMarket } from './historical-market.js'
 import { referenceMarkets } from './reference-market.js'
 import { referenceTrend } from './reference-trend.js'
+import { bigPicture } from './big-picture.js'
 import { nationalEstimate } from './national-estimate.js'
 import { mycolTimeline } from './official-signals.js'
-import { PRESETS, compare, defaultInputs, forecast, scenarioOf } from './scenarios.js'
-import { noRegretSkeleton, skeletonChanges } from './no-regret.js'
+import { PRESETS, compare, defaultInputs, forecast, scenarioOf, scenarioState } from './scenarios.js'
+import { ACTIVITIES as LEARNING_ACTIVITIES, noRegretSkeleton, presetOf, skeletonChanges, withPrerequisites } from './no-regret.js'
 import { updateLog } from './update-log.js'
 import { learningView } from './adaptive-learning.js'
 import { createHash } from 'node:crypto'
@@ -366,10 +367,20 @@ export function addCustomCareer(save, spec)
     return career
 }
 
+/**
+ * The career the roadmap prepares for: as targeted (a company's job posting replaces the default skills), with the
+ * reviewed prerequisites of its skills added (no-regret.js withPrerequisites). Affinity and progress keep targetedCareer.
+ */
+export function roadmapCareer(save, career = getCareer(save.target?.careerId))
+{
+    return career ? withPrerequisites(targetedCareer(save, career), career) : null
+}
+
+/** The skill gaps toward the target as the roadmap sees it (roadmapCareer): the job posting's skills and their prerequisites */
 export function gapsFor(save)
 {
     const career = getCareer(save.target.careerId)
-    return matchCareer(targetedCareer(save, career), save.profile.skills).skills
+    return matchCareer(roadmapCareer(save, career), save.profile.skills).skills
 }
 
 /**
@@ -400,23 +411,24 @@ export function buildRoadmap(plan)
     return {
         generatedAt: new Date().toISOString(),
         overview: plan.overview,
-        ...(layout ? { chosenBranch: plan.chosenBranch ?? 'moderate', branchChosenBy: 'scenario', forecastBasis: plan.forecastBasis ?? null } : {}),
+        ...(layout ? { chosenBranch: plan.chosenBranch ?? 'moderate', branchChosenBy: 'scenario', forecastBasis: plan.forecastBasis ?? null,
+            scenario: plan.scenario ?? plan.chosenBranch ?? 'moderate' } : {}),
         stages: stages.map((stage, index) => ({
             id: `s${index + 1}`,
             title: stage.title,
             why: stage.why,
             skillIds: stage.skillIds.filter((id) => SKILLS[id]),
             requirementRefs: stage.requirementRefs,
-            ...(layout ? { kind: stage.kind, branch: stage.branch ?? null, basis: stage.basis ?? [], gains: stage.gains ?? {} } : {}),
+            ...(layout ? { kind: stage.kind, branch: stage.branch ?? null, basis: stage.basis ?? [], gains: stage.gains ?? {}, approach: stage.approach ?? null } : {}),
             prerequisites: (layout ? layoutPrerequisites(stages, index) : stage.prerequisiteIndexes.filter((other) => other >= 0 && other < index)).map((other) => `s${other + 1}`),
             tasks: stage.tasks.slice(0, RULES.maxTasksPerStage).map((task, taskIndex) => ({
                 id: `s${index + 1}t${taskIndex + 1}`,
                 title: task.title,
                 why: task.why,
                 skillId: SKILLS[task.skillId] ? task.skillId : null,
+                learningActivity: LEARNING_ACTIVITIES.includes(task.learningActivity) ? task.learningActivity : null,
                 mp: Math.max(1, Math.min(200, Math.round(task.effortHours))),
                 progress: 0,
-                ...(task.learningActivity ? { learningActivity: task.learningActivity } : {}),
                 ...(task.deliverable ? { deliverable: task.deliverable } : {}),
                 ...(task.completionCriteria ? { completionCriteria: task.completionCriteria } : {}),
                 ...(task.evidenceRefs ? { evidenceRefs: task.evidenceRefs } : {}),
@@ -553,23 +565,29 @@ export function setTaskDone(save, taskId, done)
 
 /** The chosen scenario's forecast and both presets' ranks, computed once from the same inputs */
 /**
- * Re-plan prompt: the No-Regret skeleton of the roadmap (forecastBasis) against the current data. Skills the player
- * no longer lacks are left out of both sides, so learning never triggers it; only a changed core, branch order or
- * later set does. Never re-plans by itself (that calls the AI and starts a new roadmap): the player decides.
+ * Re-plan prompt: the No-Regret skeleton of the roadmap (forecastBasis) against the current data, read as the roadmap
+ * is built (AI exposure and hiring demand, the career as targeted). Skills the player no longer lacks are left out of
+ * both sides, so learning never triggers it; only a changed core, branch order or later set does ('trend-data', or
+ * 'method-changed' for a roadmap built on another reading). A roadmap written for another scenario than the effective
+ * one ('scenario-changed') learns its skills another way (prompt 07). Never re-plans by itself (that calls the AI and
+ * starts a new roadmap): the player decides.
  */
 function replanSuggestion(save, inputs)
 {
     const basis = save.roadmap?.forecastBasis
     if(!basis || !save.target)
         return null
-    const now = noRegretSkeleton(save, undefined, targetedCareer(save, getCareer(save.target.careerId)))
+    const now = noRegretSkeleton(save, undefined, { career: roadmapCareer(save) })
     if(!now)
         return null
     const gaps = new Set([ ...now.core, ...now.later, ...Object.values(now.branches).flat() ])
     const keep = (ids) => (ids ?? []).filter((id) => gaps.has(id))
     const before = { core: keep(basis.core), later: keep(basis.later), branches: Object.fromEntries(Object.entries(basis.branches ?? {}).map(([ preset, ids ]) => [ preset, keep(ids) ])) }
     const changedSkills = skeletonChanges(before, now)
-    return changedSkills.length ? { changedSkills, reason: 'trend-data' } : null
+    if(changedSkills.length)
+        return { changedSkills, reason: basis.demand === 'momentum' ? 'trend-data' : 'method-changed' }
+    const scenario = presetOf(scenarioOf(save))
+    return save.roadmap.scenario && save.roadmap.scenario !== scenario ? { changedSkills: [], reason: 'scenario-changed', scenario, roadmapScenario: save.roadmap.scenario } : null
 }
 
 // The client needs how many tasks an exposure rests on, not their text (that stays in data/ai-exposure)
@@ -584,6 +602,8 @@ function scenarioView(save)
     const skillStatus = Object.fromEntries(current.skills.map((skill) => [ skill.id, Object.fromEntries(Object.entries(statuses).map(([ preset, skills ]) => [ preset, skills.find((row) => row.id === skill.id)?.status ?? null ])) ]))
     return {
         scenario: scenarioOf(save),
+        // Recommended, chosen and effective scenario with the basis of the recommendation (prompt 06)
+        scenarioChoice: scenarioState(save),
         forecast: { ...current, skills: current.skills.map(lighter), careers: current.careers.map((career) => ({ ...career, skills: career.skills.map(lighter) })) },
         scenarioCompare: compare(save, inputs),
         skillStatus,
@@ -652,6 +672,7 @@ export function view(save, ai, documents = {})
             title: localText(stage.title, save.lang),
             why: localText(stage.why, save.lang),
             ...(stage.basis ? { basis: stage.basis.map((text) => localText(text, save.lang)) } : {}),
+            ...(stage.approach ? { approach: { ...stage.approach, reason: localText(stage.approach.reason, save.lang) } } : {}),
             tasks: stage.tasks.map((task) => ({ ...task, title: localText(task.title, save.lang), why: localText(task.why, save.lang),
                 ...(task.deliverable ? { deliverable: localText(task.deliverable, save.lang) } : {}),
                 ...(task.completionCriteria ? { completionCriteria: localText(task.completionCriteria, save.lang) } : {}) })),
@@ -675,7 +696,7 @@ export function view(save, ai, documents = {})
         marketSkills: collected?.skills ?? skillTrendOrEmpty(null, market),
         skillMarket: collected?.skillMarket ?? skillMarket(SKILL_IDS, market),
         // references: past JobStreet months (reference-market.js); yearOnYear: their 2024→2025 change (reference-trend.js)
-        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus(),references:referenceMarkets(),yearOnYear:referenceTrend(),nationalEstimate:nationalEstimate()}),
+        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus(),references:referenceMarkets(),yearOnYear:referenceTrend(),bigPicture:bigPicture(),nationalEstimate:nationalEstimate()}),
         // Future scenarios (scenarios.js): every career ranked under the chosen scenario, and both presets' ranks
         ...scenarioView(save),
         learningDirection: save.learningDirection ?? null,

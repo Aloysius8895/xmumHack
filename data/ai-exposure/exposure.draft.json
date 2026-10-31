@@ -14,22 +14,13 @@
     "limits": "Usage of Claude on US O*NET tasks: a signal of where AI enters work, not jobs lost and not Malaysian data."
   },
   "skills": {
-    "sql": {
-      "automation": 0.4052,
-      "augmentation": 0.5559,
-      "tasks": [
-        "Create business intelligence tools or systems, including design of related databases, spreadsheets, or outputs.",
-        "Maintain or update business intelligence tools, databases, dashboards, systems, or methods."
-      ],
-      "note": "[AI 规则初审 2026-10-30] 加词边界；[AI 任务初审 2026-10-30] 2 条都是 BI 工具/数据库相关，全部保留"
-    },
     "excel": {
       "automation": 0.4365,
       "augmentation": 0.4858,
       "tasks": [
         "Create business intelligence tools or systems, including design of related databases, spreadsheets, or outputs."
       ],
-      "note": "[AI 任务初审 2026-10-30] 只有 1 条任务（含 spreadsheets），相关，保留；样本很薄"
+      "note": "[AI 语义审查 2026-10-31] 保留电子表格任务作为工具族代理；不能称为 Excel 专属观测，且当前样本只有一条。"
     },
     "statistics": {
       "automation": 0.1691,
@@ -42,43 +33,21 @@
         "Report results of statistical analyses in peer-reviewed papers and technical manuals.",
         "Report results of statistical analyses, including information in the form of graphs, charts, and tables."
       ],
-      "note": "[AI 任务初审 2026-10-30] 6 条都是统计分析，全部保留"
-    },
-    "python": {
-      "automation": 0.329,
-      "augmentation": 0.5784,
-      "tasks": [
-        "Analyze problems to develop solutions involving computer hardware and software.",
-        "Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance.",
-        "Review and analyze computer printouts and performance indicators to locate code problems, and correct errors by correcting codes.",
-        "Use object-oriented programming languages, as well as client and server applications development processes and multimedia and Internet technology."
-      ],
-      "note": "[AI 规则初审 2026-10-30] 去掉 script 误匹配 description/prescription；program 改为 programm（避免匹配“项目/计划 programs”）；[AI 任务初审 2026-10-30] 删除督导、采购、网络维护、硬件设计、需求分析，只保留写/改代码的任务"
-    },
-    "data-cleaning": {
-      "automation": 0.0,
-      "augmentation": 0.0,
-      "tasks": [
-        "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy."
-      ],
-      "note": "[AI 任务初审 2026-10-30] 删除写设计文档的任务；剩下的“评估统计方法的有效性/准确性”是最接近的，但不是严格意义的数据清洗"
+      "note": "[AI 语义审查 2026-10-31] 保留报告中的统计分析、方法评估与结果解释任务。"
     },
     "data-visualization": {
-      "automation": 0.4346,
-      "augmentation": 0.512,
+      "automation": 0.3904,
+      "augmentation": 0.543,
       "tasks": [
-        "Maintain or update business intelligence tools, databases, dashboards, systems, or methods.",
         "Process large amounts of data for statistical modeling and graphic analysis, using computers.",
-        "Provide technical support for existing reports, dashboards, or other tools.",
         "Report results of statistical analyses, including information in the form of graphs, charts, and tables."
       ],
-      "note": "[AI 规则初审 2026-10-30] 去掉 report：撰写报告属于写作，不是可视化；[AI 任务初审 2026-10-30] 4 条都是图表/仪表板，全部保留"
+      "note": "[AI 语义审查 2026-10-31] 保留明确的图表呈现与图形分析；移除 BI 系统维护和一般技术支持。"
     },
     "communication": {
-      "automation": 0.0791,
-      "augmentation": 0.1675,
+      "automation": 0.0766,
+      "augmentation": 0.1617,
       "tasks": [
-        "Advise business or other groups on local, national, or international factors affecting the buying or selling of products or services.",
         "Advise clients concerning business transactions, claim liability, advisability of prosecuting or defending lawsuits, or legal rights and obligations.",
         "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
         "Advise management on organizing, preparing, or implementing recruiting or retention programs.",
@@ -94,14 +63,10 @@
         "Confer with customers by telephone or in person to provide information about products or services, take or enter orders, cancel accounts, or obtain details of complaints.",
         "Confer with data processing or project managers to obtain information on limitations or capabilities for data processing projects.",
         "Confer with engineers, customers, or others to discuss existing or potential engineering projects or products.",
-        "Confer with engineers, customers, vendors, or others to discuss existing or potential electronics engineering projects or products.",
-        "Confer with legal staff to resolve problems, such as copyright infringement or royalty sharing with outside producers or distributors.",
         "Confer with management or development teams to prioritize needs, resolve conflicts, develop content criteria, or choose solutions.",
         "Confer with management to develop or implement personnel policies or procedures.",
         "Confer with other staff members to plan and schedule lessons promoting learning, following approved curricula.",
         "Confer with parents or guardians, other teachers, counselors, and administrators to resolve students' behavioral and academic problems.",
-        "Consult with buying personnel to gain advice regarding environmentally sound or sustainable products.",
-        "Consult with buying personnel to gain advice regarding the types of products or services expected to be in demand.",
         "Consult with clients after sales or contract signings to resolve problems and to provide ongoing support.",
         "Consult with customers or other departments on project status, proposals, or technical issues, such as software system design or maintenance.",
         "Consult with management to ensure agreement on system principles.",
@@ -110,10 +75,8 @@
         "Establish clear objectives for all lessons, units, and projects and communicate those objectives to students.",
         "Evaluate selection or testing techniques by conducting research or follow-up activities and conferring with management or supervisory personnel.",
         "Explain procedures and discuss test results or prescribed treatments with patients.",
-        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences.",
         "Instruct through lectures, discussions, and demonstrations in one or more subjects, such as English, mathematics, or social studies.",
         "Interpret and explain human resources policies, procedures, laws, standards, or regulations.",
-        "Measure the effectiveness of marketing, advertising, and communications programs and strategies.",
         "Meet with customers to discuss menus for special occasions, such as weddings, parties, or banquets.",
         "Meet with other professionals to discuss individual students' needs and progress.",
         "Meet with parents and guardians to discuss their children's progress and to determine priorities for their children and their resource needs.",
@@ -122,74 +85,26 @@
         "Present evidence to defend clients or prosecute defendants in criminal or civil litigation.",
         "Probate wills and represent and advise executors and administrators of estates.",
         "Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware.",
-        "Provide consulting services to other doctors caring for patients with special or difficult problems.",
-        "Represent employer at conferences, meetings, boards, panels, committees, or working groups to present, explain, or defend findings or recommendations, negotiate compromises or agreements, or exchange information."
+        "Provide consulting services to other doctors caring for patients with special or difficult problems."
       ],
-      "note": "[AI 规则初审 2026-10-30] present 加词边界，避免匹配 represent（律师代表客户是核心法律工作）；[AI 任务初审 2026-10-30] 删除只是字面命中的任务：画草图、食物摆盘（presentation）、持续学习/参会、法律分析（advisability）、使用教具"
-    },
-    "html-css": {
-      "automation": 0.3846,
-      "augmentation": 0.3089,
-      "tasks": [
-        "Create searchable indices for Web page content.",
-        "Create web models or prototypes that include physical, interface, logical, or data models.",
-        "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
-        "Develop Web site maps, application models, image templates, or page templates that meet project goals, user needs, or industry standards.",
-        "Develop and document style guidelines for Web site content.",
-        "Identify or maintain links to and from other Web sites and check links to ensure proper functioning.",
-        "Perform or direct Web site updates.",
-        "Write supporting code for Web applications or Web sites."
-      ],
-      "note": "[AI 任务初审 2026-10-30] 只保留建站、写页面代码、页面模板、样式指南、链接维护；删除备份、数据库、商业策略、测试、SEO、写规格文档、技术选型"
-    },
-    "javascript": {
-      "automation": 0.2159,
-      "augmentation": 0.2478,
-      "tasks": [
-        "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
-        "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
-        "Supervise and assign work to programmers, designers, technologists, technicians, or other engineering or scientific personnel.",
-        "Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel.",
-        "Write supporting code for Web applications or Web sites."
-      ],
-      "note": "[AI 规则初审 2026-10-30] 同 python：修 script / program 误匹配；[AI 任务初审 2026-10-30] 只保留写代码、评估代码、用脚本语言建站"
-    },
-    "react": {
-      "automation": 0.2192,
-      "augmentation": 0.228,
-      "tasks": [
-        "Create web models or prototypes that include physical, interface, logical, or data models.",
-        "Write supporting code for Web applications or Web sites."
-      ],
-      "note": "[AI 规则初审 2026-10-30] 去掉 user：太宽，与 user-research 重叠；[AI 任务初审 2026-10-30] 删除数据库任务"
+      "note": "[AI 语义审查 2026-10-31] 保留解释、表达、咨询和讨论；移除营销效果测量与以查找名单为主的潜客识别。完整任务可能仍包含其他能力。"
     },
     "accessibility": {
-      "automation": 0.1783,
-      "augmentation": 0.3129,
+      "automation": 0.0,
+      "augmentation": 0.0,
       "tasks": [
-        "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
         "Incorporate technical considerations into Web site design plans, such as budgets, equipment, performance requirements, or legal issues including accessibility and privacy."
       ],
-      "note": "[AI 任务初审 2026-10-30] 2 条：浏览器/设备兼容性检查、网站设计考虑无障碍。是最接近的任务，保留；上一轮你没通过这个技能，请再确认"
-    },
-    "api-integration": {
-      "automation": 0.398,
-      "augmentation": 0.4596,
-      "tasks": [
-        "Use the computer in the analysis and solution of business problems, such as development of integrated production and inventory control and cost analysis systems."
-      ],
-      "note": "[AI 任务初审 2026-10-30] 删除商业策略、原型任务。规则新增 coordinate and link，以匹配系统分析师“连接组织内各计算机系统”这类任务；新匹配到的任务还没看过"
+      "note": "[AI 语义审查 2026-10-31] 仅保留明确提及 accessibility 的任务；浏览器和设备兼容性不等于无障碍。"
     },
     "backend-language": {
-      "automation": 0.4966,
-      "augmentation": 0.4206,
+      "automation": 0.532,
+      "augmentation": 0.4085,
       "tasks": [
-        "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure.",
-        "Develop data models for applications, metadata tables, views or related database structures.",
         "Develop or maintain archived procedures, procedural codes, or queries for applications.",
         "Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance."
       ],
-      "note": "[AI 任务初审 2026-10-30] 规则与 python 统一（program→programm）；删除督导、沟通、安装、选型、测试任务，只保留写/改代码与数据模型"
+      "note": "[AI 语义审查 2026-10-31] 保留代码修改与过程代码开发；通用编程代理，不识别具体后端语言，也不将数据库建模当成编程。"
     },
     "databases": {
       "automation": 0.1846,
@@ -208,26 +123,7 @@
         "Set up database clusters, backup, or recovery processes.",
         "Test changes to database applications or systems."
       ],
-      "note": "[AI 任务初审 2026-10-30] 12 条都是数据库工作，全部保留"
-    },
-    "rest-api": {
-      "automation": 0.3496,
-      "augmentation": 0.4739,
-      "tasks": [
-        "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure."
-      ],
-      "note": "[AI 规则初审 2026-10-30] 排除 user interface（那是前端，不是 API）；[AI 任务初审 2026-10-30] 只有 1 条（数据库应用的接口与数据传输机制），相关，保留；样本很薄"
-    },
-    "cloud-deploy": {
-      "automation": 0.2584,
-      "augmentation": 0.407,
-      "tasks": [
-        "Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.",
-        "Coordinate installation of software system.",
-        "Plan and install upgrades of database management system software to enhance database performance.",
-        "Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems."
-      ],
-      "note": "[AI 任务初审 2026-10-30] 删除机房供电、温湿度设备采购（硬件设施）和写代码任务"
+      "note": "[AI 语义审查 2026-10-31] 数据库架构、建模、标准、备份恢复、性能、测试与升级均相关。"
     },
     "testing": {
       "automation": 0.2991,
@@ -236,154 +132,67 @@
         "Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance.",
         "Test changes to database applications or systems."
       ],
-      "note": "[AI 规则初审 2026-10-30] test 加词边界，避免匹配 latest/contest/attest；[AI 任务初审 2026-10-30] 2 条都是修错/测试，保留"
+      "note": "[AI 语义审查 2026-10-31] 保留软件测试与错误修复；包含调试这一相邻能力，非单一测试类型专属统计。"
     },
     "user-research": {
-      "automation": 0.0688,
-      "augmentation": 0.213,
+      "automation": 0.0777,
+      "augmentation": 0.2756,
       "tasks": [
         "Analyze user needs to determine technical requirements.",
-        "Collaborate with management or users to develop e-commerce strategies and to integrate these strategies with Web sites.",
         "Confer with clients to discuss and determine layout design.",
-        "Consult with users, management, vendors, and technicians to assess computing needs and system requirements.",
-        "Evaluate data processing proposals to assess project feasibility and requirements.",
-        "Identify problems uncovered by testing or customer feedback, and correct problems or refer problems to appropriate personnel for correction."
+        "Consult with users, management, vendors, and technicians to assess computing needs and system requirements."
       ],
-      "note": "[AI 规则初审 2026-10-30] 去掉 need：会匹配所有 “as needed”；[AI 任务初审 2026-10-30] 删除只因 client/user 字眼命中的制作和技术支持任务；保留与客户/用户沟通需求、分析用户需求、处理用户反馈"
+      "note": "[AI 语义审查 2026-10-31] 保留需求访谈与用户需求分析；移除一般商业策略、项目可行性和没有明确研究活动的故障反馈处理。"
     },
     "prototyping": {
-      "automation": 0.033,
-      "augmentation": 0.0733,
+      "automation": 0.0,
+      "augmentation": 0.0,
       "tasks": [
-        "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
         "Create web models or prototypes that include physical, interface, logical, or data models.",
-        "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
-        "Plan layout of electric power generating plants or distribution lines or stations.",
-        "Prepare engineering sketches or specifications for construction, relocation, or installation of equipment, facilities, products, or systems.",
         "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes."
       ],
-      "note": "[AI 规则初审 2026-10-30] 去掉 model（ML/统计模型），加 wireframe/storyboard；上轮未通过，需人工确认；[AI 任务初审 2026-10-30] 删除印刷排版流程和客户沟通；保留设计概念、草图、版式、网页原型。上一轮你没通过这个技能，请再确认"
-    },
-    "figma": {
-      "automation": 0.1406,
-      "augmentation": 0.1958,
-      "tasks": [
-        "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
-        "Determine size and arrangement of illustrative material and copy, and select style and size of type.",
-        "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
-        "Draw and print charts, graphs, illustrations, and other artwork, using computer.",
-        "Key information into computer equipment to create layouts for client or supervisor."
-      ],
-      "note": "[AI 规则初审 2026-10-30] 去掉 design：几乎匹配设计师全部任务，失去区分度；[AI 任务初审 2026-10-30] 只保留数字化设计与排版任务；删除手绘草图、印刷流程、电视广播图像、客户沟通"
+      "note": "[AI 语义审查 2026-10-31] 仅保留网页原型和概念草图；移除发电设施布局、工程施工草图及成品平面设计。按数字产品概念原型理解。"
     },
     "visual-design": {
-      "automation": 0.2317,
-      "augmentation": 0.3469,
+      "automation": 0.1005,
+      "augmentation": 0.1399,
       "tasks": [
-        "Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand.",
         "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
         "Determine size and arrangement of illustrative material and copy, and select style and size of type.",
         "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
         "Draw and print charts, graphs, illustrations, and other artwork, using computer.",
         "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes.",
-        "Prepare reports of findings, illustrating data graphically and translating complex findings into written text.",
         "Produce still and animated graphics for on-air and taped portions of television news broadcasts, using electronic video equipment.",
         "Study illustrations and photographs to plan presentation of materials, products, or services."
       ],
-      "note": "[AI 任务初审 2026-10-30] 删除印刷制作流程和客户沟通，保留视觉设计本身"
-    },
-    "usability-testing": {
-      "automation": 0.0,
-      "augmentation": 0.0,
-      "tasks": [
-        "Identify problems uncovered by testing or customer feedback, and correct problems or refer problems to appropriate personnel for correction."
-      ],
-      "note": "[AI 规则初审 2026-10-30] 原来 test 会匹配网页开发的代码测试；改为必须与 user 同时出现；[AI 任务初审 2026-10-30] 原规则 0 匹配；改为匹配“测试或客户反馈中发现的问题”这类任务（网页开发职业里有）。新匹配到的任务还没看过"
+      "note": "[AI 语义审查 2026-10-31] 保留视觉构图、字体、图形与版式任务；移除研究报告和客户人口特征分析。品牌设计、动态图形是视觉设计的宽类代理。"
     },
     "ml-math": {
-      "automation": 0.1593,
-      "augmentation": 0.3018,
+      "automation": 0.1119,
+      "augmentation": 0.1916,
       "tasks": [
         "Adapt statistical methods to solve specific problems in many fields, such as economics, biology, and engineering.",
         "Analyze and interpret statistical data to identify significant differences in relationships among sources of information.",
         "Conduct logical analyses of business, scientific, engineering, and other technical problems, formulating mathematical models of problems for solution by computers.",
         "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy.",
         "Examine theories, such as those of probability and inference, to discover mathematical bases for new or improved methods of obtaining and evaluating numerical data.",
-        "Process large amounts of data for statistical modeling and graphic analysis, using computers.",
-        "Report results of statistical analyses in peer-reviewed papers and technical manuals.",
-        "Report results of statistical analyses, including information in the form of graphs, charts, and tables."
-      ],
-      "note": "[AI 任务初审 2026-10-30] 8 条都是数学/统计建模，全部保留"
-    },
-    "ml-frameworks": {
-      "automation": 0.3733,
-      "augmentation": 0.5431,
-      "tasks": [
-        "Conduct logical analyses of business, scientific, engineering, and other technical problems, formulating mathematical models of problems for solution by computers.",
         "Process large amounts of data for statistical modeling and graphic analysis, using computers."
       ],
-      "note": "[AI 任务初审 2026-10-30] 删除“维护模型文档模板库”（model 指文档模板，不是 ML 模型）"
-    },
-    "mlops": {
-      "automation": 0.4617,
-      "augmentation": 0.5105,
-      "tasks": [
-        "Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems."
-      ],
-      "note": "[AI 规则初审 2026-10-30] 去掉单独的 model 和 maintain：与 ml-frameworks 几乎重复、会匹配 maintain records；[AI 任务初审 2026-10-30] 删除网络维护、预算监控、生产库存系统；只剩 1 条（测试、维护、监控程序与系统），样本很薄"
-    },
-    "roadmapping": {
-      "automation": 0.0874,
-      "augmentation": 0.1574,
-      "tasks": [
-        "Develop and interpret organizational goals, policies, and procedures.",
-        "Direct daily operations of department, analyzing workflow, establishing priorities, developing standards and setting deadlines.",
-        "Review project plans to plan and coordinate project activity."
-      ],
-      "note": "[AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation；[AI 任务初审 2026-10-30] 删除 IT 基础设施/灾备任务，保留计划、目标、优先级"
-    },
-    "agile": {
-      "automation": 0.0,
-      "augmentation": 0.0,
-      "tasks": [
-        "Review project plans to plan and coordinate project activity."
-      ],
-      "note": "[AI 任务初审 2026-10-30] 只有 1 条（审查项目计划、协调项目活动），保留；样本很薄"
+      "note": "[AI 语义审查 2026-10-31] 保留数学建模、概率、统计分析与方法评估作为数学基础代理；移除仅写作或呈现结果的任务，不称为 ML 专属暴露度。"
     },
     "market-analysis": {
-      "automation": 0.1397,
-      "augmentation": 0.2416,
+      "automation": 0.2856,
+      "augmentation": 0.5776,
       "tasks": [
-        "Answer customers' questions about products, prices, availability, product uses, and credit terms.",
         "Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand.",
-        "Conduct economic or commercial surveys to identify potential markets for products or services.",
         "Conduct research on consumer opinions and marketing strategies, collaborating with marketing professionals, statisticians, pollsters, and other professionals.",
-        "Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders.",
-        "Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services.",
-        "Develop business cases for environmental marketing strategies.",
-        "Develop pricing strategies, balancing firm objectives and customer satisfaction.",
-        "Direct the hiring, training, or performance evaluations of marketing or sales staff and oversee their daily activities.",
-        "Evaluate data processing proposals to assess project feasibility and requirements.",
         "Forecast and track marketing and sales trends, analyzing collected data.",
-        "Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers.",
         "Gather data on competitors and analyze their prices, sales, and method of marketing and distribution.",
-        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences.",
-        "Identify, develop, or evaluate marketing strategy, based on knowledge of establishment objectives, market characteristics, and cost and markup factors.",
-        "Integrate environmental information into product or company marketing strategies, policies, or activities.",
-        "Measure and assess customer and employee satisfaction.",
-        "Measure the effectiveness of marketing, advertising, and communications programs and strategies.",
         "Monitor industry statistics and follow trends in trade literature.",
         "Monitor market conditions, product innovations, and competitors' products, prices, and sales.",
-        "Negotiate contracts with vendors or distributors to manage product distribution, establishing distribution networks or developing distribution strategies.",
-        "Obtain credit information about prospective customers.",
-        "Prepare drawings, estimates, and bids that meet specific customer needs.",
-        "Provide customers with product samples and catalogs.",
-        "Recommend products to customers, based on customers' needs and interests.",
-        "Seek and provide information to help companies determine their position in the marketplace.",
-        "Stay abreast of advances in technology.",
-        "Use sales forecasting or strategic planning to ensure the sale and profitability of products, lines, or services, analyzing business developments and monitoring market trends."
+        "Seek and provide information to help companies determine their position in the marketplace."
       ],
-      "note": "[AI 规则初审 2026-10-30] 原规则 0 匹配；11-3021（IT 经理）任务里没有 market 字眼，放宽到供应商评估、行业/新技术跟踪、成本效益和可行性分析；[AI 任务初审 2026-10-30] 删除与 user-research/沟通重复的任务；保留跟踪技术进展、评估项目可行性。产品经理映射到 IT 经理本身较弱"
+      "note": "[AI 语义审查 2026-10-31] 保留市场、竞争者、消费者和趋势研究；移除一般客户沟通、销售、人员管理、合同谈判和纯技术跟踪。"
     },
     "accounting": {
       "automation": 0.3087,
@@ -396,7 +205,7 @@
         "Inspect account books and accounting systems for efficiency, effectiveness, and use of accepted accounting procedures to record transactions.",
         "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards."
       ],
-      "note": "[AI 任务初审 2026-10-30] 删除归属审计、内控、沟通、代理出庭的任务，只保留记账、报表、会计系统、财务分析"
+      "note": "[AI 语义审查 2026-10-31] 保留会计记录、报表、账簿与会计系统任务；与审计有真实重叠，不以强制互斥方式删除。"
     },
     "auditing": {
       "automation": 0.228,
@@ -416,29 +225,27 @@
         "Review taxpayer accounts, and conduct audits on-site, by correspondence, or by summoning taxpayer to office.",
         "Supervise auditing of establishments, and determine scope of investigation required."
       ],
-      "note": "[AI 任务初审 2026-10-30] 13 条都是审计工作，全部保留"
+      "note": "[AI 语义审查 2026-10-31] 保留审计、记录核查、系统检查与审计报告任务；会计与审计可能真实重叠。"
     },
     "internal-control": {
-      "automation": 0.2129,
-      "augmentation": 0.2531,
+      "automation": 0.2838,
+      "augmentation": 0.3375,
       "tasks": [
-        "Audit payroll and personnel records to determine unemployment insurance premiums, workers' compensation coverage, liabilities, and compliance with tax laws.",
         "Collect and analyze data to detect deficient controls, duplicated effort, extravagance, fraud, or non-compliance with laws, regulations, and management policies.",
         "Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity.",
         "Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations."
       ],
-      "note": "[AI 规则初审 2026-10-30] control 加词边界，避免匹配 controller；[AI 任务初审 2026-10-30] 删除报税任务"
+      "note": "[AI 语义审查 2026-10-31] 保留控制缺陷、舞弊、合规和系统控制评估；移除不明确针对内控的薪资审计任务。"
     },
     "legal-research": {
-      "automation": 0.0185,
-      "augmentation": 0.1696,
+      "automation": 0.0247,
+      "augmentation": 0.2261,
       "tasks": [
         "Analyze the probable outcomes of cases, using knowledge of legal precedents.",
-        "Help develop federal and state programs, draft and interpret laws and legislation, and establish enforcement procedures.",
         "Interpret laws, rulings and regulations for individuals and businesses.",
         "Study Constitution, statutes, decisions, regulations, and ordinances of quasi-judicial bodies to determine ramifications for cases."
       ],
-      "note": "[AI 任务初审 2026-10-30] 4 条都是法律研究/解释，全部保留"
+      "note": "[AI 语义审查 2026-10-31] 保留法规、判例研究与法律解释；移除同时包含立法及政策执行的宽泛任务。"
     },
     "legal-writing": {
       "automation": 0.1458,
@@ -448,7 +255,7 @@
         "Prepare legal briefs and opinions, and file appeals in state and federal courts of appeal.",
         "Search for and examine public and other legal records to write opinions or establish ownership."
       ],
-      "note": "[AI 任务初审 2026-10-30] 3 条都是法律文书写作，全部保留"
+      "note": "[AI 语义审查 2026-10-31] 法律意见、诉状和法律草案写作均相关；保留复合任务并提示写作只是其中一部分。"
     },
     "negotiation": {
       "automation": 0.0,
@@ -459,7 +266,7 @@
         "Negotiate settlements of civil disputes.",
         "Negotiate with retail merchants to improve product exposure, such as shelf positioning and advertising."
       ],
-      "note": "[AI 规则初审 2026-10-30] mediat 加词边界，避免匹配 immediately/intermediate；[AI 任务初审 2026-10-30] 只有 1 条（谈判民事和解），保留"
+      "note": "[AI 语义审查 2026-10-31] 保留直接的民事和解谈判任务；仅代表已覆盖的职业情境。"
     },
     "lesson-planning": {
       "automation": 0.1683,
@@ -473,7 +280,7 @@
         "Prepare materials and classrooms for class activities.",
         "Prepare objectives and outlines for courses of study, following curriculum guidelines or requirements of states and schools."
       ],
-      "note": "[AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation；[AI 任务初审 2026-10-30] 删除器材安全、教具使用、物资管理任务"
+      "note": "[AI 语义审查 2026-10-31] 教学目标、课程活动、教材调整与课程安排均属于教学规划。"
     },
     "classroom-management": {
       "automation": 0.0,
@@ -483,7 +290,7 @@
         "Enforce all administration policies and rules governing students.",
         "Establish and enforce rules for behavior and procedures for maintaining order among students."
       ],
-      "note": "[AI 规则初审 2026-10-30] order 只匹配独立单词且排除 in order to，避免匹配 disorder/border；[AI 任务初审 2026-10-30] 删除备课物资任务；“观察评估学生表现”归入 assessment（它的替代度 0.80 原本把课堂管理拉高了）"
+      "note": "[AI 语义审查 2026-10-31] 保留课堂秩序、行为规则和学生行为问题处理。"
     },
     "assessment": {
       "automation": 0.4664,
@@ -493,41 +300,34 @@
         "Observe and evaluate students' performance, behavior, social development, and physical health.",
         "Prepare, administer, and grade tests and assignments to evaluate students' progress."
       ],
-      "note": "[AI 规则初审 2026-10-30] test 加词边界；grade 排除 grade level（年级不是评分）；[AI 任务初审 2026-10-30] 删除年级（grades）误匹配、家长/同事沟通、学校项目评估"
+      "note": "[AI 语义审查 2026-10-31] 保留作业评分、学生表现评估与考试评量。"
     },
     "clinical-knowledge": {
-      "automation": 0.0396,
-      "augmentation": 0.067,
+      "automation": 0.0509,
+      "augmentation": 0.0862,
       "tasks": [
         "Analyze records, reports, test results, or examination information to diagnose medical condition of patient.",
         "Immunize patients to protect them from preventable diseases.",
         "Make diagnoses when different illnesses occur together or in situations where the diagnosis may be obscure.",
         "Monitor patients' conditions and progress and reevaluate treatments as necessary.",
         "Operate on patients to remove, repair, or improve functioning of diseased or injured body parts and systems.",
-        "Order, perform, and interpret tests and analyze records, reports, and examination information to diagnose patients' condition.",
         "Prescribe or administer medication, therapy, and other specialized medical care to treat or prevent illness, disease, or injury.",
-        "Prescribe or administer treatment, therapy, medication, vaccination, and other specialized medical care to treat or prevent illness, disease, or injury.",
         "Provide and manage long-term, comprehensive medical care, including diagnosis and nonsurgical treatment of diseases, for adult patients in an office or hospital."
       ],
-      "note": "[AI 任务初审 2026-10-30] 删除归属沟通、行政报告、公共卫生项目管理、科研的任务，保留诊断、治疗、开药、手术、监测"
+      "note": "[AI 语义审查 2026-10-31] 保留诊断、治疗、处方与监测等临床任务；具体任务仍须受职业范围限制。"
     },
     "patient-care": {
-      "automation": 0.049,
-      "augmentation": 0.1157,
+      "automation": 0.0304,
+      "augmentation": 0.1116,
       "tasks": [
         "Advise patients and community members concerning diet, activity, hygiene, and disease prevention.",
-        "Advise surgeon of a patient's risk status and recommend appropriate intervention to minimize risk.",
-        "Analyze records, reports, test results, or examination information to diagnose medical condition of patient.",
         "Explain procedures and discuss test results or prescribed treatments with patients.",
         "Immunize patients to protect them from preventable diseases.",
         "Monitor patients' conditions and progress and reevaluate treatments as necessary.",
-        "Operate on patients to remove, repair, or improve functioning of diseased or injured body parts and systems.",
-        "Order, perform, and interpret tests and analyze records, reports, and examination information to diagnose patients' condition.",
         "Provide and manage long-term, comprehensive medical care, including diagnosis and nonsurgical treatment of diseases, for adult patients in an office or hospital.",
-        "Refer patient to medical specialist or other practitioner when necessary.",
-        "Refer patients to medical specialists or other practitioners when necessary."
+        "Refer patient to medical specialist or other practitioner when necessary."
       ],
-      "note": "[AI 任务初审 2026-10-30] 删除医生之间会诊（不直接面对病人）"
+      "note": "[AI 语义审查 2026-10-31] 保留直接病患沟通、照护、监测、预防与转诊；不把所有含 patient 的诊断、手术和医生间建议都视为照护。"
     },
     "cooking-technique": {
       "automation": 0.0,
@@ -537,7 +337,7 @@
         "Instruct cooks or other workers in the preparation, cooking, garnishing, or presentation of food.",
         "Prepare and cook foods of all types, either on a regular basis or for special guests or functions."
       ],
-      "note": "[AI 规则初审 2026-10-30] 原来 cook 匹配 supervise cooks（管理任务），prepar 匹配 prepare budgets；改为只匹配烹饪动作；[AI 任务初审 2026-10-30] 删除成本估算和菜单规划，保留烹饪、示范和指导烹饪技巧"
+      "note": "[AI 语义审查 2026-10-31] 实际烹饪、示范与指导烹饪技巧均相关。"
     },
     "food-safety": {
       "automation": 0.0,
@@ -546,7 +346,7 @@
         "Inspect supplies, equipment, or work areas to ensure conformance to established standards.",
         "Monitor sanitation practices to ensure that employees follow standards and regulations."
       ],
-      "note": "[AI 任务初审 2026-10-30] 2 条都是卫生检查，保留"
+      "note": "[AI 语义审查 2026-10-31] 保留卫生监控与供应品、设备、工作区检查。"
     },
     "menu-planning": {
       "automation": 0.0,
@@ -556,70 +356,56 @@
         "Collaborate with other personnel to plan and develop recipes or menus, taking into account such factors as seasonal availability of ingredients or the likely number of customers.",
         "Meet with customers to discuss menus for special occasions, such as weddings, parties, or banquets."
       ],
-      "note": "[AI 规则初审 2026-10-30] 去掉单独的 cost：与 project-management 的预算重叠；[AI 任务初审 2026-10-30] 删除采购议价"
+      "note": "[AI 语义审查 2026-10-31] 保留菜单定价、食谱开发与菜单需求讨论。"
     },
     "engineering-math": {
       "automation": 0.0,
       "augmentation": 0.0,
       "tasks": [
-        "Analyze manufacturing processes or byproducts to identify engineering solutions to minimize the output of carbon or other pollutants.",
-        "Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data.",
         "Compute load and grade requirements, water flow rates, or material stress factors to determine design specifications.",
         "Estimate quantities and cost of materials, equipment, or labor to determine project feasibility."
       ],
-      "note": "[AI 规则初审 2026-10-30] comput 改为 compute/computation，避免匹配 computer-aided（那是 cad）；[AI 任务初审 2026-10-30] 4 条都是工程计算/分析，全部保留"
+      "note": "[AI 语义审查 2026-10-31] 保留明确工程计算与数量成本估算；移除只写 analyze 的一般调查和工艺研究。"
     },
     "cad": {
       "automation": 0.0,
       "augmentation": 0.0,
       "tasks": [
-        "Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates.",
-        "Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data.",
-        "Operate computer-assisted engineering or design software or equipment to perform electronics engineering tasks.",
-        "Operate computer-assisted engineering or design software or equipment to perform engineering tasks.",
-        "Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements."
+        "Operate computer-assisted engineering or design software or equipment to perform engineering tasks."
       ],
-      "note": "[AI 任务初审 2026-10-30] 只匹配到 1 条“分析图纸蓝图”。规则新增 computer-assisted/drafting，以匹配“用计算机辅助设计或绘图工具设计交通、水利系统”这类任务；新匹配到的任务还没看过"
+      "note": "[AI 语义审查 2026-10-31] 保留明确的计算机辅助工程或设计工具操作，属于 CAE/CAD 宽类代理；读蓝图或制作图纸不能单独证明使用 CAD 软件。"
     },
     "project-management": {
       "automation": 0.0,
       "augmentation": 0.0,
       "tasks": [
         "Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops.",
-        "Coordinate planning, budgeting, or purchasing for all the food operations within establishments such as clubs, hotels, or restaurant chains.",
-        "Determine production schedules and staff requirements necessary to ensure timely delivery of services.",
         "Estimate quantities and cost of materials, equipment, or labor to determine project feasibility.",
         "Identify environmental risks and develop risk management strategies for civil engineering projects.",
         "Inspect project sites to monitor progress and ensure conformance to design specifications and safety or sanitation standards.",
         "Manage and direct the construction, operations, or maintenance activities at project site.",
         "Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project.",
-        "Prepare estimates used by management for purposes such as planning, organizing, and scheduling work.",
-        "Supervise or coordinate activities of cooks or workers engaged in food preparation."
+        "Prepare estimates used by management for purposes such as planning, organizing, and scheduling work."
       ],
-      "note": "[AI 任务初审 2026-10-30] 删除交通/环境研究，保留项目现场管理、排期、预算、协调"
+      "note": "[AI 语义审查 2026-10-31] 保留项目现场管理、进度、预算和成本控制；移除餐饮日常运营及排班作为项目管理的替代。"
     },
     "accounting-software": {
-      "automation": 0.2051,
-      "augmentation": 0.2503,
+      "automation": 0.4101,
+      "augmentation": 0.5006,
       "tasks": [
-        "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
         "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留明确使用计算机技术处理会计系统的任务作为软件系统代理；移除仅向客户提供系统设计建议。"
     },
     "accounts-payable-receivable": {
-      "automation": 0.1701,
-      "augmentation": 0.2584,
+      "automation": 0.1286,
+      "augmentation": 0.2005,
       "tasks": [
         "Compare disputed merchandise with original requisitions and information from invoices and prepare invoices for returned goods.",
-        "Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements.",
         "Determine charges for services requested, collect deposits or payments, or arrange for billing.",
-        "Establish tables of accounts and assign entries to proper accounts.",
-        "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards.",
-        "Recommend improvements in products, packaging, shipping, service, or billing methods and procedures to prevent future problems.",
         "Resolve customers' service or billing complaints by performing activities such as exchanging merchandise, refunding money, or adjusting bills."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留账单、收款、押金和发票相关任务，属于 billing/collections 局部代理；移除报税、一般财务记录、科目表与流程建议，不能代表完整 AP/AR 职能。"
     },
     "taxation": {
       "automation": 0.0,
@@ -629,69 +415,30 @@
         "Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements.",
         "Represent clients before taxing authorities and provide support during litigation involving financial issues."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留报税、税务规划及税务机关代理；复合咨询任务只构成局部税务证据。"
     },
     "electrical-systems": {
-      "automation": 0.093,
-      "augmentation": 0.2523,
+      "automation": 0.0679,
+      "augmentation": 0.1974,
       "tasks": [
-        "Analyze electronics system requirements, capacity, cost, or customer needs to determine project feasibility.",
         "Collect data relating to commercial or residential development, population, or power system interconnection to determine operating efficiency of electrical systems.",
         "Conduct field surveys or study maps, graphs, diagrams, or other data to identify and correct power system problems.",
         "Design electrical systems or components that minimize electric energy requirements, such as lighting systems designed to account for natural lighting.",
-        "Design electronic components, software, products, or systems for commercial, industrial, medical, military, or scientific applications.",
         "Design, implement, maintain, or improve electrical instruments, equipment, facilities, components, products, or systems for commercial, industrial, or domestic purposes.",
-        "Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems.",
-        "Inspect electronic equipment, instruments, products, or systems to ensure conformance to specifications, safety standards, or applicable codes or regulations.",
         "Integrate electrical systems with renewable energy systems to improve overall efficiency.",
         "Plan layout of electric power generating plants or distribution lines or stations.",
-        "Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements.",
-        "Provide technical support or instruction to staff or customers regarding electronics equipment standards.",
-        "Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities."
+        "Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
-    },
-    "equipment-maintenance": {
-      "automation": 0.0,
-      "augmentation": 0.1421,
-      "tasks": [
-        "Assist in developing capital project programs for new equipment or major repairs.",
-        "Develop or perform operational, maintenance, or testing procedures for electronic products, components, equipment, or systems.",
-        "Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems.",
-        "Direct or coordinate manufacturing, construction, installation, maintenance, support, documentation, or testing activities to ensure compliance with specifications, codes, or customer requirements.",
-        "Prepare, review, or maintain maintenance schedules, design documentation, or operational reports or charts.",
-        "Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities."
-      ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留电气与电子系统设计、分析、检查；职业层另行去除电子工程师，避免与电气工程师 SOC 错位。"
     },
     "digital-advertising": {
-      "automation": 0.1405,
-      "augmentation": 0.2933,
+      "automation": 0.1444,
+      "augmentation": 0.3164,
       "tasks": [
-        "Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services.",
         "Develop and implement procedures for identifying advertising needs.",
-        "Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers.",
         "Measure the effectiveness of marketing, advertising, and communications programs and strategies."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
-    },
-    "web-analytics": {
-      "automation": 0.4179,
-      "augmentation": 0.5136,
-      "tasks": [
-        "Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand.",
-        "Forecast and track marketing and sales trends, analyzing collected data.",
-        "Measure the effectiveness of marketing, advertising, and communications programs and strategies."
-      ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
-    },
-    "content-writing": {
-      "automation": 0.2983,
-      "augmentation": 0.5805,
-      "tasks": [
-        "Prepare reports of findings, illustrating data graphically and translating complex findings into written text."
-      ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留广告需求与效果任务作为广告宽类代理；未证明数字渠道，须显示来源局限，不能宣称数字广告专属统计。"
     },
     "quantity-surveying": {
       "automation": 0.0,
@@ -700,7 +447,7 @@
         "Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates.",
         "Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 成本估算与支出记录仅覆盖工料测量的局部职能；职业级映射因不足以代表全职能而停用。"
     },
     "cost-estimation": {
       "automation": 0.0,
@@ -712,18 +459,15 @@
         "Prepare estimates used by management for purposes such as planning, organizing, and scheduling work.",
         "Set up cost monitoring and reporting systems and procedures."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留工程数量、材料人工成本、分包估算及成本效果评估。"
     },
     "contract-administration": {
       "automation": 0.0,
       "augmentation": 0.0,
       "tasks": [
-        "Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops.",
-        "Establish and maintain tendering process, and conduct negotiations.",
-        "Prepare and maintain a directory of suppliers, contractors and subcontractors.",
-        "Prepare estimates for use in selecting vendors or subcontractors."
+        "Establish and maintain tendering process, and conduct negotiations."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留招标流程及谈判作为采购合同生命周期的局部代理；移除单纯估算、成本比较和供应商通讯录。"
     },
     "employee-relations": {
       "automation": 0.0365,
@@ -734,11 +478,11 @@
         "Confer with management to develop or implement personnel policies or procedures.",
         "Interpret and explain human resources policies, procedures, laws, standards, or regulations."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留员工申诉、政策解释、政策制定与离职面谈。"
     },
     "recruitment": {
-      "automation": 0.2479,
-      "augmentation": 0.1883,
+      "automation": 0.293,
+      "augmentation": 0.2226,
       "tasks": [
         "Advise management on organizing, preparing, or implementing recruiting or retention programs.",
         "Conduct reference or background checks on job applicants.",
@@ -749,31 +493,19 @@
         "Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities.",
         "Interview job applicants to obtain information on work history, training, education, or job skills.",
         "Perform searches for qualified job candidates, using sources such as computer databases, networking, Internet recruiting resources, media advertisements, job fairs, recruiting firms, or employee referrals.",
-        "Review and evaluate applicant qualifications or eligibility for specified licensing, according to established guidelines and designated licensing codes.",
         "Review employment applications and job orders to match applicants with job requirements.",
-        "Schedule or conduct new employee orientations.",
         "Select qualified job applicants or refer them to managers, making hiring recommendations when appropriate."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
-    },
-    "payroll": {
-      "automation": 0.0,
-      "augmentation": 0.0,
-      "tasks": [
-        "Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities."
-      ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留寻才、筛选、面试、录用与候选人沟通；移除入职培训及一般执照资格审查。"
     },
     "sales-prospecting": {
-      "automation": 0.3656,
-      "augmentation": 0.3709,
+      "automation": 0.4909,
+      "augmentation": 0.4979,
       "tasks": [
         "Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders.",
-        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences.",
-        "Obtain credit information about prospective customers.",
-        "Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports."
+        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留联系潜客和寻找线索；移除销售行政报告与客户信用调查。"
     },
     "customer-support": {
       "automation": 0.2576,
@@ -785,16 +517,7 @@
         "Refer unresolved customer grievances to designated departments for further investigation.",
         "Resolve customers' service or billing complaints by performing activities such as exchanging merchandise, refunding money, or adjusting bills."
       ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
-    },
-    "crm-systems": {
-      "automation": 0.4015,
-      "augmentation": 0.5804,
-      "tasks": [
-        "Keep records of customer interactions or transactions, recording details of inquiries, complaints, or comments, as well as actions taken.",
-        "Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports."
-      ],
-      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+      "note": "[AI 语义审查 2026-10-31] 保留客户问题解答、投诉处理、转交调查、服务跟进与通知。"
     }
   },
   "careers": {
@@ -853,7 +576,7 @@
       ],
       "soc": "15-1221",
       "title": "Computer and Information Research Scientists",
-      "reviewed": true,
+      "reviewed": false,
       "observedExposure": 0.3404,
       "tasks": 33,
       "tasksWithoutPenetration": 8
@@ -864,7 +587,7 @@
       ],
       "soc": "11-3021",
       "title": "Computer and Information Systems Managers",
-      "reviewed": true,
+      "reviewed": false,
       "observedExposure": 0.1559,
       "tasks": 17,
       "tasksWithoutPenetration": 0
@@ -929,15 +652,14 @@
     },
     "doctor": {
       "onet": [
-        "29-1063.00",
-        "29-1062.00"
+        "29-1063.00"
       ],
       "soc": "29-1216",
       "title": "General Internal Medicine Physicians",
       "reviewed": true,
       "observedExposure": 0.084,
-      "tasks": 28,
-      "tasksWithoutPenetration": 4
+      "tasks": 19,
+      "tasksWithoutPenetration": 3
     },
     "chef": {
       "onet": [
@@ -967,7 +689,7 @@
       ],
       "soc": "13-2011",
       "title": "Accountants and Auditors",
-      "reviewed": false,
+      "reviewed": true,
       "observedExposure": 0.3478,
       "tasks": 16,
       "tasksWithoutPenetration": 8
@@ -979,34 +701,32 @@
       ],
       "soc": "15-1252",
       "title": "Software Developers",
-      "reviewed": false,
+      "reviewed": true,
       "observedExposure": 0.288,
       "tasks": 31,
       "tasksWithoutPenetration": 15
     },
     "electrical-engineer": {
       "onet": [
-        "17-2071.00",
-        "17-2072.00"
+        "17-2071.00"
       ],
       "soc": "17-2071",
       "title": "Electrical Engineers",
-      "reviewed": false,
+      "reviewed": true,
       "observedExposure": 0.059,
-      "tasks": 44,
-      "tasksWithoutPenetration": 3
+      "tasks": 22,
+      "tasksWithoutPenetration": 2
     },
     "digital-marketer": {
       "onet": [
-        "13-1161.00",
-        "11-2021.00"
+        "13-1161.00"
       ],
       "soc": "13-1161",
       "title": "Market Research Analysts and Marketing Specialists",
-      "reviewed": false,
+      "reviewed": true,
       "observedExposure": 0.6483,
-      "tasks": 33,
-      "tasksWithoutPenetration": 2
+      "tasks": 13,
+      "tasksWithoutPenetration": 0
     },
     "quantity-surveyor": {
       "onet": [
@@ -1025,7 +745,7 @@
       ],
       "soc": "13-1071",
       "title": "Human Resources Specialists",
-      "reviewed": false,
+      "reviewed": true,
       "observedExposure": 0.4034,
       "tasks": 25,
       "tasksWithoutPenetration": 1
@@ -1036,7 +756,7 @@
       ],
       "soc": "41-4012",
       "title": "Sales Representatives, Wholesale and Manufacturing, Except Technical and Scientific Products",
-      "reviewed": false,
+      "reviewed": true,
       "observedExposure": 0.6279,
       "tasks": 20,
       "tasksWithoutPenetration": 1
@@ -1047,124 +767,124 @@
       ],
       "soc": "43-4051",
       "title": "Customer Service Representatives",
-      "reviewed": false,
+      "reviewed": true,
       "observedExposure": 0.7011,
       "tasks": 15,
       "tasksWithoutPenetration": 0
     }
   },
   "crossCheck": {
-    "spearman": 0.68,
+    "spearman": 0.57,
     "careers": [
       [
         "data-analyst",
         0.4605,
-        0.6356
+        0.6398
       ],
       [
         "frontend-developer",
         0.4802,
-        0.5906
+        0.0
       ],
       [
         "backend-developer",
         0.288,
-        0.6989
+        0.6762
       ],
       [
         "ui-ux-designer",
         0.249,
-        0.2583
+        0.208
       ],
       [
         "ml-engineer",
         0.3404,
-        0.703
+        0.3035
       ],
       [
         "product-manager",
         0.1559,
-        0.3526
+        0.4849
       ],
       [
         "forward-deployed-engineer",
         0.288,
-        0.7938
+        0.2383
       ],
       [
         "data-scientist",
         0.4605,
-        0.7405
+        0.5456
       ],
       [
         "auditor",
         0.3478,
-        0.5864
+        0.6158
       ],
       [
         "lawyer",
         0.1673,
-        0.171
+        0.1846
       ],
       [
         "teacher",
         0.2901,
-        0.3097
+        0.3076
       ],
       [
         "doctor",
         0.084,
-        0.1726
+        0.1725
       ],
       [
         "chef",
         0.0,
-        0.0493
+        0.0477
       ],
       [
         "civil-engineer",
         0.0081,
-        0.0617
+        0.0596
       ],
       [
         "accountant",
         0.3478,
-        0.4786
+        0.5282
       ],
       [
         "software-engineer",
         0.288,
-        0.6254
+        0.5958
       ],
       [
         "electrical-engineer",
         0.059,
-        0.1401
+        0.1007
       ],
       [
         "digital-marketer",
         0.6483,
-        0.5751
+        0.4507
       ],
       [
         "quantity-surveyor",
         0.0,
-        0.0352
+        0.034
       ],
       [
         "hr-executive",
         0.4034,
-        0.3645
+        0.437
       ],
       [
         "sales-executive",
         0.6279,
-        0.5903
+        0.646
       ],
       [
         "customer-service",
         0.7011,
-        0.6885
+        0.5882
       ]
     ]
   }

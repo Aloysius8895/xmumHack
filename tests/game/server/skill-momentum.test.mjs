@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { momentumFrom, comparableMonths, slope, label, MIN_MONTHS } from '../../../src/game/server/skill-momentum.js'
+import { momentumFrom, comparableMonths, slope, label, MIN_MONTHS, loadMockMonths } from '../../../src/game/server/skill-momentum.js'
 
 const month = (period, share, { thin = false, denominator = 80, sources = [ 'linkedin' ], postings = 100, counts = { 'data-analyst': 20 } } = {}) =>
     ({ period, shares: { sql: share, python: 30 }, counts, postings, denominator, thin, sources })
@@ -18,7 +18,7 @@ test('three rising months are rising, with the annualised log growth', () =>
     assert.ok(Math.abs(result.skills.sql.growth - Math.log(1.1) * 12) < 0.001)
     assert.equal(result.skills.sql.confidence, 'medium')
     assert.equal(result.skills.python.label, 'stable')
-    assert.deepEqual(result.basis, { months: 3, from: '2026-07', through: '2026-09', sources: [ 'linkedin' ], metric: 'share_of_described_postings' })
+    assert.deepEqual(result.basis, { months: 3, realMonths: 3, mockMonths: 0, from: '2026-07', through: '2026-09', sources: [ 'linkedin' ], metric: 'share_of_described_postings' })
 })
 
 test('falling shares are declining only with enough months', () =>
@@ -71,4 +71,44 @@ test('no window at all is an empty, current-demand result', () =>
     assert.deepEqual(result.skills, {})
     assert.equal(result.basis.months, 0)
     assert.equal(label(null), 'current')
+})
+
+test('mock months fill in before the real ones, marked, with the confidence of the real months only', () =>
+{
+    const mock = [ '2026-06', '2026-07', '2026-08', '2026-09' ].map((period, index) => ({ period, mock: true, shares: { sql: 20 + index, python: 10 }, counts: {}, postings: 100 }))
+    const result = momentumFrom({ months: [ month('2026-09', 30), month('2026-10', 24.2) ] }, { mockMonths: mock })
+    // 2026-09 is real: its mock month is dropped
+    assert.deepEqual(result.basis.realMonths, 2)
+    assert.deepEqual(result.basis.mockMonths, 3)
+    assert.equal(result.basis.from, '2026-06')
+    assert.equal(result.skills.sql.mock, true)
+    assert.equal(result.skills.sql.mockMonths, 3)
+    assert.equal(result.skills.sql.confidence, 'low')
+    assert.notEqual(result.skills.sql.growth, null)
+})
+
+test('mock months are no longer read once three real months compare, and never after the latest real one', () =>
+{
+    const mock = [ '2026-06', '2026-11' ].map((period) => ({ period, mock: true, shares: { sql: 50 }, counts: {}, postings: 100 }))
+    const real = [ month('2026-07', 20), month('2026-08', 22), month('2026-09', 24.2) ]
+    const enough = momentumFrom({ months: real }, { mockMonths: mock })
+    assert.equal(enough.basis.mockMonths, 0)
+    assert.equal(enough.skills.sql.mock, undefined)
+    assert.deepEqual(enough.skills.sql, momentumFrom({ months: real }).skills.sql)
+    const two = momentumFrom({ months: real.slice(1) }, { mockMonths: mock })
+    assert.equal(two.basis.through, '2026-09')
+    assert.equal(two.basis.mockMonths, 1)
+})
+
+test('the mock month file is generated, marked and anchored on collected data', () =>
+{
+    const months = loadMockMonths()
+    if(!months.length)
+        return
+    for(const row of months)
+    {
+        assert.equal(row.mock, true)
+        assert.match(row.period, /^\d{4}-\d{2}$/)
+        assert.equal(row.thin, false)
+    }
 })

@@ -1,0 +1,1216 @@
+{
+  "skills": {
+    "sql": {
+      "status": "explicit_evidence_rule",
+      "reason": "仅接受明确的 SQL 证据；数据库或 BI 工具任务不能单独证明 SQL。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Maintain or update business intelligence tools, databases, dashboards, systems, or methods.",
+        "Create business intelligence tools or systems, including design of related databases, spreadsheets, or outputs."
+      ],
+      "reported_candidate_count": 2,
+      "approved_candidate_count": 0
+    },
+    "excel": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留电子表格任务作为工具族代理；不能称为 Excel 专属观测，且当前样本只有一条。",
+      "kept_tasks": [
+        "Create business intelligence tools or systems, including design of related databases, spreadsheets, or outputs."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 1,
+      "approved_candidate_count": 1
+    },
+    "statistics": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留报告中的统计分析、方法评估与结果解释任务。",
+      "kept_tasks": [
+        "Report results of statistical analyses, including information in the form of graphs, charts, and tables.",
+        "Analyze and interpret statistical data to identify significant differences in relationships among sources of information.",
+        "Adapt statistical methods to solve specific problems in many fields, such as economics, biology, and engineering.",
+        "Process large amounts of data for statistical modeling and graphic analysis, using computers.",
+        "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy.",
+        "Report results of statistical analyses in peer-reviewed papers and technical manuals."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 6,
+      "approved_candidate_count": 6
+    },
+    "python": {
+      "status": "explicit_evidence_rule",
+      "reason": "一般编程任务不能证明使用 Python。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Analyze problems to develop solutions involving computer hardware and software.",
+        "Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance.",
+        "Review and analyze computer printouts and performance indicators to locate code problems, and correct errors by correcting codes.",
+        "Use object-oriented programming languages, as well as client and server applications development processes and multimedia and Internet technology."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 0
+    },
+    "data-cleaning": {
+      "status": "explicit_evidence_rule",
+      "reason": "统计方法有效性评估不属于数据清洗；只保留直接的数据清洗或预处理证据。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy."
+      ],
+      "reported_candidate_count": 1,
+      "approved_candidate_count": 0
+    },
+    "data-visualization": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留明确的图表呈现与图形分析；移除 BI 系统维护和一般技术支持。",
+      "kept_tasks": [
+        "Report results of statistical analyses, including information in the form of graphs, charts, and tables.",
+        "Process large amounts of data for statistical modeling and graphic analysis, using computers."
+      ],
+      "removed_tasks": [
+        "Maintain or update business intelligence tools, databases, dashboards, systems, or methods.",
+        "Provide technical support for existing reports, dashboards, or other tools."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 2
+    },
+    "communication": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留解释、表达、咨询和讨论；移除营销效果测量与以查找名单为主的潜客识别。完整任务可能仍包含其他能力。",
+      "kept_tasks": [
+        "Communicate with customers, competitors, suppliers, professional organizations, or others to stay abreast of industry or business trends.",
+        "Confer with clients to discuss and determine layout design.",
+        "Confer with management or development teams to prioritize needs, resolve conflicts, develop content criteria, or choose solutions.",
+        "Communicate with network personnel or Web site hosting agencies to address hardware or software issues affecting Web sites.",
+        "Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware.",
+        "Consult with users, management, vendors, and technicians to assess computing needs and system requirements.",
+        "Consult with management to ensure agreement on system principles.",
+        "Confer with clients regarding the nature of the information processing or computation needs a computer program is to address.",
+        "Confer with company officials about financial and regulatory matters.",
+        "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
+        "Present evidence to defend clients or prosecute defendants in criminal or civil litigation.",
+        "Present and summarize cases to judges and juries.",
+        "Advise clients concerning business transactions, claim liability, advisability of prosecuting or defending lawsuits, or legal rights and obligations.",
+        "Confer with colleagues with specialties in appropriate areas of legal issue to establish and verify bases for legal proceedings.",
+        "Probate wills and represent and advise executors and administrators of estates.",
+        "Instruct through lectures, discussions, and demonstrations in one or more subjects, such as English, mathematics, or social studies.",
+        "Establish clear objectives for all lessons, units, and projects and communicate those objectives to students.",
+        "Confer with parents or guardians, other teachers, counselors, and administrators to resolve students' behavioral and academic problems.",
+        "Meet with parents and guardians to discuss their children's progress and to determine priorities for their children and their resource needs.",
+        "Meet with other professionals to discuss individual students' needs and progress.",
+        "Confer with other staff members to plan and schedule lessons promoting learning, following approved curricula.",
+        "Explain procedures and discuss test results or prescribed treatments with patients.",
+        "Advise patients and community members concerning diet, activity, hygiene, and disease prevention.",
+        "Advise surgeon of a patient's risk status and recommend appropriate intervention to minimize risk.",
+        "Provide consulting services to other doctors caring for patients with special or difficult problems.",
+        "Meet with customers to discuss menus for special occasions, such as weddings, parties, or banquets.",
+        "Prepare or present public reports on topics such as bid proposals, deeds, environmental impact statements, or property and right-of-way descriptions.",
+        "Consult with customers or other departments on project status, proposals, or technical issues, such as software system design or maintenance.",
+        "Confer with data processing or project managers to obtain information on limitations or capabilities for data processing projects.",
+        "Confer with engineers, customers, or others to discuss existing or potential engineering projects or products.",
+        "Confer with engineers, customers, vendors, or others to discuss existing or potential electronics engineering projects or products.",
+        "Represent employer at conferences, meetings, boards, panels, committees, or working groups to present, explain, or defend findings or recommendations, negotiate compromises or agreements, or exchange information.",
+        "Attend staff conferences to provide management with information and proposals concerning the promotion, distribution, design, and pricing of company products or services.",
+        "Confer with legal staff to resolve problems, such as copyright infringement or royalty sharing with outside producers or distributors.",
+        "Consult with buying personnel to gain advice regarding the types of products or services expected to be in demand.",
+        "Consult with buying personnel to gain advice regarding environmentally sound or sustainable products.",
+        "Advise business or other groups on local, national, or international factors affecting the buying or selling of products or services.",
+        "Interpret and explain human resources policies, procedures, laws, standards, or regulations.",
+        "Confer with management to develop or implement personnel policies or procedures.",
+        "Advise management on organizing, preparing, or implementing recruiting or retention programs.",
+        "Evaluate selection or testing techniques by conducting research or follow-up activities and conferring with management or supervisory personnel.",
+        "Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders.",
+        "Consult with clients after sales or contract signings to resolve problems and to provide ongoing support.",
+        "Confer with customers by telephone or in person to provide information about products or services, take or enter orders, cancel accounts, or obtain details of complaints."
+      ],
+      "removed_tasks": [
+        "Measure the effectiveness of marketing, advertising, and communications programs and strategies.",
+        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences."
+      ],
+      "reported_candidate_count": 46,
+      "approved_candidate_count": 44
+    },
+    "html-css": {
+      "status": "explicit_evidence_rule",
+      "reason": "一般建站或页面维护不能独立识别 HTML/CSS 的暴露度。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
+        "Perform or direct Web site updates.",
+        "Write supporting code for Web applications or Web sites.",
+        "Develop and document style guidelines for Web site content.",
+        "Develop Web site maps, application models, image templates, or page templates that meet project goals, user needs, or industry standards.",
+        "Identify or maintain links to and from other Web sites and check links to ensure proper functioning.",
+        "Create searchable indices for Web page content.",
+        "Create web models or prototypes that include physical, interface, logical, or data models."
+      ],
+      "reported_candidate_count": 8,
+      "approved_candidate_count": 0
+    },
+    "javascript": {
+      "status": "explicit_evidence_rule",
+      "reason": "一般编程或脚本任务不能证明使用 JavaScript。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
+        "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
+        "Write supporting code for Web applications or Web sites.",
+        "Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel.",
+        "Supervise and assign work to programmers, designers, technologists, technicians, or other engineering or scientific personnel."
+      ],
+      "reported_candidate_count": 5,
+      "approved_candidate_count": 0
+    },
+    "react": {
+      "status": "explicit_evidence_rule",
+      "reason": "界面开发与网页应用不等于 React；此规则按前端框架名称理解。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Write supporting code for Web applications or Web sites.",
+        "Create web models or prototypes that include physical, interface, logical, or data models."
+      ],
+      "reported_candidate_count": 2,
+      "approved_candidate_count": 0
+    },
+    "git": {
+      "status": "explicit_evidence_rule",
+      "reason": "接受版本控制这一直接能力族，不以备份任务替代；不是 Git 品牌专属统计。",
+      "kept_tasks": [],
+      "removed_tasks": [],
+      "reported_candidate_count": 0,
+      "approved_candidate_count": 0
+    },
+    "accessibility": {
+      "status": "reviewed_exact_task_set",
+      "reason": "仅保留明确提及 accessibility 的任务；浏览器和设备兼容性不等于无障碍。",
+      "kept_tasks": [
+        "Incorporate technical considerations into Web site design plans, such as budgets, equipment, performance requirements, or legal issues including accessibility and privacy."
+      ],
+      "removed_tasks": [
+        "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems."
+      ],
+      "reported_candidate_count": 2,
+      "approved_candidate_count": 1
+    },
+    "api-integration": {
+      "status": "explicit_evidence_rule",
+      "reason": "系统整合、库存系统和一般 interface 不足以证明 API 集成。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Use the computer in the analysis and solution of business problems, such as development of integrated production and inventory control and cost analysis systems."
+      ],
+      "reported_candidate_count": 1,
+      "approved_candidate_count": 0
+    },
+    "backend-language": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留代码修改与过程代码开发；通用编程代理，不识别具体后端语言，也不将数据库建模当成编程。",
+      "kept_tasks": [
+        "Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance.",
+        "Develop or maintain archived procedures, procedural codes, or queries for applications."
+      ],
+      "removed_tasks": [
+        "Develop data models for applications, metadata tables, views or related database structures.",
+        "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 2
+    },
+    "databases": {
+      "status": "reviewed_exact_task_set",
+      "reason": "数据库架构、建模、标准、备份恢复、性能、测试与升级均相关。",
+      "kept_tasks": [
+        "Develop database architectural strategies at the modeling, design and implementation stages to address business or industry requirements.",
+        "Develop data models for applications, metadata tables, views or related database structures.",
+        "Set up database clusters, backup, or recovery processes.",
+        "Create and enforce database development standards.",
+        "Develop and document database architectures.",
+        "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure.",
+        "Document and communicate database schemas, using accepted notations.",
+        "Identify, evaluate and recommend hardware or software technologies to achieve desired database performance.",
+        "Demonstrate database technical functionality, such as performance, security and reliability.",
+        "Test changes to database applications or systems.",
+        "Identify and correct deviations from database development standards.",
+        "Plan and install upgrades of database management system software to enhance database performance."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 12,
+      "approved_candidate_count": 12
+    },
+    "rest-api": {
+      "status": "explicit_evidence_rule",
+      "reason": "数据库接口不能证明 REST API；一般 API 也不能证明 REST。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure."
+      ],
+      "reported_candidate_count": 1,
+      "approved_candidate_count": 0
+    },
+    "cloud-deploy": {
+      "status": "explicit_evidence_rule",
+      "reason": "普通系统安装、数据库升级与网络维护不等于云部署。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.",
+        "Coordinate installation of software system.",
+        "Plan and install upgrades of database management system software to enhance database performance.",
+        "Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 0
+    },
+    "testing": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留软件测试与错误修复；包含调试这一相邻能力，非单一测试类型专属统计。",
+      "kept_tasks": [
+        "Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance.",
+        "Test changes to database applications or systems."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 2,
+      "approved_candidate_count": 2
+    },
+    "user-research": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留需求访谈与用户需求分析；移除一般商业策略、项目可行性和没有明确研究活动的故障反馈处理。",
+      "kept_tasks": [
+        "Confer with clients to discuss and determine layout design.",
+        "Analyze user needs to determine technical requirements.",
+        "Consult with users, management, vendors, and technicians to assess computing needs and system requirements."
+      ],
+      "removed_tasks": [
+        "Identify problems uncovered by testing or customer feedback, and correct problems or refer problems to appropriate personnel for correction.",
+        "Collaborate with management or users to develop e-commerce strategies and to integrate these strategies with Web sites.",
+        "Evaluate data processing proposals to assess project feasibility and requirements."
+      ],
+      "reported_candidate_count": 6,
+      "approved_candidate_count": 3
+    },
+    "prototyping": {
+      "status": "reviewed_exact_task_set",
+      "reason": "仅保留网页原型和概念草图；移除发电设施布局、工程施工草图及成品平面设计。按数字产品概念原型理解。",
+      "kept_tasks": [
+        "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes.",
+        "Create web models or prototypes that include physical, interface, logical, or data models."
+      ],
+      "removed_tasks": [
+        "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
+        "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
+        "Plan layout of electric power generating plants or distribution lines or stations.",
+        "Prepare engineering sketches or specifications for construction, relocation, or installation of equipment, facilities, products, or systems."
+      ],
+      "reported_candidate_count": 6,
+      "approved_candidate_count": 2
+    },
+    "figma": {
+      "status": "explicit_evidence_rule",
+      "reason": "一般数字设计或排版任务不能证明使用 Figma。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
+        "Determine size and arrangement of illustrative material and copy, and select style and size of type.",
+        "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
+        "Key information into computer equipment to create layouts for client or supervisor.",
+        "Draw and print charts, graphs, illustrations, and other artwork, using computer."
+      ],
+      "reported_candidate_count": 5,
+      "approved_candidate_count": 0
+    },
+    "visual-design": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留视觉构图、字体、图形与版式任务；移除研究报告和客户人口特征分析。品牌设计、动态图形是视觉设计的宽类代理。",
+      "kept_tasks": [
+        "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
+        "Determine size and arrangement of illustrative material and copy, and select style and size of type.",
+        "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
+        "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes.",
+        "Draw and print charts, graphs, illustrations, and other artwork, using computer.",
+        "Study illustrations and photographs to plan presentation of materials, products, or services.",
+        "Produce still and animated graphics for on-air and taped portions of television news broadcasts, using electronic video equipment."
+      ],
+      "removed_tasks": [
+        "Prepare reports of findings, illustrating data graphically and translating complex findings into written text.",
+        "Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand."
+      ],
+      "reported_candidate_count": 9,
+      "approved_candidate_count": 7
+    },
+    "usability-testing": {
+      "status": "no_approved_source",
+      "reason": "一般测试发现问题或客户反馈不能确认执行了可用性测试；当前候选不通过。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Identify problems uncovered by testing or customer feedback, and correct problems or refer problems to appropriate personnel for correction."
+      ],
+      "reported_candidate_count": 1,
+      "approved_candidate_count": 0
+    },
+    "ml-math": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留数学建模、概率、统计分析与方法评估作为数学基础代理；移除仅写作或呈现结果的任务，不称为 ML 专属暴露度。",
+      "kept_tasks": [
+        "Conduct logical analyses of business, scientific, engineering, and other technical problems, formulating mathematical models of problems for solution by computers.",
+        "Analyze and interpret statistical data to identify significant differences in relationships among sources of information.",
+        "Adapt statistical methods to solve specific problems in many fields, such as economics, biology, and engineering.",
+        "Process large amounts of data for statistical modeling and graphic analysis, using computers.",
+        "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy.",
+        "Examine theories, such as those of probability and inference, to discover mathematical bases for new or improved methods of obtaining and evaluating numerical data."
+      ],
+      "removed_tasks": [
+        "Report results of statistical analyses, including information in the form of graphs, charts, and tables.",
+        "Report results of statistical analyses in peer-reviewed papers and technical manuals."
+      ],
+      "reported_candidate_count": 8,
+      "approved_candidate_count": 6
+    },
+    "ml-frameworks": {
+      "status": "explicit_evidence_rule",
+      "reason": "数学模型和统计建模不证明使用机器学习框架。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Conduct logical analyses of business, scientific, engineering, and other technical problems, formulating mathematical models of problems for solution by computers.",
+        "Process large amounts of data for statistical modeling and graphic analysis, using computers."
+      ],
+      "reported_candidate_count": 2,
+      "approved_candidate_count": 0
+    },
+    "mlops": {
+      "status": "explicit_evidence_rule",
+      "reason": "一般程序测试、维护和监控不是机器学习模型运维的直接证据。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems."
+      ],
+      "reported_candidate_count": 1,
+      "approved_candidate_count": 0
+    },
+    "roadmapping": {
+      "status": "explicit_evidence_rule",
+      "reason": "IT 部门日常运营和组织政策不等于产品路线图。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Review project plans to plan and coordinate project activity.",
+        "Develop and interpret organizational goals, policies, and procedures.",
+        "Direct daily operations of department, analyzing workflow, establishing priorities, developing standards and setting deadlines."
+      ],
+      "reported_candidate_count": 3,
+      "approved_candidate_count": 0
+    },
+    "agile": {
+      "status": "explicit_evidence_rule",
+      "reason": "一般团队协调、排期和项目计划不等于敏捷方法。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Review project plans to plan and coordinate project activity."
+      ],
+      "reported_candidate_count": 1,
+      "approved_candidate_count": 0
+    },
+    "market-analysis": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留市场、竞争者、消费者和趋势研究；移除一般客户沟通、销售、人员管理、合同谈判和纯技术跟踪。",
+      "kept_tasks": [
+        "Seek and provide information to help companies determine their position in the marketplace.",
+        "Gather data on competitors and analyze their prices, sales, and method of marketing and distribution.",
+        "Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand.",
+        "Monitor industry statistics and follow trends in trade literature.",
+        "Forecast and track marketing and sales trends, analyzing collected data.",
+        "Conduct research on consumer opinions and marketing strategies, collaborating with marketing professionals, statisticians, pollsters, and other professionals.",
+        "Conduct economic or commercial surveys to identify potential markets for products or services.",
+        "Monitor market conditions, product innovations, and competitors' products, prices, and sales."
+      ],
+      "removed_tasks": [
+        "Stay abreast of advances in technology.",
+        "Evaluate data processing proposals to assess project feasibility and requirements.",
+        "Measure and assess customer and employee satisfaction.",
+        "Measure the effectiveness of marketing, advertising, and communications programs and strategies.",
+        "Identify, develop, or evaluate marketing strategy, based on knowledge of establishment objectives, market characteristics, and cost and markup factors.",
+        "Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers.",
+        "Develop pricing strategies, balancing firm objectives and customer satisfaction.",
+        "Direct the hiring, training, or performance evaluations of marketing or sales staff and oversee their daily activities.",
+        "Use sales forecasting or strategic planning to ensure the sale and profitability of products, lines, or services, analyzing business developments and monitoring market trends.",
+        "Negotiate contracts with vendors or distributors to manage product distribution, establishing distribution networks or developing distribution strategies.",
+        "Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services.",
+        "Develop business cases for environmental marketing strategies.",
+        "Integrate environmental information into product or company marketing strategies, policies, or activities.",
+        "Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders.",
+        "Recommend products to customers, based on customers' needs and interests.",
+        "Answer customers' questions about products, prices, availability, product uses, and credit terms.",
+        "Provide customers with product samples and catalogs.",
+        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences.",
+        "Prepare drawings, estimates, and bids that meet specific customer needs.",
+        "Obtain credit information about prospective customers."
+      ],
+      "reported_candidate_count": 28,
+      "approved_candidate_count": 8
+    },
+    "accounting": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留会计记录、报表、账簿与会计系统任务；与审计有真实重叠，不以强制互斥方式删除。",
+      "kept_tasks": [
+        "Inspect account books and accounting systems for efficiency, effectiveness, and use of accepted accounting procedures to record transactions.",
+        "Examine inventory to verify journal and ledger entries.",
+        "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards.",
+        "Establish tables of accounts and assign entries to proper accounts.",
+        "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology.",
+        "Analyze business operations, trends, costs, revenues, financial commitments, and obligations to project future revenues and expenses or to provide advice."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 6,
+      "approved_candidate_count": 6
+    },
+    "auditing": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留审计、记录核查、系统检查与审计报告任务；会计与审计可能真实重叠。",
+      "kept_tasks": [
+        "Prepare detailed reports on audit findings.",
+        "Supervise auditing of establishments, and determine scope of investigation required.",
+        "Report to management about asset utilization and audit results, and recommend changes in operations and financial activities.",
+        "Inspect account books and accounting systems for efficiency, effectiveness, and use of accepted accounting procedures to record transactions.",
+        "Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations.",
+        "Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity.",
+        "Examine whether the organization's objectives are reflected in its management activities, and whether employees understand the objectives.",
+        "Inspect cash on hand, notes receivable and payable, negotiable securities, and canceled checks to confirm records are accurate.",
+        "Examine inventory to verify journal and ledger entries.",
+        "Conduct pre-implementation audits to determine if systems and programs under development will work as planned.",
+        "Audit payroll and personnel records to determine unemployment insurance premiums, workers' compensation coverage, liabilities, and compliance with tax laws.",
+        "Review taxpayer accounts, and conduct audits on-site, by correspondence, or by summoning taxpayer to office.",
+        "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 13,
+      "approved_candidate_count": 13
+    },
+    "internal-control": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留控制缺陷、舞弊、合规和系统控制评估；移除不明确针对内控的薪资审计任务。",
+      "kept_tasks": [
+        "Collect and analyze data to detect deficient controls, duplicated effort, extravagance, fraud, or non-compliance with laws, regulations, and management policies.",
+        "Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations.",
+        "Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity."
+      ],
+      "removed_tasks": [
+        "Audit payroll and personnel records to determine unemployment insurance premiums, workers' compensation coverage, liabilities, and compliance with tax laws."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 3
+    },
+    "legal-research": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留法规、判例研究与法律解释；移除同时包含立法及政策执行的宽泛任务。",
+      "kept_tasks": [
+        "Study Constitution, statutes, decisions, regulations, and ordinances of quasi-judicial bodies to determine ramifications for cases.",
+        "Interpret laws, rulings and regulations for individuals and businesses.",
+        "Analyze the probable outcomes of cases, using knowledge of legal precedents."
+      ],
+      "removed_tasks": [
+        "Help develop federal and state programs, draft and interpret laws and legislation, and establish enforcement procedures."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 3
+    },
+    "legal-writing": {
+      "status": "reviewed_exact_task_set",
+      "reason": "法律意见、诉状和法律草案写作均相关；保留复合任务并提示写作只是其中一部分。",
+      "kept_tasks": [
+        "Prepare legal briefs and opinions, and file appeals in state and federal courts of appeal.",
+        "Search for and examine public and other legal records to write opinions or establish ownership.",
+        "Help develop federal and state programs, draft and interpret laws and legislation, and establish enforcement procedures."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 3,
+      "approved_candidate_count": 3
+    },
+    "negotiation": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留直接的民事和解谈判任务；仅代表已覆盖的职业情境。",
+      "kept_tasks": [
+        "Negotiate settlements of civil disputes.",
+        "Establish and maintain tendering process, and conduct negotiations.",
+        "Negotiate details of contracts and payments.",
+        "Negotiate with retail merchants to improve product exposure, such as shelf positioning and advertising."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 4
+    },
+    "lesson-planning": {
+      "status": "reviewed_exact_task_set",
+      "reason": "教学目标、课程活动、教材调整与课程安排均属于教学规划。",
+      "kept_tasks": [
+        "Adapt teaching methods and instructional materials to meet students' varying needs and interests.",
+        "Prepare materials and classrooms for class activities.",
+        "Plan and conduct activities for a balanced program of instruction, demonstration, and work time that provides students with opportunities to observe, question, and investigate.",
+        "Establish clear objectives for all lessons, units, and projects and communicate those objectives to students.",
+        "Prepare objectives and outlines for courses of study, following curriculum guidelines or requirements of states and schools.",
+        "Confer with other staff members to plan and schedule lessons promoting learning, following approved curricula.",
+        "Plan and supervise class projects, field trips, visits by guest speakers, or other experiential activities, and guide students in learning from those activities."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 7,
+      "approved_candidate_count": 7
+    },
+    "classroom-management": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留课堂秩序、行为规则和学生行为问题处理。",
+      "kept_tasks": [
+        "Establish and enforce rules for behavior and procedures for maintaining order among students.",
+        "Enforce all administration policies and rules governing students.",
+        "Confer with parents or guardians, other teachers, counselors, and administrators to resolve students' behavioral and academic problems."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 3,
+      "approved_candidate_count": 3
+    },
+    "assessment": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留作业评分、学生表现评估与考试评量。",
+      "kept_tasks": [
+        "Assign and grade class work and homework.",
+        "Observe and evaluate students' performance, behavior, social development, and physical health.",
+        "Prepare, administer, and grade tests and assignments to evaluate students' progress."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 3,
+      "approved_candidate_count": 3
+    },
+    "clinical-knowledge": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留诊断、治疗、处方与监测等临床任务；具体任务仍须受职业范围限制。",
+      "kept_tasks": [
+        "Prescribe or administer medication, therapy, and other specialized medical care to treat or prevent illness, disease, or injury.",
+        "Analyze records, reports, test results, or examination information to diagnose medical condition of patient.",
+        "Provide and manage long-term, comprehensive medical care, including diagnosis and nonsurgical treatment of diseases, for adult patients in an office or hospital.",
+        "Make diagnoses when different illnesses occur together or in situations where the diagnosis may be obscure.",
+        "Monitor patients' conditions and progress and reevaluate treatments as necessary.",
+        "Immunize patients to protect them from preventable diseases.",
+        "Operate on patients to remove, repair, or improve functioning of diseased or injured body parts and systems.",
+        "Prescribe or administer treatment, therapy, medication, vaccination, and other specialized medical care to treat or prevent illness, disease, or injury.",
+        "Order, perform, and interpret tests and analyze records, reports, and examination information to diagnose patients' condition."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 9,
+      "approved_candidate_count": 9
+    },
+    "patient-care": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留直接病患沟通、照护、监测、预防与转诊；不把所有含 patient 的诊断、手术和医生间建议都视为照护。",
+      "kept_tasks": [
+        "Explain procedures and discuss test results or prescribed treatments with patients.",
+        "Provide and manage long-term, comprehensive medical care, including diagnosis and nonsurgical treatment of diseases, for adult patients in an office or hospital.",
+        "Monitor patients' conditions and progress and reevaluate treatments as necessary.",
+        "Advise patients and community members concerning diet, activity, hygiene, and disease prevention.",
+        "Immunize patients to protect them from preventable diseases.",
+        "Refer patient to medical specialist or other practitioner when necessary.",
+        "Refer patients to medical specialists or other practitioners when necessary."
+      ],
+      "removed_tasks": [
+        "Analyze records, reports, test results, or examination information to diagnose medical condition of patient.",
+        "Advise surgeon of a patient's risk status and recommend appropriate intervention to minimize risk.",
+        "Operate on patients to remove, repair, or improve functioning of diseased or injured body parts and systems.",
+        "Order, perform, and interpret tests and analyze records, reports, and examination information to diagnose patients' condition."
+      ],
+      "reported_candidate_count": 11,
+      "approved_candidate_count": 7
+    },
+    "medical-ethics": {
+      "status": "explicit_evidence_rule",
+      "reason": "不以一般病患解释或诊疗任务替代医学伦理。",
+      "kept_tasks": [],
+      "removed_tasks": [],
+      "reported_candidate_count": 0,
+      "approved_candidate_count": 0
+    },
+    "cooking-technique": {
+      "status": "reviewed_exact_task_set",
+      "reason": "实际烹饪、示范与指导烹饪技巧均相关。",
+      "kept_tasks": [
+        "Instruct cooks or other workers in the preparation, cooking, garnishing, or presentation of food.",
+        "Prepare and cook foods of all types, either on a regular basis or for special guests or functions.",
+        "Demonstrate new cooking techniques or equipment to staff."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 3,
+      "approved_candidate_count": 3
+    },
+    "food-safety": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留卫生监控与供应品、设备、工作区检查。",
+      "kept_tasks": [
+        "Monitor sanitation practices to ensure that employees follow standards and regulations.",
+        "Inspect supplies, equipment, or work areas to ensure conformance to established standards."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 2,
+      "approved_candidate_count": 2
+    },
+    "menu-planning": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留菜单定价、食谱开发与菜单需求讨论。",
+      "kept_tasks": [
+        "Analyze recipes to assign prices to menu items, based on food, labor, and overhead costs.",
+        "Collaborate with other personnel to plan and develop recipes or menus, taking into account such factors as seasonal availability of ingredients or the likely number of customers.",
+        "Meet with customers to discuss menus for special occasions, such as weddings, parties, or banquets."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 3,
+      "approved_candidate_count": 3
+    },
+    "engineering-math": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留明确工程计算与数量成本估算；移除只写 analyze 的一般调查和工艺研究。",
+      "kept_tasks": [
+        "Compute load and grade requirements, water flow rates, or material stress factors to determine design specifications.",
+        "Estimate quantities and cost of materials, equipment, or labor to determine project feasibility."
+      ],
+      "removed_tasks": [
+        "Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data.",
+        "Analyze manufacturing processes or byproducts to identify engineering solutions to minimize the output of carbon or other pollutants."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 2
+    },
+    "cad": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留明确的计算机辅助工程或设计工具操作，属于 CAE/CAD 宽类代理；读蓝图或制作图纸不能单独证明使用 CAD 软件。",
+      "kept_tasks": [
+        "Operate computer-assisted engineering or design software or equipment to perform engineering tasks.",
+        "Operate computer-assisted engineering or design software or equipment to perform electronics engineering tasks."
+      ],
+      "removed_tasks": [
+        "Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data.",
+        "Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements.",
+        "Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates."
+      ],
+      "reported_candidate_count": 5,
+      "approved_candidate_count": 2
+    },
+    "project-management": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留项目现场管理、进度、预算和成本控制；移除餐饮日常运营及排班作为项目管理的替代。",
+      "kept_tasks": [
+        "Inspect project sites to monitor progress and ensure conformance to design specifications and safety or sanitation standards.",
+        "Manage and direct the construction, operations, or maintenance activities at project site.",
+        "Estimate quantities and cost of materials, equipment, or labor to determine project feasibility.",
+        "Identify environmental risks and develop risk management strategies for civil engineering projects.",
+        "Prepare estimates used by management for purposes such as planning, organizing, and scheduling work.",
+        "Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project.",
+        "Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops."
+      ],
+      "removed_tasks": [
+        "Supervise or coordinate activities of cooks or workers engaged in food preparation.",
+        "Determine production schedules and staff requirements necessary to ensure timely delivery of services.",
+        "Coordinate planning, budgeting, or purchasing for all the food operations within establishments such as clubs, hotels, or restaurant chains."
+      ],
+      "reported_candidate_count": 10,
+      "approved_candidate_count": 7
+    },
+    "accounting-software": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留明确使用计算机技术处理会计系统的任务作为软件系统代理；移除仅向客户提供系统设计建议。",
+      "kept_tasks": [
+        "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology."
+      ],
+      "removed_tasks": [
+        "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans."
+      ],
+      "reported_candidate_count": 2,
+      "approved_candidate_count": 1
+    },
+    "accounts-payable-receivable": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留账单、收款、押金和发票相关任务，属于 billing/collections 局部代理；移除报税、一般财务记录、科目表与流程建议，不能代表完整 AP/AR 职能。",
+      "kept_tasks": [
+        "Resolve customers' service or billing complaints by performing activities such as exchanging merchandise, refunding money, or adjusting bills.",
+        "Determine charges for services requested, collect deposits or payments, or arrange for billing.",
+        "Compare disputed merchandise with original requisitions and information from invoices and prepare invoices for returned goods."
+      ],
+      "removed_tasks": [
+        "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards.",
+        "Establish tables of accounts and assign entries to proper accounts.",
+        "Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements.",
+        "Recommend improvements in products, packaging, shipping, service, or billing methods and procedures to prevent future problems."
+      ],
+      "reported_candidate_count": 7,
+      "approved_candidate_count": 3
+    },
+    "taxation": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留报税、税务规划及税务机关代理；复合咨询任务只构成局部税务证据。",
+      "kept_tasks": [
+        "Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements.",
+        "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
+        "Represent clients before taxing authorities and provide support during litigation involving financial issues."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 3,
+      "approved_candidate_count": 3
+    },
+    "electrical-systems": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留电气与电子系统设计、分析、检查；职业层另行去除电子工程师，避免与电气工程师 SOC 错位。",
+      "kept_tasks": [
+        "Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements.",
+        "Design, implement, maintain, or improve electrical instruments, equipment, facilities, components, products, or systems for commercial, industrial, or domestic purposes.",
+        "Conduct field surveys or study maps, graphs, diagrams, or other data to identify and correct power system problems.",
+        "Design electrical systems or components that minimize electric energy requirements, such as lighting systems designed to account for natural lighting.",
+        "Plan layout of electric power generating plants or distribution lines or stations.",
+        "Collect data relating to commercial or residential development, population, or power system interconnection to determine operating efficiency of electrical systems.",
+        "Integrate electrical systems with renewable energy systems to improve overall efficiency.",
+        "Analyze electronics system requirements, capacity, cost, or customer needs to determine project feasibility.",
+        "Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities.",
+        "Design electronic components, software, products, or systems for commercial, industrial, medical, military, or scientific applications.",
+        "Inspect electronic equipment, instruments, products, or systems to ensure conformance to specifications, safety standards, or applicable codes or regulations."
+      ],
+      "removed_tasks": [
+        "Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems.",
+        "Provide technical support or instruction to staff or customers regarding electronics equipment standards."
+      ],
+      "reported_candidate_count": 13,
+      "approved_candidate_count": 11
+    },
+    "equipment-maintenance": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留维修建议和维护程序；移除维修预算、一般生产协调及维护文档整理。电气职业去除电子工程后可能无匹配，这表示无来源。",
+      "kept_tasks": [
+        "Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities.",
+        "Develop or perform operational, maintenance, or testing procedures for electronic products, components, equipment, or systems."
+      ],
+      "removed_tasks": [
+        "Direct or coordinate manufacturing, construction, installation, maintenance, support, documentation, or testing activities to ensure compliance with specifications, codes, or customer requirements.",
+        "Assist in developing capital project programs for new equipment or major repairs.",
+        "Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems.",
+        "Prepare, review, or maintain maintenance schedules, design documentation, or operational reports or charts."
+      ],
+      "reported_candidate_count": 6,
+      "approved_candidate_count": 2
+    },
+    "plc-automation": {
+      "status": "explicit_evidence_rule",
+      "reason": "普通自动化、仪表或控制系统不足以确认 PLC 能力。",
+      "kept_tasks": [],
+      "removed_tasks": [],
+      "reported_candidate_count": 0,
+      "approved_candidate_count": 0
+    },
+    "social-media-marketing": {
+      "status": "explicit_evidence_rule",
+      "reason": "没有社交媒体相关任务时保留无来源；不以一般营销任务填充。",
+      "kept_tasks": [],
+      "removed_tasks": [],
+      "reported_candidate_count": 0,
+      "approved_candidate_count": 0
+    },
+    "digital-advertising": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留广告需求与效果任务作为广告宽类代理；未证明数字渠道，须显示来源局限，不能宣称数字广告专属统计。",
+      "kept_tasks": [
+        "Measure the effectiveness of marketing, advertising, and communications programs and strategies.",
+        "Develop and implement procedures for identifying advertising needs."
+      ],
+      "removed_tasks": [
+        "Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers.",
+        "Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 2
+    },
+    "web-analytics": {
+      "status": "explicit_evidence_rule",
+      "reason": "一般市场趋势、客户人口特征或营销效果分析不足以证明网站分析。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand.",
+        "Measure the effectiveness of marketing, advertising, and communications programs and strategies.",
+        "Forecast and track marketing and sales trends, analyzing collected data."
+      ],
+      "reported_candidate_count": 3,
+      "approved_candidate_count": 0
+    },
+    "content-writing": {
+      "status": "explicit_evidence_rule",
+      "reason": "将研究结果写成报告不等于营销内容写作。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Prepare reports of findings, illustrating data graphically and translating complex findings into written text."
+      ],
+      "reported_candidate_count": 1,
+      "approved_candidate_count": 0
+    },
+    "quantity-surveying": {
+      "status": "reviewed_exact_task_set",
+      "reason": "成本估算与支出记录仅覆盖工料测量的局部职能；职业级映射因不足以代表全职能而停用。",
+      "kept_tasks": [
+        "Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates.",
+        "Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 2,
+      "approved_candidate_count": 2
+    },
+    "cost-estimation": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留工程数量、材料人工成本、分包估算及成本效果评估。",
+      "kept_tasks": [
+        "Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates.",
+        "Prepare estimates for use in selecting vendors or subcontractors.",
+        "Prepare estimates used by management for purposes such as planning, organizing, and scheduling work.",
+        "Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops.",
+        "Set up cost monitoring and reporting systems and procedures."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 5,
+      "approved_candidate_count": 5
+    },
+    "contract-administration": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留招标流程及谈判作为采购合同生命周期的局部代理；移除单纯估算、成本比较和供应商通讯录。",
+      "kept_tasks": [
+        "Establish and maintain tendering process, and conduct negotiations."
+      ],
+      "removed_tasks": [
+        "Prepare estimates for use in selecting vendors or subcontractors.",
+        "Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops.",
+        "Prepare and maintain a directory of suppliers, contractors and subcontractors."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 1
+    },
+    "employee-relations": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留员工申诉、政策解释、政策制定与离职面谈。",
+      "kept_tasks": [
+        "Interpret and explain human resources policies, procedures, laws, standards, or regulations.",
+        "Address employee relations issues, such as harassment allegations, work complaints, or other employee concerns.",
+        "Confer with management to develop or implement personnel policies or procedures.",
+        "Conduct exit interviews and ensure that necessary employment termination paperwork is completed."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 4
+    },
+    "recruitment": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留寻才、筛选、面试、录用与候选人沟通；移除入职培训及一般执照资格审查。",
+      "kept_tasks": [
+        "Hire employees and process hiring-related paperwork.",
+        "Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities.",
+        "Select qualified job applicants or refer them to managers, making hiring recommendations when appropriate.",
+        "Review employment applications and job orders to match applicants with job requirements.",
+        "Conduct reference or background checks on job applicants.",
+        "Perform searches for qualified job candidates, using sources such as computer databases, networking, Internet recruiting resources, media advertisements, job fairs, recruiting firms, or employee referrals.",
+        "Contact job applicants to inform them of the status of their applications.",
+        "Interview job applicants to obtain information on work history, training, education, or job skills.",
+        "Develop or implement recruiting strategies to meet current or anticipated staffing needs.",
+        "Advise management on organizing, preparing, or implementing recruiting or retention programs.",
+        "Evaluate recruitment or selection criteria to ensure conformance to professional, statistical, or testing standards, recommending revisions, as needed."
+      ],
+      "removed_tasks": [
+        "Schedule or conduct new employee orientations.",
+        "Review and evaluate applicant qualifications or eligibility for specified licensing, according to established guidelines and designated licensing codes."
+      ],
+      "reported_candidate_count": 13,
+      "approved_candidate_count": 11
+    },
+    "payroll": {
+      "status": "explicit_evidence_rule",
+      "reason": "向求职者说明薪酬福利不属于薪资核算或发薪；审计 payroll 也不是执行 payroll。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities."
+      ],
+      "reported_candidate_count": 1,
+      "approved_candidate_count": 0
+    },
+    "sales-prospecting": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留联系潜客和寻找线索；移除销售行政报告与客户信用调查。",
+      "kept_tasks": [
+        "Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders.",
+        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences."
+      ],
+      "removed_tasks": [
+        "Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports.",
+        "Obtain credit information about prospective customers."
+      ],
+      "reported_candidate_count": 4,
+      "approved_candidate_count": 2
+    },
+    "customer-support": {
+      "status": "reviewed_exact_task_set",
+      "reason": "保留客户问题解答、投诉处理、转交调查、服务跟进与通知。",
+      "kept_tasks": [
+        "Answer customers' questions about products, prices, availability, product uses, and credit terms.",
+        "Check to ensure that appropriate changes were made to resolve customers' problems.",
+        "Resolve customers' service or billing complaints by performing activities such as exchanging merchandise, refunding money, or adjusting bills.",
+        "Refer unresolved customer grievances to designated departments for further investigation.",
+        "Contact customers to respond to inquiries or to notify them of claim investigation results or any planned adjustments."
+      ],
+      "removed_tasks": [],
+      "reported_candidate_count": 5,
+      "approved_candidate_count": 5
+    },
+    "crm-systems": {
+      "status": "explicit_evidence_rule",
+      "reason": "记录客户互动或销售记录不一定使用 CRM 系统。",
+      "kept_tasks": [],
+      "removed_tasks": [
+        "Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports.",
+        "Keep records of customer interactions or transactions, recording details of inquiries, complaints, or comments, as well as actions taken."
+      ],
+      "reported_candidate_count": 2,
+      "approved_candidate_count": 0
+    },
+    "workplace-languages": {
+      "status": "explicit_evidence_rule",
+      "reason": "一般沟通和 translating findings into written text 不属于多语言能力。",
+      "kept_tasks": [],
+      "removed_tasks": [],
+      "reported_candidate_count": 0,
+      "approved_candidate_count": 0
+    }
+  },
+  "careers": {
+    "data-analyst": {
+      "approved_for_scoring": true,
+      "reason": "BI 分析师与统计师组合，属于分析工作代理；SOC 15-2051 的职业暴露不是数据分析师独立观测。",
+      "original_onet": [
+        "15-1199.08",
+        "15-2041.00"
+      ],
+      "reviewed_onet": [
+        "15-1199.08",
+        "15-2041.00"
+      ]
+    },
+    "frontend-developer": {
+      "approved_for_scoring": true,
+      "reason": "旧版网页开发职业用于前端开发宽类代理；保留旧代码以兼容源快照，不称为框架专属职业。",
+      "original_onet": [
+        "15-1134.00"
+      ],
+      "reviewed_onet": [
+        "15-1134.00"
+      ]
+    },
+    "backend-developer": {
+      "approved_for_scoring": true,
+      "reason": "应用软件、系统软件和数据库架构组合，覆盖后端相邻职能；必须按技能筛选，不将所有任务视为后端专属。",
+      "original_onet": [
+        "15-1132.00",
+        "15-1133.00",
+        "15-1199.06"
+      ],
+      "reviewed_onet": [
+        "15-1132.00",
+        "15-1133.00",
+        "15-1199.06"
+      ]
+    },
+    "ui-ux-designer": {
+      "approved_for_scoring": true,
+      "reason": "平面设计师与网页开发者的组合仅覆盖 UI/UX 部分职能；移除印刷流程等无关任务，不称为 UI/UX 直接观测。",
+      "original_onet": [
+        "27-1024.00",
+        "15-1134.00"
+      ],
+      "reviewed_onet": [
+        "27-1024.00",
+        "15-1134.00"
+      ]
+    },
+    "ml-engineer": {
+      "approved_for_scoring": false,
+      "reason": "计算机研究科学家与统计师不能充分代表生产环境 ML 工程师；本轮不批准职业级计分，保留原代码用于后续核对源数据。",
+      "original_onet": [
+        "15-1111.00",
+        "15-2041.00"
+      ],
+      "reviewed_onet": [
+        "15-1111.00",
+        "15-2041.00"
+      ]
+    },
+    "product-manager": {
+      "approved_for_scoring": false,
+      "reason": "11-3021 为计算机与信息系统经理，不是产品经理；不批准此职业映射计分，不为追求覆盖率放宽技能规则。",
+      "original_onet": [
+        "11-3021.00"
+      ],
+      "reviewed_onet": [
+        "11-3021.00"
+      ]
+    },
+    "forward-deployed-engineer": {
+      "approved_for_scoring": true,
+      "reason": "软件开发与系统分析的组合代理，只覆盖开发及客户系统集成；不是 FDE 专属或 AI 专属观测。",
+      "original_onet": [
+        "15-1132.00",
+        "15-1121.00"
+      ],
+      "reviewed_onet": [
+        "15-1132.00",
+        "15-1121.00"
+      ]
+    },
+    "data-scientist": {
+      "approved_for_scoring": true,
+      "reason": "统计师与 BI 分析师组合仅作相邻任务代理；不能称为完整数据科学家任务清单。",
+      "original_onet": [
+        "15-2041.00",
+        "15-1199.08"
+      ],
+      "reviewed_onet": [
+        "15-2041.00",
+        "15-1199.08"
+      ]
+    },
+    "auditor": {
+      "approved_for_scoring": true,
+      "reason": "审计师与会计师合并家族，使用审计/会计技能分别筛选；共享 SOC 13-2011。",
+      "original_onet": [
+        "13-2011.02",
+        "13-2011.01"
+      ],
+      "reviewed_onet": [
+        "13-2011.02",
+        "13-2011.01"
+      ]
+    },
+    "lawyer": {
+      "approved_for_scoring": true,
+      "reason": "律师职业对应清楚；美国任务不直接代表马来西亚法律制度。",
+      "original_onet": [
+        "23-1011.00"
+      ],
+      "reviewed_onet": [
+        "23-1011.00"
+      ]
+    },
+    "teacher": {
+      "approved_for_scoring": true,
+      "reason": "中学教师代理；不代表所有学段、学科或教学模式。",
+      "original_onet": [
+        "25-2031.00"
+      ],
+      "reviewed_onet": [
+        "25-2031.00"
+      ]
+    },
+    "doctor": {
+      "approved_for_scoring": true,
+      "reason": "为与 SOC 29-1216 一致，只保留旧版内科医生 29-1063.00，移除家庭/全科医生 29-1062.00；按内科医生代理显示，不代表全部医生。",
+      "original_onet": [
+        "29-1063.00",
+        "29-1062.00"
+      ],
+      "reviewed_onet": [
+        "29-1063.00"
+      ]
+    },
+    "chef": {
+      "approved_for_scoring": true,
+      "reason": "主厨及厨师长代理；不是所有初级厨房岗位的直接统计。",
+      "original_onet": [
+        "35-1011.00"
+      ],
+      "reviewed_onet": [
+        "35-1011.00"
+      ]
+    },
+    "civil-engineer": {
+      "approved_for_scoring": true,
+      "reason": "土木工程师职业对应清楚。",
+      "original_onet": [
+        "17-2051.00"
+      ],
+      "reviewed_onet": [
+        "17-2051.00"
+      ]
+    },
+    "accountant": {
+      "approved_for_scoring": true,
+      "reason": "旧版会计师职业对应清楚，SOC 与审计师合并；任务分支和职业级统计需分别标示。",
+      "original_onet": [
+        "13-2011.01"
+      ],
+      "reviewed_onet": [
+        "13-2011.01"
+      ]
+    },
+    "software-engineer": {
+      "approved_for_scoring": true,
+      "reason": "旧版应用及系统软件开发职业的组合，与软件工程宽类合理对应。",
+      "original_onet": [
+        "15-1132.00",
+        "15-1133.00"
+      ],
+      "reviewed_onet": [
+        "15-1132.00",
+        "15-1133.00"
+      ]
+    },
+    "electrical-engineer": {
+      "approved_for_scoring": true,
+      "reason": "仅保留 17-2071.00 电气工程师；移除 17-2072.00 电子工程师，避免与单一 SOC 17-2071 的交叉检查错位。",
+      "original_onet": [
+        "17-2071.00",
+        "17-2072.00"
+      ],
+      "reviewed_onet": [
+        "17-2071.00"
+      ]
+    },
+    "digital-marketer": {
+      "approved_for_scoring": true,
+      "reason": "仅保留 13-1161.00 市场研究/营销专业人员作为宽类代理，移除 11-2021.00 营销经理；不是数字渠道专属统计。13-1161.01 可作为后续候选，须先验证原始 AEI 快照覆盖。",
+      "original_onet": [
+        "13-1161.00",
+        "11-2021.00"
+      ],
+      "reviewed_onet": [
+        "13-1161.00"
+      ]
+    },
+    "quantity-surveyor": {
+      "approved_for_scoring": false,
+      "reason": "13-1051.00 实际为 Cost Estimators，仅覆盖成本估算等局部工作，不能代表完整工料测量职业；本轮不批准职业级计分。",
+      "original_onet": [
+        "13-1051.00"
+      ],
+      "reviewed_onet": [
+        "13-1051.00"
+      ]
+    },
+    "hr-executive": {
+      "approved_for_scoring": true,
+      "reason": "人力资源专员对应 HR 执行岗位宽类；不代表所有薪资核算或 HR 管理职能。",
+      "original_onet": [
+        "13-1071.00"
+      ],
+      "reviewed_onet": [
+        "13-1071.00"
+      ]
+    },
+    "sales-executive": {
+      "approved_for_scoring": true,
+      "reason": "41-4012.00 是批发和制造业非技术产品销售代表，仅作为 B2B 商品销售代理；不代表所有行业销售岗位。",
+      "original_onet": [
+        "41-4012.00"
+      ],
+      "reviewed_onet": [
+        "41-4012.00"
+      ]
+    },
+    "customer-service": {
+      "approved_for_scoring": true,
+      "reason": "客户服务代表对应清楚；电话、现场和数字渠道组合不能直接拆成渠道专属暴露度。",
+      "original_onet": [
+        "43-4051.00"
+      ],
+      "reviewed_onet": [
+        "43-4051.00"
+      ]
+    }
+  }
+}

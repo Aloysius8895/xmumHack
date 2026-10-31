@@ -228,3 +228,36 @@ test('explicit refresh replaces the checkpoint, retains study/reviews, rejects o
     assert.equal((await call('POST', '/api/learning/checkpoint', { refresh: true, checkpointId: old.id })).status, 409)
     assert.equal((await call('POST', '/api/learning/review', { checkpointId: old.id, progress: 'done', difficulty: '', answer: 'an old answer' })).status, 409)
 })
+
+
+test('integration: resetting a scenario clears both controls and preserves the applied roadmap', async () =>
+{
+    const save = await learner()
+    store.save(save)
+    await call('POST', '/api/scenario', { preset: 'extreme' })
+    const before = structuredClone(store.load().roadmap)
+    const reset = await call('POST', '/api/scenario', { preset: null })
+    assert.equal(reset.status, 200)
+    assert.equal(store.load().scenario, null)
+    assert.equal(store.load().learning.mode, null)
+    assert.equal(reset.state.learning.mode, 'moderate')
+    assert.equal(reset.state.learning.userOverride, null)
+    assert.deepEqual(store.load().roadmap, before)
+})
+
+test('integration: adaptive prompts use the customised target and local priority evidence', () =>
+{
+    const save = store.createSave()
+    save.target = { careerId: 'ml-engineer', mode: 'customise', posting: { requirements: [
+        { skillId: 'python', level: 2, priority: 'must', kind: 'skill' },
+    ] } }
+    const context = rules.learningContext(save)
+    assert.deepEqual(context.evidence.skills.map(row => row.skillId), ['python'])
+    const priority = context.modelAnalysis.skillPriority
+    const ids = new Set([...priority.core, ...priority.later, ...Object.values(priority.branches).flat()])
+    assert.deepEqual([...ids], ['python'])
+    assert.equal(priority.assumptions.demand, 'momentum')
+    assert.ok(priority.approach.moderate.python.activities.foundation > 0)
+    assert.ok(priority.approach.extreme.python.activities.foundation > 0)
+    assert.equal(context.modelAnalysis.isTrendEvidence, false)
+})

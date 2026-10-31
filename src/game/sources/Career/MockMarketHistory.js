@@ -1,36 +1,47 @@
 const count = value => Number.isSafeInteger(value) && value >= 0
 const monthIndex = period => Number(period.slice(0, 4)) * 12 + Number(period.slice(5)) - 1
 
-// Authored preview trajectories, not measured occupation growth rates.
-const GROWTH = {
-    'forward-deployed-engineer': 0.2,
-    'ml-engineer': 0.15, 'data-scientist': 0.11, 'data-analyst': 0.06,
-    'frontend-developer': 0.035, 'backend-developer': 0.075, 'ui-ux-designer': -0.045,
-    'product-manager': 0.055, auditor: -0.025, lawyer: 0.02, teacher: 0.04,
-    doctor: 0.015, 'civil-engineer': -0.035, chef: -0.07,
-}
+// Method parameters (assumptions, not data): the size of the seeded monthly wobble of careers and skills
+export const CAREER_WAVE = 0.06
+export const SKILL_WAVE = 0.05
+
+/** Monthly log growth from the big-picture direction (trends.bigPicture, server/big-picture.js: WEF 2025, MyCOL), none without one */
+const monthly = (row) => typeof row?.growth === 'number' ? row.growth / 12 : 0
+const seedOf = (id) => [ ...id ].reduce((value, letter) => (value * 31 + letter.charCodeAt(0)) >>> 0, 0)
 
 /**
- * User-authorized mock backfill of the heatmap's empty months (user decision 2026-10-30): display only, unlabelled on
- * screen but marked data-origin="mock"; never used by trends, rising / falling, sorting, the update log or the scenario
- * model. Observations remain authoritative.
+ * Mock backfill of the heatmap's empty months (user decisions 2026-10-30 and prompt 07): marked data-origin="mock",
+ * derived from data, never authored. Trend: the career's big-picture direction (trends.bigPicture: WEF Future of Jobs
+ * Report 2025 and MyCOL; no change without one), as the server's mock months. Level: its latest collected count; for a
+ * career never collected, its JobStreet 2025 share of the collected careers' postings in the latest collected month (no
+ * cell without one). A seeded wave of CAREER_WAVE, for display only.
+ * Observations remain authoritative.
  */
 export function buildMockMarketHistory(trends = {}, shown = [])
 {
-    const result = { method: 'seeded-career-profile-v1', count: 0, cells: Object.create(null) }
+    const result = { method: 'yoy-anchored-v2', count: 0, cells: Object.create(null) }
     if(!Array.isArray(trends.periods) || !shown.length) return result
     const periods = shown.filter(period => /^\d{4}-(0[1-9]|1[0-2])$/.test(period)).sort()
     if(!periods.length) return result
+    const yoy = trends.yearOnYear?.careers ?? {}
+    // The latest collected month and the JobStreet share of the careers collected in it, for the careers never collected
+    const latestIndex = Math.max(-1, ...(trends.careers ?? []).map(career => (career.ads ?? []).findLastIndex(count)))
+    const collected = (trends.careers ?? []).filter(career => count(career.ads?.[latestIndex]) && typeof yoy[career.id]?.to?.share === 'number')
+    const collectedAds = collected.reduce((sum, career) => sum + career.ads[latestIndex], 0)
+    const collectedShare = collected.reduce((sum, career) => sum + yoy[career.id].to.share, 0)
     for(const career of trends.careers ?? [])
     {
-        const seed = [...career.id].reduce((value, letter) => (value * 31 + letter.charCodeAt(0)) >>> 0, 0)
+        const seed = seedOf(career.id)
         const ads = career.ads ?? []
         const anchorIndex = ads.findLastIndex(count)
-        const anchorPeriod = anchorIndex < 0 ? periods.at(-1) : trends.periods[anchorIndex]
-        const anchorValue = anchorIndex < 0 ? 20 + seed % 35 : ads[anchorIndex]
+        const share = yoy[career.id]?.to?.share
+        const derived = anchorIndex < 0 && latestIndex >= 0 && collectedShare > 0 && typeof share === 'number'
+        if(anchorIndex < 0 && !derived) continue
+        const anchorPeriod = anchorIndex < 0 ? trends.periods[latestIndex] : trends.periods[anchorIndex]
+        const anchorValue = anchorIndex < 0 ? Math.round(collectedAds * share / collectedShare) : ads[anchorIndex]
         const anchor = monthIndex(anchorPeriod)
-        const growth = GROWTH[career.id] ?? (seed % 9 - 4) / 100
-        const wave = month => 1 + 0.06 * Math.sin((month + seed % 12) * 1.6)
+        const growth = monthly(trends.bigPicture?.careers?.[career.id])
+        const wave = month => 1 + CAREER_WAVE * Math.sin((month + seed % 12) * 1.6)
         for(const period of periods)
         {
             if(period > anchorPeriod || count(ads[trends.periods.indexOf(period)]) || count(trends.careerObservations?.[career.id]?.[period]?.value)) continue
@@ -46,8 +57,9 @@ export function buildMockMarketHistory(trends = {}, shown = [])
 }
 
 /**
- * Simulated share (%) of each skill in the months it has no collected value, display only like the career cells:
- * { skillId: { period: share } }, anchored on its latest collected share, a fixed and repeatable path per skill
+ * Mock share (%) of each skill in the months it has no collected value, like the career cells: { skillId: { period:
+ * share } }, anchored on its latest collected share, following its big-picture direction (none without one) with a
+ * seeded wave of SKILL_WAVE
  */
 export function buildMockSkillHistory(trends = {}, months = [])
 {
@@ -58,10 +70,10 @@ export function buildMockSkillHistory(trends = {}, months = [])
         const anchorIndex = (skill.share ?? []).findLastIndex((value) => typeof value === 'number')
         if(anchorIndex < 0)
             continue
-        const seed = [ ...skill.id ].reduce((value, letter) => (value * 31 + letter.charCodeAt(0)) >>> 0, 0)
+        const seed = seedOf(skill.id)
         const anchor = monthIndex(periods[anchorIndex]), anchorValue = skill.share[anchorIndex]
-        const growth = (seed % 11 - 4) / 100   // -4% to +6% a month
-        const wave = (month) => 1 + 0.05 * Math.sin((month + seed % 12) * 1.3)
+        const growth = monthly(trends.bigPicture?.skills?.[skill.id])
+        const wave = (month) => 1 + SKILL_WAVE * Math.sin((month + seed % 12) * 1.3)
         for(const period of months)
         {
             if(typeof skill.share[periods.indexOf(period)] === 'number')

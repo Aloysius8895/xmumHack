@@ -3,6 +3,7 @@ import { ask, isMock } from './ai.js'
 import { SKILLS, localText } from './careers.js'
 import { generateRoadmap } from './features.js'
 import { LEARNING_DEFAULTS, MODES, localized, localizedSchema as L, learningContext, learningPrompt, aeiEvidence, effectiveMode } from './learning-rules.js'
+import { trendClassification } from './aei-evidence.js'
 
 export class LearningError extends Error
 {
@@ -23,27 +24,33 @@ const currentReviews = (save) => (save.learning?.reviews ?? []).filter(review =>
 export async function analyzeEvidence(save)
 {
     const context = learningContext(save)
-    const fallback = localized('现有 AEI 为单期任务使用快照，无法判断发展速度。默认温和是学习规划假设，可自行选择极端情境。',
-        'The AEI task-use snapshot cannot establish development speed. Moderate is a conservative planning assumption; you can choose Extreme.',
-        'Snapshot penggunaan tugas AEI tidak menentukan kadar perkembangan. Sederhana ialah andaian perancangan konservatif; anda boleh memilih Ekstrem.')
-    const result = isMock() ? { summary: fallback } : await ask({ system: learningPrompt(context),
-        content: 'Analyze the supplied AEI mappings for this target. Explain useful learning implications and thin/zero mappings in zh/en/ms. Explicitly state that speed is unknown and moderate is a conservative default. Do not classify speed or change the target.',
+    // The classification is computed in code (aei-evidence.js trendClassification); the AI explains it, never makes it
+    const { trendClassification: trend, recommendedScenario, reason } = context.scenario
+    const result = isMock() ? { summary: reason } : await ask({ system: learningPrompt(context),
+        content: `Analyze the supplied AEI mappings for this target. Explain useful learning implications and thin/zero/imputed mappings in zh/en/ms. The pace of AI for this career was classified in code as ${trend} (recommended scenario: ${recommendedScenario}); restate that classification and its basis from scenario.reason as given, and do not reclassify it. ${trend === 'insufficient_evidence' ? 'State that the speed is unknown and moderate is a conservative default.' : 'State that it rests on two AEI periods of Claude usage, not on employment data.'} Do not change the target.`,
         schema: object({ summary: L }), effort: 'low' })
-    const analysis = { ...result, trendClassification: 'insufficient_evidence', recommendedScenario: 'moderate',
+    const analysis = { ...result, trendClassification: trend, recommendedScenario,
         evidenceRevision: context.evidence.revision, careerId: save.target?.careerId ?? null, at: new Date().toISOString() }
     state(save).analysis = analysis
     return analysis
 }
 
+/**
+ * The player's scenario: one that differs from the scenario recommended for the target career (aei-evidence.js) is
+ * their own choice; choosing the recommended one (or null) follows the recommendation, so it keeps following it when
+ * the data change.
+ */
 export function setLearningMode(save, mode)
 {
     if(mode !== null && !MODES.includes(mode)) throw new LearningError('bad-learning-mode', 400)
+    if(mode === trendClassification(save.target?.careerId ?? null).recommendedScenario)
+        mode = null
     const learning = state(save)
     learning.mode = mode
     learning.pending = null
     learning.checkpoint = null
     // Reuse the existing numerical presets; public learning labels are moderate/extreme.
-    save.scenario = { preset: effectiveMode(save) }
+    save.scenario = mode === null ? null : { preset: mode }
 }
 
 export async function createCheckpoint(save, { refresh = false, checkpointId = null } = {})
@@ -181,6 +188,7 @@ export function buildPreview(save, result, context = learningContext(save))
         changes.push({ operation: 'add', taskId: id, title: change.title, why: change.why, effortHours: change.effortHours, previousHours: 0 })
     }
     roadmap.learningScenario = context.effectiveScenario
+    roadmap.scenario = context.effectiveScenario
     if(roadmap.chosenBranch)
     {
         roadmap.chosenBranch = context.effectiveScenario
@@ -215,7 +223,7 @@ export function learningView(save, now = Date.now())
     const checkpoint = learning.checkpoint?.revision === revisionOf(save) ? learning.checkpoint : null
     const pending = learning.pending?.revision === revisionOf(save) ? learning.pending : null
     const analysis = learning.analysis?.evidenceRevision === context.evidence.revision && learning.analysis?.careerId === save.target?.careerId ? learning.analysis : null
-    return { mode: context.effectiveScenario, userOverride: learning.mode ?? null, recommendedScenario: 'moderate', trendClassification: 'insufficient_evidence',
+    return { mode: context.effectiveScenario, userOverride: learning.mode ?? context.scenario.userOverride, recommendedScenario: context.recommendedScenario, trendClassification: context.trendClassification,
         weeklyHours: context.weeklyHours, checkpointDays: context.checkpointDays, appliedMode: save.roadmap?.learningScenario ?? save.roadmap?.chosenBranch ?? null,
         evidence: context.evidence, analysis: analysis ? localText(analysis.summary, lang) : null,
         checkpointDueAt: dueAt, checkpointDue: Boolean(dueAt && now >= Date.parse(dueAt)),

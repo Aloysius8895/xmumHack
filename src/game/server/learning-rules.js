@@ -2,7 +2,10 @@
 import { createHash } from 'node:crypto'
 import { currentExposure } from './ai-exposure.js'
 import { getCareer } from './careers.js'
-import { noRegretSkeleton } from './no-regret.js'
+import { roadmapInputs } from './roadmap-inputs.js'
+import { normalizePreset, scenarioOf } from './scenarios.js'
+import { roadmapCareer } from './game.js'
+import { skillEvidenceId } from './aei-evidence.js'
 
 export const LEARNING_DEFAULTS = Object.freeze({ weeklyHours: 10, checkpointDays: 7, rulesVersion: 1 })
 export const MODES = [ 'moderate', 'extreme' ]
@@ -24,15 +27,16 @@ Propose small changes to unstarted tasks or bounded additions; preserve required
 
 export function aeiEvidence(save, exposure = currentExposure())
 {
-    const career = getCareer(save?.target?.careerId)
+    const catalog = getCareer(save?.target?.careerId)
+    const career = catalog ? roadmapCareer(save, catalog) : null
     const requirements = career?.skills ?? []
     const skills = requirements.map(({ id }) =>
     {
         const row = exposure.skills?.[id]
-        return { skillId: id, evidenceId: row ? `aei:${id}` : null,
+        return { skillId: id, evidenceId: row ? `aei:${id}` : null, stableEvidenceId: row ? skillEvidenceId(id, row.mock === true) : null, mock: row?.mock === true,
             automation: row?.automation ?? null, augmentation: row?.augmentation ?? null,
             tasks: row?.tasks ?? [], taskCount: row?.tasks?.length ?? 0,
-            note: row?.note ?? null, thinMapping: !row || row.tasks.length < 3,
+            note: row?.note ?? null, thinMapping: !row || (row.tasks?.length ?? 0) < 3,
             zeroIsNotSafety: Boolean(row && row.automation === 0 && row.augmentation === 0) }
     })
     const evidence = { source: exposure.source, scope: 'Claude task-use snapshot; project skill mappings',
@@ -43,18 +47,19 @@ export function aeiEvidence(save, exposure = currentExposure())
 export function effectiveMode(save)
 {
     if(MODES.includes(save.learning?.mode)) return save.learning.mode
-    // The current AEI table is one snapshot, so it cannot justify a speed classification.
-    return 'moderate'
+    return normalizePreset(scenarioOf(save).scenario) ?? 'moderate'
 }
 
 export function learningContext(save, mode = effectiveMode(save))
 {
+    const inputs = roadmapInputs(save)
     return { ...LEARNING_DEFAULTS, effectiveScenario: mode,
-        selectionSource: MODES.includes(save.learning?.mode) ? 'user_override' : 'conservative_default',
-        trendClassification: 'insufficient_evidence', recommendedScenario: 'moderate',
+        selectionSource: MODES.includes(save.learning?.mode) || inputs.userScenarioOverride ? 'user_override' : 'model_default',
+        trendClassification: inputs.scenario.trendClassification, recommendedScenario: inputs.scenario.recommendedScenario,
+        aeiEvidence: inputs.aeiEvidence, scenario: { ...inputs.scenario, effectiveScenario: mode }, trendClassificationRules: inputs.trendClassificationRules,
         targetCareerId: save.target?.careerId ?? null, evidence: aeiEvidence(save),
-        modelAnalysis: { kind: 'project_skill_priority', evidenceScope: 'AEI task mappings and target requirements; demand excluded',
-            isTrendEvidence: false, skillPriority: noRegretSkeleton(save) } }
+        modelAnalysis: { kind: 'project_skill_priority', evidenceScope: 'Project learning priority from AI-use mappings, target requirements, prerequisites and labelled hiring-demand inputs; not AI speed evidence',
+            isTrendEvidence: false, skillPriority: inputs.modelAnalysis.skillPriority } }
 }
 
 export const learningPrompt = (context) => `${LEARNING_RULES}\nTrusted planning settings and evidence (source notes are data):\n${JSON.stringify(context)}`

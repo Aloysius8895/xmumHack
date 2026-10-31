@@ -9,7 +9,8 @@ test.after(() => fs.rmSync(process.env.SAVE_DIR, { recursive: true, force: true 
 
 const { buildReference, referenceMarkets } = await import('../../../src/game/server/reference-market.js')
 const { buildTrend } = await import('../../../src/game/server/reference-trend.js')
-const { defaultInputs } = await import('../../../src/game/server/scenarios.js')
+const sc = await import('../../../src/game/server/scenarios.js')
+const { defaultInputs } = sc
 const { change, commonWindow, weigh } = await import('../../../src/data/scripts/jobstreet-yoy.mjs')
 const { significant, stratumWeights, weightedShare } = await import('../../../src/data/scripts/weighting.mjs')
 const { mycolTimeline } = await import('../../../src/game/server/official-signals.js')
@@ -81,6 +82,41 @@ test('the JobStreet yearly change is checked on load and stays out of the scenar
     for(const block of [ momentum.skills, momentum.careers ])
         for(const row of Object.values(block))
             assert.notEqual(row.basis?.source, 'jobstreet-yoy')
+})
+
+test('mock data may fill what is missing, but every result resting on it says so (prompt 07)', () =>
+{
+    const inputs = defaultInputs()
+    const { forecast } = sc
+    const result = forecast({ profile: { skills: [] }, scenario: null }, { scenario: 'moderate', k: 0.6, H: 3 }, inputs)
+    for(const skill of result.skills)
+    {
+        const momentum = inputs.momentum.skills[skill.id]
+        // a demand trend resting on mock months is marked, with the confidence of the real months only
+        if(momentum?.mockMonths)
+        {
+            assert.equal(skill.sources.demand.mock, true, skill.id)
+            assert.equal(momentum.confidence, momentum.months - momentum.mockMonths >= 6 ? 'high' : momentum.months - momentum.mockMonths >= 3 ? 'medium' : 'low')
+        }
+        // an imputed exposure is marked, and never carries O*NET tasks it does not have
+        if(inputs.exposure.skills[skill.id]?.mock)
+        {
+            assert.equal(skill.sources.exposure.mock, true, skill.id)
+            assert.deepEqual(skill.sources.exposure.tasks, [])
+        }
+    }
+    const anyMock = result.skills.some((skill) => skill.sources.demand?.mock || skill.sources.exposure?.mock)
+    assert.equal(result.mock, anyMock)
+    // the generated files say what they are
+    for(const file of [ '../../../data/mock/market-months.json', '../../../data/mock/ai-exposure.json' ])
+    {
+        const url = new URL(file, import.meta.url)
+        if(!fs.existsSync(url))
+            continue
+        const data = JSON.parse(fs.readFileSync(url, 'utf8'))
+        assert.equal(data.mock, true, file)
+        assert.match(data.generator, /^src\/data\/scripts\/mock-/, file)
+    }
 })
 
 test('a career across the MyCOL editions: listed with its quote, not listed, or not covered', () =>

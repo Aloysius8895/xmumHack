@@ -20,19 +20,30 @@ export function rankDelta(state, careerId)
     return ranks[other].rank - ranks[current].rank
 }
 
-/** The toggle above the careers: the two presets, the estimate label and the assumptions button (open: card shown) */
-export function renderScenarioBar(state, {t, esc, open = false})
+/**
+ * The toggle above the careers: the two presets, the estimate (and mock data) labels, the assumptions button (open: card
+ * shown) and what the data recommend, with a way back to it after the player's own choice
+ */
+export function renderScenarioBar(state, {t, esc, open = false, lang = 'zh'})
 {
     const current = state.scenario?.scenario
-    const buttons = PRESET_IDS.map((preset) => `<button type="button" class="career-scenario-button ${preset === current ? 'is-active' : ''}" data-action="scenario" data-preset="${preset}" aria-pressed="${preset === current}">${esc(t(`scenario.${preset}`))}</button>`).join('')
+    const choice = state.scenarioChoice
+    // The recommended scenario is marked: it is on by default, the other one is the player's own choice
+    const recommended = (preset) => preset === choice?.recommendedScenario ? ` <small class="career-scenario-recommended">${esc(t('scenario.recommendedTag'))}</small>` : ''
+    const buttons = PRESET_IDS.map((preset) => `<button type="button" class="career-scenario-button ${preset === current ? 'is-active' : ''}" data-action="scenario" data-preset="${preset}" aria-pressed="${preset === current}">${esc(t(`scenario.${preset}`))}${recommended(preset)}</button>`).join('')
     const thin = state.forecast?.careers.some((row) => row.thinProfile)
+    const own = choice?.selectionSource === 'user_override'
+    const reason = choice?.reason?.[lang] ?? choice?.reason?.en ?? ''
+    const mock = state.forecast?.mock || choice?.mock
     return `<section class="career-scenario" aria-label="${esc(t('scenario.label'))}">
         <div class="career-scenario-row">
             <span class="career-scenario-title">${esc(t('scenario.label'))}</span>
             <div class="career-scenario-buttons" role="group">${buttons}</div>
             <span class="career-tag is-estimate" title="${esc(t('scenario.estimateHelp'))}">${esc(t('scenario.estimate'))}</span>
+            ${mock ? `<span class="career-tag is-mock" title="${esc(t('scenario.mockHelp'))}">${esc(t('scenario.mock'))}</span>` : ''}
             <button type="button" class="career-link" data-action="scenario-assumptions" aria-expanded="${open}">${esc(t('scenario.assumptions'))}</button>
         </div>
+        ${choice ? `<p class="career-muted">${esc(t(own ? 'scenario.userChoice' : 'scenario.recommended', { scenario: t(`scenario.${choice.recommendedScenario}`) }))} ${esc(reason)}${own ? ` <button type="button" class="career-link" data-action="scenario" data-preset="default">${esc(t('scenario.backToDefault'))}</button>` : ''}</p>` : ''}
         ${current === 'custom' ? `<p class="career-muted">${esc(t('scenario.custom', { k: state.forecast.params.k, h: state.forecast.params.H }))}</p>` : ''}
         ${thin ? `<p class="career-notice is-warning">${esc(t('scenario.thinProfile'))} <button type="button" class="career-link" data-action="menu" data-panel="profile">${esc(t('scenario.toProfile'))}</button></p>` : ''}
     </section>`

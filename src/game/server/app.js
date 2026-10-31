@@ -26,7 +26,7 @@ import { crawlerStatus } from './crawler-market.js'
 import { sampleRefresh, RefreshError } from './crawler-refresh.js'
 import { knownListings, loadWindow, refreshIfStale } from './market-window.js'
 import * as scenarios from './scenarios.js'
-import { noRegretSkeleton, presetOf, skeletonStages } from './no-regret.js'
+import { noRegretSkeleton, presetOf, skeletonStages, stageApproach } from './no-regret.js'
 import { snapshot, updateLog } from './update-log.js'
 import { localizePostingSkills } from './posting-skill-localization.js'
 import * as learning from './adaptive-learning.js'
@@ -211,10 +211,16 @@ const routes = {
     },
     'GET /api/integrations/market/collection': async () => marketCollector.status(),
 
-    // Future scenario: a preset name, or explicit { k, H } inside the limits (scenarios.js)
+    // Future scenario: a preset name ('fast' is read as 'extreme'), null to follow the recommendation again, or explicit
+    // { k, H } inside the limits (scenarios.js)
     'POST /api/scenario': async (save, body) =>
     {
-        if(body.preset !== undefined)
+        if(body.preset === null)
+        {
+            learning.setLearningMode(save, null)
+            save.scenario = null
+        }
+        else if(body.preset !== undefined)
         {
             const preset = scenarios.normalizePreset(body.preset)
             if(!scenarios.PRESETS[preset])
@@ -367,11 +373,12 @@ const routes = {
             return { requiresConfirmation: true }
         }
         // No-Regret order (no-regret.js): core skills first, a branch per scenario, skills declining under both last
-        const skeleton = noRegretSkeleton(save, undefined, game.targetedCareer(save, getCareer(save.target.careerId)))
-        const layout = skeleton ? skeletonStages(skeleton) : null
+        const skeleton = noRegretSkeleton(save, undefined, { career: game.roadmapCareer(save) })
+        const mode = learningContext(save).effectiveScenario
+        const layout = skeleton ? skeletonStages(skeleton).map(stage => ({ ...stage, approach: stageApproach(stage.skillIds, stage.branch ?? mode) })) : null
         const plan = await features.generateRoadmap({ target: save.target, profile: save.profile, gaps: game.gapsFor(save), lang: lang(save, body), layout: layout?.length ? layout : null, learning: learningContext(save) })
         save.roadmap = game.buildRoadmap({ ...plan, chosenBranch: presetOf(scenarios.scenarioOf(save)),
-            forecastBasis: skeleton && { core: skeleton.core, branches: skeleton.branches, later: skeleton.later, identical: skeleton.identical } })
+            forecastBasis: skeleton && { core: skeleton.core, branches: skeleton.branches, later: skeleton.later, identical: skeleton.identical, demand: 'momentum' } })
         save.roadmap.learningScenario = learningContext(save).effectiveScenario
     },
 

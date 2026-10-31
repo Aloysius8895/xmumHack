@@ -1,0 +1,56 @@
+{
+  "about": "World Economic Forum, Future of Jobs Report 2025: the jobs and skills employers expect to grow or decline by 2030, globally and for Malaysia, as printed in the report (text read from the PDF on 2026-10-31). The big-picture direction of the mock hiring-demand months (src/game/server/big-picture.js) reads it through the reviewed mapping src/data/config/wef-mapping.json. Directions only: the report's percentages are employer expectations, not hiring counts.",
+  "source": {
+    "name": "Future of Jobs Report 2025",
+    "publisher": "World Economic Forum",
+    "published": "2025-01",
+    "url": "https://www3.weforum.org/docs/WEF_Future_of_Jobs_Report_2025.pdf",
+    "survey": "Future of Jobs Survey 2024",
+    "basis": "the perspective of over 1,000 leading global employers—collectively representing more than 14 million workers across 22 industry clusters and 55 economies",
+    "basisPage": 4
+  },
+  "jobs": {
+    "figure": "Figure 2.2, Fastest-growing and fastest-declining jobs, 2025-2030 (top jobs by fastest net growth and net decline, projected by surveyed employers)",
+    "page": 19,
+    "growing": [
+      "Big Data Specialists", "FinTech Engineers", "AI and Machine Learning Specialists", "Software and Applications Developers",
+      "Security Management Specialists", "Data Warehousing Specialists", "Autonomous and Electric Vehicle Specialists", "UI and UX Designers",
+      "Light Truck or Delivery Services Drivers", "Internet of Things Specialists", "Data Analysts and Scientists", "Environmental Engineers",
+      "Information Security Analysts", "Devops Engineer", "Renewable Energy Engineers"
+    ],
+    "declining": [
+      "Data Entry Clerks", "Bank Tellers and Related Clerks", "Material-Recording and Stock-Keeping Clerks",
+      "Door-To-Door Sales Workers, News and Street Vendors, and Related Workers", "Administrative Assistants and Executive Secretaries",
+      "Legal Secretaries", "Printing and Related Trades Workers", "Legal Officials", "Postal Service Clerks", "Telemarketers",
+      "Accounting, Bookkeeping and Payroll Clerks", "Transportation Attendants and Conductors", "Cashiers and Ticket Clerks", "Graphic Designers",
+      "Claims Adjusters, Examiners, and Investigators"
+    ]
+  },
+  "skills": {
+    "figure": "Figure 3.4, Skills on the rise, 2025-2030 (net increase: share of employers expecting a skill to increase in use minus those expecting a decrease)",
+    "page": 37,
+    "netIncrease": {
+      "AI and big data": 87, "Networks and cybersecurity": 70, "Technological literacy": 68, "Creative thinking": 66,
+      "Resilience, flexibility and agility": 66, "Curiosity and lifelong learning": 61, "Leadership and social influence": 58,
+      "Talent management": 58, "Analytical thinking": 55, "Environmental stewardship": 53, "Systems thinking": 51,
+      "Motivation and self-awareness": 47, "Empathy and active listening": 46, "Design and user experience": 45,
+      "Service orientation and customer service": 41, "Teaching and mentoring": 30, "Programming": 27, "Marketing and media": 25,
+      "Resource management and operations": 24, "Quality control": 20, "Global citizenship": 19, "Multi-lingualism": 16,
+      "Sensory-processing abilities": 13, "Dependability and attention to detail": 12, "Reading, writing and mathematics": -4,
+      "Manual dexterity, endurance and precision": -24
+    },
+    "topOnTheRise": 10,
+    "quote": "Also ranking among the top 10 skills on the rise are leadership and social influence, talent management, analytical thinking, and environmental stewardship. [...] However, a small net decline is anticipated in reading, writing, and mathematics."
+  },
+  "malaysia": {
+    "page": 168,
+    "skillsOfIncreasingUse": {
+      "AI and big data": 96, "Technological literacy": 64, "Networks and cybersecurity": 64, "Resilience, flexibility and agility": 59, "Talent management": 57
+    },
+    "keyRoles": {
+      "AI and Machine Learning Specialists": 29, "Supply Chain and Logistics Specialists": 12, "Assembly and Factory Workers": 11,
+      "Managing Directors and Chief Executives": 10, "Administrative Assistants and Executive Secretaries": -17, "Data Entry Clerks": -28
+    },
+    "keyRolesMetric": "net growth (%), roles most selected by organizations surveyed in Malaysia"
+  }
+}

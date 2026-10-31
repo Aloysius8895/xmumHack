@@ -1,0 +1,53 @@
+{
+  "source_sha256": "f9147facaf0e008eae0f66161a4870d8cd386a3909384ddecf2bd7e5f855839e",
+  "skills_reviewed": 67,
+  "careers_reviewed": 22,
+  "careers_approved_for_scoring": 19,
+  "careers_reviewed_but_not_approved": [
+    "ml-engineer",
+    "product-manager",
+    "quantity-surveyor"
+  ],
+  "unique_skill_task_pairs_before": 348,
+  "unique_skill_task_pairs_after": 228,
+  "skills_with_no_approved_task_in_supplied_report": [
+    "sql",
+    "python",
+    "data-cleaning",
+    "html-css",
+    "javascript",
+    "react",
+    "git",
+    "api-integration",
+    "rest-api",
+    "cloud-deploy",
+    "figma",
+    "usability-testing",
+    "ml-frameworks",
+    "mlops",
+    "roadmapping",
+    "agile",
+    "medical-ethics",
+    "plc-automation",
+    "social-media-marketing",
+    "web-analytics",
+    "content-writing",
+    "payroll",
+    "crm-systems",
+    "workplace-languages"
+  ],
+  "checks_passed": [
+    "JSON roundtrip",
+    "67 regex patterns compile",
+    "career skill references valid",
+    "all report task decisions reproduced",
+    "career gating decisions correct"
+  ],
+  "not_run": [
+    "full original O*NET task extraction",
+    "AEI scoring pipeline",
+    "source missingness/interaction imputation audit",
+    "application tests",
+    "JavaScript regex/exclude matching compatibility"
+  ]
+}

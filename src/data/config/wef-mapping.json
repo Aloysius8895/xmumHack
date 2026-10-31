@@ -1,0 +1,308 @@
+{
+  "about": "Project-defined mappings from catalog skills and careers to WEF Future of Jobs Report 2025 categories in data/official-signals/wef-future-of-jobs-2025.json. These are AI-reviewed project interpretations, not an official WEF crosswalk or human-reviewed mappings. reviewed: true means the mapping decision has been reviewed, including decisions to use null. Only reviewed entries with a non-null wef value may contribute a WEF direction in src/game/server/big-picture.js. Null or missing mappings mean insufficient correspondence, not negative demand. WEF category trends are not individual-skill hiring growth rates or AI replacement probabilities. Preserve the source geography and 2025–2030 time horizon.",
+  "reviewer": "ChatGPT — AI review completed 2026-10-31",
+  "skills": {
+    "sql": {
+      "wef": "Programming",
+      "reviewed": true,
+      "note": "SQL 查询与数据操作语言归入 Programming；涉及数据不自动等于 AI 或大数据。"
+    },
+    "data-cleaning": {
+      "wef": null,
+      "reviewed": true,
+      "note": "范围包括普通表格清理和专业数据处理，无法明确对应单一 WEF 类别。"
+    },
+    "data-visualization": {
+      "wef": null,
+      "reviewed": true,
+      "note": "横跨分析、设计和信息表达，不直接继承 AI and big data 的趋势。"
+    },
+    "statistics": {
+      "wef": "Analytical thinking",
+      "reviewed": true,
+      "note": "按应用统计方法分析证据、解释结果与形成判断理解。"
+    },
+    "python": {
+      "wef": "Programming",
+      "reviewed": true,
+      "note": "Python 编程能力。"
+    },
+    "excel": {
+      "wef": "Technological literacy",
+      "reviewed": true,
+      "note": "电子表格软件使用能力；不是 WEF 对 Excel 的独立预测。"
+    },
+    "ml-math": {
+      "wef": null,
+      "reviewed": true,
+      "note": "机器学习数学基础不直接等同 AI 实践技能，也不继承宽泛读写算类别的趋势。"
+    },
+    "ml-frameworks": {
+      "wef": "AI and big data",
+      "reviewed": true,
+      "note": "使用机器学习框架构建、训练和评估模型。"
+    },
+    "mlops": {
+      "wef": "AI and big data",
+      "reviewed": true,
+      "note": "机器学习模型部署、监控和生命周期管理。"
+    },
+    "html-css": {
+      "wef": "Programming",
+      "reviewed": true,
+      "note": "网页结构与样式代码开发，归入软件开发的编程技能类别。"
+    },
+    "javascript": {
+      "wef": "Programming",
+      "reviewed": true,
+      "note": "JavaScript 编程能力。"
+    },
+    "react": {
+      "wef": "Programming",
+      "reviewed": true,
+      "note": "使用 React 编写应用界面。"
+    },
+    "git": {
+      "wef": null,
+      "reviewed": true,
+      "note": "版本管理工具能力，不直接等同编程能力。"
+    },
+    "api-integration": {
+      "wef": "Programming",
+      "reviewed": true,
+      "note": "按通过代码调用和集成 API 理解，不包含仅操作无代码平台的情况。"
+    },
+    "backend-language": {
+      "wef": "Programming",
+      "reviewed": true,
+      "note": "使用后端编程语言开发服务。"
+    },
+    "rest-api": {
+      "wef": "Programming",
+      "reviewed": true,
+      "note": "按设计和实现 REST API 理解。"
+    },
+    "testing": {
+      "wef": "Programming",
+      "reviewed": true,
+      "note": "按软件测试代码与自动化测试开发理解，不代表所有人工测试或非软件测试。"
+    },
+    "databases": {
+      "wef": null,
+      "reviewed": true,
+      "note": "数据库设计、管理、查询和运维横跨不同能力，当前条目不足以明确归类。"
+    },
+    "cloud-deploy": {
+      "wef": null,
+      "reviewed": true,
+      "note": "云端部署不必然包含网络工程或网络安全，不直接对应 Networks and cybersecurity。"
+    },
+    "accessibility": {
+      "wef": "Design and user experience",
+      "reviewed": true,
+      "note": "按数字产品无障碍设计与使用体验理解。"
+    },
+    "user-research": {
+      "wef": "Design and user experience",
+      "reviewed": true,
+      "note": "研究产品用户需求、行为和使用情境。"
+    },
+    "prototyping": {
+      "wef": "Design and user experience",
+      "reviewed": true,
+      "note": "按数字产品界面与交互原型制作理解，不包含机械或硬件原型。"
+    },
+    "figma": {
+      "wef": "Design and user experience",
+      "reviewed": true,
+      "note": "按使用 Figma 进行界面与交互设计理解。"
+    },
+    "visual-design": {
+      "wef": "Design and user experience",
+      "reviewed": true,
+      "note": "按产品视觉设计理解。"
+    },
+    "usability-testing": {
+      "wef": "Design and user experience",
+      "reviewed": true,
+      "note": "评估产品可用性与用户完成任务的体验。"
+    },
+    "communication": {
+      "wef": null,
+      "reviewed": true,
+      "note": "沟通包含表达、演讲、写作与倾听，不能整体等同同理心和积极倾听。"
+    },
+    "roadmapping": {
+      "wef": null,
+      "reviewed": true,
+      "note": "路线图制定可能涉及排期和优先级，不必然体现系统思维。"
+    },
+    "market-analysis": {
+      "wef": "Analytical thinking",
+      "reviewed": true,
+      "note": "分析市场证据、比较信息并形成判断。"
+    },
+    "negotiation": {
+      "wef": null,
+      "reviewed": true,
+      "note": "与影响力相关，但不足以直接等同 Leadership and social influence。"
+    },
+    "legal-writing": {
+      "wef": null,
+      "reviewed": true,
+      "note": "专业法律写作包含法律知识与论证，不直接继承宽泛读写算类别的趋势。"
+    },
+    "lesson-planning": {
+      "wef": "Teaching and mentoring",
+      "reviewed": true,
+      "note": "设计教学目标、课程活动与教学安排。"
+    },
+    "classroom-management": {
+      "wef": "Teaching and mentoring",
+      "reviewed": true,
+      "note": "组织课堂、维护学习环境并支持学生学习。"
+    },
+    "assessment": {
+      "wef": "Teaching and mentoring",
+      "reviewed": true,
+      "note": "按教学中的学习评估与反馈理解，不包含风险、财务或临床评估。"
+    },
+    "patient-care": {
+      "wef": null,
+      "reviewed": true,
+      "note": "病患照护包含临床知识、操作、安全与沟通，同理心只覆盖其中一部分。"
+    },
+    "cooking-technique": {
+      "wef": "Manual dexterity, endurance and precision",
+      "reviewed": true,
+      "note": "按刀工、手部操作与制作精度理解；该对应不代表全部烹饪能力或厨师就业前景。"
+    },
+    "food-safety": {
+      "wef": "Quality control",
+      "reviewed": true,
+      "note": "按食品卫生标准执行、安全检查与过程控制理解。"
+    },
+    "engineering-math": {
+      "wef": null,
+      "reviewed": true,
+      "note": "专业工程数学不直接继承宽泛 Reading, writing and mathematics 类别的趋势。"
+    },
+    "project-management": {
+      "wef": "Resource management and operations",
+      "reviewed": true,
+      "note": "协调项目进度、预算、人员与资源。"
+    },
+    "accounting-software": {
+      "wef": "Technological literacy",
+      "reviewed": true,
+      "note": "会计软件使用能力，不代表会计专业能力或会计岗位趋势。"
+    },
+    "equipment-maintenance": {
+      "wef": null,
+      "reviewed": true,
+      "note": "包含故障诊断、专业技术与维修操作，不能仅归入手工灵巧度类别。"
+    },
+    "social-media-marketing": {
+      "wef": "Marketing and media",
+      "reviewed": true,
+      "note": "通过社交媒体开展营销活动。"
+    },
+    "digital-advertising": {
+      "wef": "Marketing and media",
+      "reviewed": true,
+      "note": "数字广告策划、投放与优化。"
+    },
+    "content-writing": {
+      "wef": "Marketing and media",
+      "reviewed": true,
+      "note": "按营销文案或媒体内容写作理解，不包含一般技术、法律或学术写作。"
+    },
+    "web-analytics": {
+      "wef": "Analytical thinking",
+      "reviewed": true,
+      "note": "按分析网站数据、解释指标与支持决策理解，不只是分析工具操作。"
+    },
+    "quantity-surveying": {
+      "wef": null,
+      "reviewed": true,
+      "note": "涵盖工程计量、合同、估值与成本管理，无法明确对应单一 WEF 类别。"
+    },
+    "cost-estimation": {
+      "wef": "Resource management and operations",
+      "reviewed": true,
+      "note": "按项目预算和资源成本估算、支持资源安排理解。"
+    },
+    "recruitment": {
+      "wef": "Talent management",
+      "reviewed": true,
+      "note": "人才招聘与甄选。"
+    },
+    "employee-relations": {
+      "wef": "Talent management",
+      "reviewed": true,
+      "note": "人员管理中的员工关系维护与问题处理。"
+    },
+    "customer-support": {
+      "wef": "Service orientation and customer service",
+      "reviewed": true,
+      "note": "回应客户需求并解决服务问题。"
+    },
+    "sales-prospecting": {
+      "wef": null,
+      "reviewed": true,
+      "note": "潜在客户开发属于销售流程，与营销相关但不足以直接对应 Marketing and media。"
+    },
+    "crm-systems": {
+      "wef": "Technological literacy",
+      "reviewed": true,
+      "note": "客户关系管理软件使用能力，不代表整体销售或客户关系能力。"
+    },
+    "workplace-languages": {
+      "wef": "Multi-lingualism",
+      "reviewed": true,
+      "note": "按使用多种语言工作的能力理解，不指仅掌握一种工作语言。"
+    }
+  },
+  "careers": {
+    "data-analyst": {
+      "wef": "Data Analysts and Scientists",
+      "reviewed": true,
+      "note": "数据分析师属于该合并职业类别；该来源不能独立区分数据分析师与数据科学家的方向。"
+    },
+    "data-scientist": {
+      "wef": "Data Analysts and Scientists",
+      "reviewed": true,
+      "note": "数据科学家属于该合并职业类别，与 data-analyst 共享同一 WEF 来源信号。"
+    },
+    "ml-engineer": {
+      "wef": "AI and Machine Learning Specialists",
+      "reviewed": true,
+      "note": "按开发、训练、评估与部署机器学习系统的岗位理解。"
+    },
+    "forward-deployed-engineer": {
+      "wef": null,
+      "reviewed": true,
+      "note": "职位可能涉及客户现场的软件开发、集成与部署，名称本身不足以确认属于 AI 和机器学习专家。"
+    },
+    "frontend-developer": {
+      "wef": "Software and Applications Developers",
+      "reviewed": true,
+      "note": "前端开发属于软件与应用开发的子类。"
+    },
+    "backend-developer": {
+      "wef": "Software and Applications Developers",
+      "reviewed": true,
+      "note": "后端开发属于软件与应用开发的子类。"
+    },
+    "software-engineer": {
+      "wef": "Software and Applications Developers",
+      "reviewed": true,
+      "note": "按设计、开发和维护软件应用的岗位理解。"
+    },
+    "ui-ux-designer": {
+      "wef": "UI and UX Designers",
+      "reviewed": true,
+      "note": "用户界面与用户体验设计岗位，与 WEF 职位名称直接对应。"
+    }
+  }
+}

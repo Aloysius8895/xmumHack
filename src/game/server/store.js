@@ -43,6 +43,8 @@ function migrateLearning(data)
     {
         if(!roadmap) return
         if(roadmap.chosenBranch === 'fast') roadmap.chosenBranch = 'extreme'
+        for(const key of ['scenario', 'learningScenario'])
+            if(roadmap[key] === 'fast') roadmap[key] = 'extreme'
         const renameKey = (record) =>
         {
             if(record && Object.hasOwn(record, 'fast'))
@@ -59,7 +61,7 @@ function migrateLearning(data)
         for(const key of [ 'branches', 'gains', 'values' ]) renameKey(roadmap.forecastBasis?.[key])
     }
     const selected = data.scenario?.preset === 'fast' ? 'extreme' : data.scenario?.preset
-    if(selected && data.scenario) data.scenario.preset = selected
+    if(selected && data.scenario) data.scenario = selected === 'moderate' ? null : { ...data.scenario, preset: selected }
     migrateRoadmap(data.roadmap)
     for(const career of Object.values(data.careers ?? {})) migrateRoadmap(career.roadmap)
     return { ...data, learning: { mode: selected === 'extreme' ? 'extreme' : null, analysis: null, checkpoint: null, reviews: [], pending: null } }
@@ -87,7 +89,7 @@ export function createSave()
         customCareers: [], // careers the AI generated (search, job postings), same shape as server/careers.js CAREERS
         customSkills: {},  // { skillId: { name: { zh, en, ms }, detail } } new skills of those careers
         pendingTarget: null, // { requestedCareerId, posting, suggestedCareerId, newCareer, at } posting fitting another career, waiting for the player
-        scenario: { preset: 'moderate' }, // { preset } or { k, H } future AI adoption scenario (server/scenarios.js)
+        scenario: null,    // { preset } the player chose, { k, H }, or null for the recommended scenario (server/scenarios.js)
         dataView: null,    // { seenAt, seenWindowAt, denominator, shares, signals } market data last looked at (server/update-log.js)
         learningDirection: null, // { text, skillIds, unmatched, setAt } what the player wants to learn, as catalog skills
         learning: { mode: null, analysis: null, checkpoint: null, reviews: [], pending: null },

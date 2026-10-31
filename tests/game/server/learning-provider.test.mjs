@@ -39,7 +39,7 @@ const layout = [ { kind: 'core', branch: null, skillIds: [ 'python' ], basis: [ 
 
 test('the actual provider path receives AEI policy and cannot change the No-Regret layout or cite invented evidence', async () =>
 {
-    answers.push({ stages: [ { title: text, why: text, tasks: [ task ] } ] })
+    answers.push({ stages: [ { title: text, why: text, requirementRefs: [], tasks: [ task ] } ] })
     const result = await generateRoadmap({ target, profile, gaps: [], lang: 'en', layout, learning: context })
     assert.equal(result.stages[0].kind, 'core')
     assert.deepEqual(result.stages[0].skillIds, [ 'python' ])
@@ -47,7 +47,7 @@ test('the actual provider path receives AEI policy and cannot change the No-Regr
     assert.ok(requests[0].system.includes('snapshot cannot establish development SPEED'))
     assert.ok(requests[0].system.includes('"effectiveScenario":"extreme"'))
     assert.ok(requests[0].system.includes('"isTrendEvidence":false'))
-    answers.push({ stages: [ { title: text, why: text, tasks: [ { ...task, skillId: 'sql' } ] } ] })
+    answers.push({ stages: [ { title: text, why: text, requirementRefs: [], tasks: [ { ...task, skillId: 'sql' } ] } ] })
     const mismatched = await generateRoadmap({ target, profile, gaps: [], lang: 'en', layout, learning: context })
     assert.ok(mismatched.stages[0].tasks.every(item => item.skillId === 'python'), 'out-of-stage skill falls back to an appropriate task')
 })

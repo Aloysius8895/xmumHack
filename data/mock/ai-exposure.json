@@ -1,0 +1,589 @@
+{
+  "mock": true,
+  "generator": "src/data/scripts/mock-ai-exposure.mjs",
+  "generatedAt": "2026-10-31T07:02:46.263Z",
+  "about": "MOCK AI exposure, not observed data: imputed from the reviewed Anthropic Economic Index values of data/ai-exposure/exposure.json for skills without one. Read by src/game/server/ai-exposure.js only where no real value exists. Every result using it is marked mock.",
+  "basis": {
+    "exposure": "data/ai-exposure/exposure.json",
+    "map": "data/ai-exposure/skill_task_map.json",
+    "downloadedAt": "2026-10-30"
+  },
+  "skills": {
+    "sql": {
+      "automation": 0.2588,
+      "augmentation": 0.3592,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "data-analyst",
+          "ml-engineer",
+          "product-manager",
+          "forward-deployed-engineer",
+          "data-scientist",
+          "software-engineer"
+        ],
+        "skills": [
+          "backend-language",
+          "communication",
+          "data-visualization",
+          "databases",
+          "excel",
+          "market-analysis",
+          "statistics",
+          "user-research"
+        ]
+      }
+    },
+    "python": {
+      "automation": 0.267,
+      "augmentation": 0.3659,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "data-analyst",
+          "ml-engineer",
+          "forward-deployed-engineer",
+          "data-scientist"
+        ],
+        "skills": [
+          "communication",
+          "data-visualization",
+          "excel",
+          "statistics"
+        ]
+      }
+    },
+    "data-cleaning": {
+      "automation": 0.267,
+      "augmentation": 0.3659,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "data-analyst",
+          "ml-engineer"
+        ],
+        "skills": [
+          "communication",
+          "data-visualization",
+          "excel",
+          "statistics"
+        ]
+      }
+    },
+    "html-css": {
+      "automation": 0.1971,
+      "augmentation": 0.2428,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "frontend-developer",
+          "software-engineer"
+        ],
+        "skills": [
+          "accessibility",
+          "backend-language",
+          "communication",
+          "databases"
+        ]
+      }
+    },
+    "javascript": {
+      "automation": 0.1971,
+      "augmentation": 0.2428,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "frontend-developer",
+          "software-engineer"
+        ],
+        "skills": [
+          "accessibility",
+          "backend-language",
+          "communication",
+          "databases"
+        ]
+      }
+    },
+    "react": {
+      "automation": 0.1971,
+      "augmentation": 0.2428,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "frontend-developer",
+          "software-engineer"
+        ],
+        "skills": [
+          "accessibility",
+          "backend-language",
+          "communication",
+          "databases"
+        ]
+      }
+    },
+    "git": {
+      "automation": 0.2539,
+      "augmentation": 0.2532,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "frontend-developer",
+          "backend-developer"
+        ],
+        "skills": [
+          "accessibility",
+          "backend-language",
+          "databases",
+          "testing"
+        ]
+      }
+    },
+    "api-integration": {
+      "automation": 0.036,
+      "augmentation": 0.0694,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "frontend-developer",
+          "forward-deployed-engineer"
+        ],
+        "skills": [
+          "accessibility",
+          "communication"
+        ]
+      }
+    },
+    "rest-api": {
+      "automation": 0.2719,
+      "augmentation": 0.288,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "backend-developer",
+          "forward-deployed-engineer"
+        ],
+        "skills": [
+          "backend-language",
+          "communication",
+          "databases",
+          "testing"
+        ]
+      }
+    },
+    "cloud-deploy": {
+      "automation": 0.2719,
+      "augmentation": 0.288,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "backend-developer",
+          "forward-deployed-engineer",
+          "software-engineer"
+        ],
+        "skills": [
+          "backend-language",
+          "communication",
+          "databases",
+          "testing"
+        ]
+      }
+    },
+    "figma": {
+      "automation": 0.0431,
+      "augmentation": 0.0697,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "ui-ux-designer"
+        ],
+        "skills": [
+          "communication",
+          "prototyping",
+          "user-research",
+          "visual-design"
+        ]
+      }
+    },
+    "usability-testing": {
+      "automation": 0.0431,
+      "augmentation": 0.0697,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "ui-ux-designer"
+        ],
+        "skills": [
+          "communication",
+          "prototyping",
+          "user-research",
+          "visual-design"
+        ]
+      }
+    },
+    "ml-math": {
+      "automation": 0.158,
+      "augmentation": 0.2073,
+      "mock": true,
+      "method": "all-skills-mean-imputation",
+      "basis": {
+        "careers": [
+          "ml-engineer"
+        ],
+        "skills": [
+          "excel",
+          "statistics",
+          "data-visualization",
+          "communication",
+          "accessibility",
+          "backend-language",
+          "databases",
+          "testing",
+          "user-research",
+          "prototyping",
+          "visual-design",
+          "market-analysis",
+          "accounting",
+          "auditing",
+          "internal-control",
+          "legal-research",
+          "legal-writing",
+          "negotiation",
+          "lesson-planning",
+          "classroom-management",
+          "assessment",
+          "clinical-knowledge",
+          "patient-care",
+          "cooking-technique",
+          "food-safety",
+          "menu-planning",
+          "engineering-math",
+          "cad",
+          "project-management",
+          "accounting-software",
+          "accounts-payable-receivable",
+          "taxation",
+          "electrical-systems",
+          "digital-advertising",
+          "employee-relations",
+          "recruitment",
+          "sales-prospecting",
+          "customer-support"
+        ]
+      }
+    },
+    "ml-frameworks": {
+      "automation": 0.2105,
+      "augmentation": 0.3259,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "ml-engineer",
+          "forward-deployed-engineer",
+          "data-scientist"
+        ],
+        "skills": [
+          "communication",
+          "data-visualization",
+          "statistics"
+        ]
+      }
+    },
+    "mlops": {
+      "automation": 0.0719,
+      "augmentation": 0.1388,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "ml-engineer",
+          "forward-deployed-engineer"
+        ],
+        "skills": [
+          "communication"
+        ]
+      }
+    },
+    "roadmapping": {
+      "automation": 0.1192,
+      "augmentation": 0.2388,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "product-manager"
+        ],
+        "skills": [
+          "communication",
+          "market-analysis",
+          "user-research"
+        ]
+      }
+    },
+    "agile": {
+      "automation": 0.1192,
+      "augmentation": 0.2388,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "product-manager"
+        ],
+        "skills": [
+          "communication",
+          "market-analysis",
+          "user-research"
+        ]
+      }
+    },
+    "medical-ethics": {
+      "automation": 0.0511,
+      "augmentation": 0.1122,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "doctor"
+        ],
+        "skills": [
+          "clinical-knowledge",
+          "communication",
+          "patient-care"
+        ]
+      }
+    },
+    "equipment-maintenance": {
+      "automation": 0.035,
+      "augmentation": 0.0841,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "electrical-engineer"
+        ],
+        "skills": [
+          "cad",
+          "communication",
+          "electrical-systems",
+          "prototyping"
+        ]
+      }
+    },
+    "plc-automation": {
+      "automation": 0.035,
+      "augmentation": 0.0841,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "electrical-engineer"
+        ],
+        "skills": [
+          "cad",
+          "communication",
+          "electrical-systems",
+          "prototyping"
+        ]
+      }
+    },
+    "social-media-marketing": {
+      "automation": 0.2036,
+      "augmentation": 0.3521,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "digital-marketer",
+          "customer-service"
+        ],
+        "skills": [
+          "accounts-payable-receivable",
+          "communication",
+          "customer-support",
+          "digital-advertising",
+          "excel",
+          "market-analysis",
+          "visual-design"
+        ]
+      }
+    },
+    "web-analytics": {
+      "automation": 0.1506,
+      "augmentation": 0.2932,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "digital-marketer"
+        ],
+        "skills": [
+          "communication",
+          "digital-advertising",
+          "market-analysis",
+          "visual-design"
+        ]
+      }
+    },
+    "content-writing": {
+      "automation": 0.1506,
+      "augmentation": 0.2932,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "digital-marketer"
+        ],
+        "skills": [
+          "communication",
+          "digital-advertising",
+          "market-analysis",
+          "visual-design"
+        ]
+      }
+    },
+    "quantity-surveying": {
+      "automation": 0.018,
+      "augmentation": 0.0347,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "quantity-surveyor"
+        ],
+        "skills": [
+          "cad",
+          "communication",
+          "negotiation",
+          "project-management"
+        ]
+      }
+    },
+    "cost-estimation": {
+      "automation": 0.018,
+      "augmentation": 0.0347,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "quantity-surveyor"
+        ],
+        "skills": [
+          "cad",
+          "communication",
+          "negotiation",
+          "project-management"
+        ]
+      }
+    },
+    "contract-administration": {
+      "automation": 0.0233,
+      "augmentation": 0.056,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "electrical-engineer",
+          "quantity-surveyor"
+        ],
+        "skills": [
+          "cad",
+          "communication",
+          "electrical-systems",
+          "negotiation",
+          "project-management",
+          "prototyping"
+        ]
+      }
+    },
+    "payroll": {
+      "automation": 0.1911,
+      "augmentation": 0.2414,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "hr-executive"
+        ],
+        "skills": [
+          "accounting",
+          "communication",
+          "employee-relations",
+          "excel",
+          "recruitment",
+          "taxation"
+        ]
+      }
+    },
+    "crm-systems": {
+      "automation": 0.2387,
+      "augmentation": 0.358,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "sales-executive",
+          "customer-service"
+        ],
+        "skills": [
+          "accounts-payable-receivable",
+          "communication",
+          "customer-support",
+          "excel",
+          "market-analysis",
+          "negotiation",
+          "sales-prospecting"
+        ]
+      }
+    },
+    "workplace-languages": {
+      "automation": 0.1716,
+      "augmentation": 0.2528,
+      "mock": true,
+      "method": "career-mean-imputation",
+      "basis": {
+        "careers": [
+          "accountant",
+          "electrical-engineer",
+          "digital-marketer",
+          "quantity-surveyor",
+          "hr-executive",
+          "sales-executive",
+          "customer-service"
+        ],
+        "skills": [
+          "accounting",
+          "accounting-software",
+          "accounts-payable-receivable",
+          "auditing",
+          "cad",
+          "communication",
+          "customer-support",
+          "digital-advertising",
+          "electrical-systems",
+          "employee-relations",
+          "excel",
+          "market-analysis",
+          "negotiation",
+          "project-management",
+          "prototyping",
+          "recruitment",
+          "sales-prospecting",
+          "taxation",
+          "visual-design"
+        ]
+      }
+    }
+  }
+}
