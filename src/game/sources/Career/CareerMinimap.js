@@ -2,6 +2,7 @@ import { Game } from '../Game/Game.js'
 import { pick, t } from './i18n.js'
 import { MAP_WIDTH, MAP_HEIGHT } from '../Game/MapBounds.js'
 import { createAltarIslandMapElement, MAP_SEA_COLORS, MAP_SEA_GRADIENTS } from '../Game/World/AltarIsland.js'
+import { leaveAtBuilding } from './BuildingTravel.js'
 
 /**
  * Corner minimap centered on the player, gym leaders shown as head avatars (click one to teleport)
@@ -23,6 +24,7 @@ export class CareerMinimap
         this.mapMarkers = []
 
         this.setDom()
+        this.setSdgMarker()
 
         this.world.events.on('npcs', () => this.setMarkers())
         this.world.events.on('npcs-changed', () => this.rebindMarkers())
@@ -67,6 +69,29 @@ export class CareerMinimap
         return npc.avatar
             ? `<img src="${npc.avatar}" alt="">`
             : `<span>${pick(npc.career.name).slice(0, 1)}</span>`
+    }
+
+    setSdgMarker()
+    {
+        this.sdgMarkers = []
+        for(const [parent, className] of [[this.markersElement, 'career-minimap-npc'], [this.game.map.element, 'career-map-npc']])
+        {
+            const element = document.createElement('button')
+            element.type = 'button'
+            element.className = `${className} career-sdg-marker`
+            element.style.setProperty('--career', '#7046cf')
+            element.innerHTML = '<span class="career-sdg-label">SDG</span><em class="career-sdg-caption">SDG</em>'
+            element.title = `SDG · ${t('map.teleport')}`
+            element.setAttribute('aria-label', element.title)
+            element.addEventListener('click', event => {
+                event.stopPropagation()
+                if(this.ui.touring || this.game.view.cinematic.active) return
+                this.game.modals.close()
+                leaveAtBuilding(this.game, 'sdg')
+            })
+            parent.appendChild(element)
+            this.sdgMarkers.push(element)
+        }
     }
 
     setMarkers()
@@ -205,6 +230,19 @@ export class CareerMinimap
             const position = this.game.map.worldToMap(npc.character.group.position)
             element.style.left = `${position.x * 100}%`
             element.style.top = `${position.y * 100}%`
+        }
+        const station = this.game.career?.buildingEntrances?.stations.get('sdg')
+        if(station)
+        {
+            const position = this.game.map.worldToMap({x: station.position.x + 1, z: station.position.z + 1})
+            let x = (position.x - center.x) * worldSize, y = (position.y - center.y) * worldHeight
+            const distance = Math.hypot(x, y)
+            if(distance > radius) { x *= radius / distance; y *= radius / distance }
+            const [mini, full] = this.sdgMarkers
+            mini.classList.toggle('is-edge', distance > radius)
+            mini.style.transform = `translate(calc(${size * 0.5 + x}px - 50%), calc(${size * 0.5 + y}px - 50%))`
+            full.style.left = `${position.x * 100}%`
+            full.style.top = `${position.y * 100}%`
         }
     }
 }

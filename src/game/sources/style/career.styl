@@ -2827,6 +2827,70 @@ button.career-points {
     transition: width 0.15s ease, height 0.15s ease;
 }
 
+.career-sdg-marker {
+    background: transparent;
+    color: #ffffff;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
+    font: 700 10px Arial, sans-serif;
+    z-index: 2001;
+}
+
+.career-sdg-marker::before {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    background: #ffffff;
+    border: 4px solid #292333;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.career-minimap-npc .career-sdg-label,
+.career-map-npc .career-sdg-label {
+    display: none;
+}
+
+.career-map-npc.career-sdg-marker {
+    width: 28px;
+    height: 28px;
+    margin: -14px 0 0 -14px;
+    font-size: 13px;
+}
+
+.career-map-npc.career-sdg-marker::before {
+    inset: 5px;
+    border-width: 3px;
+}
+
+.career-sdg-marker .career-sdg-caption {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: auto;
+    bottom: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    transform-origin: 50% 80%;
+    transition: transform 0.3s cubic-bezier(0.65, -1, 0.45, 1), opacity 0.15s ease, visibility 0s 0.3s;
+    padding: 2px 5px;
+    background: #000000;
+    color: #ffffff;
+    border-radius: 0;
+    font: 500 10px Arial, sans-serif;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.career-sdg-marker:hover .career-sdg-caption {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+    transition: transform 0.3s cubic-bezier(0.49, 2.2, 0.53, 0.75), opacity 0.15s ease, visibility 0s;
+}
+
 .career-minimap-npc img,
 .career-map-npc img {
     width: 100%;

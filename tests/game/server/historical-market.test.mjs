@@ -61,3 +61,21 @@ test('a changed data file without updated verification is not published', () => 
         fs.rmdirSync(temp)
     }
 })
+
+test('verified history survives Windows CRLF and macOS LF checkouts without trusting content edits', () => {
+    const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'historical-newlines-'))
+    try
+    {
+        fs.copyFileSync(path.join(root, 'verification.json'), path.join(temp, 'verification.json'))
+        for(const newline of ['\n', '\r\n'])
+        {
+            for(const name of ['monthly_market_context.json', 'quarterly_occupation_context.json'])
+                fs.writeFileSync(path.join(temp, name), fs.readFileSync(path.join(root, name), 'utf8').replace(/\r\n/g, '\n').replace(/\n/g, newline))
+            assert.ok(historicalMarket(temp), `verified data rejected for ${JSON.stringify(newline)}`)
+        }
+        const file = path.join(temp, 'monthly_market_context.json')
+        fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace('225826', '225827'))
+        assert.equal(historicalMarket(temp), null)
+    }
+    finally { fs.rmSync(temp, {recursive: true, force: true}) }
+})

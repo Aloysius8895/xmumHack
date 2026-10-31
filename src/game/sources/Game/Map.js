@@ -51,13 +51,13 @@ export class Map
     {
         this.locations = {}
         this.locations.items = [
-            { name: 'Achievements', respawnName: 'achievements', offset: { x: 0, y: -0.01 } },
+            { name: 'Leaderboard', respawnName: 'achievements', offset: { x: 0, y: -0.01 } },
             { name: 'Altar', respawnName: 'altar', offset: { x: 0, y: -0.05 } },
             { name: 'Island', respawnName: 'altarIsland', offset: { x: 0, y: -0.03 } },
             { name: 'Technical<br />stack', respawnName: 'behindTheScene', offset: { x: 0.01, y: 0 } },
             { name: 'Bowling', respawnName: 'bowling', offset: { x: -0.08, y: 0.03 } },
             { name: 'Career', respawnName: 'career', offset: { x: 0, y: -0.06 } },
-            { name: 'Cookie', respawnName: 'cookie', offset: { x: -0.02, y: -0.01 } },
+            { name: 'Log', respawnName: 'cookie', offset: { x: -0.02, y: -0.01 } },
             { name: 'Lab', respawnName: 'lab', offset: { x: -0.03, y: 0 } },
             { name: 'Landing', respawnName: 'landing', offset: { x: 0.02, y: 0 } },
             { name: 'Trends', respawnName: 'projects', offset: { x: 0, y: -0.02 } },

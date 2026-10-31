@@ -13,6 +13,15 @@ const count = value => Number.isSafeInteger(value) && value >= 0
 let cached = null
 let signature = ''
 
+// Git may check text out as LF on macOS and CRLF on Windows. Only normalize newline
+// bytes; all content (including extra whitespace) must still match the verified hash.
+function verifiedBytes(buffer, expected)
+{
+    const lf = buffer.toString('utf8').replace(/\r\n/g, '\n')
+    return [buffer, Buffer.from(lf), Buffer.from(lf.replace(/\n/g, '\r\n'))]
+        .some(bytes => crypto.createHash('sha256').update(bytes).digest('hex') === expected)
+}
+
 /** External aggregates remain separate from the project's career/skill observations. */
 export function buildHistoricalMarket(monthly, quarterly)
 {
@@ -68,7 +77,7 @@ export function historicalMarket(root = process.env.HISTORICAL_MARKET_DIR ?? (pr
         const buffers = files.map(file => fs.readFileSync(file))
         const verification = JSON.parse(buffers[2].toString('utf8'))
         for(let i = 0; i < 2; i++)
-            if(verification.artifact_sha256?.[names[i]] !== crypto.createHash('sha256').update(buffers[i]).digest('hex'))
+            if(!verifiedBytes(buffers[i], verification.artifact_sha256?.[names[i]]))
                 return null
         cached = { ...buildHistoricalMarket(...buffers.slice(0, 2).map(buffer => JSON.parse(buffer.toString('utf8')))), verifiedAt: verification.checked_at }
         signature = version
