@@ -1,10 +1,10 @@
 > [!IMPORTANT]
 > ## 📁 Submission Documents & Templates
 > - **Final Project & Prototype Report:** [SDC2026_ChillChill_FinalReport.pdf](submission/SDC2026_ChillChill_FinalReport.pdf)
-> - **Technology Declaration (Finalist, content corrections pending):** [SDC2026_ChillChill_TechDeclaration.pdf](submission/SDC2026_ChillChill_TechDeclaration.pdf)
+> - **Technology Declaration (Finalist):** [SDC2026_ChillChill_TechDeclaration.pdf](submission/SDC2026_ChillChill_TechDeclaration.pdf)
 > - **RunPod Proof of Use:** [SDC2026_Chill_chill_Runpod_POU.pdf](submission/SDC2026_Chill_chill_Runpod_POU.pdf)
 >
-> The declaration PDF has only been renamed. Sections 5 and 7 still require corrections and a fresh export from the unavailable editable Word source; see the submission index.
+> **Sponsor resources used:** the Replit Pro account provided to finalists (development, hosting and deployment during the hackathon) and RunPod US$25 offer credits (one RTX A5000 pod used to test an optional vLLM inference backend). Neither is required by the final deployment, which runs on Render with DeepSeek.
 >
 > The submission documents are indexed in [`submission/README.md`](submission/README.md).
 >
@@ -246,7 +246,8 @@ The [test guide](tests/README.md) lists the isolated suites and browser requirem
 - [ ] Team confirms the officially registered SDG track.
 - [x] Slide deck and demo video links added.
 - [x] Supplied finalist project report and technology declaration included under standardised filenames; RunPod proof of use restored.
-- [ ] Re-export the technology declaration from its editable Word source with the Section 5 sponsor disclosures and Section 7 checklist corrections.
+- [x] Sponsor resources (Replit Pro account, RunPod credits) disclosed in this README and the submission index.
+- [ ] Post-event revision: align Section 5 of the declaration PDF with that disclosure.
 - [ ] Team confirms final PDF contents, signatures and submission readiness.
 - [x] Local production build and game/chatbot regression suites verified during deployment work.
 - [x] Render public health, service authentication and fixed webhook URL verified during deployment work.
