@@ -77,9 +77,17 @@ const REASONS = {
         const pp = (value) => `${Math.round(value * 1000) / 10}%`
         const points = `${change >= 0 ? '+' : ''}${Math.round(change * 1000) / 10}`
         const limit = Math.round(threshold * 1000) / 10
+        const shortPeriod = (period) => {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            const parts = String(period).split('/').map(part => /^(\d{4})-(\d{2})(?:-\d{2})?$/.exec(part))
+            if(parts.some(part => !part || Number(part[2]) < 1 || Number(part[2]) > 12)) return period
+            if(parts.length === 2 && parts[0][1] === parts[1][1])
+                return `${months[Number(parts[0][2]) - 1]}–${months[Number(parts[1][2]) - 1]} ${parts[0][1]}`
+            return parts.map(part => `${months[Number(part[2]) - 1]} ${part[1]}`).join(' / ')
+        }
         return {
             zh: `这个职业相关的 ${pairedTasks} 项工作任务里，AI 用户让 AI 直接完成（自动化）的占比从 ${pp(first)}（${from}）变为 ${pp(last)}（${to}），变化 ${points} 个百分点，${scenario === 'extreme' ? '达到' : '没有达到'}团队事先定下的极端门槛（${limit} 个百分点），所以判断为${scenario === 'extreme' ? '极端' : '温和'}。这只说明 Claude 用户的使用方式在变，不是失业或技能淘汰的概率。`,
-            en: `Across ${pairedTasks} tasks of this career, the share of AI use that hands the task to AI (automation) went from ${pp(first)} (${from}) to ${pp(last)} (${to}), ${points} percentage points, ${scenario === 'extreme' ? 'reaching' : 'below'} the threshold the team set in advance (${limit} points), so ${scenario}. It shows how Claude users' use is changing, not a probability of job loss or of a skill becoming obsolete.`,
+            en: `Across ${pairedTasks} career tasks, AI automation ${change >= 0 ? 'increased' : 'decreased'} from ${pp(first)} (${shortPeriod(from)}) to ${pp(last)} (${shortPeriod(to)}), a ${Math.round(Math.abs(change) * 1000) / 10}-point ${change >= 0 ? 'rise' : 'fall'} that ${scenario === 'extreme' ? 'met or exceeded' : 'did not reach'} the ${limit}-point threshold, indicating ${scenario} adoption. This reflects changing Claude usage, not job-loss risk or skill obsolescence.`,
             ms: `Dalam ${pairedTasks} tugas kerjaya ini, bahagian penggunaan AI yang menyerahkan tugas kepada AI (automasi) berubah daripada ${pp(first)} (${from}) kepada ${pp(last)} (${to}), ${points} mata peratusan, ${scenario === 'extreme' ? 'mencapai' : 'di bawah'} ambang yang ditetapkan pasukan lebih awal (${limit} mata), jadi ${scenario === 'extreme' ? 'ekstrem' : 'sederhana'}. Ia menunjukkan perubahan cara pengguna Claude menggunakan AI, bukan kebarangkalian kehilangan kerja atau kemahiran menjadi usang.`,
         }
     },
