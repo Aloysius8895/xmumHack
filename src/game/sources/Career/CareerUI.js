@@ -13,6 +13,7 @@ import { forecastOf, renderAssumptions, renderCardScore, renderScenarioBar, rend
 import { MAX_RANGE_MONTHS, chosenRange, limitRange, monthsBetween, referenceView, yearOnYearColumn, yearOnYearText } from './MarketReference.js'
 import { collectNewSample } from './SampleRefresh.js'
 import { travelToBuilding } from './BuildingTravel.js'
+import { renderLearningPanel } from './LearningPanel.js'
 
 /**
  * Career platform UI: HUD (pet, points, next step), quick menu rail, side panels and the NPC dialogue box
@@ -150,7 +151,13 @@ export class CareerUI
         this.api.events.on('busy', (busy) => this.setBusy(busy))
 
         // Window resize, and the UI showing up after the intro (display none until then, nothing to measure)
-        new ResizeObserver(() => this.fitBar()).observe(this.root)
+        new ResizeObserver(() =>
+        {
+            this.fitBar()
+            const columns = this.root.clientWidth < 640 ? 2 : this.root.clientWidth < 1000 ? 3 : 4
+            if(this.panel?.name === 'roadmap' && this.mapColumns && columns !== this.mapColumns)
+                this.renderPanel()
+        }).observe(this.root)
         document.fonts?.ready.then(() => this.fitBar())
     }
 
@@ -641,6 +648,27 @@ export class CareerUI
             case 'career-generate': return this.generateCareer()
             case 'file-remove': delete this.files[data.file]; return this.renderPanel()
             case 'roadmap': return this.generateRoadmap(data.confirm === '1')
+            case 'learning-mode': return this.run(() => this.api.setLearningScenario(data.mode))
+            case 'learning-default': return this.run(() => this.api.setLearningScenario(null))
+            case 'learning-analyze': return this.run(() => this.api.analyzeLearning())
+            case 'learning-checkpoint': return this.run(() => this.api.startCheckpoint())
+            case 'learning-checkpoint-refresh': return this.run(() => this.api.refreshCheckpoint(this.state.learning?.checkpoint?.id), () =>
+            {
+                delete this.drafts.reviewProgress
+                delete this.drafts.reviewDifficulty
+                delete this.drafts.reviewAnswer
+                this.renderPanel()
+            })
+            case 'learning-preview': return this.run(() => this.api.previewLearning())
+            case 'learning-apply': return this.run(() => this.api.applyLearning(this.state.learning?.pending?.id))
+            case 'learning-discard': return this.run(() => this.api.discardLearning())
+            case 'learning-review': return this.run(() => this.api.reviewCheckpoint(this.state.learning?.checkpoint?.id,
+                this.drafts.reviewProgress ?? '', this.drafts.reviewDifficulty ?? '', this.drafts.reviewAnswer ?? ''), () =>
+            {
+                delete this.drafts.reviewProgress
+                delete this.drafts.reviewDifficulty
+                delete this.drafts.reviewAnswer
+            })
             case 'track-posting': return this.run(() => this.api.trackPosting(this.drafts.postingTrackUrl ?? ''))
             case 'refresh-posting':
                 if(!confirm(t('roadmap.regenerateConfirm'))) return
@@ -1789,10 +1817,11 @@ export class CareerUI
         const state = this.state
         if(!state.target)
             return [ t('roadmap.title'), `<p>${esc(t('roadmap.noTarget'))}</p><button class="career-button" data-action="menu" data-panel="careers">${esc(t('menu.careers'))}</button>` ]
+        const learningPanel = renderLearningPanel(state, this.drafts, { t, esc, skillName: id => this.skillName(id, id), locale: getLang() === 'zh' ? 'zh-CN' : getLang() })
         if(!state.roadmap)
-            return [ t('roadmap.title'), `${this.renderPostingWatch()}<p>${esc(t('roadmap.intro'))}</p>${state.target.posting?.monitor?.requiresRegeneration ? '' : `<button class="career-button is-wide" data-action="roadmap">${esc(t('roadmap.generate'))}</button>`}` ]
+            return [ t('roadmap.title'), `${learningPanel}${this.renderPostingWatch()}<p>${esc(t('roadmap.intro'))}</p>${state.target.posting?.monitor?.requiresRegeneration ? '' : `<button class="career-button is-wide" data-action="roadmap">${esc(t('roadmap.generate'))}</button>`}` ]
 
-        return [ t('roadmap.title'), this.renderPostingWatch() + this.renderRoadmapMap() ]
+        return [ t('roadmap.title'), learningPanel + this.renderPostingWatch() + this.renderRoadmapMap() ]
     }
 
     renderPostingWatch()
@@ -1817,7 +1846,7 @@ export class CareerUI
     }
 
     /**
-     * Roadmap as a treasure map on an unrolled scroll (horizontal): the world map picture, a dotted trail from left to right
+     * Roadmap as a treasure map on an unrolled scroll: a responsive winding trail shows all stages without horizontal scrolling,
      * through one flag per stage, the chest at the end. A stage note opens beside its flag when the pointer is near
      * (hover / focus), or on click for touch screens. The note spans the map height, its padding bridges to the flag.
      */
@@ -1829,12 +1858,22 @@ export class CareerUI
         const stageTitle = (id) => stages.find((stage) => stage.id === id)?.title ?? id
         const activeIndex = stages.findIndex((stage) => stage.status === 'active')
 
-        // Winding trail in % of the map (x from left to right, y around the middle), the map scrolls when it gets crowded
-        const minWidth = 260 + (stages.length + 1) * 190
-        const step = 78 / Math.max(1, stages.length)
-        const points = stages.map((_, index) => ({ x: 9 + index * step, y: 60 + Math.sin(index * 1.9 + 0.6) * 16 }))
-        const chest = { x: 92, y: 58 }
-        const trail = [ ...points, chest ]
+        // Fit every flag and the chest to the board width, folding the route into alternating rows.
+        const width = this.root.clientWidth || window.innerWidth
+        const columns = width < 640 ? 2 : width < 1000 ? 3 : 4
+        this.mapColumns = columns
+        const rows = Math.ceil((stages.length + 1) / columns)
+        const mapHeight = Math.max(440, 320 + (rows - 1) * 140)
+        const inset = columns === 2 ? 25 : 12
+        const trail = Array.from({ length: stages.length + 1 }, (_, index) =>
+        {
+            const row = Math.floor(index / columns)
+            const column = row % 2 ? columns - 1 - index % columns : index % columns
+            return { x: inset + column * (100 - inset * 2) / (columns - 1),
+                y: 100 * (rows === 1 ? 280 : 240 + row * (mapHeight - 320) / (rows - 1)) / mapHeight }
+        })
+        const points = trail.slice(0, -1)
+        const chest = trail.at(-1)
         const path = trail.map((point, index) =>
         {
             if(index === 0)
@@ -1849,6 +1888,7 @@ export class CareerUI
             const point = points[index]
             const done = stage.tasks.filter((task) => task.progress >= 100).length
             const locked = stage.status === 'locked'
+            const alternative = stage.status === 'alternative'
             const open = this.panel.openStage === stage.id
             const flag = stage.status === 'cleared' ? '✓' : index + 1
             const right = point.x < 55
@@ -1860,12 +1900,13 @@ export class CareerUI
                     <span class="career-map-flag">${flag}</span>
                 </button>
                 ${index === activeIndex ? `<img class="career-map-avatar" style="left:${point.x}%;top:${point.y}%" src="ui/avatars/${esc((this.game.characterSelect?.selected ?? CharacterSelect.getSaved()).id)}.png" alt="">` : ''}
-                <div class="career-map-note ${right ? 'is-right' : 'is-left'}" style="${right ? `left:${point.x}%` : `right:${100 - point.x}%`}">
+                <div class="career-map-note ${right ? 'is-right' : 'is-left'}" style="${right ? `left:${point.x}%` : `right:${100 - point.x}%`};max-width:${right ? 100 - point.x : point.x}%">
                     <article class="career-map-card">
                         <span class="career-map-card-index">${esc(t('roadmap.stage', { n: index + 1 }))}</span>
                         <strong class="career-map-card-title">${esc(stage.title)}</strong>
                         <div class="career-map-tags">
                             <span class="career-tag is-${stage.status}">${esc(t(`roadmap.status.${stage.status}`))}</span>
+                            ${stage.branch ? `<span class="career-tag">${esc(t(`scenario.${stage.branch}`))}</span>` : ''}
                             <span class="career-tag is-mp">${esc(t('roadmap.mp', { n: stage.mp }))}</span>
                             ${stage.forced && stage.status === 'active' ? `<span class="career-tag is-forced">${esc(t('roadmap.forced'))}</span>` : ''}
                         </div>
@@ -1874,13 +1915,14 @@ export class CareerUI
                         ${this.renderStageSdgs(stage)}
                         ${this.renderStageResources(stage)}
                         ${stage.requirementRefs.length ? `<p class="career-muted">${esc(t('roadmap.covers', { refs: stage.requirementRefs.join(', ') }))}</p>` : ''}
+                        ${alternative ? `<p class="career-muted">${esc(t('learning.otherBranch'))}</p>` : ''}
                         ${locked ? this.renderStageLock(stage, stage.prerequisites.map(stageTitle).join(', ')) : `
                         ${stage.prerequisites.length ? `<p class="career-map-lock">${icon('lock')}${esc(t('roadmap.needs', { stages: stage.prerequisites.map(stageTitle).join(', ') }))}</p>` : ''}
                         <ul class="career-tasks">${stage.tasks.map((task) => `
                             <li>
                                 <label>
-                                    <input type="checkbox" data-task="${task.id}" ${task.progress >= 100 ? 'checked' : ''} ${locked ? 'disabled' : ''}>
-                                    <span>${esc(task.title)}<small>${esc(task.why)}</small></span>
+                                    <input type="checkbox" data-task="${task.id}" ${task.progress >= 100 ? 'checked' : ''} ${locked || alternative ? 'disabled' : ''}>
+                                    <span>${esc(task.title)}<small>${esc(task.why)}</small>${task.deliverable ? `<small>${esc(t('learning.deliverable'))}: ${esc(task.deliverable)}</small>` : ''}${task.completionCriteria ? `<small>${esc(t('learning.criteria'))}: ${esc(task.completionCriteria)}</small>` : ''}</span>
                                 </label>
                                 <span class="career-tag is-mp">${esc(t('roadmap.mp', { n: task.mp }))}</span>
                                 ${bar(task.progress, 'is-thin')}
@@ -1891,12 +1933,13 @@ export class CareerUI
             </div>`
         }).join('')
 
-        const allCleared = stages.length > 0 && stages.every((stage) => stage.status === 'cleared')
+        const walked = stages.filter(stage => stage.status !== 'alternative')
+        const allCleared = walked.length > 0 && walked.every((stage) => stage.status === 'cleared')
 
         return `
             <div class="career-map">
                 <div class="career-map-viewport">
-                    <div class="career-map-board" style="min-width:${minWidth}px;background-image:url(ui/map/map-day.webp)">
+                    <div class="career-map-board" style="--map-height:${mapHeight}px;background-image:url(ui/map/map-day.webp)">
                         <svg class="career-map-trail" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                             <path d="${path}" vector-effect="non-scaling-stroke"/>
                         </svg>

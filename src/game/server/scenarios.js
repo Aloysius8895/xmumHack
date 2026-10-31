@@ -21,7 +21,9 @@ import { currentMomentum } from './skill-momentum.js'
 import { careerRecord, currentSignals } from './official-signals.js'
 
 // D10 – D13 (skills/idea/ideas/sdc-domain1-scenarios-2026-10-29/00-README.md)
-export const PRESETS = { moderate: { k: 0.6, H: 3 }, fast: { k: 1.6, H: 3 } }
+export const PRESETS = { moderate: { k: 0.6, H: 3 }, extreme: { k: 1.6, H: 3 } }
+// Accept old clients/saves at the boundary without introducing a third enumerable preset.
+export const normalizePreset = (preset) => preset === 'fast' ? 'extreme' : preset
 export const TAU = 5
 export const BETA = 0.5
 export const WEIGHTS = { fit: 0.6, outlook: 0.4 }
@@ -41,8 +43,9 @@ export const demandTerm = (growth, H) => growth === null || growth === undefined
 export function scenarioOf(save)
 {
     const chosen = save?.scenario ?? {}
-    if(PRESETS[chosen.preset])
-        return { scenario: chosen.preset, ...PRESETS[chosen.preset] }
+    const preset = normalizePreset(chosen.preset)
+    if(PRESETS[preset])
+        return { scenario: preset, ...PRESETS[preset] }
     if(validParams(chosen))
         return { scenario: 'custom', k: chosen.k, H: chosen.H }
     return { scenario: 'moderate', ...PRESETS.moderate }
@@ -55,6 +58,12 @@ export function defaultInputs()
 {
     const official = currentSignals()
     return { momentum: currentMomentum({ official }), exposure: currentExposure(), official }
+}
+
+/** Roadmap priority uses AEI only. Neutral demand means excluded/unknown, not flat measured demand. */
+export function aeiInputs()
+{
+    return { momentum: { skills: {}, careers: {}, basis: { metric: 'excluded_from_learning_priority' } }, exposure: currentExposure(), official: [] }
 }
 
 /** The future value of one skill under a scenario, with its parts and sources */

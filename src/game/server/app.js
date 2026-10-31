@@ -29,6 +29,8 @@ import * as scenarios from './scenarios.js'
 import { noRegretSkeleton, presetOf, skeletonStages } from './no-regret.js'
 import { snapshot, updateLog } from './update-log.js'
 import { localizePostingSkills } from './posting-skill-localization.js'
+import * as learning from './adaptive-learning.js'
+import { learningContext } from './learning-rules.js'
 
 const MAX_BODY = 15 * 1024 * 1024 // base64 of a 10 MB file
 const MAX_FILE = 10 * 1024 * 1024
@@ -214,20 +216,30 @@ const routes = {
     {
         if(body.preset !== undefined)
         {
-            if(!scenarios.PRESETS[body.preset])
+            const preset = scenarios.normalizePreset(body.preset)
+            if(!scenarios.PRESETS[preset])
                 throw new HttpError(400, 'bad-scenario')
-            save.scenario = { preset: body.preset }
+            learning.setLearningMode(save, preset)
         }
         else if(scenarios.validParams(body))
             save.scenario = { k: body.k, H: body.H }
         else
             throw new HttpError(400, 'bad-scenario')
-        // The roadmap holds both branches: it follows the scenario unless the player picked a branch
-        if(save.roadmap?.chosenBranch && save.roadmap.branchChosenBy !== 'player')
-            save.roadmap.chosenBranch = presetOf(scenarios.scenarioOf(save))
-        return { scenario: scenarios.scenarioOf(save) }
+        // Preferences change now; the formal roadmap/branch changes only after preview confirmation.
+        return { scenario: scenarios.scenarioOf(save), requiresConfirmation: Boolean(save.roadmap) }
     },
     'GET /api/forecast': async (save) => ({ forecast: scenarios.forecast(save), compare: scenarios.compare(save) }),
+    'POST /api/learning/analyze': async (save) =>
+    {
+        if(!save.target) throw new HttpError(409, 'no-target')
+        await learning.analyzeEvidence(save)
+    },
+    'POST /api/learning/scenario': async (save, body) => learning.setLearningMode(save, body.mode),
+    'POST /api/learning/checkpoint': async (save, body) => learning.createCheckpoint(save, { refresh: body.refresh === true, checkpointId: body.checkpointId }),
+    'POST /api/learning/review': async (save, body) => { await learning.reviewCheckpoint(save, body) },
+    'POST /api/learning/preview': async (save) => { await learning.proposeUpdate(save) },
+    'POST /api/learning/apply': async (save, body) => learning.applyPreview(save, body.previewId),
+    'POST /api/learning/discard': async (save) => { if(save.learning) save.learning.pending = null },
     'GET /api/update-log': async (save) => ({ updateLog: updateLog(save, scenarios.forecast(save)) }),
     // Marks the changes as read: the next log compares with the data as it is now
     'POST /api/update-log/seen': async (save) =>
@@ -349,23 +361,30 @@ const routes = {
             throw new HttpError(409, 'no-target')
         if(save.target.posting?.monitor?.requiresRegeneration)
             throw new HttpError(409, 'posting-changed-regenerate')
+        if(save.roadmap)
+        {
+            await learning.proposeUpdate(save)
+            return { requiresConfirmation: true }
+        }
         // No-Regret order (no-regret.js): core skills first, a branch per scenario, skills declining under both last
-        const skeleton = noRegretSkeleton(save)
+        const skeleton = noRegretSkeleton(save, undefined, game.targetedCareer(save, getCareer(save.target.careerId)))
         const layout = skeleton ? skeletonStages(skeleton) : null
-        const plan = await features.generateRoadmap({ target: save.target, profile: save.profile, gaps: game.gapsFor(save), lang: lang(save, body), layout: layout?.length ? layout : null })
+        const plan = await features.generateRoadmap({ target: save.target, profile: save.profile, gaps: game.gapsFor(save), lang: lang(save, body), layout: layout?.length ? layout : null, learning: learningContext(save) })
         save.roadmap = game.buildRoadmap({ ...plan, chosenBranch: presetOf(scenarios.scenarioOf(save)),
             forecastBasis: skeleton && { core: skeleton.core, branches: skeleton.branches, later: skeleton.later, identical: skeleton.identical } })
+        save.roadmap.learningScenario = learningContext(save).effectiveScenario
     },
 
     'POST /api/roadmap/branch': async (save, body) =>
     {
         if(!save.roadmap?.chosenBranch)
             throw new HttpError(409, 'no-branches')
-        if(!scenarios.PRESETS[body.branch])
+        const branch = scenarios.normalizePreset(body.branch)
+        if(!scenarios.PRESETS[branch])
             throw new HttpError(400, 'bad-branch')
-        save.roadmap.chosenBranch = body.branch
-        save.roadmap.branchChosenBy = 'player'
-        return { chosenBranch: body.branch }
+        learning.setLearningMode(save, branch)
+        learning.buildPreview(save, { summary: { zh: '确认切换学习分支，保留两个分支的全部学习记录。', en: 'Confirm the learning branch change; keep progress on both branches.', ms: 'Sahkan pertukaran cabang; kekalkan kemajuan kedua-dua cabang.' }, updates: [], additions: [] })
+        return { requiresConfirmation: true }
     },
 
     'POST /api/target/track': async (save, body) =>
@@ -386,7 +405,7 @@ const routes = {
         const next = structuredClone(save)
         next.target.posting = { ...updated, sourceName: current.sourceName, sourceUrl: current.sourceUrl, monitor: structuredClone(monitor) }
         game.adoptPostingSkills(next)
-        const plan = await features.generateRoadmap({ target: next.target, profile: next.profile, gaps: game.gapsFor(next), lang: lang(save, body) })
+        const plan = await features.generateRoadmap({ target: next.target, profile: next.profile, gaps: game.gapsFor(next), lang: lang(save, body), learning: learningContext(next) })
         next.roadmap = game.buildRoadmap(plan)
         acceptPostingRevision(next.target.posting)
         Object.assign(save, next)
@@ -780,7 +799,7 @@ export async function handle(request, response)
             send(response, 400, { error: error.code })
             return true
         }
-        if(error instanceof HttpError || error instanceof IntegrationError)
+        if(error instanceof HttpError || error instanceof IntegrationError || error instanceof learning.LearningError)
             send(response, error.status, { error: error.code })
         else if(error instanceof AiError)
             send(response, 502, { error: error.code, detail: error.message.slice(0, 300) })

@@ -23,6 +23,7 @@ import { mycolTimeline } from './official-signals.js'
 import { PRESETS, compare, defaultInputs, forecast, scenarioOf } from './scenarios.js'
 import { noRegretSkeleton, skeletonChanges } from './no-regret.js'
 import { updateLog } from './update-log.js'
+import { learningView } from './adaptive-learning.js'
 import { createHash } from 'node:crypto'
 
 export const RULES = {
@@ -368,7 +369,7 @@ export function addCustomCareer(save, spec)
 export function gapsFor(save)
 {
     const career = getCareer(save.target.careerId)
-    return matchCareer(career, save.profile.skills).skills
+    return matchCareer(targetedCareer(save, career), save.profile.skills).skills
 }
 
 /**
@@ -415,6 +416,10 @@ export function buildRoadmap(plan)
                 skillId: SKILLS[task.skillId] ? task.skillId : null,
                 mp: Math.max(1, Math.min(200, Math.round(task.effortHours))),
                 progress: 0,
+                ...(task.learningActivity ? { learningActivity: task.learningActivity } : {}),
+                ...(task.deliverable ? { deliverable: task.deliverable } : {}),
+                ...(task.completionCriteria ? { completionCriteria: task.completionCriteria } : {}),
+                ...(task.evidenceRefs ? { evidenceRefs: task.evidenceRefs } : {}),
             })),
             cleared: false,
             clearedAt: null,
@@ -557,7 +562,7 @@ function replanSuggestion(save, inputs)
     const basis = save.roadmap?.forecastBasis
     if(!basis || !save.target)
         return null
-    const now = noRegretSkeleton(save, inputs)
+    const now = noRegretSkeleton(save, undefined, targetedCareer(save, getCareer(save.target.careerId)))
     if(!now)
         return null
     const gaps = new Set([ ...now.core, ...now.later, ...Object.values(now.branches).flat() ])
@@ -647,7 +652,9 @@ export function view(save, ai, documents = {})
             title: localText(stage.title, save.lang),
             why: localText(stage.why, save.lang),
             ...(stage.basis ? { basis: stage.basis.map((text) => localText(text, save.lang)) } : {}),
-            tasks: stage.tasks.map((task) => ({ ...task, title: localText(task.title, save.lang), why: localText(task.why, save.lang) })),
+            tasks: stage.tasks.map((task) => ({ ...task, title: localText(task.title, save.lang), why: localText(task.why, save.lang),
+                ...(task.deliverable ? { deliverable: localText(task.deliverable, save.lang) } : {}),
+                ...(task.completionCriteria ? { completionCriteria: localText(task.completionCriteria, save.lang) } : {}) })),
             status: stageStatus(save.roadmap, stage),
             progress: stageProgress(stage),
             mp: stage.tasks.reduce((sum, task) => sum + task.mp, 0),
@@ -672,6 +679,7 @@ export function view(save, ai, documents = {})
         // Future scenarios (scenarios.js): every career ranked under the chosen scenario, and both presets' ranks
         ...scenarioView(save),
         learningDirection: save.learningDirection ?? null,
+        learning: learningView(save),
         automation: save.automation ?? null,
         target: save.target,
         pet,

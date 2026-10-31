@@ -2,7 +2,10 @@
  * UI strings by id (skills/game/dialogue-systems: author against ids, never raw text), { zh, en, ms }
  * t('id', { name: 'x' }) replaces {name}
  */
+import { LEARNING_STRINGS } from './LearningPanel.js'
+
 const STRINGS = {
+    ...LEARNING_STRINGS,
     'market.refresh.short': {zh:'Refresh',en:'Refresh',ms:'Refresh'},
     'market.refresh.shortBusy': {zh:'采样中…',en:'Refreshing…',ms:'Memuat…'},
     'market.sampling.empty': {zh:'暂无样本覆盖信息，可按 Refresh 获取新样本。',en:'No sample coverage is available yet. Select Refresh to collect a new sample.',ms:'Liputan sampel belum tersedia. Pilih Refresh untuk mendapatkan sampel baharu.'},
@@ -422,7 +425,7 @@ const STRINGS = {
     'market.national.note': { zh: '把鼠标停在数字上，可以看到全国估计：我们采集的 {n} 则职位，像民调一样按 DOSM {quarter} 的职业结构加权，并附 95% 误差。', en: 'Hover a number for the national estimate: our {n} collected postings weighted like a poll to the DOSM {quarter} occupation structure, with a 95% margin.', ms: 'Letakkan tetikus pada nombor untuk anggaran nasional: {n} iklan yang kami kutip, diwajarkan seperti tinjauan pendapat mengikut struktur pekerjaan DOSM {quarter}, dengan ralat 95%.' },
     'scenario.label': { zh: 'AI 普及情景', en: 'AI adoption scenario', ms: 'Senario penggunaan AI' },
     'scenario.moderate': { zh: '温和 AI 普及', en: 'Moderate AI adoption', ms: 'Penggunaan AI sederhana' },
-    'scenario.fast': { zh: '快速 AI 普及', en: 'Fast AI adoption', ms: 'Penggunaan AI pantas' },
+    'scenario.extreme': { zh: '极端 AI 普及', en: 'Extreme AI adoption', ms: 'Penggunaan AI ekstrem' },
     'scenario.customName': { zh: '自订情景', en: 'Custom scenario', ms: 'Senario tersuai' },
     'scenario.estimate': { zh: '估算', en: 'Estimate', ms: 'Anggaran' },
     'scenario.estimateHelp': { zh: '这些分数是按假设推算的估算，不是预言，用来帮你思考。', en: 'Scores are estimates from stated assumptions, not predictions, to help you think.', ms: 'Skor ialah anggaran daripada andaian yang dinyatakan, bukan ramalan, untuk membantu anda berfikir.' },

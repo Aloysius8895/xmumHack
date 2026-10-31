@@ -143,6 +143,14 @@ export class CareerApi
     resolveTarget(choice) { return this.request('POST', 'target/resolve', { choice }) }
     generateCareer(query) { return this.request('POST', 'careers/generate', { query }) }
     generateRoadmap() { return this.request('POST', 'roadmap', {}) }
+    analyzeLearning() { return this.request('POST', 'learning/analyze', {}) }
+    setLearningScenario(mode) { return this.request('POST', 'learning/scenario', { mode }) }
+    startCheckpoint() { return this.request('POST', 'learning/checkpoint', {}) }
+    refreshCheckpoint(checkpointId) { return this.request('POST', 'learning/checkpoint', { refresh: true, checkpointId }) }
+    reviewCheckpoint(checkpointId, progress, difficulty, answer) { return this.request('POST', 'learning/review', { checkpointId, progress, difficulty, answer }) }
+    previewLearning() { return this.request('POST', 'learning/preview', {}) }
+    applyLearning(previewId) { return this.request('POST', 'learning/apply', { previewId }) }
+    discardLearning() { return this.request('POST', 'learning/discard', {}) }
     setTaskDone(taskId, done) { return this.request('POST', 'task', { taskId, done }) }
     unlockStage(stageId) { return this.request('POST', 'stage/unlock', { stageId }) }
     log(text) { return this.request('POST', 'log', { text, source: 'web' }) }

@@ -10,6 +10,7 @@ import { expertCard } from './experts.js'
 import { TARGETS, TARGET_IDS } from './sdg.js'
 import { localizedSkillTextSchema } from './posting-skill-localization.js'
 import { SKILL_DETAILS } from './skill-details.js'
+import { learningContext, learningPrompt } from './learning-rules.js'
 
 // Read per request: AI generated careers add skills to the catalog (careers.js useCustom)
 const skillEnum = () => [ ...SKILL_IDS, 'other' ]
@@ -490,27 +491,32 @@ ${TARGET_IDS.map((id) => `${id}: ${TARGETS[id].en}`).join('\n')}`,
 const TRILINGUAL = { type: 'object', properties: { zh: { type: 'string' }, en: { type: 'string' }, ms: { type: 'string' } }, required: [ 'zh', 'en', 'ms' ], additionalProperties: false }
 
 // Demo tasks of a skill: study, practise, build
-function templateTasks(id)
+function templateTasks(id, mode = 'moderate')
 {
     const name = SKILLS[id]
-    return [
+    const tasks = [
         { title: { zh: `自学 ${name.zh} 的核心概念`, en: `Study the core concepts of ${name.en}`, ms: `Kaji konsep teras ${name.ms}` }, why: { zh: '打基础', en: 'Foundation', ms: 'Asas' }, effortHours: 6, skillId: id },
         { title: { zh: `完成 5 道 ${name.zh} 练习`, en: `Do 5 ${name.en} exercises`, ms: `Siapkan 5 latihan ${name.ms}` }, why: { zh: '通过练习巩固', en: 'Practice', ms: 'Latihan' }, effortHours: 5, skillId: id },
         { title: { zh: `用 ${name.zh} 做一个小作品`, en: `Build a small piece of work with ${name.en}`, ms: `Bina hasil kerja kecil dengan ${name.ms}` }, why: { zh: '能放进作品集', en: 'Portfolio evidence', ms: 'Bukti portfolio' }, effortHours: 8, skillId: id },
     ]
+    if(mode === 'extreme') tasks[1].title = { zh: `检查 AI 生成的 ${name.zh} 结果并修正错误`, en: `Check AI-generated ${name.en} results and correct errors`, ms: `Semak hasil ${name.ms} janaan AI dan betulkan kesilapan` }
+    return tasks.map((task, index) => ({ ...task,
+        learningActivity: index === 0 ? 'foundation' : index === 2 ? 'transfer' : mode === 'extreme' ? 'verification' : 'independent_practice',
+        deliverable: { zh: `${name.zh}练习或作品及检查记录`, en: `${name.en} exercise or artifact with verification notes`, ms: `Latihan atau hasil ${name.ms} dengan nota pengesahan` },
+        completionCriteria: { zh: '解释一个核心概念、展示结果并说明怎样检查错误。', en: 'Explain a core concept, show the result and describe how you check errors.', ms: 'Terangkan konsep teras, tunjukkan hasil dan cara menyemak kesilapan.' }, evidenceRefs: [] }))
 }
 
 const joinNames = (ids, lang) => ids.map((id) => SKILLS[id][lang]).join(lang === 'zh' ? '、' : ', ')
 
 /** Stages of a No-Regret layout (no-regret.js skeletonStages) with template texts and tasks: demo mode and fallback */
-function templateStages(layout, career)
+function templateStages(layout, career, mode = 'moderate')
 {
     return layout.map((stage) => ({
         ...stage,
         title: { zh: joinNames(stage.skillIds, 'zh'), en: joinNames(stage.skillIds, 'en'), ms: joinNames(stage.skillIds, 'ms') },
         why: { zh: `${career.name.zh}需要${joinNames(stage.skillIds, 'zh')}。`, en: `${career.name.en} needs ${joinNames(stage.skillIds, 'en')}.`, ms: `${career.name.ms} memerlukan ${joinNames(stage.skillIds, 'ms')}.` },
         requirementRefs: [],
-        tasks: stage.skillIds.flatMap(templateTasks).slice(0, 4),
+        tasks: stage.skillIds.flatMap(id => templateTasks(id, stage.branch ?? mode)).slice(0, 4),
     }))
 }
 
@@ -519,17 +525,39 @@ function templateStages(layout, career)
  * basis), the stages, their order and skills are fixed; the AI only writes each stage's title, why and tasks, and a
  * reply with another number of stages falls back to the template. Without a layout, the AI plans the stages itself.
  */
-export async function generateRoadmap({ target, profile, gaps, lang, layout = null })
+export async function generateRoadmap({ target, profile, gaps, lang, layout = null, learning = null, adjustment = null })
 {
     const career = getCareer(target.careerId)
+    const context = learning ?? learningContext({ target, profile })
+    const evidenceIds = new Set(context.evidence.skills.map(row => row.evidenceId).filter(Boolean))
+    const cleanTask = task => ({ ...task, evidenceRefs: (task.evidenceRefs ?? []).filter(id => evidenceIds.has(id)) })
+    const taskSchema = {
+        type: 'object', properties: {
+            title: TRILINGUAL, why: TRILINGUAL, effortHours: { type: 'integer' }, skillId: { type: 'string', enum: skillEnum() },
+            learningActivity: { type: 'string', enum: [ 'foundation', 'independent_practice', 'ai_collaboration', 'verification', 'transfer' ] },
+            deliverable: TRILINGUAL, completionCriteria: TRILINGUAL, evidenceRefs: { type: 'array', items: { type: 'string' } },
+        }, required: [ 'title', 'why', 'effortHours', 'skillId', 'learningActivity', 'deliverable', 'completionCriteria', 'evidenceRefs' ], additionalProperties: false,
+    }
+    // Both initial planning and later edits share this generator and the same policy.
+    if(adjustment)
+    {
+        const common = { title: TRILINGUAL, why: TRILINGUAL, deliverable: TRILINGUAL, completionCriteria: TRILINGUAL, effortHours: { type: 'integer' } }
+        const entry = properties => ({ type: 'object', properties, required: Object.keys(properties), additionalProperties: false })
+        return ask({ system: learningPrompt(context),
+            content: JSON.stringify({ action: 'propose_update', target, profile, ...adjustment,
+                instruction: 'Return at most 4 updates/additions to the existing roadmap. Revise only editableTasks using exact IDs, keeping their skills unchanged. Additions require an existing stageId and skillId already covered by it. Preserve all stage kinds, branch structure, prerequisite edges, completed/in-progress tasks and foundations. Do not delete tasks, rebuild stages, change career or award progress. Empty arrays mean continue. Refer to the review when present and describe the concrete learning outcome.' }),
+            schema: entry({ summary: TRILINGUAL,
+                updates: { type: 'array', items: entry({ taskId: { type: 'string' }, ...common }) },
+                additions: { type: 'array', items: entry({ stageId: { type: 'string' }, skillId: { type: 'string', enum: skillEnum() }, ...common }) } }), effort: 'medium' })
+    }
 
     if(layout)
     {
-        const overview = { zh: '先学两个情景下都重要的核心技能，再按 AI 普及的速度走分支，两个情景下都在下降的技能放到最后。', en: 'First the core skills that matter under both scenarios, then a branch depending on how fast AI spreads; skills declining under both come last.', ms: 'Mula dengan kemahiran teras yang penting dalam kedua-dua senario, kemudian cabang mengikut kepantasan AI; kemahiran yang menurun dalam kedua-duanya terakhir.' }
+        const overview = { zh: '按 AEI 情境假设安排共同基础和学习分支。每周按 10 小时估算；约每 7 天复查理解，再确认后续调整。单期数据不能判断 AI 发展速度，低值不代表安全。', en: 'Plan shared foundations and branches under AEI scenario assumptions, at an assumed 10 hours/week. Review understanding about every 7 days and confirm later changes. A snapshot cannot establish AI development speed; low values do not mean safety.', ms: 'Rancang asas bersama dan cabang mengikut andaian AEI pada anggaran 10 jam/minggu. Semak pemahaman sekitar setiap 7 hari dan sahkan perubahan. Snapshot tidak menentukan kadar perkembangan AI; nilai rendah bukan jaminan selamat.' }
         if(isMock() || !layout.length)
-            return { overview, stages: templateStages(layout, career) }
+            return { overview, stages: templateStages(layout, career, context.effectiveScenario) }
         const written = await ask({
-            system: `${PLATFORM}\n\nTask: write the texts and tasks of a preparation roadmap whose stages are already decided. Write every title and why in Chinese (zh), English (en) and Malay (ms).`,
+            system: `${PLATFORM}\n\n${learningPrompt(context)}\n\nTask: write the texts and tasks of a preparation roadmap whose stages are already decided. Write every title and why in Chinese (zh), English (en) and Malay (ms). A branch stage follows its own moderate/extreme label, while core stages retain shared foundations. The priority skeleton is a project computation, not evidence of observed AI speed. Include a deliverable, completion criteria and evidence references in every task.`,
             content: `Target: ${describeCareer(career)}
 
 Player profile:
@@ -552,12 +580,7 @@ not how step by step), each with an honest estimate of hours and its main skill 
                                 why: TRILINGUAL,
                                 tasks: {
                                     type: 'array',
-                                    items: {
-                                        type: 'object',
-                                        properties: { title: TRILINGUAL, why: TRILINGUAL, effortHours: { type: 'integer' }, skillId: { type: 'string', enum: skillEnum() } },
-                                        required: [ 'title', 'why', 'effortHours', 'skillId' ],
-                                        additionalProperties: false,
-                                    },
+                                    items: taskSchema,
                                 },
                             },
                             required: [ 'title', 'why', 'tasks' ],
@@ -571,9 +594,9 @@ not how step by step), each with an honest estimate of hours and its main skill 
             effort: 'medium',
         })
         if(written.stages?.length !== layout.length)
-            return { overview, stages: templateStages(layout, career) }
+            return { overview, stages: templateStages(layout, career, context.effectiveScenario) }
         return { overview, stages: layout.map((stage, index) => ({ ...stage, ...written.stages[index], requirementRefs: [],
-            tasks: written.stages[index].tasks.length ? written.stages[index].tasks : templateTasks(stage.skillIds[0]) })) }
+            tasks: (written.stages[index].tasks.length && written.stages[index].tasks.every(task => stage.skillIds.includes(task.skillId)) ? written.stages[index].tasks : stage.skillIds.flatMap(id => templateTasks(id, stage.branch ?? context.effectiveScenario)).slice(0, 4)).map(cleanTask) })) }
     }
 
     if(isMock())
@@ -591,7 +614,7 @@ not how step by step), each with an honest estimate of hours and its main skill 
                     skillIds: [ gap.id ],
                     requirementRefs: [],
                     prerequisiteIndexes: index > 0 ? [ index - 1 ] : [],
-                    tasks: templateTasks(gap.id),
+                    tasks: templateTasks(gap.id, context.effectiveScenario),
                 }
             }),
         }
@@ -603,7 +626,7 @@ not how step by step), each with an honest estimate of hours and its main skill 
         : '\nGeneral mode: no specific company, use the general requirements of the career.'
 
     return ask({
-        system: `${PLATFORM}\n\nTask: plan an ordered preparation roadmap. The player's current UI language is ${LANGUAGES[lang] ?? LANGUAGES.en}.
+        system: `${PLATFORM}\n\n${learningPrompt(context)}\n\nTask: plan an ordered preparation roadmap. The player's current UI language is ${LANGUAGES[lang] ?? LANGUAGES.en}.
 Every roadmap overview, title and why is a language map: write zh in Chinese, en in English and ms in Malay,
 regardless of the current UI language. Translate the complete meaning in each field and keep technology names unchanged.`,
         content:
@@ -618,7 +641,7 @@ Gaps (required vs current level): ${gaps.map((gap) => `${gap.id} ${gap.current}/
 Plan 3 to 6 stages, foundations first, biggest and must-have gaps early, skills the player already meets skipped or only reviewed.
 For each stage: a title, why it matters for this career${target.mode === 'customise' ? ' and which posting requirements (R1, R2...) it covers' : ''},
 the skill ids it covers, the indexes of the stages it needs first, 2 to 4 self-directed tasks (research, exercises, mini projects; say what to do,
-not how to do it step by step) each with an honest estimate of hours and its main skill id. Stages finish when their tasks are complete; do not add exams or challenges.
+not how to do it step by step) each with an honest estimate of hours, its main skill id, learningActivity, deliverable, completionCriteria and evidenceRefs from supplied AEI evidence (or an empty array). Stages finish when their tasks are complete; weekly formative check-ins are separate.
 Write the overview and every title and why in Chinese (zh), English (en) and Malay (ms): the player can switch language at any time.`,
         schema: {
             type: 'object',
@@ -636,17 +659,7 @@ Write the overview and every title and why in Chinese (zh), English (en) and Mal
                             prerequisiteIndexes: { type: 'array', items: { type: 'integer' } },
                             tasks: {
                                 type: 'array',
-                                items: {
-                                    type: 'object',
-                                    properties: {
-                                        title: TRILINGUAL,
-                                        why: TRILINGUAL,
-                                        effortHours: { type: 'integer' },
-                                        skillId: { type: 'string', enum: skillEnum() },
-                                    },
-                                    required: [ 'title', 'why', 'effortHours', 'skillId' ],
-                                    additionalProperties: false,
-                                },
+                                items: taskSchema,
                             },
                         },
                         required: [ 'title', 'why', 'skillIds', 'requirementRefs', 'prerequisiteIndexes', 'tasks' ],
@@ -658,7 +671,7 @@ Write the overview and every title and why in Chinese (zh), English (en) and Mal
             additionalProperties: false,
         },
         effort: 'medium', // high took too long to wait for in game
-    })
+    }).then(plan => ({ ...plan, stages: plan.stages.map(stage => ({ ...stage, tasks: stage.tasks.map(cleanTask) })) }))
 }
 
 // Words saying something was actually done (demo mode judge)

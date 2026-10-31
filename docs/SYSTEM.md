@@ -111,9 +111,9 @@ described postings). With fewer months the label is "current demand" and no tren
 comparable, so every skill reads "current".
 
 ### 5.2 Scenario model (`scenarios.js`) ✅
-Two presets: moderate (k = 0.6) and fast (k = 1.6), horizon H = 3 years, τ = 5, β = 0.5.
+Two presets: moderate (k = 0.6) and extreme (k = 1.6), horizon H = 3 years, τ = 5, β = 0.5. Legacy `fast` requests and saves migrate to `extreme`.
 
-- Adoption D = 1 − e^(−kH/τ) (≈ 0.30 moderate, ≈ 0.62 fast)
+- Adoption D = 1 − e^(−kH/τ) (≈ 0.30 moderate, ≈ 0.62 extreme)
 - Demand term T = clamp(e^(growth·H), 0.5, 2)
 - Future value of a skill V = T × (1 − a·D) × (1 + β·u·D), with a = automation and u = augmentation from the AI exposure data
 - Fit = Σ w·min(current, required)/required·V ÷ Σ w·V, with w = level × weight
@@ -126,11 +126,18 @@ No personal attributes are used. Parameters are never tuned to force a different
 
 API: `POST /api/scenario` (preset or k and H), `GET /api/forecast`; `view()` carries `forecast` and `scenarioCompare`.
 
-### 5.3 No-Regret roadmap (`no-regret.js`) ✅ backend, ⬜ screen (prompt 04 section 5)
+### 5.3 No-Regret roadmap (`no-regret.js`) and adaptive learning
 Built 2026-10-30. Gap skills that rank high under both scenarios form the **core**; the rest split into a
-**moderate** and a **fast** branch; skills declining under both go **last**, with the reason. The order is computed in
+**moderate** and an **extreme** branch; skills declining under both go **last**, with the reason. The order is computed in
 code; the AI only writes the stage text. When new data changes the core or a branch, the roadmap shows
 `replanSuggested`. Adds `chosenBranch` and an `alternative` status to the roadmap.
+
+The learning skeleton now defaults to AEI-only inputs, with demand excluded (neutral, not measured flat).
+The existing generation pipeline is retained. Shared server prompts add concrete deliverables,
+completion criteria and mode-specific learning activities. Seven-day formative check-ins and bounded
+adjustments preserve existing progress; applying a roadmap or branch update requires confirmation.
+The AEI snapshot does not establish development speed, so Moderate is an explicitly conservative default.
+See [adaptive learning](adaptive-learning.md) for policy, APIs, migration and verification details.
 
 ## 6. Player features
 

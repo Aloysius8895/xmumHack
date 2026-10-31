@@ -3,7 +3,7 @@
  * which scenario is on, why a career has its score, how to raise it, what is assumed and where the data comes from.
  * Every number is the server's; this file only lays them out. Always labelled an estimate.
  */
-export const PRESET_IDS = [ 'moderate', 'fast' ]
+export const PRESET_IDS = [ 'moderate', 'extreme' ]
 const ARROW = { rising: '↑', stable: '→', declining: '↓' }
 
 /** The forecast row of a career, or null */

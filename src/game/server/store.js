@@ -13,7 +13,7 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 const DIRECTORY = process.env.SAVE_DIR ?? path.resolve(here, '..', '..', '..', 'data', 'game')
 const FILE = path.join(DIRECTORY, 'save.json')
 
-export const SAVE_VERSION = 6
+export const SAVE_VERSION = 7
 
 function newPlayer()
 {
@@ -32,6 +32,37 @@ const MIGRATIONS = {
     4: (data) => ({ ...data, users: data.player?.name ? [ { name: data.player.name, registeredAt: null } ] : [] }),
     // Future scenarios (server/scenarios.js), the market data the player last looked at and their learning direction (server/update-log.js)
     5: (data) => ({ ...data, scenario: { preset: 'moderate' }, dataView: null, learningDirection: null }),
+    6: (data) => migrateLearning(data),
+}
+
+function migrateLearning(data)
+{
+    data = structuredClone(data)
+    // Traverse only typed scenario fields; never alter user text that happens to contain "fast".
+    const migrateRoadmap = (roadmap) =>
+    {
+        if(!roadmap) return
+        if(roadmap.chosenBranch === 'fast') roadmap.chosenBranch = 'extreme'
+        const renameKey = (record) =>
+        {
+            if(record && Object.hasOwn(record, 'fast'))
+            {
+                record.extreme ??= record.fast
+                delete record.fast
+            }
+        }
+        for(const stage of roadmap.stages ?? [])
+        {
+            if(stage.branch === 'fast') stage.branch = 'extreme'
+            for(const gains of Object.values(stage.gains ?? {})) renameKey(gains)
+        }
+        for(const key of [ 'branches', 'gains', 'values' ]) renameKey(roadmap.forecastBasis?.[key])
+    }
+    const selected = data.scenario?.preset === 'fast' ? 'extreme' : data.scenario?.preset
+    if(selected && data.scenario) data.scenario.preset = selected
+    migrateRoadmap(data.roadmap)
+    for(const career of Object.values(data.careers ?? {})) migrateRoadmap(career.roadmap)
+    return { ...data, learning: { mode: selected === 'extreme' ? 'extreme' : null, analysis: null, checkpoint: null, reviews: [], pending: null } }
 }
 
 export function createSave()
@@ -59,6 +90,7 @@ export function createSave()
         scenario: { preset: 'moderate' }, // { preset } or { k, H } future AI adoption scenario (server/scenarios.js)
         dataView: null,    // { seenAt, seenWindowAt, denominator, shares, signals } market data last looked at (server/update-log.js)
         learningDirection: null, // { text, skillIds, unmatched, setAt } what the player wants to learn, as catalog skills
+        learning: { mode: null, analysis: null, checkpoint: null, reviews: [], pending: null },
     }
 }
 
