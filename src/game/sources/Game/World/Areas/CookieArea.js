@@ -269,7 +269,7 @@ export class CookieArea extends Area
 
     setInteractivePoint()
     {
-        this.game.interactivePoints.create(
+        this.interactivePoint = this.game.interactivePoints.create(
             this.references.items.get('interactivePoint')[0].position,
             'Accept cookie',
             InteractivePoints.ALIGN_RIGHT,

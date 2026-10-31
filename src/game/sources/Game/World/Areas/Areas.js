@@ -26,7 +26,7 @@ export class Areas
             [ 'bowling', BowlingArea ],
             // [ 'career', CareerArea ], // Career timeline lines removed
             [ 'cookie', CookieArea ],
-            [ 'lab', StaticArea ], // Plain building for now (LabArea: the original interactive lab)
+            [ 'lab', StaticArea ], // Ambient lab props; original content browser stays retired
             [ 'landing', LandingArea ],
             [ 'projects', TrendsArea ], // Plain building that opens the job market trends (ProjectsArea: the original interactive projects)
             [ 'social', SocialArea ],

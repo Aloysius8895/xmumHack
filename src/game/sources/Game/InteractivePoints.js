@@ -372,6 +372,23 @@ export class InteractivePoints
          * Item
          */
         const item = {}
+        item.setText = (text) =>
+        {
+            context.font = font
+            const nextWidth = Math.ceil(context.measureText(text).width) + textPaddingLeft + textPaddingRight + 2
+            canvas.width = nextWidth
+            context.fillStyle = '#000000'
+            context.fillRect(0, 0, nextWidth, height)
+            context.font = font
+            context.fillStyle = '#ffffff'
+            context.textAlign = 'start'
+            context.textBaseline = 'middle'
+            context.fillText(text, textPaddingLeft + 1, height * 0.5 + textOffsetVertical)
+            label.scale.x = 0.75 * nextWidth / height
+            label.position.x = align === InteractivePoints.ALIGN_LEFT ? 0 : -label.scale.x
+            labelTexture.dispose()
+            labelTexture.needsUpdate = true
+        }
         item.position = new THREE.Vector2(position.x, position.z)
         item.interactCallback = interactCallback
         item.revealCallback = revealCallback

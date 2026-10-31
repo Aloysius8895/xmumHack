@@ -3,7 +3,7 @@ import { InteractivePoints } from '../../InteractivePoints.js'
 import { StaticArea } from './StaticArea.js'
 
 /**
- * The workshop of the original Projects area, kept as a plain building (StaticArea) with one interaction: it opens the
+ * The workshop of the original Projects area, with ambient machinery and one interaction: it opens the
  * player's job market trends (career panel "market"), at the spot of the original projects interaction
  */
 export class TrendsArea extends StaticArea
@@ -14,7 +14,7 @@ export class TrendsArea extends StaticArea
         // is placed relative to the building)
         model.updateWorldMatrix(true, true)
         const position = TrendsArea.find(model, /^refInteractivePoint/)?.getWorldPosition(new THREE.Vector3()) ?? null
-        super(model)
+        super(model, { exhibit: true })
 
         if(position)
             this.setInteractivePoint(position)
@@ -43,8 +43,10 @@ export class TrendsArea extends StaticArea
             InteractivePoints.STATE_CONCEALED,
             () =>
             {
-                buttons.clearItems()
-                this.game.career.ui.openPanel('market')
+                // BuildingEntrances binds this marker to the shared world-space display after Career initializes.
+                const entrances = this.game.career?.buildingEntrances
+                const station = entrances?.stations.get('market')
+                if(station) entrances.visit.open(station)
             },
             () => buttons.addItems([ 'interact' ]),
             () => buttons.removeItems([ 'interact' ]),

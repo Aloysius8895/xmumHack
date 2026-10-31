@@ -4,6 +4,8 @@ import { CareerWorld } from './CareerWorld.js'
 import { CareerMinimap } from './CareerMinimap.js'
 import { CareerTour } from './CareerTour.js'
 import { getLang } from './i18n.js'
+import { Game } from '../Game/Game.js'
+import { BuildingEntrances } from './BuildingEntrances.js'
 
 /**
  * Career platform: know your skills > pick a career (General or Customise) > career pet > AI roadmap
@@ -16,6 +18,7 @@ export class Career
         this.api = new CareerApi()
         this.ui = new CareerUI(this.api)
         this.world = new CareerWorld(this.api, this.ui)
+        this.buildingEntrances = new BuildingEntrances(Game.getInstance(), this.ui)
         this.minimap = new CareerMinimap(this.api, this.ui, this.world)
         this.tour = new CareerTour(this.api, this.ui)
 
@@ -26,6 +29,7 @@ export class Career
             {
                 lang = getLang()
                 this.world.relabel()
+                this.buildingEntrances.relabel()
             }
         })
 

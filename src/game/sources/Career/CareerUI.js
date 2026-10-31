@@ -9,6 +9,7 @@ import { buildMarketRows } from './MarketSeries.js'
 import { newCareerBadge, renderSamplingDiagnostics, renderUpdateLog } from './MarketSampling.js'
 import { renderMycolTimeline } from './OfficialRecord.js'
 import { collectNewSample } from './SampleRefresh.js'
+import { travelToBuilding } from './BuildingTravel.js'
 
 /**
  * Career platform UI: HUD (pet, points, next step), quick menu rail, side panels and the NPC dialogue box
@@ -208,10 +209,18 @@ export class CareerUI
         this.root.innerHTML = `
             <section class="career-panel js-career-panel" aria-hidden="true">
                 <header class="career-panel-header">
+                    <span class="building-screen-brand building-only">KerjayaKu <span> / </span></span>
                     <h2 class="js-career-panel-title"></h2>
                     <button class="career-close" data-action="close" aria-label="${esc(t('common.close'))}">×</button>
                 </header>
+                <nav class="building-screen-sections building-only js-building-sections"></nav>
                 <div class="career-panel-body js-career-panel-body"></div>
+                <footer class="building-screen-footer building-only">
+                    <button type="button" data-action="building-page" data-direction="-1" class="building-screen-arrow">←</button>
+                    <span class="js-building-position"></span>
+                    <span class="building-screen-hint">Esc · <span class="js-building-exit"></span></span>
+                    <button type="button" data-action="building-page" data-direction="1" class="building-screen-arrow">→</button>
+                </footer>
             </section>
             <section class="career-dialogue js-career-dialogue" aria-hidden="true"></section>
             <nav class="career-menu is-bar js-career-menu" aria-label="${esc(t('menu.title'))}">
@@ -593,8 +602,12 @@ export class CareerUI
         {
             case 'close': return this.closePanel()
             case 'menu-toggle': return this.setMenuOpen(!this.menuOpen)
-            case 'menu': return this.panel?.name === data.panel ? this.closePanel() : this.openPanel(data.panel)
-            case 'next': return this.openPanel(data.panel)
+            case 'menu': return element?.closest('.career-menu') ? travelToBuilding(this.game, this, data.panel) : this.openPanel(data.panel)
+            case 'next': return element?.closest('.career-menu') ? travelToBuilding(this.game, this, data.panel) : this.openPanel(data.panel)
+            case 'building-page': return this.turnBuildingPage(Number(data.direction))
+            case 'building-section': return this.buildingHeadings?.[Number(data.section)]?.scrollIntoView({ block: 'start', behavior: 'smooth' })
+            case 'building-room': return this.switchBuildingRoom(Number(data.direction))
+            case 'building-dot': return this.selectBuildingDot(Number(data.index))
             case 'extract': return this.extractProfile()
             case 'skill-remove': return this.updateSkill(Number(data.index), null)
             case 'skill-add': return this.addSkill()
@@ -963,7 +976,8 @@ export class CareerUI
         const changedPosting = this.state.target?.posting?.monitor?.requiresRegeneration && this.panel.name !== 'roadmap'
             ? `<p class="career-notice is-warning" role="status">${esc(t('watch.changed'))} <button class="career-link" data-action="menu" data-panel="roadmap">${esc(t('roadmap.title'))}</button></p>` : ''
         this.panelBody.innerHTML = changedPosting + notice + body
-        this.panelElement.classList.toggle('is-map', this.panel.name === 'roadmap' && Boolean(this.state.roadmap))
+        this.panelElement.classList.toggle('is-map', !this.buildingVisit?.active && this.panel.name === 'roadmap' && Boolean(this.state.roadmap))
+        if(this.buildingVisit?.active) this.renderBuildingSections()
         this.panelBody.scrollTop = scroll
         this.renderRail()
 
@@ -977,6 +991,45 @@ export class CareerUI
                     field.setSelectionRange(caret, caret)
             }
         }
+    }
+
+    renderBuildingSections()
+    {
+        this.buildingHeadings = [...this.panelBody.querySelectorAll('h3')]
+        this.root.querySelector('.js-building-sections').innerHTML = this.buildingHeadings.map((heading, index) =>
+            `<button type="button" data-action="building-section" data-section="${index}">${esc(heading.textContent)}</button>`).join('')
+        this.root.querySelector('.js-building-position').textContent = t(`menu.${this.panel.name}`)
+        this.root.querySelector('.js-building-exit').textContent = t('common.close')
+        this.buildingVisit.stage.syncContent()
+    }
+
+    switchBuildingRoom(direction)
+    {
+        const index = MENU.indexOf(this.panel?.name)
+        return travelToBuilding(this.game, this, MENU[(index + direction + MENU.length) % MENU.length])
+    }
+
+    selectBuildingDot(index)
+    {
+        if(this.buildingHeadings?.[index])
+            return this.buildingHeadings[index].scrollIntoView({ block: 'start', behavior: 'smooth' })
+        if(this.panel?.name === 'careers' && this.state?.careers[index])
+            return this.openPanel('careers', { careerId: this.state.careers[index].id })
+        this.panelBody.scrollTo({ top: index / 4 * Math.max(0, this.panelBody.scrollHeight - this.panelBody.clientHeight), behavior: 'smooth' })
+    }
+
+    turnBuildingPage(direction)
+    {
+        // Like the reference display: arrows browse careers; other rooms keep every section scrollable.
+        if(this.panel?.name === 'careers' && this.state?.careers.length)
+        {
+            const careers = this.state.careers
+            const index = careers.findIndex(career => career.id === this.panel.careerId)
+            if(index === -1 && direction < 0) return
+            const next = (index + direction + careers.length) % careers.length
+            return this.openPanel('careers', { careerId: careers[next].id })
+        }
+        this.panelBody.scrollBy({ top: direction * this.panelBody.clientHeight * 0.8, behavior: 'smooth' })
     }
 
     fileField(key, accept)

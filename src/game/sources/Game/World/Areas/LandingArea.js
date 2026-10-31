@@ -106,7 +106,7 @@ export class LandingArea extends Area
     setKiosk()
     {
         // Interactive point
-        const interactivePoint = this.game.interactivePoints.create(
+        const interactivePoint = this.interactivePoint = this.game.interactivePoints.create(
             this.references.items.get('kioskInteractivePoint')[0].position,
             'Leaderboard',
             InteractivePoints.ALIGN_RIGHT,
