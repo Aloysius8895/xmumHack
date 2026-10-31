@@ -71,7 +71,7 @@ const DETAILS = [
 
 /**
  * One place to start learning each skill: free, open licence or open source when `open` (checked reachable 2026-10-22)
- * Custom skills of AI generated careers have none, the stage card shows nothing rather than a guess
+ * Custom skills (made from a job posting) borrow the links of their topic instead: relatedResources
  */
 const RESOURCES = {
     'sql':                 { title: 'Select Star SQL', url: 'https://selectstarsql.com/', open: true },
@@ -143,5 +143,102 @@ const RESOURCES = {
     'workplace-languages': { title: 'Wikibooks: Chinese (Mandarin)', url: 'https://en.wikibooks.org/wiki/Chinese_(Mandarin)', open: true },
 }
 
+/**
+ * Topic articles after the starting point (GeeksforGeeks, W3Schools, MDN, Khan Academy...), free to read, open licence when
+ * `open`; checked reachable 2026-10-31 (src/data/scripts/check-learning-resources.mjs). A roadmap task links one resource of its
+ * skill (features.js resourceIndex), the AI never writes a link itself
+ */
+const MORE_RESOURCES = {
+    'sql':                 [ { title: 'GeeksforGeeks: SQL Tutorial', url: 'https://www.geeksforgeeks.org/sql/sql-tutorial/' }, { title: 'W3Schools: SQL', url: 'https://www.w3schools.com/sql/' } ],
+    'excel':               [ { title: 'W3Schools: Excel', url: 'https://www.w3schools.com/excel/' }, { title: 'GeeksforGeeks: Excel Tutorial', url: 'https://www.geeksforgeeks.org/excel/excel-tutorial/' } ],
+    'statistics':          [ { title: 'Khan Academy: Statistics and probability', url: 'https://www.khanacademy.org/math/statistics-probability' }, { title: 'GeeksforGeeks: Statistics', url: 'https://www.geeksforgeeks.org/maths/statistics/' } ],
+    'python':              [ { title: 'GeeksforGeeks: Python Tutorial', url: 'https://www.geeksforgeeks.org/python/python-programming-language-tutorial/' }, { title: 'W3Schools: Python', url: 'https://www.w3schools.com/python/' } ],
+    'data-cleaning':       [ { title: 'GeeksforGeeks: Data Cleaning', url: 'https://www.geeksforgeeks.org/data-analysis/data-cleaning-introduction/' }, { title: 'pandas: Working with missing data', url: 'https://pandas.pydata.org/docs/user_guide/missing_data.html', open: true } ],
+    'data-visualization':  [ { title: 'GeeksforGeeks: Data Visualization', url: 'https://www.geeksforgeeks.org/data-visualization/data-visualization-and-its-importance/' }, { title: 'Matplotlib: Tutorials', url: 'https://matplotlib.org/stable/tutorials/index.html', open: true } ],
+    'communication':       [ { title: 'SkillsYouNeed: Communication Skills', url: 'https://www.skillsyouneed.com/ips/communication-skills.html' } ],
+    'html-css':            [ { title: 'W3Schools: HTML', url: 'https://www.w3schools.com/html/' }, { title: 'W3Schools: CSS', url: 'https://www.w3schools.com/css/' } ],
+    'javascript':          [ { title: 'MDN: JavaScript Guide', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide', open: true }, { title: 'GeeksforGeeks: JavaScript Tutorial', url: 'https://www.geeksforgeeks.org/javascript/javascript-tutorial/' } ],
+    'react':               [ { title: 'GeeksforGeeks: React Tutorial', url: 'https://www.geeksforgeeks.org/reactjs/react/' }, { title: 'W3Schools: React', url: 'https://www.w3schools.com/react/' } ],
+    'git':                 [ { title: 'GeeksforGeeks: Git Tutorial', url: 'https://www.geeksforgeeks.org/git/git-tutorial/' }, { title: 'GitHub Skills', url: 'https://skills.github.com/' } ],
+    'accessibility':       [ { title: 'MDN: Accessibility', url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility', open: true } ],
+    'api-integration':     [ { title: 'GeeksforGeeks: Fetch API in JavaScript', url: 'https://www.geeksforgeeks.org/javascript/javascript-fetch-method/' }, { title: 'W3Schools: Fetch API', url: 'https://www.w3schools.com/js/js_api_fetch.asp' } ],
+    'backend-language':    [ { title: 'MDN: Server-side website programming', url: 'https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side', open: true }, { title: 'GeeksforGeeks: Node.js Tutorial', url: 'https://www.geeksforgeeks.org/node-js/nodejs/' } ],
+    'databases':           [ { title: 'GeeksforGeeks: DBMS Tutorial', url: 'https://www.geeksforgeeks.org/dbms/dbms/' }, { title: 'W3Schools: SQL Database', url: 'https://www.w3schools.com/sql/sql_create_db.asp' } ],
+    'rest-api':            [ { title: 'GeeksforGeeks: REST Fundamentals', url: 'https://www.geeksforgeeks.org/node-js/rest-api-introduction/' }, { title: 'MDN: HTTP', url: 'https://developer.mozilla.org/en-US/docs/Web/HTTP', open: true } ],
+    'cloud-deploy':        [ { title: 'GeeksforGeeks: Docker Tutorial', url: 'https://www.geeksforgeeks.org/devops/docker-tutorial/' }, { title: 'GitHub Docs: GitHub Pages', url: 'https://docs.github.com/en/pages/getting-started-with-github-pages', open: true } ],
+    'testing':             [ { title: 'GeeksforGeeks: Software Testing Tutorial', url: 'https://www.geeksforgeeks.org/software-testing/software-testing-tutorial/' }, { title: 'Jest: Getting Started', url: 'https://jestjs.io/docs/getting-started', open: true } ],
+    'user-research':       [ { title: 'NN/g: When to Use Which UX Research Methods', url: 'https://www.nngroup.com/articles/which-ux-research-methods/' } ],
+    'prototyping':         [ { title: 'NN/g: UX Prototypes, Low vs. High Fidelity', url: 'https://www.nngroup.com/articles/ux-prototype-hi-lo-fidelity/' } ],
+    'figma':               [ { title: 'GeeksforGeeks: Figma Tutorial', url: 'https://www.geeksforgeeks.org/websites-apps/figma-tutorial/' } ],
+    'visual-design':       [ { title: 'NN/g: Principles of Visual Design', url: 'https://www.nngroup.com/articles/principles-visual-design/' } ],
+    'usability-testing':   [ { title: 'NN/g: Usability Testing 101', url: 'https://www.nngroup.com/articles/usability-testing-101/' } ],
+    'ml-math':             [ { title: 'GeeksforGeeks: Maths for Machine Learning', url: 'https://www.geeksforgeeks.org/machine-learning/machine-learning-mathematics/' }, { title: 'Khan Academy: Linear algebra', url: 'https://www.khanacademy.org/math/linear-algebra' } ],
+    'ml-frameworks':       [ { title: 'GeeksforGeeks: NLP Tutorial', url: 'https://www.geeksforgeeks.org/nlp/natural-language-processing-nlp-tutorial/' }, { title: 'scikit-learn: Getting Started', url: 'https://scikit-learn.org/stable/getting_started.html', open: true } ],
+    'mlops':               [ { title: 'GeeksforGeeks: What is MLOps?', url: 'https://www.geeksforgeeks.org/machine-learning/what-is-mlops/' }, { title: 'Google Cloud: MLOps pipelines', url: 'https://docs.cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning' } ],
+    'roadmapping':         [ { title: 'ProductPlan: Guide to Product Roadmaps', url: 'https://www.productplan.com/learn/what-is-a-product-roadmap' } ],
+    'agile':               [ { title: 'Atlassian: What is Agile?', url: 'https://www.atlassian.com/agile' }, { title: 'GeeksforGeeks: Agile Methodology', url: 'https://www.geeksforgeeks.org/software-testing/what-is-agile-methodology/' } ],
+    'market-analysis':     [ { title: 'HubSpot: How to Do Market Research', url: 'https://blog.hubspot.com/marketing/market-research-buyers-journey-guide' } ],
+    'accounting':          [ { title: 'AccountingCoach', url: 'https://www.accountingcoach.com/' }, { title: 'Khan Academy: Accounting and financial statements', url: 'https://www.khanacademy.org/economics-finance-domain/core-finance/accounting-and-financial-stateme' } ],
+    'legal-research':      [ { title: 'Georgetown Law Library: Research Guides', url: 'https://guides.ll.georgetown.edu/home' } ],
+    'legal-writing':       [ { title: 'Purdue OWL: Legal Writing', url: 'https://owl.purdue.edu/owl/subject_specific_writing/professional_technical_writing/legal_writing/index.html' } ],
+    'classroom-management':[ { title: 'Khan Academy for Educators', url: 'https://www.khanacademy.org/khan-for-educators' } ],
+    'clinical-knowledge':  [ { title: 'Khan Academy: Health and medicine', url: 'https://www.khanacademy.org/science/health-and-medicine' } ],
+    'food-safety':         [ { title: 'FoodSafety.gov', url: 'https://www.foodsafety.gov/' } ],
+    'engineering-math':    [ { title: 'GeeksforGeeks: Engineering Mathematics', url: 'https://www.geeksforgeeks.org/engineering-mathematics/engineering-mathematics-tutorials/' }, { title: 'Khan Academy: Calculus 1', url: 'https://www.khanacademy.org/math/calculus-1' } ],
+    'project-management':  [ { title: 'Atlassian: What Is Project Management?', url: 'https://www.atlassian.com/work-management/project-management' }, { title: 'GeeksforGeeks: Software Project Management', url: 'https://www.geeksforgeeks.org/software-engineering/software-engineering-software-project-management-spm/' } ],
+    'accounts-payable-receivable':[ { title: 'AccountingCoach: Accounts Payable', url: 'https://www.accountingcoach.com/accounts-payable/explanation' }, { title: 'AccountingCoach: Accounts Receivable', url: 'https://www.accountingcoach.com/accounts-receivable-and-bad-debts-expense/explanation' } ],
+    'electrical-systems':  [ { title: 'Khan Academy: Electrical engineering', url: 'https://www.khanacademy.org/science/electrical-engineering' } ],
+    'plc-automation':      [ { title: 'RealPars: What Is a PLC?', url: 'https://www.realpars.com/blog/what-is-a-plc' } ],
+    'social-media-marketing':[ { title: 'HubSpot: Social Media Marketing', url: 'https://blog.hubspot.com/marketing/social-media-marketing' } ],
+    'web-analytics':       [ { title: 'Google Skillshop: Google Analytics 4', url: 'https://skillshop.exceedlms.com/student/catalog/list?category_ids=6431-google-analytics-4' } ],
+    'content-writing':     [ { title: 'Purdue OWL: Professional Writing', url: 'https://owl.purdue.edu/owl/subject_specific_writing/professional_technical_writing/index.html' } ],
+    'customer-support':    [ { title: 'HubSpot: Customer Service Skills', url: 'https://blog.hubspot.com/service/customer-service-skills' } ],
+    'crm-systems':         [ { title: 'Salesforce: What Is CRM?', url: 'https://www.salesforce.com/crm/what-is-crm/' } ],
+    'workplace-languages': [ { title: 'BBC Languages: Chinese', url: 'https://www.bbc.co.uk/languages/chinese/' } ],
+}
+
+/**
+ * Topics a custom skill (made from a job posting) can be about, with their links (checked reachable 2026-10-31): the
+ * first topic its English name or description mentions wins, the more specific topics first
+ */
+export const TOPIC_RESOURCES = [
+    [ /\bnlp\b|natural language|text (?:analy|classif|mining)/i, [ { title: 'GeeksforGeeks: NLP Tutorial', url: 'https://www.geeksforgeeks.org/nlp/natural-language-processing-nlp-tutorial/' }, { title: 'Hugging Face: LLM Course', url: 'https://huggingface.co/learn/llm-course/chapter1/1', open: true } ] ],
+    [ /\bllms?\b|large language model|generative ai|\bgenai\b/i, [ { title: 'Hugging Face: LLM Course', url: 'https://huggingface.co/learn/llm-course/chapter1/1', open: true }, { title: 'GeeksforGeeks: Large Language Model (LLM)', url: 'https://www.geeksforgeeks.org/artificial-intelligence/large-language-model-llm/' } ] ],
+    [ /computer vision|image (?:recognition|processing)/i, [ { title: 'GeeksforGeeks: Computer Vision Tutorial', url: 'https://www.geeksforgeeks.org/computer-vision/computer-vision/' } ] ],
+    [ /deep learning|neural network/i, [ { title: 'GeeksforGeeks: Deep Learning Tutorial', url: 'https://www.geeksforgeeks.org/deep-learning/deep-learning-tutorial/' }, { title: 'Dive into Deep Learning', url: 'https://d2l.ai/', open: true } ] ],
+    [ /machine learning|\bml\b/i, [ { title: 'GeeksforGeeks: Machine Learning Tutorial', url: 'https://www.geeksforgeeks.org/machine-learning/machine-learning-tutorial/' }, { title: 'scikit-learn: Getting Started', url: 'https://scikit-learn.org/stable/getting_started.html', open: true } ] ],
+    [ /data structure|algorithm/i, [ { title: 'GeeksforGeeks: DSA Tutorial', url: 'https://www.geeksforgeeks.org/dsa/dsa-tutorial-learn-data-structures-and-algorithms/' }, { title: 'W3Schools: DSA', url: 'https://www.w3schools.com/dsa/' } ] ],
+    [ /system design|software architecture/i, [ { title: 'GeeksforGeeks: System Design Tutorial', url: 'https://www.geeksforgeeks.org/system-design/system-design-tutorial/' } ] ],
+    [ /cloud|\baws\b|azure|\bgcp\b/i, [ { title: 'GeeksforGeeks: Cloud Computing Tutorial', url: 'https://www.geeksforgeeks.org/cloud-computing/cloud-computing-tutorial/' } ] ],
+    [ /linux|unix|shell script/i, [ { title: 'GeeksforGeeks: Linux Tutorial', url: 'https://www.geeksforgeeks.org/linux-unix/linux-tutorial/' } ] ],
+    [ /\bjava\b/i, [ { title: 'W3Schools: Java', url: 'https://www.w3schools.com/java/' }, { title: 'GeeksforGeeks: Java Tutorial', url: 'https://www.geeksforgeeks.org/java/java/' } ] ],
+    [ /security|cyber/i, [ { title: 'GeeksforGeeks: Cyber Security Tutorial', url: 'https://www.geeksforgeeks.org/cybersecurity/cyber-security-tutorial/' } ] ],
+]
+
+const STOP_WORDS = new Set([ 'and', 'the', 'with', 'for', 'from', 'into', 'your', 'use', 'using', 'basic', 'understanding', 'knowledge', 'skill', 'skills', 'work', 'working', 'clear', 'good', 'other', 'their', 'that', 'this' ])
+const words = (text) => new Set(String(text).toLowerCase().match(/[a-z][a-z+#]{2,}/g)?.filter((word) => !STOP_WORDS.has(word)) ?? [])
+
+/**
+ * Links for a custom skill ({ en } name and description): its topic's, else those of the catalog skill sharing the most
+ * words with it (at least 2), else a Wikipedia search for its name. Never an invented page
+ */
+export function relatedResources(name, description)
+{
+    const text = `${name?.en ?? ''} ${description?.en ?? ''}`
+    const topic = TOPIC_RESOURCES.find(([ pattern ]) => pattern.test(text))
+    if(topic)
+        return topic[1].map((resource) => ({ open: false, ...resource }))
+    const own = words(text)
+    const [ best ] = DETAILS.map(([ id, , , , en ]) => [ id, [ ...words(`${id.replaceAll('-', ' ')} ${en}`) ].filter((word) => own.has(word)).length ])
+        .filter(([ id, score ]) => score >= 2 && resourcesOf(id).length).sort((a, b) => b[1] - a[1])
+    if(best)
+        return resourcesOf(best[0])
+    const query = String(name?.en ?? '').trim()
+    return query ? [ { title: `Wikipedia: ${query}`, url: `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(query)}`, open: true } ] : []
+}
+
+/** Every link of a skill, the starting point first: [ { title, url, open } ] (none for an AI prompt only skill) */
+const resourcesOf = (id) => [ RESOURCES[id], ...(MORE_RESOURCES[id] ?? []) ].filter((resource) => resource?.url).map((resource) => ({ open: false, ...resource }))
+
 export const SKILL_DETAILS = Object.fromEntries(DETAILS.map(([id, icon, difficulty, zh, en, ms]) =>
-    [id, { icon, difficulty, description: { zh, en, ms }, resource: RESOURCES[id] ?? null }]))
+    [id, { icon, difficulty, description: { zh, en, ms }, resource: RESOURCES[id] ?? null, resources: resourcesOf(id) }]))

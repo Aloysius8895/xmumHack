@@ -5,7 +5,7 @@
  * Skill levels: 0 none, 1 basic, 2 working, 3 solid. Career skills give the required level and a weight (1-3).
  * Names are { zh, en, ms }.
  */
-import { SKILL_DETAILS } from './skill-details.js'
+import { SKILL_DETAILS, relatedResources } from './skill-details.js'
 
 export const SKILLS = {
     'sql':                { zh: 'SQL 查询', en: 'SQL', ms: 'SQL' },
@@ -577,7 +577,7 @@ export function useCustom(save)
         if(SKILLS[id])
             continue
         SKILLS[id] = skill.name
-        SKILL_DETAILS[id] = skill.detail
+        SKILL_DETAILS[id] = { ...skill.detail, resources: skill.detail.resources ?? relatedResources(skill.name, skill.detail.description) }
         SKILL_IDS.push(id)
         customSkillIds.add(id)
     }

@@ -42,7 +42,7 @@ test('English startup localizes an existing Chinese-preference save without chan
     assert.equal(result.status, 200)
     assert.equal(result.state.lang, 'en')
     assert.equal(result.state.roadmap.stages[0].title, 'Python')
-    assert.equal(result.state.roadmap.stages[0].tasks[0].title, 'Study the core concepts of Python')
+    assert.equal(result.state.roadmap.stages[0].tasks[0].title, 'Learn the basics of Python')
     assert.equal(result.state.roadmap.stages[0].tasks[0].progress, 40)
     assert.equal(result.state.points, 27)
     assert.deepEqual(store.load(), original, 'reading a display language does not rewrite the save')
