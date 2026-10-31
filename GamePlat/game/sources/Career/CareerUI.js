@@ -482,6 +482,8 @@ export class CareerUI
             case 'career-generate': return this.generateCareer()
             case 'file-remove': delete this.files[data.file]; return this.renderPanel()
             case 'roadmap': return this.generateRoadmap(data.confirm === '1')
+            case 'resource-prompt': this.panel.resourcePrompt = data.skill; return this.renderPanel()
+            case 'resource-prompt-close': this.panel.resourcePrompt = null; return this.renderPanel()
             case 'log': return this.submitLog()
             case 'reset': return this.reset()
             case 'tutorial': this.closePanel(); return Game.getInstance().career.tour.start()
@@ -1298,6 +1300,7 @@ export class CareerUI
                         </div>
                         <div class="career-map-progress">${bar(stage.progress)}<small>${esc(t('roadmap.tasksDone', { done, total: stage.tasks.length }))}</small></div>
                         <p class="career-map-why">${icon('target')}<span><b>${esc(t('roadmap.why'))}</b>${esc(stage.why)}</span></p>
+                        ${this.renderStageResources(stage)}
                         ${stage.requirementRefs.length ? `<p class="career-muted">${esc(t('roadmap.covers', { refs: stage.requirementRefs.join(', ') }))}</p>` : ''}
                         ${locked ? this.renderStageLock(stage, stage.prerequisites.map(stageTitle).join(', ')) : `
                         ${stage.prerequisites.length ? `<p class="career-map-lock">${icon('lock')}${esc(t('roadmap.needs', { stages: stage.prerequisites.map(stageTitle).join(', ') }))}</p>` : ''}
@@ -1351,6 +1354,35 @@ export class CareerUI
                     <p><span>${esc(state.roadmap.overview)}</span><small>${esc(t('roadmap.intro'))} ${esc(t('roadmap.mpNote'))}</small></p>
                     <button class="career-button is-secondary" data-action="roadmap" data-confirm="1">${esc(t('roadmap.regenerate'))}</button>
                 </footer>
+            </div>`
+    }
+
+    renderStageResources(stage)
+    {
+        const skillIds = [ ...new Set([ ...stage.skillIds, ...stage.tasks.map((task) => task.skillId) ]) ]
+        const resources = skillIds.map((id) => ({ id, resource: this.state.skillDetails[id]?.resource })).filter(({ resource }) => resource)
+        if(!resources.length)
+            return ''
+        const promptSkill = resources.find(({ id, resource }) => resource.prompt && id === this.panel.resourcePrompt)?.id
+
+        return `
+            <div class="career-map-resources">
+                <b>${icon('compass')}${esc(t('roadmap.startHere'))}</b>
+                ${resources.map(({ id, resource }) => resource.prompt ? `
+                <button type="button" data-action="resource-prompt" data-skill="${esc(id)}">
+                    <span>${esc(this.skillName(id, id))}</span>
+                    <small>${esc(t('roadmap.promptButton'))}</small>
+                </button>` : `
+                <a href="${esc(resource.url)}" target="_blank" rel="noopener noreferrer">
+                    <span>${esc(resource.title)} ↗</span>
+                    <small>${esc(t('roadmap.resourceFree'))}</small>
+                </a>`).join('')}
+                ${promptSkill ? `
+                <div class="career-map-resource-prompt">
+                    <label for="career-resource-prompt-${esc(stage.id)}">${esc(t('roadmap.promptTitle', { skill: this.skillName(promptSkill, promptSkill) }))}</label>
+                    <textarea id="career-resource-prompt-${esc(stage.id)}" readonly rows="9">${esc(t('roadmap.promptText', { skill: this.skillName(promptSkill, promptSkill), description: this.state.skillDetails[promptSkill].description?.[getLang()] ?? '' }))}</textarea>
+                    <button type="button" data-action="resource-prompt-close">${esc(t('common.close'))}</button>
+                </div>` : ''}
             </div>`
     }
 

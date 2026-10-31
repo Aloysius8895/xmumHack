@@ -2027,6 +2027,70 @@ button.career-points {
     color: var(--accent-text);
 }
 
+.career-map-resources {
+    display: grid;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.career-map-resources b {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--accent-text);
+}
+
+.career-map-resources svg {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: var(--outline);
+    stroke-width: 2.4;
+}
+
+.career-map-resources a,
+.career-map-resources button {
+    display: grid;
+    gap: 2px;
+    padding: 8px 12px;
+    border: 2px solid var(--outline);
+    border-radius: 14px;
+    background: var(--amber-soft);
+    color: var(--text);
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 0.15s ease;
+}
+
+.career-map-resources button {
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.career-map-resources a:hover,
+.career-map-resources a:focus-visible,
+.career-map-resources button:hover,
+.career-map-resources button:focus-visible {
+    transform: translateY(-2px);
+}
+
+.career-map-resource-prompt {
+    display: grid;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 2px solid var(--outline);
+    border-radius: 14px;
+    background: var(--face);
+}
+
+.career-map-resource-prompt textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
 .career-map-card .career-tasks li {
     padding: 10px 12px;
     margin-top: 8px;

@@ -49,5 +49,15 @@ const DETAILS = [
     ['project-management', 'compass', 'high', 3, '规划范围、时间和预算，协调团队按时交付。', 'Plan scope, schedule and budget and coordinate a team to deliver on time.', 'Rancang skop, jadual dan bajet serta selaraskan pasukan untuk menyiapkan tepat pada masa.'],
 ]
 
+// Only verified free courses are linked; other skills can offer a learning prompt instead.
+const RESOURCES = {
+    'auditing': { prompt: true },
+    'internal-control': { prompt: true },
+    'negotiation': { title: 'Community Awareness: Negotiating for Financial Success', url: 'https://www.coursera.org/learn/negotiating-for-financial-success', open: false, provider: 'Coursera', cost: 'free', estimatedHours: 3 },
+    'lesson-planning': { prompt: true },
+    'medical-ethics': { prompt: true },
+    'menu-planning': { prompt: true },
+}
+
 export const SKILL_DETAILS = Object.fromEntries(DETAILS.map(([id, icon, demand, difficulty, zh, en, ms]) =>
-    [id, { icon, demand, heat: { high: 80, medium: 60, low: 30 }[demand], difficulty, description: { zh, en, ms } }]))
+    [id, { icon, demand, heat: { high: 80, medium: 60, low: 30 }[demand], difficulty, description: { zh, en, ms }, resource: RESOURCES[id] ?? null }]))
