@@ -1,0 +1,1960 @@
+{
+  "about": "Year-on-year change of JobStreet shares in the same calendar window, each year weighted to the DOSM occupation structure of its quarter (src/data/scripts/jobstreet-yoy.mjs). A change of share in the weighted samples, with 95% margins.",
+  "generatedAt": "2026-10-30T13:57:04.675Z",
+  "sources": [
+    {
+      "id": "jobstreet-2024",
+      "name": "JobStreet Job Postings Dataset (Hugging Face azrai99/job-dataset)",
+      "url": "https://huggingface.co/datasets/azrai99/job-dataset",
+      "revision": "b1937baac3ad7a2c7f18d0e24b14b00683a49f1d",
+      "sha256": "4bdd026944f1c2527402ca5ee7b83d63b3a82e6acaa4c78898a9ee90430b45c7",
+      "licence": "CC BY 4.0",
+      "author": "Azrai Mahadan"
+    },
+    {
+      "id": "jobstreet-2025",
+      "name": "JobStreet Malaysia job postings 2025 (Hugging Face seemarn/jobstreet)",
+      "url": "https://huggingface.co/datasets/seemarn/jobstreet",
+      "revision": "c1f4a140d60f405a9736c1fb0de0a0b2dbde7804",
+      "sha256": "b59db2797edf7567b34aa9cbd64dfc5818d2c870811cbf071f5710aaceb17263",
+      "licence": "not stated by the dataset; aggregates only, no posting text is redistributed",
+      "author": "seemarn"
+    }
+  ],
+  "window": {
+    "monthDay": {
+      "from": "03-04",
+      "to": "05-08"
+    },
+    "from": "2024-03-04",
+    "to": "2025-05-08",
+    "periods": [
+      {
+        "from": "2024-03-04",
+        "to": "2024-05-08"
+      },
+      {
+        "from": "2025-03-04",
+        "to": "2025-05-08"
+      }
+    ]
+  },
+  "minCount": 30,
+  "weighting": [
+    {
+      "dataset": "jobstreet-2024",
+      "dosmQuarter": "2024-Q2",
+      "weights": {
+        "professionals": 1.201,
+        "managers": 1.133,
+        "technicians_and_associate_professionals": 0.555,
+        "others": 1.204
+      },
+      "postings": 34099,
+      "unknownStratum": 628
+    },
+    {
+      "dataset": "jobstreet-2025",
+      "dosmQuarter": "2025-Q1",
+      "weights": {
+        "professionals": 1.281,
+        "managers": 1.04,
+        "technicians_and_associate_professionals": 0.554,
+        "others": 1.108
+      },
+      "postings": 9554,
+      "unknownStratum": 167
+    }
+  ],
+  "totals": [
+    {
+      "year": 2024,
+      "postings": 34099,
+      "described": 34099,
+      "mentions": 107121
+    },
+    {
+      "year": 2025,
+      "postings": 9554,
+      "described": 9554,
+      "mentions": 34644
+    }
+  ],
+  "metrics": {
+    "careers": "share_of_postings_dosm_weighted",
+    "skills": "share_of_skill_mentions_dosm_weighted"
+  },
+  "careers": {
+    "data-analyst": {
+      "from": {
+        "count": 87,
+        "share": 0.255,
+        "weightedShare": 0.304,
+        "margin": 0.061,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 18,
+        "share": 0.188,
+        "weightedShare": 0.241,
+        "margin": 0.103,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "frontend-developer": {
+      "from": {
+        "count": 40,
+        "share": 0.117,
+        "weightedShare": 0.141,
+        "margin": 0.041,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 13,
+        "share": 0.136,
+        "weightedShare": 0.172,
+        "margin": 0.087,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "backend-developer": {
+      "from": {
+        "count": 109,
+        "share": 0.32,
+        "weightedShare": 0.382,
+        "margin": 0.068,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 16,
+        "share": 0.167,
+        "weightedShare": 0.215,
+        "margin": 0.097,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "ui-ux-designer": {
+      "from": {
+        "count": 40,
+        "share": 0.117,
+        "weightedShare": 0.141,
+        "margin": 0.041,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 9,
+        "share": 0.094,
+        "weightedShare": 0.121,
+        "margin": 0.073,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "ml-engineer": {
+      "from": {
+        "count": 21,
+        "share": 0.062,
+        "weightedShare": 0.074,
+        "margin": 0.03,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 6,
+        "share": 0.063,
+        "weightedShare": 0.08,
+        "margin": 0.059,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "product-manager": {
+      "from": {
+        "count": 48,
+        "share": 0.141,
+        "weightedShare": 0.156,
+        "margin": 0.044,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 12,
+        "share": 0.126,
+        "weightedShare": 0.138,
+        "margin": 0.078,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "forward-deployed-engineer": {
+      "from": {
+        "count": 0,
+        "share": 0,
+        "weightedShare": 0,
+        "margin": 0,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 0,
+        "share": 0,
+        "weightedShare": 0,
+        "margin": 0,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "data-scientist": {
+      "from": {
+        "count": 33,
+        "share": 0.097,
+        "weightedShare": 0.116,
+        "margin": 0.038,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 6,
+        "share": 0.063,
+        "weightedShare": 0.08,
+        "margin": 0.059,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "auditor": {
+      "from": {
+        "count": 217,
+        "share": 0.636,
+        "weightedShare": 0.751,
+        "margin": 0.095,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 45,
+        "share": 0.471,
+        "weightedShare": 0.553,
+        "margin": 0.155,
+        "nEff": 8781
+      },
+      "points": -0.198,
+      "growth": -0.306,
+      "rawGrowth": -0.3003,
+      "significant": true,
+      "reason": null
+    },
+    "lawyer": {
+      "from": {
+        "count": 26,
+        "share": 0.076,
+        "weightedShare": 0.088,
+        "margin": 0.033,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 12,
+        "share": 0.126,
+        "weightedShare": 0.159,
+        "margin": 0.083,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "teacher": {
+      "from": {
+        "count": 206,
+        "share": 0.604,
+        "weightedShare": 0.725,
+        "margin": 0.094,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 121,
+        "share": 1.266,
+        "weightedShare": 1.605,
+        "margin": 0.263,
+        "nEff": 8781
+      },
+      "points": 0.88,
+      "growth": 0.7947,
+      "rawGrowth": 0.74,
+      "significant": true,
+      "reason": null
+    },
+    "doctor": {
+      "from": {
+        "count": 13,
+        "share": 0.038,
+        "weightedShare": 0.046,
+        "margin": 0.024,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 5,
+        "share": 0.052,
+        "weightedShare": 0.067,
+        "margin": 0.054,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "chef": {
+      "from": {
+        "count": 23,
+        "share": 0.067,
+        "weightedShare": 0.045,
+        "margin": 0.023,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 59,
+        "share": 0.618,
+        "weightedShare": 0.394,
+        "margin": 0.131,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "civil-engineer": {
+      "from": {
+        "count": 93,
+        "share": 0.273,
+        "weightedShare": 0.322,
+        "margin": 0.063,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 16,
+        "share": 0.167,
+        "weightedShare": 0.207,
+        "margin": 0.095,
+        "nEff": 8781
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "accountant": {
+      "from": {
+        "count": 2402,
+        "share": 7.044,
+        "weightedShare": 8.111,
+        "margin": 0.301,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 501,
+        "share": 5.244,
+        "weightedShare": 6.146,
+        "margin": 0.502,
+        "nEff": 8781
+      },
+      "points": -1.965,
+      "growth": -0.2774,
+      "rawGrowth": -0.2951,
+      "significant": true,
+      "reason": null
+    },
+    "software-engineer": {
+      "from": {
+        "count": 859,
+        "share": 2.519,
+        "weightedShare": 3.019,
+        "margin": 0.189,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 151,
+        "share": 1.58,
+        "weightedShare": 2.015,
+        "margin": 0.294,
+        "nEff": 8781
+      },
+      "points": -1.004,
+      "growth": -0.4043,
+      "rawGrowth": -0.4664,
+      "significant": true,
+      "reason": null
+    },
+    "electrical-engineer": {
+      "from": {
+        "count": 304,
+        "share": 0.892,
+        "weightedShare": 0.969,
+        "margin": 0.108,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 82,
+        "share": 0.858,
+        "weightedShare": 0.914,
+        "margin": 0.199,
+        "nEff": 8781
+      },
+      "points": -0.055,
+      "growth": -0.0584,
+      "rawGrowth": -0.0389,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "digital-marketer": {
+      "from": {
+        "count": 261,
+        "share": 0.765,
+        "weightedShare": 0.844,
+        "margin": 0.101,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 105,
+        "share": 1.099,
+        "weightedShare": 1.222,
+        "margin": 0.23,
+        "nEff": 8781
+      },
+      "points": 0.378,
+      "growth": 0.3701,
+      "rawGrowth": 0.3623,
+      "significant": true,
+      "reason": null
+    },
+    "quantity-surveyor": {
+      "from": {
+        "count": 136,
+        "share": 0.399,
+        "weightedShare": 0.466,
+        "margin": 0.075,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 94,
+        "share": 0.984,
+        "weightedShare": 1.227,
+        "margin": 0.23,
+        "nEff": 8781
+      },
+      "points": 0.761,
+      "growth": 0.9681,
+      "rawGrowth": 0.9027,
+      "significant": true,
+      "reason": null
+    },
+    "hr-executive": {
+      "from": {
+        "count": 1175,
+        "share": 3.446,
+        "weightedShare": 3.89,
+        "margin": 0.214,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 204,
+        "share": 2.135,
+        "weightedShare": 2.446,
+        "margin": 0.323,
+        "nEff": 8781
+      },
+      "points": -1.444,
+      "growth": -0.464,
+      "rawGrowth": -0.4787,
+      "significant": true,
+      "reason": null
+    },
+    "sales-executive": {
+      "from": {
+        "count": 1835,
+        "share": 5.381,
+        "weightedShare": 4.09,
+        "margin": 0.219,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 691,
+        "share": 7.233,
+        "weightedShare": 5.602,
+        "margin": 0.481,
+        "nEff": 8781
+      },
+      "points": 1.512,
+      "growth": 0.3146,
+      "rawGrowth": 0.2958,
+      "significant": true,
+      "reason": null
+    },
+    "customer-service": {
+      "from": {
+        "count": 441,
+        "share": 1.293,
+        "weightedShare": 1.534,
+        "margin": 0.136,
+        "nEff": 31505
+      },
+      "to": {
+        "count": 141,
+        "share": 1.476,
+        "weightedShare": 1.599,
+        "margin": 0.262,
+        "nEff": 8781
+      },
+      "points": 0.065,
+      "growth": 0.0415,
+      "rawGrowth": 0.1324,
+      "significant": false,
+      "reason": "within-margin"
+    }
+  },
+  "skills": {
+    "sql": {
+      "from": {
+        "count": 1956,
+        "share": 1.826,
+        "weightedShare": 1.969,
+        "margin": 0.086,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 480,
+        "share": 1.386,
+        "weightedShare": 1.551,
+        "margin": 0.135,
+        "nEff": 32005
+      },
+      "points": -0.418,
+      "growth": -0.2386,
+      "rawGrowth": -0.2757,
+      "significant": true,
+      "reason": null
+    },
+    "excel": {
+      "from": {
+        "count": 6063,
+        "share": 5.66,
+        "weightedShare": 5.443,
+        "margin": 0.141,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 1775,
+        "share": 5.124,
+        "weightedShare": 4.869,
+        "margin": 0.236,
+        "nEff": 32005
+      },
+      "points": -0.574,
+      "growth": -0.1114,
+      "rawGrowth": -0.0995,
+      "significant": true,
+      "reason": null
+    },
+    "statistics": {
+      "from": {
+        "count": 933,
+        "share": 0.871,
+        "weightedShare": 0.897,
+        "margin": 0.058,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 229,
+        "share": 0.661,
+        "weightedShare": 0.705,
+        "margin": 0.092,
+        "nEff": 32005
+      },
+      "points": -0.192,
+      "growth": -0.2409,
+      "rawGrowth": -0.2759,
+      "significant": true,
+      "reason": null
+    },
+    "python": {
+      "from": {
+        "count": 649,
+        "share": 0.606,
+        "weightedShare": 0.684,
+        "margin": 0.051,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 162,
+        "share": 0.468,
+        "weightedShare": 0.561,
+        "margin": 0.082,
+        "nEff": 32005
+      },
+      "points": -0.123,
+      "growth": -0.1982,
+      "rawGrowth": -0.2584,
+      "significant": true,
+      "reason": null
+    },
+    "data-cleaning": {
+      "from": {
+        "count": 322,
+        "share": 0.301,
+        "weightedShare": 0.321,
+        "margin": 0.035,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 83,
+        "share": 0.24,
+        "weightedShare": 0.27,
+        "margin": 0.057,
+        "nEff": 32005
+      },
+      "points": -0.051,
+      "growth": -0.173,
+      "rawGrowth": -0.2265,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "data-visualization": {
+      "from": {
+        "count": 671,
+        "share": 0.626,
+        "weightedShare": 0.656,
+        "margin": 0.05,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 224,
+        "share": 0.647,
+        "weightedShare": 0.719,
+        "margin": 0.093,
+        "nEff": 32005
+      },
+      "points": 0.063,
+      "growth": 0.0917,
+      "rawGrowth": 0.033,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "communication": {
+      "from": {
+        "count": 17347,
+        "share": 16.194,
+        "weightedShare": 15.865,
+        "margin": 0.227,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 5789,
+        "share": 16.71,
+        "weightedShare": 16.448,
+        "margin": 0.406,
+        "nEff": 32005
+      },
+      "points": 0.583,
+      "growth": 0.0361,
+      "rawGrowth": 0.0314,
+      "significant": true,
+      "reason": null
+    },
+    "html-css": {
+      "from": {
+        "count": 606,
+        "share": 0.566,
+        "weightedShare": 0.646,
+        "margin": 0.05,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 165,
+        "share": 0.476,
+        "weightedShare": 0.544,
+        "margin": 0.081,
+        "nEff": 32005
+      },
+      "points": -0.102,
+      "growth": -0.1719,
+      "rawGrowth": -0.1732,
+      "significant": true,
+      "reason": null
+    },
+    "javascript": {
+      "from": {
+        "count": 676,
+        "share": 0.631,
+        "weightedShare": 0.73,
+        "margin": 0.053,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 129,
+        "share": 0.372,
+        "weightedShare": 0.456,
+        "margin": 0.074,
+        "nEff": 32005
+      },
+      "points": -0.274,
+      "growth": -0.4706,
+      "rawGrowth": -0.5284,
+      "significant": true,
+      "reason": null
+    },
+    "react": {
+      "from": {
+        "count": 373,
+        "share": 0.348,
+        "weightedShare": 0.393,
+        "margin": 0.039,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 84,
+        "share": 0.242,
+        "weightedShare": 0.283,
+        "margin": 0.058,
+        "nEff": 32005
+      },
+      "points": -0.11,
+      "growth": -0.3284,
+      "rawGrowth": -0.3633,
+      "significant": true,
+      "reason": null
+    },
+    "git": {
+      "from": {
+        "count": 463,
+        "share": 0.432,
+        "weightedShare": 0.495,
+        "margin": 0.044,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 92,
+        "share": 0.266,
+        "weightedShare": 0.32,
+        "margin": 0.062,
+        "nEff": 32005
+      },
+      "points": -0.175,
+      "growth": -0.4362,
+      "rawGrowth": -0.4849,
+      "significant": true,
+      "reason": null
+    },
+    "accessibility": {
+      "from": {
+        "count": 173,
+        "share": 0.161,
+        "weightedShare": 0.172,
+        "margin": 0.026,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 96,
+        "share": 0.277,
+        "weightedShare": 0.293,
+        "margin": 0.059,
+        "nEff": 32005
+      },
+      "points": 0.121,
+      "growth": 0.5327,
+      "rawGrowth": 0.5426,
+      "significant": true,
+      "reason": null
+    },
+    "api-integration": {
+      "from": {
+        "count": 99,
+        "share": 0.092,
+        "weightedShare": 0.106,
+        "margin": 0.02,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 31,
+        "share": 0.089,
+        "weightedShare": 0.109,
+        "margin": 0.036,
+        "nEff": 32005
+      },
+      "points": 0.003,
+      "growth": 0.0279,
+      "rawGrowth": -0.0332,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "backend-language": {
+      "from": {
+        "count": 1269,
+        "share": 1.185,
+        "weightedShare": 1.352,
+        "margin": 0.072,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 258,
+        "share": 0.745,
+        "weightedShare": 0.868,
+        "margin": 0.102,
+        "nEff": 32005
+      },
+      "points": -0.484,
+      "growth": -0.4431,
+      "rawGrowth": -0.4641,
+      "significant": true,
+      "reason": null
+    },
+    "databases": {
+      "from": {
+        "count": 2804,
+        "share": 2.618,
+        "weightedShare": 2.61,
+        "margin": 0.099,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 707,
+        "share": 2.041,
+        "weightedShare": 2.099,
+        "margin": 0.157,
+        "nEff": 32005
+      },
+      "points": -0.511,
+      "growth": -0.2179,
+      "rawGrowth": -0.249,
+      "significant": true,
+      "reason": null
+    },
+    "rest-api": {
+      "from": {
+        "count": 385,
+        "share": 0.359,
+        "weightedShare": 0.415,
+        "margin": 0.04,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 85,
+        "share": 0.245,
+        "weightedShare": 0.3,
+        "margin": 0.06,
+        "nEff": 32005
+      },
+      "points": -0.115,
+      "growth": -0.3245,
+      "rawGrowth": -0.3821,
+      "significant": true,
+      "reason": null
+    },
+    "cloud-deploy": {
+      "from": {
+        "count": 768,
+        "share": 0.717,
+        "weightedShare": 0.803,
+        "margin": 0.055,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 212,
+        "share": 0.612,
+        "weightedShare": 0.696,
+        "margin": 0.091,
+        "nEff": 32005
+      },
+      "points": -0.107,
+      "growth": -0.143,
+      "rawGrowth": -0.1583,
+      "significant": true,
+      "reason": null
+    },
+    "testing": {
+      "from": {
+        "count": 443,
+        "share": 0.414,
+        "weightedShare": 0.466,
+        "margin": 0.042,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 103,
+        "share": 0.297,
+        "weightedShare": 0.358,
+        "margin": 0.065,
+        "nEff": 32005
+      },
+      "points": -0.108,
+      "growth": -0.2637,
+      "rawGrowth": -0.3321,
+      "significant": true,
+      "reason": null
+    },
+    "user-research": {
+      "from": {
+        "count": 128,
+        "share": 0.119,
+        "weightedShare": 0.13,
+        "margin": 0.022,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 41,
+        "share": 0.118,
+        "weightedShare": 0.134,
+        "margin": 0.04,
+        "nEff": 32005
+      },
+      "points": 0.004,
+      "growth": 0.0303,
+      "rawGrowth": -0.0084,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "prototyping": {
+      "from": {
+        "count": 420,
+        "share": 0.392,
+        "weightedShare": 0.428,
+        "margin": 0.04,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 110,
+        "share": 0.318,
+        "weightedShare": 0.358,
+        "margin": 0.065,
+        "nEff": 32005
+      },
+      "points": -0.07,
+      "growth": -0.1786,
+      "rawGrowth": -0.2092,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "figma": {
+      "from": {
+        "count": 62,
+        "share": 0.058,
+        "weightedShare": 0.066,
+        "margin": 0.016,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 21,
+        "share": 0.061,
+        "weightedShare": 0.075,
+        "margin": 0.03,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "visual-design": {
+      "from": {
+        "count": 627,
+        "share": 0.585,
+        "weightedShare": 0.614,
+        "margin": 0.048,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 243,
+        "share": 0.701,
+        "weightedShare": 0.797,
+        "margin": 0.097,
+        "nEff": 32005
+      },
+      "points": 0.183,
+      "growth": 0.2609,
+      "rawGrowth": 0.1809,
+      "significant": true,
+      "reason": null
+    },
+    "usability-testing": {
+      "from": {
+        "count": 43,
+        "share": 0.04,
+        "weightedShare": 0.045,
+        "margin": 0.013,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 8,
+        "share": 0.023,
+        "weightedShare": 0.028,
+        "margin": 0.018,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "ml-math": {
+      "from": {
+        "count": 332,
+        "share": 0.31,
+        "weightedShare": 0.307,
+        "margin": 0.034,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 87,
+        "share": 0.251,
+        "weightedShare": 0.278,
+        "margin": 0.058,
+        "nEff": 32005
+      },
+      "points": -0.029,
+      "growth": -0.0992,
+      "rawGrowth": -0.2111,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "ml-frameworks": {
+      "from": {
+        "count": 47,
+        "share": 0.044,
+        "weightedShare": 0.05,
+        "margin": 0.014,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 15,
+        "share": 0.043,
+        "weightedShare": 0.054,
+        "margin": 0.025,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "mlops": {
+      "from": {
+        "count": 24,
+        "share": 0.022,
+        "weightedShare": 0.026,
+        "margin": 0.01,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 4,
+        "share": 0.012,
+        "weightedShare": 0.014,
+        "margin": 0.013,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "roadmapping": {
+      "from": {
+        "count": 564,
+        "share": 0.527,
+        "weightedShare": 0.548,
+        "margin": 0.046,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 161,
+        "share": 0.465,
+        "weightedShare": 0.479,
+        "margin": 0.076,
+        "nEff": 32005
+      },
+      "points": -0.069,
+      "growth": -0.1346,
+      "rawGrowth": -0.1252,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "agile": {
+      "from": {
+        "count": 1031,
+        "share": 0.962,
+        "weightedShare": 1.048,
+        "margin": 0.063,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 279,
+        "share": 0.805,
+        "weightedShare": 0.883,
+        "margin": 0.103,
+        "nEff": 32005
+      },
+      "points": -0.165,
+      "growth": -0.1713,
+      "rawGrowth": -0.1782,
+      "significant": true,
+      "reason": null
+    },
+    "market-analysis": {
+      "from": {
+        "count": 1622,
+        "share": 1.514,
+        "weightedShare": 1.419,
+        "margin": 0.073,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 700,
+        "share": 2.021,
+        "weightedShare": 1.908,
+        "margin": 0.15,
+        "nEff": 32005
+      },
+      "points": 0.489,
+      "growth": 0.2961,
+      "rawGrowth": 0.2888,
+      "significant": true,
+      "reason": null
+    },
+    "accounting": {
+      "from": {
+        "count": 6382,
+        "share": 5.958,
+        "weightedShare": 6.183,
+        "margin": 0.149,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 1600,
+        "share": 4.618,
+        "weightedShare": 4.856,
+        "margin": 0.236,
+        "nEff": 32005
+      },
+      "points": -1.327,
+      "growth": -0.2416,
+      "rawGrowth": -0.2548,
+      "significant": true,
+      "reason": null
+    },
+    "auditing": {
+      "from": {
+        "count": 5120,
+        "share": 4.78,
+        "weightedShare": 4.862,
+        "margin": 0.133,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 1490,
+        "share": 4.301,
+        "weightedShare": 4.393,
+        "margin": 0.225,
+        "nEff": 32005
+      },
+      "points": -0.469,
+      "growth": -0.1014,
+      "rawGrowth": -0.1056,
+      "significant": true,
+      "reason": null
+    },
+    "internal-control": {
+      "from": {
+        "count": 1901,
+        "share": 1.775,
+        "weightedShare": 1.835,
+        "margin": 0.083,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 562,
+        "share": 1.622,
+        "weightedShare": 1.688,
+        "margin": 0.141,
+        "nEff": 32005
+      },
+      "points": -0.147,
+      "growth": -0.0835,
+      "rawGrowth": -0.0901,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "legal-research": {
+      "from": {
+        "count": 52,
+        "share": 0.049,
+        "weightedShare": 0.051,
+        "margin": 0.014,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 21,
+        "share": 0.061,
+        "weightedShare": 0.07,
+        "margin": 0.029,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "legal-writing": {
+      "from": {
+        "count": 21,
+        "share": 0.02,
+        "weightedShare": 0.02,
+        "margin": 0.009,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 7,
+        "share": 0.02,
+        "weightedShare": 0.023,
+        "margin": 0.017,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "negotiation": {
+      "from": {
+        "count": 3137,
+        "share": 2.928,
+        "weightedShare": 2.652,
+        "margin": 0.1,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 1051,
+        "share": 3.034,
+        "weightedShare": 2.687,
+        "margin": 0.177,
+        "nEff": 32005
+      },
+      "points": 0.035,
+      "growth": 0.0131,
+      "rawGrowth": 0.0356,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "lesson-planning": {
+      "from": {
+        "count": 137,
+        "share": 0.128,
+        "weightedShare": 0.147,
+        "margin": 0.024,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 87,
+        "share": 0.251,
+        "weightedShare": 0.291,
+        "margin": 0.059,
+        "nEff": 32005
+      },
+      "points": 0.144,
+      "growth": 0.6829,
+      "rawGrowth": 0.6734,
+      "significant": true,
+      "reason": null
+    },
+    "classroom-management": {
+      "from": {
+        "count": 27,
+        "share": 0.025,
+        "weightedShare": 0.029,
+        "margin": 0.011,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 16,
+        "share": 0.046,
+        "weightedShare": 0.056,
+        "margin": 0.026,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "assessment": {
+      "from": {
+        "count": 49,
+        "share": 0.046,
+        "weightedShare": 0.048,
+        "margin": 0.014,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 25,
+        "share": 0.072,
+        "weightedShare": 0.078,
+        "margin": 0.031,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "clinical-knowledge": {
+      "from": {
+        "count": 218,
+        "share": 0.204,
+        "weightedShare": 0.208,
+        "margin": 0.028,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 145,
+        "share": 0.419,
+        "weightedShare": 0.451,
+        "margin": 0.073,
+        "nEff": 32005
+      },
+      "points": 0.243,
+      "growth": 0.7739,
+      "rawGrowth": 0.7198,
+      "significant": true,
+      "reason": null
+    },
+    "patient-care": {
+      "from": {
+        "count": 76,
+        "share": 0.071,
+        "weightedShare": 0.075,
+        "margin": 0.017,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 53,
+        "share": 0.153,
+        "weightedShare": 0.171,
+        "margin": 0.045,
+        "nEff": 32005
+      },
+      "points": 0.096,
+      "growth": 0.8242,
+      "rawGrowth": 0.7678,
+      "significant": true,
+      "reason": null
+    },
+    "medical-ethics": {
+      "from": {
+        "count": 5,
+        "share": 0.005,
+        "weightedShare": 0.005,
+        "margin": 0.004,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 9,
+        "share": 0.026,
+        "weightedShare": 0.027,
+        "margin": 0.018,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "cooking-technique": {
+      "from": {
+        "count": 116,
+        "share": 0.108,
+        "weightedShare": 0.107,
+        "margin": 0.02,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 120,
+        "share": 0.346,
+        "weightedShare": 0.296,
+        "margin": 0.059,
+        "nEff": 32005
+      },
+      "points": 0.189,
+      "growth": 1.0175,
+      "rawGrowth": 1.1643,
+      "significant": true,
+      "reason": null
+    },
+    "food-safety": {
+      "from": {
+        "count": 343,
+        "share": 0.32,
+        "weightedShare": 0.274,
+        "margin": 0.032,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 233,
+        "share": 0.673,
+        "weightedShare": 0.59,
+        "margin": 0.084,
+        "nEff": 32005
+      },
+      "points": 0.316,
+      "growth": 0.767,
+      "rawGrowth": 0.7434,
+      "significant": true,
+      "reason": null
+    },
+    "menu-planning": {
+      "from": {
+        "count": 18,
+        "share": 0.017,
+        "weightedShare": 0.016,
+        "margin": 0.008,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 32,
+        "share": 0.092,
+        "weightedShare": 0.067,
+        "margin": 0.028,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "engineering-math": {
+      "from": {
+        "count": 96,
+        "share": 0.09,
+        "weightedShare": 0.1,
+        "margin": 0.02,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 27,
+        "share": 0.078,
+        "weightedShare": 0.093,
+        "margin": 0.033,
+        "nEff": 32005
+      },
+      "points": null,
+      "growth": null,
+      "rawGrowth": null,
+      "significant": false,
+      "reason": "thin"
+    },
+    "cad": {
+      "from": {
+        "count": 1285,
+        "share": 1.2,
+        "weightedShare": 1.235,
+        "margin": 0.068,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 417,
+        "share": 1.204,
+        "weightedShare": 1.278,
+        "margin": 0.123,
+        "nEff": 32005
+      },
+      "points": 0.043,
+      "growth": 0.0342,
+      "rawGrowth": 0.0033,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "project-management": {
+      "from": {
+        "count": 2505,
+        "share": 2.338,
+        "weightedShare": 2.401,
+        "margin": 0.095,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 830,
+        "share": 2.396,
+        "weightedShare": 2.481,
+        "margin": 0.17,
+        "nEff": 32005
+      },
+      "points": 0.08,
+      "growth": 0.0328,
+      "rawGrowth": 0.0245,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "accounting-software": {
+      "from": {
+        "count": 2154,
+        "share": 2.011,
+        "weightedShare": 2.125,
+        "margin": 0.089,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 642,
+        "share": 1.853,
+        "weightedShare": 1.985,
+        "margin": 0.153,
+        "nEff": 32005
+      },
+      "points": -0.14,
+      "growth": -0.0682,
+      "rawGrowth": -0.0818,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "accounts-payable-receivable": {
+      "from": {
+        "count": 5247,
+        "share": 4.898,
+        "weightedShare": 4.856,
+        "margin": 0.133,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 1317,
+        "share": 3.802,
+        "weightedShare": 3.768,
+        "margin": 0.209,
+        "nEff": 32005
+      },
+      "points": -1.088,
+      "growth": -0.2537,
+      "rawGrowth": -0.2533,
+      "significant": true,
+      "reason": null
+    },
+    "taxation": {
+      "from": {
+        "count": 3317,
+        "share": 3.096,
+        "weightedShare": 3.227,
+        "margin": 0.11,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 864,
+        "share": 2.494,
+        "weightedShare": 2.677,
+        "margin": 0.177,
+        "nEff": 32005
+      },
+      "points": -0.55,
+      "growth": -0.1869,
+      "rawGrowth": -0.2162,
+      "significant": true,
+      "reason": null
+    },
+    "electrical-systems": {
+      "from": {
+        "count": 494,
+        "share": 0.461,
+        "weightedShare": 0.448,
+        "margin": 0.041,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 166,
+        "share": 0.479,
+        "weightedShare": 0.465,
+        "margin": 0.075,
+        "nEff": 32005
+      },
+      "points": 0.017,
+      "growth": 0.0372,
+      "rawGrowth": 0.0383,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "equipment-maintenance": {
+      "from": {
+        "count": 822,
+        "share": 0.767,
+        "weightedShare": 0.721,
+        "margin": 0.052,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 289,
+        "share": 0.834,
+        "weightedShare": 0.749,
+        "margin": 0.094,
+        "nEff": 32005
+      },
+      "points": 0.028,
+      "growth": 0.0381,
+      "rawGrowth": 0.0837,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "plc-automation": {
+      "from": {
+        "count": 945,
+        "share": 0.882,
+        "weightedShare": 0.911,
+        "margin": 0.059,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 342,
+        "share": 0.987,
+        "weightedShare": 1.029,
+        "margin": 0.111,
+        "nEff": 32005
+      },
+      "points": 0.118,
+      "growth": 0.1218,
+      "rawGrowth": 0.1125,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "social-media-marketing": {
+      "from": {
+        "count": 2007,
+        "share": 1.874,
+        "weightedShare": 1.878,
+        "margin": 0.084,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 871,
+        "share": 2.514,
+        "weightedShare": 2.598,
+        "margin": 0.174,
+        "nEff": 32005
+      },
+      "points": 0.72,
+      "growth": 0.3245,
+      "rawGrowth": 0.2938,
+      "significant": true,
+      "reason": null
+    },
+    "digital-advertising": {
+      "from": {
+        "count": 275,
+        "share": 0.257,
+        "weightedShare": 0.275,
+        "margin": 0.032,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 145,
+        "share": 0.419,
+        "weightedShare": 0.439,
+        "margin": 0.072,
+        "nEff": 32005
+      },
+      "points": 0.164,
+      "growth": 0.4677,
+      "rawGrowth": 0.4888,
+      "significant": true,
+      "reason": null
+    },
+    "web-analytics": {
+      "from": {
+        "count": 498,
+        "share": 0.465,
+        "weightedShare": 0.493,
+        "margin": 0.043,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 264,
+        "share": 0.762,
+        "weightedShare": 0.814,
+        "margin": 0.098,
+        "nEff": 32005
+      },
+      "points": 0.321,
+      "growth": 0.5015,
+      "rawGrowth": 0.4939,
+      "significant": true,
+      "reason": null
+    },
+    "content-writing": {
+      "from": {
+        "count": 441,
+        "share": 0.412,
+        "weightedShare": 0.432,
+        "margin": 0.041,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 234,
+        "share": 0.675,
+        "weightedShare": 0.713,
+        "margin": 0.092,
+        "nEff": 32005
+      },
+      "points": 0.281,
+      "growth": 0.5011,
+      "rawGrowth": 0.4937,
+      "significant": true,
+      "reason": null
+    },
+    "quantity-surveying": {
+      "from": {
+        "count": 412,
+        "share": 0.385,
+        "weightedShare": 0.383,
+        "margin": 0.038,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 149,
+        "share": 0.43,
+        "weightedShare": 0.465,
+        "margin": 0.075,
+        "nEff": 32005
+      },
+      "points": 0.082,
+      "growth": 0.194,
+      "rawGrowth": 0.1105,
+      "significant": false,
+      "reason": "within-margin"
+    },
+    "cost-estimation": {
+      "from": {
+        "count": 720,
+        "share": 0.672,
+        "weightedShare": 0.693,
+        "margin": 0.051,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 304,
+        "share": 0.877,
+        "weightedShare": 0.881,
+        "margin": 0.102,
+        "nEff": 32005
+      },
+      "points": 0.188,
+      "growth": 0.24,
+      "rawGrowth": 0.2662,
+      "significant": true,
+      "reason": null
+    },
+    "contract-administration": {
+      "from": {
+        "count": 3143,
+        "share": 2.934,
+        "weightedShare": 2.744,
+        "margin": 0.101,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 1092,
+        "share": 3.152,
+        "weightedShare": 2.99,
+        "margin": 0.187,
+        "nEff": 32005
+      },
+      "points": 0.246,
+      "growth": 0.0859,
+      "rawGrowth": 0.0717,
+      "significant": true,
+      "reason": null
+    },
+    "employee-relations": {
+      "from": {
+        "count": 1491,
+        "share": 1.392,
+        "weightedShare": 1.46,
+        "margin": 0.074,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 375,
+        "share": 1.082,
+        "weightedShare": 1.103,
+        "margin": 0.114,
+        "nEff": 32005
+      },
+      "points": -0.357,
+      "growth": -0.2804,
+      "rawGrowth": -0.2519,
+      "significant": true,
+      "reason": null
+    },
+    "recruitment": {
+      "from": {
+        "count": 2812,
+        "share": 2.625,
+        "weightedShare": 2.744,
+        "margin": 0.101,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 1189,
+        "share": 3.432,
+        "weightedShare": 3.502,
+        "margin": 0.201,
+        "nEff": 32005
+      },
+      "points": 0.758,
+      "growth": 0.2439,
+      "rawGrowth": 0.2681,
+      "significant": true,
+      "reason": null
+    },
+    "payroll": {
+      "from": {
+        "count": 1946,
+        "share": 1.817,
+        "weightedShare": 1.867,
+        "margin": 0.084,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 554,
+        "share": 1.599,
+        "weightedShare": 1.635,
+        "margin": 0.139,
+        "nEff": 32005
+      },
+      "points": -0.232,
+      "growth": -0.1327,
+      "rawGrowth": -0.1278,
+      "significant": true,
+      "reason": null
+    },
+    "sales-prospecting": {
+      "from": {
+        "count": 3662,
+        "share": 3.419,
+        "weightedShare": 3.122,
+        "margin": 0.108,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 1384,
+        "share": 3.995,
+        "weightedShare": 3.615,
+        "margin": 0.205,
+        "nEff": 32005
+      },
+      "points": 0.493,
+      "growth": 0.1466,
+      "rawGrowth": 0.1557,
+      "significant": true,
+      "reason": null
+    },
+    "customer-support": {
+      "from": {
+        "count": 4941,
+        "share": 4.613,
+        "weightedShare": 4.356,
+        "margin": 0.127,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 2313,
+        "share": 6.676,
+        "weightedShare": 6.217,
+        "margin": 0.265,
+        "nEff": 32005
+      },
+      "points": 1.861,
+      "growth": 0.3557,
+      "rawGrowth": 0.3696,
+      "significant": true,
+      "reason": null
+    },
+    "crm-systems": {
+      "from": {
+        "count": 758,
+        "share": 0.708,
+        "weightedShare": 0.645,
+        "margin": 0.05,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 387,
+        "share": 1.117,
+        "weightedShare": 1.03,
+        "margin": 0.111,
+        "nEff": 32005
+      },
+      "points": 0.385,
+      "growth": 0.4681,
+      "rawGrowth": 0.456,
+      "significant": true,
+      "reason": null
+    },
+    "workplace-languages": {
+      "from": {
+        "count": 8648,
+        "share": 8.073,
+        "weightedShare": 7.665,
+        "margin": 0.165,
+        "nEff": 99871
+      },
+      "to": {
+        "count": 2665,
+        "share": 7.693,
+        "weightedShare": 7.269,
+        "margin": 0.284,
+        "nEff": 32005
+      },
+      "points": -0.396,
+      "growth": -0.053,
+      "rawGrowth": -0.0482,
+      "significant": true,
+      "reason": null
+    }
+  }
+}

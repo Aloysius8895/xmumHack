@@ -26,6 +26,7 @@ import { crawlerStatus } from './crawler-market.js'
 import { sampleRefresh, RefreshError } from './crawler-refresh.js'
 import { knownListings, loadWindow, refreshIfStale } from './market-window.js'
 import * as scenarios from './scenarios.js'
+import { noRegretSkeleton, presetOf, skeletonStages } from './no-regret.js'
 import { snapshot, updateLog } from './update-log.js'
 import { localizePostingSkills } from './posting-skill-localization.js'
 
@@ -221,6 +222,9 @@ const routes = {
             save.scenario = { k: body.k, H: body.H }
         else
             throw new HttpError(400, 'bad-scenario')
+        // The roadmap holds both branches: it follows the scenario unless the player picked a branch
+        if(save.roadmap?.chosenBranch && save.roadmap.branchChosenBy !== 'player')
+            save.roadmap.chosenBranch = presetOf(scenarios.scenarioOf(save))
         return { scenario: scenarios.scenarioOf(save) }
     },
     'GET /api/forecast': async (save) => ({ forecast: scenarios.forecast(save), compare: scenarios.compare(save) }),
@@ -345,8 +349,23 @@ const routes = {
             throw new HttpError(409, 'no-target')
         if(save.target.posting?.monitor?.requiresRegeneration)
             throw new HttpError(409, 'posting-changed-regenerate')
-        const plan = await features.generateRoadmap({ target: save.target, profile: save.profile, gaps: game.gapsFor(save), lang: lang(save, body) })
-        save.roadmap = game.buildRoadmap(plan)
+        // No-Regret order (no-regret.js): core skills first, a branch per scenario, skills declining under both last
+        const skeleton = noRegretSkeleton(save)
+        const layout = skeleton ? skeletonStages(skeleton) : null
+        const plan = await features.generateRoadmap({ target: save.target, profile: save.profile, gaps: game.gapsFor(save), lang: lang(save, body), layout: layout?.length ? layout : null })
+        save.roadmap = game.buildRoadmap({ ...plan, chosenBranch: presetOf(scenarios.scenarioOf(save)),
+            forecastBasis: skeleton && { core: skeleton.core, branches: skeleton.branches, later: skeleton.later, identical: skeleton.identical } })
+    },
+
+    'POST /api/roadmap/branch': async (save, body) =>
+    {
+        if(!save.roadmap?.chosenBranch)
+            throw new HttpError(409, 'no-branches')
+        if(!scenarios.PRESETS[body.branch])
+            throw new HttpError(400, 'bad-branch')
+        save.roadmap.chosenBranch = body.branch
+        save.roadmap.branchChosenBy = 'player'
+        return { chosenBranch: body.branch }
     },
 
     'POST /api/target/track': async (save, body) =>

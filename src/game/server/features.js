@@ -106,12 +106,37 @@ const KEYWORDS = {
     'engineering-math': [ 'structural', 'mechanics', 'load calc', '结构', '力学' ],
     'cad': [ 'autocad', 'cad', 'revit', 'solidworks', '制图' ],
     'project-management': [ 'project management', 'pmp', 'prince2', '项目管理' ],
+    'accounting-software': [ 'accounting software', 'autocount', 'sql account', 'xero', 'quickbooks', '会计软件' ],
+    'accounts-payable-receivable': [ 'accounts payable', 'accounts receivable', 'reconciliation', 'invoice', '应付', '应收', '对账' ],
+    'taxation': [ 'tax', 'taxation', 'sst', 'lhdn', 'e-invoice', '税务', '报税' ],
+    'electrical-systems': [ 'electrical system', 'switchgear', 'power distribution', 'high voltage', '电气', '配电' ],
+    'equipment-maintenance': [ 'preventive maintenance', 'corrective maintenance', 'breakdown', '维护', '保养' ],
+    'plc-automation': [ 'plc', 'scada', 'hmi', 'automation', '自动化' ],
+    'social-media-marketing': [ 'social media', 'facebook', 'instagram', 'tiktok', 'influencer', '社交媒体', '小红书' ],
+    'digital-advertising': [ 'google ads', 'facebook ads', 'ppc', 'sem', 'paid ads', '广告投放' ],
+    'web-analytics': [ 'google analytics', 'ga4', 'seo', 'conversion', 'analytics', '流量分析' ],
+    'content-writing': [ 'copywriting', 'content writing', 'content creation', '文案', '内容创作' ],
+    'quantity-surveying': [ 'quantity surveying', 'bq', 'boq', 'bill of quantities', 'taking off', '工程量' ],
+    'cost-estimation': [ 'cost estimation', 'cost control', 'budget', 'value engineering', '成本' ],
+    'contract-administration': [ 'tender', 'contract administration', 'procurement', 'subcontract', '招标', '合约' ],
+    'employee-relations': [ 'employee relations', 'industrial relations', 'grievance', 'disciplinary', 'employment act', '劳资', '员工关系' ],
+    'recruitment': [ 'recruitment', 'talent acquisition', 'hiring', 'interview', '招聘' ],
+    'payroll': [ 'payroll', 'epf', 'socso', 'pcb', 'salary', '薪资', '工资' ],
+    'sales-prospecting': [ 'prospecting', 'lead generation', 'cold call', 'business development', 'sales target', '开发客户', '销售' ],
+    'customer-support': [ 'customer service', 'customer support', 'complaint', 'enquiries', 'after-sales', '客服', '客户服务' ],
+    'crm-systems': [ 'crm', 'salesforce', 'hubspot', 'zoho' ],
+    'workplace-languages': [ 'mandarin', 'bahasa malaysia', 'malay', 'bilingual', '华语', '中文', '马来语' ],
 }
+
+// Latin keywords match whole words ("java" is not in "javascript"); Chinese ones, written without spaces, any substring
+const keywordPattern = (word) => /[a-z0-9]/i.test(word)
+    ? new RegExp(`(?<![a-z0-9])${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`, 'i')
+    : { test: (text) => text.includes(word) }
 
 function spotSkills(text)
 {
     const lower = text.toLowerCase()
-    return SKILL_IDS.filter((id) => KEYWORDS[id]?.some((word) => lower.includes(word)))
+    return SKILL_IDS.filter((id) => KEYWORDS[id]?.some((word) => keywordPattern(word).test(lower)))
 }
 
 function mockText(lang, zh, en, ms)
@@ -464,9 +489,92 @@ ${TARGET_IDS.map((id) => `${id}: ${TARGETS[id].en}`).join('\n')}`,
 // Roadmap texts in the three languages, the client shows the player's current one (game.view)
 const TRILINGUAL = { type: 'object', properties: { zh: { type: 'string' }, en: { type: 'string' }, ms: { type: 'string' } }, required: [ 'zh', 'en', 'ms' ], additionalProperties: false }
 
-export async function generateRoadmap({ target, profile, gaps, lang })
+// Demo tasks of a skill: study, practise, build
+function templateTasks(id)
+{
+    const name = SKILLS[id]
+    return [
+        { title: { zh: `自学 ${name.zh} 的核心概念`, en: `Study the core concepts of ${name.en}`, ms: `Kaji konsep teras ${name.ms}` }, why: { zh: '打基础', en: 'Foundation', ms: 'Asas' }, effortHours: 6, skillId: id },
+        { title: { zh: `完成 5 道 ${name.zh} 练习`, en: `Do 5 ${name.en} exercises`, ms: `Siapkan 5 latihan ${name.ms}` }, why: { zh: '通过练习巩固', en: 'Practice', ms: 'Latihan' }, effortHours: 5, skillId: id },
+        { title: { zh: `用 ${name.zh} 做一个小作品`, en: `Build a small piece of work with ${name.en}`, ms: `Bina hasil kerja kecil dengan ${name.ms}` }, why: { zh: '能放进作品集', en: 'Portfolio evidence', ms: 'Bukti portfolio' }, effortHours: 8, skillId: id },
+    ]
+}
+
+const joinNames = (ids, lang) => ids.map((id) => SKILLS[id][lang]).join(lang === 'zh' ? '、' : ', ')
+
+/** Stages of a No-Regret layout (no-regret.js skeletonStages) with template texts and tasks: demo mode and fallback */
+function templateStages(layout, career)
+{
+    return layout.map((stage) => ({
+        ...stage,
+        title: { zh: joinNames(stage.skillIds, 'zh'), en: joinNames(stage.skillIds, 'en'), ms: joinNames(stage.skillIds, 'ms') },
+        why: { zh: `${career.name.zh}需要${joinNames(stage.skillIds, 'zh')}。`, en: `${career.name.en} needs ${joinNames(stage.skillIds, 'en')}.`, ms: `${career.name.ms} memerlukan ${joinNames(stage.skillIds, 'ms')}.` },
+        requirementRefs: [],
+        tasks: stage.skillIds.flatMap(templateTasks).slice(0, 4),
+    }))
+}
+
+/**
+ * The roadmap plan. With `layout` (no-regret.js: stages in order with their kind, branch, skills and code-written
+ * basis), the stages, their order and skills are fixed; the AI only writes each stage's title, why and tasks, and a
+ * reply with another number of stages falls back to the template. Without a layout, the AI plans the stages itself.
+ */
+export async function generateRoadmap({ target, profile, gaps, lang, layout = null })
 {
     const career = getCareer(target.careerId)
+
+    if(layout)
+    {
+        const overview = { zh: '先学两个情景下都重要的核心技能，再按 AI 普及的速度走分支，两个情景下都在下降的技能放到最后。', en: 'First the core skills that matter under both scenarios, then a branch depending on how fast AI spreads; skills declining under both come last.', ms: 'Mula dengan kemahiran teras yang penting dalam kedua-dua senario, kemudian cabang mengikut kepantasan AI; kemahiran yang menurun dalam kedua-duanya terakhir.' }
+        if(isMock() || !layout.length)
+            return { overview, stages: templateStages(layout, career) }
+        const written = await ask({
+            system: `${PLATFORM}\n\nTask: write the texts and tasks of a preparation roadmap whose stages are already decided. Write every title and why in Chinese (zh), English (en) and Malay (ms).`,
+            content: `Target: ${describeCareer(career)}
+
+Player profile:
+${describeProfile(profile)}
+
+The stages, in this exact order (do not add, drop, merge or reorder them):
+${layout.map((stage, index) => `${index + 1}. ${stage.kind}${stage.branch ? ` (${stage.branch} AI adoption branch)` : ''}: ${stage.skillIds.join(', ')}`).join('\n')}
+
+For each stage give a title, why it matters for this career, and 2 to 4 self-directed tasks (research, exercises, mini projects; say what to do,
+not how step by step), each with an honest estimate of hours and its main skill id from the stage's skills.`,
+            schema: {
+                type: 'object',
+                properties: {
+                    stages: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            properties: {
+                                title: TRILINGUAL,
+                                why: TRILINGUAL,
+                                tasks: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: { title: TRILINGUAL, why: TRILINGUAL, effortHours: { type: 'integer' }, skillId: { type: 'string', enum: skillEnum() } },
+                                        required: [ 'title', 'why', 'effortHours', 'skillId' ],
+                                        additionalProperties: false,
+                                    },
+                                },
+                            },
+                            required: [ 'title', 'why', 'tasks' ],
+                            additionalProperties: false,
+                        },
+                    },
+                },
+                required: [ 'stages' ],
+                additionalProperties: false,
+            },
+            effort: 'medium',
+        })
+        if(written.stages?.length !== layout.length)
+            return { overview, stages: templateStages(layout, career) }
+        return { overview, stages: layout.map((stage, index) => ({ ...stage, ...written.stages[index], requirementRefs: [],
+            tasks: written.stages[index].tasks.length ? written.stages[index].tasks : templateTasks(stage.skillIds[0]) })) }
+    }
 
     if(isMock())
     {
@@ -483,11 +591,7 @@ export async function generateRoadmap({ target, profile, gaps, lang })
                     skillIds: [ gap.id ],
                     requirementRefs: [],
                     prerequisiteIndexes: index > 0 ? [ index - 1 ] : [],
-                    tasks: [
-                        { title: { zh: `自学 ${name.zh} 的核心概念`, en: `Study the core concepts of ${name.en}`, ms: `Kaji konsep teras ${name.ms}` }, why: { zh: '打基础', en: 'Foundation', ms: 'Asas' }, effortHours: 6, skillId: gap.id },
-                        { title: { zh: `完成 5 道 ${name.zh} 练习`, en: `Do 5 ${name.en} exercises`, ms: `Siapkan 5 latihan ${name.ms}` }, why: { zh: '通过练习巩固', en: 'Practice', ms: 'Latihan' }, effortHours: 5, skillId: gap.id },
-                        { title: { zh: `用 ${name.zh} 做一个小作品`, en: `Build a small piece of work with ${name.en}`, ms: `Bina hasil kerja kecil dengan ${name.ms}` }, why: { zh: '能放进作品集', en: 'Portfolio evidence', ms: 'Bukti portfolio' }, effortHours: 8, skillId: gap.id },
-                    ],
+                    tasks: templateTasks(gap.id),
                 }
             }),
         }

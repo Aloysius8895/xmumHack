@@ -1,15 +1,26 @@
 {
   "source": {
+    "id": "jobstreet-2025",
     "name": "JobStreet Malaysia job postings 2025 (Hugging Face seemarn/jobstreet)",
     "platform": "JobStreet",
+    "author": "seemarn",
     "url": "https://huggingface.co/datasets/seemarn/jobstreet",
     "revision": "c1f4a140d60f405a9736c1fb0de0a0b2dbde7804",
     "file": "jobstreet_all_job_dataset_2025_skills_ner_clustered.csv",
     "sha256": "b59db2797edf7567b34aa9cbd64dfc5818d2c870811cbf071f5710aaceb17263",
     "licence": "not stated by the dataset; aggregates only, no posting text is redistributed",
-    "rows": 9566
+    "rows": 9566,
+    "collection": {
+      "from": "2025-03-04",
+      "to": "2025-05-08",
+      "partialMonths": [
+        "2025-03",
+        "2025-05"
+      ],
+      "rule": "from the first day with at least 20% of the median daily count of the busiest month to the last listing"
+    }
   },
-  "generatedAt": "2026-10-30T07:42:43.012Z",
+  "generatedAt": "2026-10-30T10:09:45.280Z",
   "method": "Careers and skills found by the crawler's normalize() and game config (src/crawler/src), the same rules as the LinkedIn / Indeed collection",
   "candidates": {
     "accountant": {
@@ -29,25 +40,27 @@
         "Banking & Financial Services": 0.6,
         "Human Resources & Recruitment": 0.2
       },
-      "overlaps": {},
+      "overlaps": {
+        "accountant": 501
+      },
       "entryLevel": 35.3,
       "described": 501,
       "skills": {
         "accounting": 95,
+        "accounts-payable-receivable": 76.8,
+        "taxation": 57.7,
+        "accounting-software": 54.7,
         "communication": 52.1,
         "auditing": 50.1,
         "excel": 41.1,
+        "workplace-languages": 29.5,
         "internal-control": 15.8,
+        "payroll": 13,
         "sql": 11.2,
-        "databases": 3,
-        "negotiation": 2.6,
-        "project-management": 2.6,
-        "data-visualization": 1.8,
-        "statistics": 1,
-        "clinical-knowledge": 0.8,
-        "react": 0.6,
-        "roadmapping": 0.6,
-        "accessibility": 0.6
+        "customer-support": 10,
+        "recruitment": 7.4,
+        "contract-administration": 5.8,
+        "sales-prospecting": 3.6
       },
       "datasetSkills": {
         "accounting": 87.2,
@@ -95,6 +108,7 @@
         "Marketing & Communications": 0.6
       },
       "overlaps": {
+        "software-engineer": 155,
         "ui-ux-designer": 2,
         "backend-developer": 2
       },
@@ -114,8 +128,8 @@
         "rest-api": 26.5,
         "testing": 25.2,
         "python": 20.6,
-        "project-management": 11.6,
-        "api-integration": 6.5
+        "plc-automation": 16.8,
+        "customer-support": 14.2
       },
       "datasetSkills": {
         "computer science": 52.9,
@@ -163,26 +177,27 @@
         "Mining, Resources & Energy": 1.2
       },
       "overlaps": {
+        "electrical-engineer": 82,
         "candidate mechanical-engineer": 2
       },
       "entryLevel": 14.6,
       "described": 82,
       "skills": {
         "communication": 51.2,
+        "electrical-systems": 51.2,
+        "equipment-maintenance": 34.1,
         "cad": 29.3,
+        "plc-automation": 25.6,
+        "workplace-languages": 17.1,
+        "contract-administration": 14.6,
         "prototyping": 14.6,
         "auditing": 11,
         "project-management": 11,
         "excel": 8.5,
-        "python": 4.9,
-        "internal-control": 3.7,
-        "backend-language": 3.7,
-        "market-analysis": 3.7,
-        "data-visualization": 2.4,
-        "databases": 2.4,
-        "sql": 2.4,
-        "statistics": 1.2,
-        "cooking-technique": 1.2
+        "customer-support": 7.3,
+        "recruitment": 7.3,
+        "cost-estimation": 4.9,
+        "python": 4.9
       },
       "datasetSkills": {
         "communication": 41.5,
@@ -230,26 +245,28 @@
         "Administration & Office Support": 0.9
       },
       "overlaps": {
+        "digital-marketer": 107,
+        "sales-executive": 2,
         "candidate sales-executive": 2
       },
       "entryLevel": 20.6,
       "described": 107,
       "skills": {
+        "social-media-marketing": 91.6,
         "communication": 65.4,
+        "web-analytics": 59.8,
+        "digital-advertising": 50.5,
+        "content-writing": 48.6,
+        "workplace-languages": 38.3,
         "visual-design": 23.4,
         "market-analysis": 23.4,
+        "sales-prospecting": 19.6,
+        "customer-support": 11.2,
         "excel": 11.2,
         "project-management": 10.3,
+        "crm-systems": 10.3,
         "statistics": 8.4,
-        "data-visualization": 6.5,
-        "accounting": 5.6,
-        "databases": 5.6,
-        "negotiation": 4.7,
-        "html-css": 3.7,
-        "auditing": 3.7,
-        "roadmapping": 1.9,
-        "javascript": 0.9,
-        "agile": 0.9
+        "data-visualization": 6.5
       },
       "datasetSkills": {
         "digital marketing": 76.6,
@@ -297,25 +314,27 @@
         "Accounting": 1.1
       },
       "overlaps": {
+        "quantity-surveyor": 94,
         "candidate procurement-executive": 1
       },
       "entryLevel": 18.1,
       "described": 94,
       "skills": {
+        "quantity-surveying": 86.2,
+        "contract-administration": 85.1,
+        "cost-estimation": 64.9,
         "communication": 52.1,
         "negotiation": 51.1,
         "cad": 31.9,
+        "workplace-languages": 28.7,
         "project-management": 19.1,
         "excel": 17,
         "accounting": 5.3,
+        "customer-support": 4.3,
+        "accounts-payable-receivable": 4.3,
         "auditing": 4.3,
         "internal-control": 4.3,
-        "agile": 3.2,
-        "databases": 3.2,
-        "prototyping": 1.1,
-        "legal-writing": 1.1,
-        "ml-math": 1.1,
-        "engineering-math": 1.1
+        "recruitment": 4.3
       },
       "datasetSkills": {
         "construction": 68.1,
@@ -362,25 +381,27 @@
         "Manufacturing, Transport & Logistics": 1.5,
         "Hospitality & Tourism": 1
       },
-      "overlaps": {},
+      "overlaps": {
+        "hr-executive": 204
+      },
       "entryLevel": 22.1,
       "described": 204,
       "skills": {
+        "recruitment": 71.6,
         "communication": 68.6,
+        "employee-relations": 57.4,
+        "payroll": 54.9,
+        "workplace-languages": 32.8,
         "auditing": 21.6,
         "excel": 20.6,
+        "taxation": 17.6,
+        "social-media-marketing": 14.2,
         "accounting": 11.8,
         "databases": 9.8,
+        "accounts-payable-receivable": 9.8,
         "negotiation": 9.3,
-        "sql": 5.4,
-        "market-analysis": 3.9,
-        "internal-control": 2.9,
-        "data-visualization": 2.5,
-        "food-safety": 2,
-        "roadmapping": 1.5,
-        "cooking-technique": 1.5,
-        "statistics": 1.5,
-        "html-css": 1
+        "customer-support": 8.3,
+        "sql": 5.4
       },
       "datasetSkills": {
         "communication": 61.3,
@@ -428,26 +449,27 @@
         "Construction": 1.1
       },
       "overlaps": {
+        "quantity-surveyor": 1,
         "candidate quantity-surveyor": 1
       },
       "entryLevel": 23.5,
       "described": 179,
       "skills": {
+        "contract-administration": 74.9,
         "negotiation": 70.4,
         "communication": 66.5,
+        "workplace-languages": 40.2,
+        "accounts-payable-receivable": 29.1,
         "auditing": 20.1,
         "market-analysis": 19.6,
         "excel": 19,
         "databases": 11.2,
+        "recruitment": 10.6,
+        "customer-support": 10.6,
+        "cost-estimation": 8.9,
         "project-management": 7.3,
-        "internal-control": 6.1,
-        "food-safety": 5,
-        "roadmapping": 3.4,
-        "accounting": 2.8,
-        "cad": 2.2,
-        "sql": 2.2,
-        "data-visualization": 1.7,
-        "statistics": 1.1
+        "sales-prospecting": 6.1,
+        "internal-control": 6.1
       },
       "datasetSkills": {
         "procurement": 66.5,
@@ -502,17 +524,17 @@
         "sql": 31.8,
         "agile": 29.5,
         "excel": 20.5,
+        "workplace-languages": 20.5,
         "backend-language": 18.2,
         "data-visualization": 15.9,
         "databases": 15.9,
         "project-management": 13.6,
         "accounting": 11.4,
+        "sales-prospecting": 11.4,
+        "crm-systems": 11.4,
+        "recruitment": 9.1,
         "auditing": 9.1,
-        "data-cleaning": 6.8,
-        "internal-control": 6.8,
-        "roadmapping": 6.8,
-        "python": 6.8,
-        "negotiation": 6.8
+        "customer-support": 9.1
       },
       "datasetSkills": {
         "communication": 59.1,
@@ -556,6 +578,7 @@
         "Engineering": 100
       },
       "overlaps": {
+        "electrical-engineer": 2,
         "candidate electrical-engineer": 2
       },
       "entryLevel": 24.1,
@@ -563,18 +586,19 @@
       "skills": {
         "cad": 62.1,
         "communication": 44.8,
+        "contract-administration": 41.4,
+        "workplace-languages": 37.9,
         "project-management": 24.1,
+        "recruitment": 17.2,
+        "equipment-maintenance": 17.2,
+        "plc-automation": 13.8,
         "prototyping": 10.3,
         "auditing": 10.3,
+        "electrical-systems": 10.3,
         "excel": 10.3,
         "accounting": 6.9,
         "internal-control": 6.9,
-        "cloud-deploy": 6.9,
-        "engineering-math": 6.9,
-        "roadmapping": 3.4,
-        "medical-ethics": 3.4,
-        "html-css": 3.4,
-        "negotiation": 3.4
+        "cloud-deploy": 6.9
       },
       "datasetSkills": {
         "mechanical engineering": 58.6,
@@ -622,27 +646,30 @@
         "Engineering": 1.6
       },
       "overlaps": {
+        "sales-executive": 694,
+        "customer-service": 1,
         "candidate customer-service": 1,
+        "digital-marketer": 2,
         "candidate digital-marketer": 2
       },
       "entryLevel": 22.8,
       "described": 694,
       "skills": {
+        "sales-prospecting": 73.8,
         "communication": 65,
+        "customer-support": 48,
         "negotiation": 37,
+        "workplace-languages": 36.6,
         "market-analysis": 26.4,
+        "crm-systems": 13.7,
         "excel": 13.3,
+        "recruitment": 8.5,
+        "social-media-marketing": 6.9,
+        "contract-administration": 6.5,
         "databases": 5.3,
-        "project-management": 3.2,
-        "auditing": 2.2,
-        "accounting": 1.9,
-        "roadmapping": 1.6,
-        "agile": 1.4,
-        "internal-control": 1.3,
-        "clinical-knowledge": 1.3,
-        "sql": 0.9,
-        "food-safety": 0.9,
-        "cad": 0.9
+        "accounts-payable-receivable": 4.3,
+        "payroll": 3.3,
+        "project-management": 3.2
       },
       "datasetSkills": {
         "sales": 94.8,
@@ -690,26 +717,28 @@
         "Banking & Financial Services": 1.4
       },
       "overlaps": {
+        "customer-service": 142,
+        "sales-executive": 1,
         "candidate sales-executive": 1
       },
       "entryLevel": 28.2,
       "described": 142,
       "skills": {
+        "customer-support": 99.3,
         "communication": 74.6,
+        "workplace-languages": 50,
         "excel": 18.3,
+        "recruitment": 14.8,
+        "accounts-payable-receivable": 13.4,
+        "social-media-marketing": 11.3,
+        "crm-systems": 11.3,
+        "sales-prospecting": 9.2,
         "negotiation": 6.3,
         "auditing": 4.9,
+        "payroll": 4.9,
         "databases": 4.2,
         "project-management": 2.8,
-        "roadmapping": 2.1,
-        "internal-control": 2.1,
-        "clinical-knowledge": 1.4,
-        "accounting": 1.4,
-        "javascript": 0.7,
-        "market-analysis": 0.7,
-        "sql": 0.7,
-        "html-css": 0.7,
-        "statistics": 0.7
+        "contract-administration": 2.1
       },
       "datasetSkills": {
         "customer service": 76.1,

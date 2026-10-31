@@ -1,0 +1,664 @@
+{
+  "source": {
+    "id": "jobstreet-2024",
+    "name": "JobStreet Job Postings Dataset (Hugging Face azrai99/job-dataset)",
+    "platform": "JobStreet",
+    "author": "Azrai Mahadan",
+    "url": "https://huggingface.co/datasets/azrai99/job-dataset",
+    "revision": "b1937baac3ad7a2c7f18d0e24b14b00683a49f1d",
+    "file": "jobstreet_all_job_dataset.csv",
+    "sha256": "4bdd026944f1c2527402ca5ee7b83d63b3a82e6acaa4c78898a9ee90430b45c7",
+    "licence": "CC BY 4.0",
+    "rows": 59306,
+    "collection": {
+      "from": "2024-02-22",
+      "to": "2024-06-20",
+      "partialMonths": [
+        "2024-02",
+        "2024-06"
+      ],
+      "rule": "from the first day with at least 20% of the median daily count of the busiest month to the last listing"
+    }
+  },
+  "generatedAt": "2026-10-30T10:09:09.427Z",
+  "method": "Careers and skills found by the crawler's normalize() and game config (src/crawler/src), the same rules as the LinkedIn / Indeed collection",
+  "candidates": {
+    "accountant": {
+      "name": "Accountant",
+      "initial": true,
+      "postings": 3921,
+      "byMonth": {
+        "2024-03": 1704,
+        "2024-02": 476,
+        "2024-04": 645,
+        "2024-05": 683,
+        "2024-06": 413
+      },
+      "precision": 94,
+      "categories": {
+        "Accounting": 94,
+        "Administration & Office Support": 3.4,
+        "Banking & Financial Services": 1.1,
+        "Sales": 0.5,
+        "Information & Communication Technology": 0.2
+      },
+      "overlaps": {
+        "accountant": 3921,
+        "hr-executive": 3,
+        "candidate hr-executive": 3,
+        "candidate business-analyst": 1,
+        "sales-executive": 4,
+        "candidate sales-executive": 4,
+        "auditor": 3,
+        "customer-service": 1,
+        "candidate customer-service": 1
+      },
+      "entryLevel": 42,
+      "described": 3921,
+      "skills": {
+        "accounting": 89.6,
+        "accounts-payable-receivable": 67.5,
+        "taxation": 46.1,
+        "auditing": 44.2,
+        "communication": 42.2,
+        "accounting-software": 38.5,
+        "excel": 36.1,
+        "workplace-languages": 28.2,
+        "internal-control": 11.8,
+        "payroll": 9.9,
+        "sql": 8.5,
+        "databases": 3.8,
+        "contract-administration": 3.3,
+        "customer-support": 3.3,
+        "recruitment": 3
+      },
+      "datasetSkills": {},
+      "examples": [
+        "Accounts Executive",
+        "Accounts Executive",
+        "Accounts Assistant (AP)",
+        "Finance Executive",
+        "Accounts Executive",
+        "Admin. & Accounts Clerk",
+        "Finance Executive",
+        "Accounts Executive"
+      ]
+    },
+    "software-engineer": {
+      "name": "Software Engineer",
+      "initial": true,
+      "postings": 1409,
+      "byMonth": {
+        "2024-03": 694,
+        "2024-02": 209,
+        "2024-04": 198,
+        "2024-05": 179,
+        "2024-06": 129
+      },
+      "precision": 87.1,
+      "categories": {
+        "Information & Communication Technology": 87.1,
+        "Engineering": 10.7,
+        "Sales": 0.9,
+        "Design & Architecture": 0.4,
+        "Science & Technology": 0.4
+      },
+      "overlaps": {
+        "software-engineer": 1409,
+        "frontend-developer": 31,
+        "ui-ux-designer": 2,
+        "electrical-engineer": 2,
+        "candidate electrical-engineer": 2,
+        "candidate business-analyst": 2,
+        "backend-developer": 27,
+        "candidate mechanical-engineer": 1
+      },
+      "entryLevel": 20.4,
+      "described": 1409,
+      "skills": {
+        "backend-language": 66.1,
+        "communication": 49.6,
+        "sql": 48.6,
+        "javascript": 42.3,
+        "databases": 39,
+        "html-css": 36.6,
+        "agile": 22.7,
+        "cloud-deploy": 22.6,
+        "git": 22.6,
+        "react": 21.7,
+        "rest-api": 19.7,
+        "testing": 19.2,
+        "python": 16.1,
+        "workplace-languages": 14.8,
+        "plc-automation": 10.1
+      },
+      "datasetSkills": {},
+      "examples": [
+        "PHP Software Engineer",
+        "Junior Programmer (Penang)",
+        "Android Developer /Sr Android Developer",
+        "Software Engineer (Fresh Grad are Welcome)",
+        "Application Engineer",
+        "Software Engineer (Semiconductor industry-Automation)",
+        "Software Developer (Internship)",
+        "Software Engineer (ReactJS/.NET)"
+      ]
+    },
+    "electrical-engineer": {
+      "name": "Electrical & Electronics Engineer",
+      "initial": true,
+      "postings": 457,
+      "byMonth": {
+        "2024-03": 241,
+        "2024-02": 83,
+        "2024-04": 60,
+        "2024-05": 43,
+        "2024-06": 30
+      },
+      "precision": 93.2,
+      "categories": {
+        "Engineering": 92.6,
+        "Information & Communication Technology": 4.8,
+        "Real Estate & Property": 1.1,
+        "Manufacturing, Transport & Logistics": 0.4,
+        "Human Resources & Recruitment": 0.2
+      },
+      "overlaps": {
+        "electrical-engineer": 457,
+        "software-engineer": 2,
+        "candidate software-engineer": 2,
+        "candidate mechanical-engineer": 4,
+        "civil-engineer": 1
+      },
+      "entryLevel": 17.3,
+      "described": 457,
+      "skills": {
+        "electrical-systems": 45.1,
+        "communication": 38.3,
+        "plc-automation": 28.4,
+        "equipment-maintenance": 24.1,
+        "workplace-languages": 21,
+        "contract-administration": 20.6,
+        "cad": 19.9,
+        "project-management": 14.4,
+        "excel": 6.8,
+        "auditing": 6.6,
+        "customer-support": 6.3,
+        "cost-estimation": 6.1,
+        "python": 4.4,
+        "recruitment": 4.2,
+        "databases": 3.9
+      },
+      "datasetSkills": {},
+      "examples": [
+        "Electrical Engineer/Technician (Fresh graduates are welcome to apply)",
+        "Electrical Engineer",
+        "Electrical Engineer",
+        "Mechanical/ Electrical Engineer (Senior/ Junior)",
+        "Automation Engineer",
+        "Electrical Design Engineer",
+        "Automation Engineer",
+        "Electrical & Instrumentation Engineer ( Kuantan )"
+      ]
+    },
+    "digital-marketer": {
+      "name": "Digital Marketing Executive",
+      "initial": true,
+      "postings": 487,
+      "byMonth": {
+        "2024-03": 93,
+        "2024-04": 135,
+        "2024-05": 162,
+        "2024-06": 97
+      },
+      "precision": 95.9,
+      "categories": {
+        "Marketing & Communications": 90.8,
+        "Advertising, Arts & Media": 2.7,
+        "Sales": 2.5,
+        "Administration & Office Support": 1,
+        "Human Resources & Recruitment": 1
+      },
+      "overlaps": {
+        "digital-marketer": 487,
+        "sales-executive": 11,
+        "candidate sales-executive": 11,
+        "data-analyst": 1,
+        "customer-service": 1,
+        "candidate customer-service": 1
+      },
+      "entryLevel": 21.6,
+      "described": 487,
+      "skills": {
+        "social-media-marketing": 82.8,
+        "communication": 61.8,
+        "web-analytics": 53,
+        "digital-advertising": 44.6,
+        "workplace-languages": 41.7,
+        "content-writing": 35.9,
+        "market-analysis": 23.6,
+        "sales-prospecting": 18.1,
+        "visual-design": 14.6,
+        "customer-support": 11.3,
+        "excel": 9.2,
+        "databases": 8.2,
+        "project-management": 7.2,
+        "statistics": 6.2,
+        "html-css": 5.1
+      },
+      "datasetSkills": {},
+      "examples": [
+        "Sales Admin Assitant (administration & online marketing support)",
+        "AI Digital Marketing Executive",
+        "Digital Marketing Platform Intern",
+        "Technical Project Manager (Engineering & Digital Marketing)",
+        "Digital Marketing cum Personal Assistant",
+        "Protege - Sales & Marketing (Digital Marketing)",
+        "Internship (Administration or Digital Marketing)",
+        "SALES ONLINE MARKETING"
+      ]
+    },
+    "quantity-surveyor": {
+      "name": "Quantity Surveyor",
+      "initial": true,
+      "postings": 219,
+      "byMonth": {
+        "2024-03": 68,
+        "2024-02": 11,
+        "2024-04": 61,
+        "2024-05": 49,
+        "2024-06": 30
+      },
+      "precision": 95.9,
+      "categories": {
+        "Construction": 88.6,
+        "Engineering": 6.4,
+        "Design & Architecture": 1.8,
+        "Information & Communication Technology": 0.9,
+        "Real Estate & Property": 0.9
+      },
+      "overlaps": {
+        "quantity-surveyor": 219
+      },
+      "entryLevel": 30.6,
+      "described": 219,
+      "skills": {
+        "contract-administration": 89.5,
+        "quantity-surveying": 85.8,
+        "cost-estimation": 53.4,
+        "negotiation": 46.6,
+        "communication": 42.5,
+        "workplace-languages": 34.7,
+        "excel": 21,
+        "cad": 17.8,
+        "project-management": 9.1,
+        "accounts-payable-receivable": 6.4,
+        "internal-control": 4.1,
+        "accounting": 2.3,
+        "customer-support": 1.8,
+        "databases": 1.8,
+        "sales-prospecting": 1.4
+      },
+      "datasetSkills": {},
+      "examples": [
+        "Quantity Surveyor",
+        "Quantity Surveyor",
+        "Quantity Surveyor",
+        "Quantity Surveyor",
+        "Quantity Surveyor",
+        "Quantity Surveyor",
+        "Quantity Surveyor & Contract Officer",
+        "Quantity Surveyor"
+      ]
+    },
+    "hr-executive": {
+      "name": "Human Resources Executive",
+      "initial": true,
+      "postings": 1906,
+      "byMonth": {
+        "2024-03": 852,
+        "2024-02": 242,
+        "2024-04": 309,
+        "2024-05": 304,
+        "2024-06": 199
+      },
+      "precision": 86.7,
+      "categories": {
+        "Human Resources & Recruitment": 86.7,
+        "Accounting": 7.9,
+        "Administration & Office Support": 4.2,
+        "Information & Communication Technology": 0.3,
+        "Sales": 0.2
+      },
+      "overlaps": {
+        "hr-executive": 1906,
+        "accountant": 3,
+        "candidate accountant": 3,
+        "sales-executive": 3,
+        "candidate sales-executive": 3,
+        "product-manager": 1,
+        "candidate procurement-executive": 1
+      },
+      "entryLevel": 24.1,
+      "described": 1906,
+      "skills": {
+        "recruitment": 70.9,
+        "communication": 62.9,
+        "payroll": 52.8,
+        "employee-relations": 51.6,
+        "workplace-languages": 31.2,
+        "excel": 16.7,
+        "taxation": 16.5,
+        "databases": 13.6,
+        "auditing": 11.5,
+        "social-media-marketing": 9.8,
+        "negotiation": 9.4,
+        "accounting": 7.9,
+        "accounts-payable-receivable": 6.5,
+        "customer-support": 4.4,
+        "sales-prospecting": 3.4
+      },
+      "datasetSkills": {},
+      "examples": [
+        "Admin cum HR Executive",
+        "HR Manager",
+        "HR Assistant Manager (Client Facing Advisory) - Work from Home",
+        "Assistant Human Resource Manager",
+        "HR Manager",
+        "Human Resource Executive/ Officer (2 vacancies)",
+        "Human Resources Officer",
+        "HR EXECUTIVE"
+      ]
+    },
+    "procurement-executive": {
+      "name": "Procurement & Supply Chain Executive",
+      "initial": false,
+      "postings": 1203,
+      "byMonth": {
+        "2024-03": 509,
+        "2024-02": 133,
+        "2024-04": 206,
+        "2024-05": 208,
+        "2024-06": 147
+      },
+      "precision": 82.5,
+      "categories": {
+        "Manufacturing, Transport & Logistics": 82.5,
+        "Administration & Office Support": 3.9,
+        "Retail & Consumer Products": 3.7,
+        "Engineering": 2.6,
+        "Construction": 2.5
+      },
+      "overlaps": {
+        "sales-executive": 4,
+        "candidate sales-executive": 4,
+        "hr-executive": 1,
+        "candidate hr-executive": 1
+      },
+      "entryLevel": 30.2,
+      "described": 1203,
+      "skills": {
+        "negotiation": 65.4,
+        "contract-administration": 55.6,
+        "communication": 51,
+        "workplace-languages": 39.7,
+        "excel": 26.6,
+        "accounts-payable-receivable": 25.9,
+        "market-analysis": 12.8,
+        "auditing": 12.2,
+        "databases": 10.8,
+        "customer-support": 7.6,
+        "cost-estimation": 5.6,
+        "accounting": 5.3,
+        "internal-control": 4.4,
+        "sales-prospecting": 4.2,
+        "project-management": 3.8
+      },
+      "datasetSkills": {},
+      "examples": [
+        "Procurement Executive (Contract)",
+        "Purchasing Executive",
+        "PURCHASING EXECUTIVE",
+        "Purchasing Assistant",
+        "Procurement Executive",
+        "ADMIN AND PROCUREMENT EXECUTIVE",
+        "Purchasing Executive",
+        "Procurement Executive"
+      ]
+    },
+    "business-analyst": {
+      "name": "Business Analyst",
+      "initial": false,
+      "postings": 349,
+      "byMonth": {
+        "2024-03": 175,
+        "2024-02": 44,
+        "2024-04": 41,
+        "2024-05": 56,
+        "2024-06": 33
+      },
+      "precision": 92.6,
+      "categories": {
+        "Information & Communication Technology": 87.4,
+        "Accounting": 4.3,
+        "Banking & Financial Services": 4,
+        "Consulting & Strategy": 1.1,
+        "Manufacturing, Transport & Logistics": 0.9
+      },
+      "overlaps": {
+        "accountant": 1,
+        "candidate accountant": 1,
+        "software-engineer": 2,
+        "candidate software-engineer": 2
+      },
+      "entryLevel": 12.9,
+      "described": 349,
+      "skills": {
+        "communication": 78.8,
+        "agile": 26.1,
+        "project-management": 23.2,
+        "sql": 20.1,
+        "workplace-languages": 15.8,
+        "databases": 15.2,
+        "excel": 13.8,
+        "recruitment": 12.6,
+        "data-visualization": 12,
+        "accounting": 10.3,
+        "roadmapping": 9.7,
+        "backend-language": 8.9,
+        "statistics": 8,
+        "sales-prospecting": 7.4,
+        "prototyping": 6.3
+      },
+      "datasetSkills": {},
+      "examples": [
+        "IT Business Analyst",
+        "IT Business Analyst",
+        "MES Functional/Business Analyst",
+        "IT Business Analyst",
+        "Executive Business Analyst",
+        "Consultant - Business Analyst (Sunway Digital Hub)",
+        "Business Analyst (IT)",
+        "Business System Analyst"
+      ]
+    },
+    "mechanical-engineer": {
+      "name": "Mechanical Engineer",
+      "initial": false,
+      "postings": 244,
+      "byMonth": {
+        "2024-03": 126,
+        "2024-02": 28,
+        "2024-04": 39,
+        "2024-05": 30,
+        "2024-06": 21
+      },
+      "precision": 99.6,
+      "categories": {
+        "Engineering": 99.2,
+        "Manufacturing, Transport & Logistics": 0.4,
+        "Mining, Resources & Energy": 0.4
+      },
+      "overlaps": {
+        "electrical-engineer": 4,
+        "candidate electrical-engineer": 4,
+        "software-engineer": 1,
+        "candidate software-engineer": 1
+      },
+      "entryLevel": 23,
+      "described": 244,
+      "skills": {
+        "cad": 61.5,
+        "communication": 41.4,
+        "project-management": 23.8,
+        "contract-administration": 21.7,
+        "workplace-languages": 21.3,
+        "prototyping": 12.7,
+        "equipment-maintenance": 11.9,
+        "excel": 9.4,
+        "cost-estimation": 9.4,
+        "plc-automation": 9.4,
+        "engineering-math": 5.3,
+        "customer-support": 4.9,
+        "electrical-systems": 4.5,
+        "auditing": 4.1,
+        "negotiation": 3.7
+      },
+      "datasetSkills": {},
+      "examples": [
+        "Mechanical Design Engineer",
+        "Mechanical Design Engineer (Pipe/Steel/Equipment)",
+        "Mechanical Engineer",
+        "MECHANICAL DESIGN ENGINEER CUM QS",
+        "Mechanical Engineer - Fluid Systems Specialist (CAD & CFD)",
+        "Instrument/Mechanical Engineer & Technician (Welcome Fresh Graduates!)",
+        "Mechanical Engineer (ME & E&E fresh grads are encouraged to apply)",
+        "MECHANICAL DESIGN ENGINEER"
+      ]
+    },
+    "sales-executive": {
+      "name": "Sales & Business Development Executive",
+      "initial": false,
+      "postings": 3101,
+      "byMonth": {
+        "2024-03": 989,
+        "2024-02": 214,
+        "2024-04": 740,
+        "2024-05": 718,
+        "2024-06": 440
+      },
+      "precision": 85.3,
+      "categories": {
+        "Sales": 74.8,
+        "Retail & Consumer Products": 7.7,
+        "Banking & Financial Services": 3.5,
+        "Engineering": 2.7,
+        "Real Estate & Property": 2.3
+      },
+      "overlaps": {
+        "sales-executive": 3101,
+        "candidate procurement-executive": 4,
+        "chef": 1,
+        "customer-service": 2,
+        "candidate customer-service": 2,
+        "hr-executive": 3,
+        "candidate hr-executive": 3,
+        "accountant": 4,
+        "candidate accountant": 4,
+        "product-manager": 2,
+        "digital-marketer": 11,
+        "candidate digital-marketer": 11,
+        "frontend-developer": 1
+      },
+      "entryLevel": 26.9,
+      "described": 3101,
+      "skills": {
+        "sales-prospecting": 65.1,
+        "communication": 60.9,
+        "customer-support": 37.9,
+        "workplace-languages": 37.2,
+        "negotiation": 29.6,
+        "market-analysis": 16.6,
+        "excel": 12.4,
+        "crm-systems": 10.1,
+        "social-media-marketing": 7.1,
+        "accounts-payable-receivable": 5.9,
+        "contract-administration": 5.8,
+        "databases": 5.4,
+        "recruitment": 3.4,
+        "project-management": 1.7,
+        "auditing": 1.7
+      },
+      "datasetSkills": {},
+      "examples": [
+        "Sales Executive (Management Trainee) - KEPONG",
+        "Sales Executive (Microbiology)",
+        "CORPORATE SALES EXECUTIVE",
+        "Sales Executive",
+        "Sales Manager/Executives (Johor Bahru, SGX-Listed, Package Negotiable)",
+        "Sales Executive",
+        "Assistant Manager / Sales Manager - Food Ingredients",
+        "Sales Coordinator"
+      ]
+    },
+    "customer-service": {
+      "name": "Customer Service Executive",
+      "initial": false,
+      "postings": 821,
+      "byMonth": {
+        "2024-03": 148,
+        "2024-02": 20,
+        "2024-04": 230,
+        "2024-05": 270,
+        "2024-06": 153
+      },
+      "precision": 68.6,
+      "categories": {
+        "Call Centre & Customer Service": 66.5,
+        "Administration & Office Support": 13.6,
+        "Manufacturing, Transport & Logistics": 6.8,
+        "Sales": 2.9,
+        "Information & Communication Technology": 1.8
+      },
+      "overlaps": {
+        "customer-service": 821,
+        "sales-executive": 2,
+        "candidate sales-executive": 2,
+        "accountant": 1,
+        "candidate accountant": 1,
+        "digital-marketer": 1,
+        "candidate digital-marketer": 1
+      },
+      "entryLevel": 34,
+      "described": 821,
+      "skills": {
+        "customer-support": 80.5,
+        "communication": 61,
+        "workplace-languages": 56.4,
+        "excel": 16.2,
+        "accounts-payable-receivable": 12.5,
+        "social-media-marketing": 11.1,
+        "sales-prospecting": 9.7,
+        "databases": 9.1,
+        "crm-systems": 7.6,
+        "negotiation": 4.5,
+        "auditing": 3.2,
+        "recruitment": 2.1,
+        "roadmapping": 1.8,
+        "contract-administration": 1.6,
+        "taxation": 1.5
+      },
+      "datasetSkills": {},
+      "examples": [
+        "Customer Service Representative",
+        "Customer Service Executive",
+        "Customer Support Officer",
+        "Customer Service Executive",
+        "Customer Service Officer (Sales / Insurance Division)",
+        "Customer Service Officer - Nationwide (1 year contract)",
+        "Customer Service Executive",
+        "CUSTOMER SERVICE ASSISTANT"
+      ]
+    }
+  }
+}

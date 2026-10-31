@@ -75,27 +75,45 @@
       "note": "[AI 规则初审 2026-10-30] 去掉 report：撰写报告属于写作，不是可视化；[AI 任务初审 2026-10-30] 4 条都是图表/仪表板，全部保留"
     },
     "communication": {
-      "automation": 0.0366,
-      "augmentation": 0.1254,
+      "automation": 0.0791,
+      "augmentation": 0.1675,
       "tasks": [
+        "Advise business or other groups on local, national, or international factors affecting the buying or selling of products or services.",
         "Advise clients concerning business transactions, claim liability, advisability of prosecuting or defending lawsuits, or legal rights and obligations.",
         "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
+        "Advise management on organizing, preparing, or implementing recruiting or retention programs.",
         "Advise patients and community members concerning diet, activity, hygiene, and disease prevention.",
         "Advise surgeon of a patient's risk status and recommend appropriate intervention to minimize risk.",
+        "Attend staff conferences to provide management with information and proposals concerning the promotion, distribution, design, and pricing of company products or services.",
         "Communicate with customers, competitors, suppliers, professional organizations, or others to stay abreast of industry or business trends.",
         "Communicate with network personnel or Web site hosting agencies to address hardware or software issues affecting Web sites.",
         "Confer with clients regarding the nature of the information processing or computation needs a computer program is to address.",
         "Confer with clients to discuss and determine layout design.",
         "Confer with colleagues with specialties in appropriate areas of legal issue to establish and verify bases for legal proceedings.",
         "Confer with company officials about financial and regulatory matters.",
+        "Confer with customers by telephone or in person to provide information about products or services, take or enter orders, cancel accounts, or obtain details of complaints.",
+        "Confer with data processing or project managers to obtain information on limitations or capabilities for data processing projects.",
+        "Confer with engineers, customers, or others to discuss existing or potential engineering projects or products.",
+        "Confer with engineers, customers, vendors, or others to discuss existing or potential electronics engineering projects or products.",
+        "Confer with legal staff to resolve problems, such as copyright infringement or royalty sharing with outside producers or distributors.",
         "Confer with management or development teams to prioritize needs, resolve conflicts, develop content criteria, or choose solutions.",
+        "Confer with management to develop or implement personnel policies or procedures.",
         "Confer with other staff members to plan and schedule lessons promoting learning, following approved curricula.",
         "Confer with parents or guardians, other teachers, counselors, and administrators to resolve students' behavioral and academic problems.",
+        "Consult with buying personnel to gain advice regarding environmentally sound or sustainable products.",
+        "Consult with buying personnel to gain advice regarding the types of products or services expected to be in demand.",
+        "Consult with clients after sales or contract signings to resolve problems and to provide ongoing support.",
+        "Consult with customers or other departments on project status, proposals, or technical issues, such as software system design or maintenance.",
         "Consult with management to ensure agreement on system principles.",
         "Consult with users, management, vendors, and technicians to assess computing needs and system requirements.",
+        "Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders.",
         "Establish clear objectives for all lessons, units, and projects and communicate those objectives to students.",
+        "Evaluate selection or testing techniques by conducting research or follow-up activities and conferring with management or supervisory personnel.",
         "Explain procedures and discuss test results or prescribed treatments with patients.",
+        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences.",
         "Instruct through lectures, discussions, and demonstrations in one or more subjects, such as English, mathematics, or social studies.",
+        "Interpret and explain human resources policies, procedures, laws, standards, or regulations.",
+        "Measure the effectiveness of marketing, advertising, and communications programs and strategies.",
         "Meet with customers to discuss menus for special occasions, such as weddings, parties, or banquets.",
         "Meet with other professionals to discuss individual students' needs and progress.",
         "Meet with parents and guardians to discuss their children's progress and to determine priorities for their children and their resource needs.",
@@ -104,7 +122,8 @@
         "Present evidence to defend clients or prosecute defendants in criminal or civil litigation.",
         "Probate wills and represent and advise executors and administrators of estates.",
         "Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware.",
-        "Provide consulting services to other doctors caring for patients with special or difficult problems."
+        "Provide consulting services to other doctors caring for patients with special or difficult problems.",
+        "Represent employer at conferences, meetings, boards, panels, committees, or working groups to present, explain, or defend findings or recommendations, negotiate compromises or agreements, or exchange information."
       ],
       "note": "[AI 规则初审 2026-10-30] present 加词边界，避免匹配 represent（律师代表客户是核心法律工作）；[AI 任务初审 2026-10-30] 删除只是字面命中的任务：画草图、食物摆盘（presentation）、持续学习/参会、法律分析（advisability）、使用教具"
     },
@@ -124,11 +143,13 @@
       "note": "[AI 任务初审 2026-10-30] 只保留建站、写页面代码、页面模板、样式指南、链接维护；删除备份、数据库、商业策略、测试、SEO、写规格文档、技术选型"
     },
     "javascript": {
-      "automation": 0.4318,
-      "augmentation": 0.4956,
+      "automation": 0.2159,
+      "augmentation": 0.2478,
       "tasks": [
         "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
         "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
+        "Supervise and assign work to programmers, designers, technologists, technicians, or other engineering or scientific personnel.",
+        "Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel.",
         "Write supporting code for Web applications or Web sites."
       ],
       "note": "[AI 规则初审 2026-10-30] 同 python：修 script / program 误匹配；[AI 任务初审 2026-10-30] 只保留写代码、评估代码、用脚本语言建站"
@@ -160,8 +181,8 @@
       "note": "[AI 任务初审 2026-10-30] 删除商业策略、原型任务。规则新增 coordinate and link，以匹配系统分析师“连接组织内各计算机系统”这类任务；新匹配到的任务还没看过"
     },
     "backend-language": {
-      "automation": 0.3951,
-      "augmentation": 0.4803,
+      "automation": 0.4966,
+      "augmentation": 0.4206,
       "tasks": [
         "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure.",
         "Develop data models for applications, metadata tables, views or related database structures.",
@@ -198,8 +219,8 @@
       "note": "[AI 规则初审 2026-10-30] 排除 user interface（那是前端，不是 API）；[AI 任务初审 2026-10-30] 只有 1 条（数据库应用的接口与数据传输机制），相关，保留；样本很薄"
     },
     "cloud-deploy": {
-      "automation": 0.3216,
-      "augmentation": 0.4612,
+      "automation": 0.2584,
+      "augmentation": 0.407,
       "tasks": [
         "Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system.",
         "Coordinate installation of software system.",
@@ -231,12 +252,14 @@
       "note": "[AI 规则初审 2026-10-30] 去掉 need：会匹配所有 “as needed”；[AI 任务初审 2026-10-30] 删除只因 client/user 字眼命中的制作和技术支持任务；保留与客户/用户沟通需求、分析用户需求、处理用户反馈"
     },
     "prototyping": {
-      "automation": 0.0659,
-      "augmentation": 0.1467,
+      "automation": 0.033,
+      "augmentation": 0.0733,
       "tasks": [
         "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
         "Create web models or prototypes that include physical, interface, logical, or data models.",
         "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
+        "Plan layout of electric power generating plants or distribution lines or stations.",
+        "Prepare engineering sketches or specifications for construction, relocation, or installation of equipment, facilities, products, or systems.",
         "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes."
       ],
       "note": "[AI 规则初审 2026-10-30] 去掉 model（ML/统计模型），加 wireframe/storyboard；上轮未通过，需人工确认；[AI 任务初审 2026-10-30] 删除印刷排版流程和客户沟通；保留设计概念、草图、版式、网页原型。上一轮你没通过这个技能，请再确认"
@@ -254,14 +277,16 @@
       "note": "[AI 规则初审 2026-10-30] 去掉 design：几乎匹配设计师全部任务，失去区分度；[AI 任务初审 2026-10-30] 只保留数字化设计与排版任务；删除手绘草图、印刷流程、电视广播图像、客户沟通"
     },
     "visual-design": {
-      "automation": 0.1005,
-      "augmentation": 0.1399,
+      "automation": 0.2317,
+      "augmentation": 0.3469,
       "tasks": [
+        "Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand.",
         "Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts.",
         "Determine size and arrangement of illustrative material and copy, and select style and size of type.",
         "Develop graphics and layouts for product illustrations, company logos, and Web sites.",
         "Draw and print charts, graphs, illustrations, and other artwork, using computer.",
         "Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes.",
+        "Prepare reports of findings, illustrating data graphically and translating complex findings into written text.",
         "Produce still and animated graphics for on-air and taped portions of television news broadcasts, using electronic video equipment.",
         "Study illustrations and photographs to plan presentation of materials, products, or services."
       ],
@@ -326,17 +351,43 @@
       "note": "[AI 任务初审 2026-10-30] 只有 1 条（审查项目计划、协调项目活动），保留；样本很薄"
     },
     "market-analysis": {
-      "automation": 0.0,
-      "augmentation": 0.0,
+      "automation": 0.1397,
+      "augmentation": 0.2416,
       "tasks": [
+        "Answer customers' questions about products, prices, availability, product uses, and credit terms.",
+        "Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand.",
+        "Conduct economic or commercial surveys to identify potential markets for products or services.",
+        "Conduct research on consumer opinions and marketing strategies, collaborating with marketing professionals, statisticians, pollsters, and other professionals.",
+        "Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders.",
+        "Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services.",
+        "Develop business cases for environmental marketing strategies.",
+        "Develop pricing strategies, balancing firm objectives and customer satisfaction.",
+        "Direct the hiring, training, or performance evaluations of marketing or sales staff and oversee their daily activities.",
         "Evaluate data processing proposals to assess project feasibility and requirements.",
-        "Stay abreast of advances in technology."
+        "Forecast and track marketing and sales trends, analyzing collected data.",
+        "Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers.",
+        "Gather data on competitors and analyze their prices, sales, and method of marketing and distribution.",
+        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences.",
+        "Identify, develop, or evaluate marketing strategy, based on knowledge of establishment objectives, market characteristics, and cost and markup factors.",
+        "Integrate environmental information into product or company marketing strategies, policies, or activities.",
+        "Measure and assess customer and employee satisfaction.",
+        "Measure the effectiveness of marketing, advertising, and communications programs and strategies.",
+        "Monitor industry statistics and follow trends in trade literature.",
+        "Monitor market conditions, product innovations, and competitors' products, prices, and sales.",
+        "Negotiate contracts with vendors or distributors to manage product distribution, establishing distribution networks or developing distribution strategies.",
+        "Obtain credit information about prospective customers.",
+        "Prepare drawings, estimates, and bids that meet specific customer needs.",
+        "Provide customers with product samples and catalogs.",
+        "Recommend products to customers, based on customers' needs and interests.",
+        "Seek and provide information to help companies determine their position in the marketplace.",
+        "Stay abreast of advances in technology.",
+        "Use sales forecasting or strategic planning to ensure the sale and profitability of products, lines, or services, analyzing business developments and monitoring market trends."
       ],
       "note": "[AI 规则初审 2026-10-30] 原规则 0 匹配；11-3021（IT 经理）任务里没有 market 字眼，放宽到供应商评估、行业/新技术跟踪、成本效益和可行性分析；[AI 任务初审 2026-10-30] 删除与 user-research/沟通重复的任务；保留跟踪技术进展、评估项目可行性。产品经理映射到 IT 经理本身较弱"
     },
     "accounting": {
-      "automation": 0.2575,
-      "augmentation": 0.3422,
+      "automation": 0.3087,
+      "augmentation": 0.4408,
       "tasks": [
         "Analyze business operations, trends, costs, revenues, financial commitments, and obligations to project future revenues and expenses or to provide advice.",
         "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology.",
@@ -348,8 +399,8 @@
       "note": "[AI 任务初审 2026-10-30] 删除归属审计、内控、沟通、代理出庭的任务，只保留记账、报表、会计系统、财务分析"
     },
     "auditing": {
-      "automation": 0.0992,
-      "augmentation": 0.1029,
+      "automation": 0.228,
+      "augmentation": 0.3196,
       "tasks": [
         "Audit payroll and personnel records to determine unemployment insurance premiums, workers' compensation coverage, liabilities, and compliance with tax laws.",
         "Conduct pre-implementation audits to determine if systems and programs under development will work as planned.",
@@ -403,7 +454,10 @@
       "automation": 0.0,
       "augmentation": 0.0,
       "tasks": [
-        "Negotiate settlements of civil disputes."
+        "Establish and maintain tendering process, and conduct negotiations.",
+        "Negotiate details of contracts and payments.",
+        "Negotiate settlements of civil disputes.",
+        "Negotiate with retail merchants to improve product exposure, such as shelf positioning and advertising."
       ],
       "note": "[AI 规则初审 2026-10-30] mediat 加词边界，避免匹配 immediately/intermediate；[AI 任务初审 2026-10-30] 只有 1 条（谈判民事和解），保留"
     },
@@ -519,7 +573,11 @@
       "automation": 0.0,
       "augmentation": 0.0,
       "tasks": [
-        "Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data."
+        "Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates.",
+        "Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data.",
+        "Operate computer-assisted engineering or design software or equipment to perform electronics engineering tasks.",
+        "Operate computer-assisted engineering or design software or equipment to perform engineering tasks.",
+        "Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements."
       ],
       "note": "[AI 任务初审 2026-10-30] 只匹配到 1 条“分析图纸蓝图”。规则新增 computer-assisted/drafting，以匹配“用计算机辅助设计或绘图工具设计交通、水利系统”这类任务；新匹配到的任务还没看过"
     },
@@ -527,15 +585,216 @@
       "automation": 0.0,
       "augmentation": 0.0,
       "tasks": [
+        "Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops.",
         "Coordinate planning, budgeting, or purchasing for all the food operations within establishments such as clubs, hotels, or restaurant chains.",
         "Determine production schedules and staff requirements necessary to ensure timely delivery of services.",
         "Estimate quantities and cost of materials, equipment, or labor to determine project feasibility.",
         "Identify environmental risks and develop risk management strategies for civil engineering projects.",
         "Inspect project sites to monitor progress and ensure conformance to design specifications and safety or sanitation standards.",
         "Manage and direct the construction, operations, or maintenance activities at project site.",
+        "Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project.",
+        "Prepare estimates used by management for purposes such as planning, organizing, and scheduling work.",
         "Supervise or coordinate activities of cooks or workers engaged in food preparation."
       ],
       "note": "[AI 任务初审 2026-10-30] 删除交通/环境研究，保留项目现场管理、排期、预算、协调"
+    },
+    "accounting-software": {
+      "automation": 0.2051,
+      "augmentation": 0.2503,
+      "tasks": [
+        "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
+        "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "accounts-payable-receivable": {
+      "automation": 0.1701,
+      "augmentation": 0.2584,
+      "tasks": [
+        "Compare disputed merchandise with original requisitions and information from invoices and prepare invoices for returned goods.",
+        "Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements.",
+        "Determine charges for services requested, collect deposits or payments, or arrange for billing.",
+        "Establish tables of accounts and assign entries to proper accounts.",
+        "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards.",
+        "Recommend improvements in products, packaging, shipping, service, or billing methods and procedures to prevent future problems.",
+        "Resolve customers' service or billing complaints by performing activities such as exchanging merchandise, refunding money, or adjusting bills."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "taxation": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
+        "Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements.",
+        "Represent clients before taxing authorities and provide support during litigation involving financial issues."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "electrical-systems": {
+      "automation": 0.093,
+      "augmentation": 0.2523,
+      "tasks": [
+        "Analyze electronics system requirements, capacity, cost, or customer needs to determine project feasibility.",
+        "Collect data relating to commercial or residential development, population, or power system interconnection to determine operating efficiency of electrical systems.",
+        "Conduct field surveys or study maps, graphs, diagrams, or other data to identify and correct power system problems.",
+        "Design electrical systems or components that minimize electric energy requirements, such as lighting systems designed to account for natural lighting.",
+        "Design electronic components, software, products, or systems for commercial, industrial, medical, military, or scientific applications.",
+        "Design, implement, maintain, or improve electrical instruments, equipment, facilities, components, products, or systems for commercial, industrial, or domestic purposes.",
+        "Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems.",
+        "Inspect electronic equipment, instruments, products, or systems to ensure conformance to specifications, safety standards, or applicable codes or regulations.",
+        "Integrate electrical systems with renewable energy systems to improve overall efficiency.",
+        "Plan layout of electric power generating plants or distribution lines or stations.",
+        "Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements.",
+        "Provide technical support or instruction to staff or customers regarding electronics equipment standards.",
+        "Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "equipment-maintenance": {
+      "automation": 0.0,
+      "augmentation": 0.1421,
+      "tasks": [
+        "Assist in developing capital project programs for new equipment or major repairs.",
+        "Develop or perform operational, maintenance, or testing procedures for electronic products, components, equipment, or systems.",
+        "Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems.",
+        "Direct or coordinate manufacturing, construction, installation, maintenance, support, documentation, or testing activities to ensure compliance with specifications, codes, or customer requirements.",
+        "Prepare, review, or maintain maintenance schedules, design documentation, or operational reports or charts.",
+        "Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "digital-advertising": {
+      "automation": 0.1405,
+      "augmentation": 0.2933,
+      "tasks": [
+        "Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services.",
+        "Develop and implement procedures for identifying advertising needs.",
+        "Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers.",
+        "Measure the effectiveness of marketing, advertising, and communications programs and strategies."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "web-analytics": {
+      "automation": 0.4179,
+      "augmentation": 0.5136,
+      "tasks": [
+        "Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand.",
+        "Forecast and track marketing and sales trends, analyzing collected data.",
+        "Measure the effectiveness of marketing, advertising, and communications programs and strategies."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "content-writing": {
+      "automation": 0.2983,
+      "augmentation": 0.5805,
+      "tasks": [
+        "Prepare reports of findings, illustrating data graphically and translating complex findings into written text."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "quantity-surveying": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates.",
+        "Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "cost-estimation": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates.",
+        "Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops.",
+        "Prepare estimates for use in selecting vendors or subcontractors.",
+        "Prepare estimates used by management for purposes such as planning, organizing, and scheduling work.",
+        "Set up cost monitoring and reporting systems and procedures."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "contract-administration": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops.",
+        "Establish and maintain tendering process, and conduct negotiations.",
+        "Prepare and maintain a directory of suppliers, contractors and subcontractors.",
+        "Prepare estimates for use in selecting vendors or subcontractors."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "employee-relations": {
+      "automation": 0.0365,
+      "augmentation": 0.1601,
+      "tasks": [
+        "Address employee relations issues, such as harassment allegations, work complaints, or other employee concerns.",
+        "Conduct exit interviews and ensure that necessary employment termination paperwork is completed.",
+        "Confer with management to develop or implement personnel policies or procedures.",
+        "Interpret and explain human resources policies, procedures, laws, standards, or regulations."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "recruitment": {
+      "automation": 0.2479,
+      "augmentation": 0.1883,
+      "tasks": [
+        "Advise management on organizing, preparing, or implementing recruiting or retention programs.",
+        "Conduct reference or background checks on job applicants.",
+        "Contact job applicants to inform them of the status of their applications.",
+        "Develop or implement recruiting strategies to meet current or anticipated staffing needs.",
+        "Evaluate recruitment or selection criteria to ensure conformance to professional, statistical, or testing standards, recommending revisions, as needed.",
+        "Hire employees and process hiring-related paperwork.",
+        "Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities.",
+        "Interview job applicants to obtain information on work history, training, education, or job skills.",
+        "Perform searches for qualified job candidates, using sources such as computer databases, networking, Internet recruiting resources, media advertisements, job fairs, recruiting firms, or employee referrals.",
+        "Review and evaluate applicant qualifications or eligibility for specified licensing, according to established guidelines and designated licensing codes.",
+        "Review employment applications and job orders to match applicants with job requirements.",
+        "Schedule or conduct new employee orientations.",
+        "Select qualified job applicants or refer them to managers, making hiring recommendations when appropriate."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "payroll": {
+      "automation": 0.0,
+      "augmentation": 0.0,
+      "tasks": [
+        "Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "sales-prospecting": {
+      "automation": 0.3656,
+      "augmentation": 0.3709,
+      "tasks": [
+        "Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders.",
+        "Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences.",
+        "Obtain credit information about prospective customers.",
+        "Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "customer-support": {
+      "automation": 0.2576,
+      "augmentation": 0.6057,
+      "tasks": [
+        "Answer customers' questions about products, prices, availability, product uses, and credit terms.",
+        "Check to ensure that appropriate changes were made to resolve customers' problems.",
+        "Contact customers to respond to inquiries or to notify them of claim investigation results or any planned adjustments.",
+        "Refer unresolved customer grievances to designated departments for further investigation.",
+        "Resolve customers' service or billing complaints by performing activities such as exchanging merchandise, refunding money, or adjusting bills."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "crm-systems": {
+      "automation": 0.4015,
+      "augmentation": 0.5804,
+      "tasks": [
+        "Keep records of customer interactions or transactions, recording details of inquiries, complaints, or comments, as well as actions taken.",
+        "Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports."
+      ],
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
     }
   },
   "careers": {
@@ -546,6 +805,7 @@
       ],
       "soc": "15-2051",
       "title": "Data Scientists",
+      "reviewed": true,
       "observedExposure": 0.4605,
       "tasks": 35,
       "tasksWithoutPenetration": 9
@@ -556,6 +816,7 @@
       ],
       "soc": "15-1254",
       "title": "Web Developers",
+      "reviewed": true,
       "observedExposure": 0.4802,
       "tasks": 37,
       "tasksWithoutPenetration": 3
@@ -568,6 +829,7 @@
       ],
       "soc": "15-1252",
       "title": "Software Developers",
+      "reviewed": true,
       "observedExposure": 0.288,
       "tasks": 49,
       "tasksWithoutPenetration": 17
@@ -579,6 +841,7 @@
       ],
       "soc": "15-1255",
       "title": "Web and Digital Interface Designers",
+      "reviewed": true,
       "observedExposure": 0.249,
       "tasks": 54,
       "tasksWithoutPenetration": 5
@@ -590,6 +853,7 @@
       ],
       "soc": "15-1221",
       "title": "Computer and Information Research Scientists",
+      "reviewed": true,
       "observedExposure": 0.3404,
       "tasks": 33,
       "tasksWithoutPenetration": 8
@@ -600,6 +864,7 @@
       ],
       "soc": "11-3021",
       "title": "Computer and Information Systems Managers",
+      "reviewed": true,
       "observedExposure": 0.1559,
       "tasks": 17,
       "tasksWithoutPenetration": 0
@@ -611,6 +876,7 @@
       ],
       "soc": "15-1252",
       "title": "Software Developers",
+      "reviewed": true,
       "observedExposure": 0.288,
       "tasks": 36,
       "tasksWithoutPenetration": 12
@@ -622,6 +888,7 @@
       ],
       "soc": "15-2051",
       "title": "Data Scientists",
+      "reviewed": true,
       "observedExposure": 0.4605,
       "tasks": 35,
       "tasksWithoutPenetration": 9
@@ -633,6 +900,7 @@
       ],
       "soc": "13-2011",
       "title": "Accountants and Auditors",
+      "reviewed": true,
       "observedExposure": 0.3478,
       "tasks": 36,
       "tasksWithoutPenetration": 13
@@ -643,6 +911,7 @@
       ],
       "soc": "23-1011",
       "title": "Lawyers",
+      "reviewed": true,
       "observedExposure": 0.1673,
       "tasks": 22,
       "tasksWithoutPenetration": 2
@@ -653,6 +922,7 @@
       ],
       "soc": "25-2031",
       "title": "Secondary School Teachers, Except Special and Career/Technical Education",
+      "reviewed": true,
       "observedExposure": 0.2901,
       "tasks": 32,
       "tasksWithoutPenetration": 3
@@ -664,6 +934,7 @@
       ],
       "soc": "29-1216",
       "title": "General Internal Medicine Physicians",
+      "reviewed": true,
       "observedExposure": 0.084,
       "tasks": 28,
       "tasksWithoutPenetration": 4
@@ -674,6 +945,7 @@
       ],
       "soc": "35-1011",
       "title": "Chefs and Head Cooks",
+      "reviewed": true,
       "observedExposure": 0.0,
       "tasks": 21,
       "tasksWithoutPenetration": 1
@@ -684,33 +956,125 @@
       ],
       "soc": "17-2051",
       "title": "Civil Engineers",
+      "reviewed": true,
       "observedExposure": 0.0081,
       "tasks": 17,
       "tasksWithoutPenetration": 4
+    },
+    "accountant": {
+      "onet": [
+        "13-2011.01"
+      ],
+      "soc": "13-2011",
+      "title": "Accountants and Auditors",
+      "reviewed": false,
+      "observedExposure": 0.3478,
+      "tasks": 16,
+      "tasksWithoutPenetration": 8
+    },
+    "software-engineer": {
+      "onet": [
+        "15-1132.00",
+        "15-1133.00"
+      ],
+      "soc": "15-1252",
+      "title": "Software Developers",
+      "reviewed": false,
+      "observedExposure": 0.288,
+      "tasks": 31,
+      "tasksWithoutPenetration": 15
+    },
+    "electrical-engineer": {
+      "onet": [
+        "17-2071.00",
+        "17-2072.00"
+      ],
+      "soc": "17-2071",
+      "title": "Electrical Engineers",
+      "reviewed": false,
+      "observedExposure": 0.059,
+      "tasks": 44,
+      "tasksWithoutPenetration": 3
+    },
+    "digital-marketer": {
+      "onet": [
+        "13-1161.00",
+        "11-2021.00"
+      ],
+      "soc": "13-1161",
+      "title": "Market Research Analysts and Marketing Specialists",
+      "reviewed": false,
+      "observedExposure": 0.6483,
+      "tasks": 33,
+      "tasksWithoutPenetration": 2
+    },
+    "quantity-surveyor": {
+      "onet": [
+        "13-1051.00"
+      ],
+      "soc": "13-1051",
+      "title": "Cost Estimators",
+      "reviewed": false,
+      "observedExposure": 0.0,
+      "tasks": 13,
+      "tasksWithoutPenetration": 4
+    },
+    "hr-executive": {
+      "onet": [
+        "13-1071.00"
+      ],
+      "soc": "13-1071",
+      "title": "Human Resources Specialists",
+      "reviewed": false,
+      "observedExposure": 0.4034,
+      "tasks": 25,
+      "tasksWithoutPenetration": 1
+    },
+    "sales-executive": {
+      "onet": [
+        "41-4012.00"
+      ],
+      "soc": "41-4012",
+      "title": "Sales Representatives, Wholesale and Manufacturing, Except Technical and Scientific Products",
+      "reviewed": false,
+      "observedExposure": 0.6279,
+      "tasks": 20,
+      "tasksWithoutPenetration": 1
+    },
+    "customer-service": {
+      "onet": [
+        "43-4051.00"
+      ],
+      "soc": "43-4051",
+      "title": "Customer Service Representatives",
+      "reviewed": false,
+      "observedExposure": 0.7011,
+      "tasks": 15,
+      "tasksWithoutPenetration": 0
     }
   },
   "crossCheck": {
-    "spearman": 0.77,
+    "spearman": 0.68,
     "careers": [
       [
         "data-analyst",
         0.4605,
-        0.6235
+        0.6356
       ],
       [
         "frontend-developer",
         0.4802,
-        0.6834
+        0.5906
       ],
       [
         "backend-developer",
         0.288,
-        0.714
+        0.6989
       ],
       [
         "ui-ux-designer",
         0.249,
-        0.2055
+        0.2583
       ],
       [
         "ml-engineer",
@@ -720,47 +1084,87 @@
       [
         "product-manager",
         0.1559,
-        0.2749
+        0.3526
       ],
       [
         "forward-deployed-engineer",
         0.288,
-        0.7979
+        0.7938
       ],
       [
         "data-scientist",
         0.4605,
-        0.7264
+        0.7405
       ],
       [
         "auditor",
         0.3478,
-        0.4704
+        0.5864
       ],
       [
         "lawyer",
         0.1673,
-        0.1499
+        0.171
       ],
       [
         "teacher",
         0.2901,
-        0.2886
+        0.3097
       ],
       [
         "doctor",
         0.084,
-        0.1444
+        0.1726
       ],
       [
         "chef",
         0.0,
-        0.0324
+        0.0493
       ],
       [
         "civil-engineer",
         0.0081,
-        0.0405
+        0.0617
+      ],
+      [
+        "accountant",
+        0.3478,
+        0.4786
+      ],
+      [
+        "software-engineer",
+        0.288,
+        0.6254
+      ],
+      [
+        "electrical-engineer",
+        0.059,
+        0.1401
+      ],
+      [
+        "digital-marketer",
+        0.6483,
+        0.5751
+      ],
+      [
+        "quantity-surveyor",
+        0.0,
+        0.0352
+      ],
+      [
+        "hr-executive",
+        0.4034,
+        0.3645
+      ],
+      [
+        "sales-executive",
+        0.6279,
+        0.5903
+      ],
+      [
+        "customer-service",
+        0.7011,
+        0.6885
       ]
     ]
   }

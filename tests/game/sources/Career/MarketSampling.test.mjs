@@ -77,7 +77,10 @@ test('the learning direction form shows the matched skills and what matched noth
     assert.match(renderUpdateLog(log,{t,esc,locale:'en-GB',names,direction:{draft:'cad'}}),/value="cad"/)
 })
 
-test('the market heatmap shows no simulated months (D5)',()=>{
+test('months our collection did not reach are simulated in the heatmap, ranking and skill trends, in one unit',()=>{
     const source=fs.readFileSync(new URL('../../../../src/game/sources/Career/CareerUI.js',import.meta.url),'utf8')
-    assert.doesNotMatch(source,/buildMockMarketHistory/)
+    assert.match(source,/const careers = buildMarketRows\(trends, rowMonths, historyPreview\)/)
+    assert.match(source,/buildMockSkillHistory\(trends, calendar\)/)
+    // past JobStreet months are not mixed into the heatmap: every cell counts postings
+    assert.match(source,/referenceView\(\[\], shown/)
 })

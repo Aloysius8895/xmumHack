@@ -10,24 +10,32 @@ Generated 2026-10-30. Source: Anthropic Economic Index (https://huggingface.co/d
 
 **Limits**: Usage of Claude on US O*NET tasks: a signal of where AI enters work, not jobs lost and not Malaysian data.
 
-## Career-level cross-check (against AEI's own job exposure; Spearman rank correlation = 0.77)
+## Career-level cross-check (against AEI's own job exposure; Spearman rank correlation = 0.68)
 
 | Career | AEI job exposure | Ours from skills (automation + augmentation) | O*NET tasks | Tasks without penetration data |
 |---|---|---|---|---|
-| data-analyst | 0.4605 | 0.6235 | 35 | 9 |
-| frontend-developer | 0.4802 | 0.6834 | 37 | 3 |
-| backend-developer | 0.288 | 0.714 | 49 | 17 |
-| ui-ux-designer | 0.249 | 0.2055 | 54 | 5 |
+| data-analyst | 0.4605 | 0.6356 | 35 | 9 |
+| frontend-developer | 0.4802 | 0.5906 | 37 | 3 |
+| backend-developer | 0.288 | 0.6989 | 49 | 17 |
+| ui-ux-designer | 0.249 | 0.2583 | 54 | 5 |
 | ml-engineer | 0.3404 | 0.703 | 33 | 8 |
-| product-manager | 0.1559 | 0.2749 | 17 | 0 |
-| forward-deployed-engineer | 0.288 | 0.7979 | 36 | 12 |
-| data-scientist | 0.4605 | 0.7264 | 35 | 9 |
-| auditor | 0.3478 | 0.4704 | 36 | 13 |
-| lawyer | 0.1673 | 0.1499 | 22 | 2 |
-| teacher | 0.2901 | 0.2886 | 32 | 3 |
-| doctor | 0.084 | 0.1444 | 28 | 4 |
-| chef | 0.0 | 0.0324 | 21 | 1 |
-| civil-engineer | 0.0081 | 0.0405 | 17 | 4 |
+| product-manager | 0.1559 | 0.3526 | 17 | 0 |
+| forward-deployed-engineer | 0.288 | 0.7938 | 36 | 12 |
+| data-scientist | 0.4605 | 0.7405 | 35 | 9 |
+| auditor | 0.3478 | 0.5864 | 36 | 13 |
+| lawyer | 0.1673 | 0.171 | 22 | 2 |
+| teacher | 0.2901 | 0.3097 | 32 | 3 |
+| doctor | 0.084 | 0.1726 | 28 | 4 |
+| chef | 0.0 | 0.0493 | 21 | 1 |
+| civil-engineer | 0.0081 | 0.0617 | 17 | 4 |
+| accountant | 0.3478 | 0.4786 | 16 | 8 |
+| software-engineer | 0.288 | 0.6254 | 31 | 15 |
+| electrical-engineer | 0.059 | 0.1401 | 44 | 3 |
+| digital-marketer | 0.6483 | 0.5751 | 33 | 2 |
+| quantity-surveyor | 0.0 | 0.0352 | 13 | 4 |
+| hr-executive | 0.4034 | 0.3645 | 25 | 1 |
+| sales-executive | 0.6279 | 0.5903 | 20 | 1 |
+| customer-service | 0.7011 | 0.6885 | 15 | 0 |
 
 ## sql　✅ reviewed
 
@@ -153,7 +161,7 @@ Reviewer note: [AI 规则初审 2026-10-30] 去掉 report：撰写报告属于�
 
 ## communication　✅ reviewed
 
-Pattern: `\bpresent|communicat|explain|consult|advis|discuss|confer` → automation **0.0366**, augmentation **0.1254**
+Pattern: `\bpresent|communicat|explain|consult|advis|discuss|confer` → automation **0.0791**, augmentation **0.1675**
 
 Reviewer note: [AI 规则初审 2026-10-30] present 加词边界，避免匹配 represent（律师代表客户是核心法律工作）；[AI 任务初审 2026-10-30] 删除只是字面命中的任务：画草图、食物摆盘（presentation）、持续学习/参会、法律分析（advisability）、使用教具
 
@@ -240,6 +248,61 @@ Reviewer note: [AI 规则初审 2026-10-30] present 加词边界，避免匹配 
 |---|---|---|---|
 | Prepare or present public reports on topics such as bid proposals, deeds, environmental impact statements, or property and right-of-way descriptions. | 0.0 | 0.0 | 0.0 |
 
+**accountant** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans. | 0.0 | 0.0 | 0.0 |
+
+**software-engineer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Consult with customers or other departments on project status, proposals, or technical issues, such as software system design or maintenance. | 0.6464 | 0.1678 | 0.4786 |
+| Confer with data processing or project managers to obtain information on limitations or capabilities for data processing projects. | 0.0 | 0.0 | 0.0 |
+
+**electrical-engineer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Confer with engineers, customers, or others to discuss existing or potential engineering projects or products. | 0.0 | 0.0 | 0.0 |
+| Confer with engineers, customers, vendors, or others to discuss existing or potential electronics engineering projects or products. | 0.0 | 0.0 | 0.0 |
+| Represent employer at conferences, meetings, boards, panels, committees, or working groups to present, explain, or defend findings or recommendations, negotiate compromises or agreements, or exchange information. | 0.0 | 0.0 | 0.0 |
+
+**digital-marketer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Measure the effectiveness of marketing, advertising, and communications programs and strategies. | 0.9216 | 0.2888 | 0.6328 |
+| Attend staff conferences to provide management with information and proposals concerning the promotion, distribution, design, and pricing of company products or services. | 0.0 | 0.0 | 0.0 |
+| Confer with legal staff to resolve problems, such as copyright infringement or royalty sharing with outside producers or distributors. | 0.0 | 0.0 | 0.0 |
+| Consult with buying personnel to gain advice regarding the types of products or services expected to be in demand. | 0.0 | 0.0 | 0.0 |
+| Consult with buying personnel to gain advice regarding environmentally sound or sustainable products. | 0.0 | 0.0 | 0.0 |
+| Advise business or other groups on local, national, or international factors affecting the buying or selling of products or services. | 0.0 | 0.0 | 0.0 |
+
+**hr-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Interpret and explain human resources policies, procedures, laws, standards, or regulations. | 0.7865 | 0.1459 | 0.6406 |
+| Confer with management to develop or implement personnel policies or procedures. | 0.0 | 0.0 | 0.0 |
+| Advise management on organizing, preparing, or implementing recruiting or retention programs. | 0.0 | 0.0 | 0.0 |
+| Evaluate selection or testing techniques by conducting research or follow-up activities and conferring with management or supervisory personnel. | 0.0 | 0.0 | 0.0 |
+
+**sales-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders. ※ | 0.9923 | 0.4926 | 0.4997 |
+| Consult with clients after sales or contract signings to resolve problems and to provide ongoing support. ※ | 1.0 | 0.4965 | 0.5035 |
+| Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences. ※ | 0.9852 | 0.4891 | 0.4961 |
+
+**customer-service** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Confer with customers by telephone or in person to provide information about products or services, take or enter orders, cancel accounts, or obtain details of complaints. | 0.991 | 0.3604 | 0.6306 |
+
 ## html-css　✅ reviewed
 
 Pattern: `\bweb|html|page` → automation **0.3846**, augmentation **0.3089**
@@ -261,7 +324,7 @@ Reviewer note: [AI 任务初审 2026-10-30] 只保留建站、写页面代码、
 
 ## javascript　✅ reviewed
 
-Pattern: `\bprogramm|\bcode\b|\bcoding\b|web application|\bscript` → automation **0.4318**, augmentation **0.4956**
+Pattern: `\bprogramm|\bcode\b|\bcoding\b|web application|\bscript` → automation **0.2159**, augmentation **0.2478**
 
 Reviewer note: [AI 规则初审 2026-10-30] 同 python：修 script / program 误匹配；[AI 任务初审 2026-10-30] 只保留写代码、评估代码、用脚本语言建站
 
@@ -272,6 +335,13 @@ Reviewer note: [AI 规则初审 2026-10-30] 同 python：修 script / program �
 | Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media. | 0.9054 | 0.5003 | 0.4051 |
 | Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems. | 0.9824 | 0.3566 | 0.6258 |
 | Write supporting code for Web applications or Web sites. | 0.8944 | 0.4384 | 0.456 |
+
+**software-engineer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel. | 0.0 | 0.0 | 0.0 |
+| Supervise and assign work to programmers, designers, technologists, technicians, or other engineering or scientific personnel. | 0.0 | 0.0 | 0.0 |
 
 ## react　✅ reviewed
 
@@ -319,7 +389,7 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除商业策略、原型任务。
 
 ## backend-language　✅ reviewed
 
-Pattern: `\bprogramm|\bcode\b|\bcoding\b|software|\bapplications?\b` → automation **0.3951**, augmentation **0.4803**
+Pattern: `\bprogramm|\bcode\b|\bcoding\b|software|\bapplications?\b` → automation **0.4966**, augmentation **0.4206**
 
 Reviewer note: [AI 任务初审 2026-10-30] 规则与 python 统一（program→programm）；删除督导、沟通、安装、选型、测试任务，只保留写/改代码与数据模型
 
@@ -331,6 +401,12 @@ Reviewer note: [AI 任务初审 2026-10-30] 规则与 python 统一（program→
 | Develop data models for applications, metadata tables, views or related database structures. | 0.8337 | 0.2987 | 0.535 |
 | Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure. | 0.8235 | 0.3496 | 0.4739 |
 | Develop or maintain archived procedures, procedural codes, or queries for applications. | 0.8849 | 0.3337 | 0.5512 |
+
+**software-engineer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance. | 0.9592 | 0.5982 | 0.361 |
 
 ## databases　✅ reviewed
 
@@ -369,7 +445,7 @@ Reviewer note: [AI 规则初审 2026-10-30] 排除 user interface（那是前端
 
 ## cloud-deploy　✅ reviewed
 
-Pattern: `deploy|install|configur|server|cloud|network` → automation **0.3216**, augmentation **0.4612**
+Pattern: `deploy|install|configur|server|cloud|network` → automation **0.2584**, augmentation **0.407**
 
 Reviewer note: [AI 任务初审 2026-10-30] 删除机房供电、温湿度设备采购（硬件设施）和写代码任务
 
@@ -386,6 +462,13 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除机房供电、温湿度设备
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems. | 0.9722 | 0.4617 | 0.5105 |
+
+**software-engineer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system. | 0.8614 | 0.2642 | 0.5972 |
+| Coordinate installation of software system. | 0.0 | 0.0 | 0.0 |
 
 ## testing　✅ reviewed
 
@@ -424,7 +507,7 @@ Reviewer note: [AI 规则初审 2026-10-30] 去掉 need：会匹配所有 “as 
 
 ## prototyping　✅ reviewed
 
-Pattern: `prototyp|mock-?up|sketch|layout|wireframe|storyboard` → automation **0.0659**, augmentation **0.1467**
+Pattern: `prototyp|mock-?up|sketch|layout|wireframe|storyboard` → automation **0.033**, augmentation **0.0733**
 
 Reviewer note: [AI 规则初审 2026-10-30] 去掉 model（ML/统计模型），加 wireframe/storyboard；上轮未通过，需人工确认；[AI 任务初审 2026-10-30] 删除印刷排版流程和客户沟通；保留设计概念、草图、版式、网页原型。上一轮你没通过这个技能，请再确认
 
@@ -436,6 +519,13 @@ Reviewer note: [AI 规则初审 2026-10-30] 去掉 model（ML/统计模型），
 | Develop graphics and layouts for product illustrations, company logos, and Web sites. | 0.8504 | 0.2636 | 0.5868 |
 | Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes. | 0.0 | 0.0 | 0.0 |
 | Create web models or prototypes that include physical, interface, logical, or data models. | 0.0 | 0.0 | 0.0 |
+
+**electrical-engineer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Plan layout of electric power generating plants or distribution lines or stations. | 0.0 | 0.0 | 0.0 |
+| Prepare engineering sketches or specifications for construction, relocation, or installation of equipment, facilities, products, or systems. | 0.0 | 0.0 | 0.0 |
 
 ## figma　✅ reviewed
 
@@ -455,7 +545,7 @@ Reviewer note: [AI 规则初审 2026-10-30] 去掉 design：几乎匹配设计�
 
 ## visual-design　✅ reviewed
 
-Pattern: `visual|colou?r|graphic|illustrat|layout|typograph` → automation **0.1005**, augmentation **0.1399**
+Pattern: `visual|colou?r|graphic|illustrat|layout|typograph` → automation **0.2317**, augmentation **0.3469**
 
 Reviewer note: [AI 任务初审 2026-10-30] 删除印刷制作流程和客户沟通，保留视觉设计本身
 
@@ -470,6 +560,13 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除印刷制作流程和客户沟
 | Draw and print charts, graphs, illustrations, and other artwork, using computer. | 0.0 | 0.0 | 0.0 |
 | Study illustrations and photographs to plan presentation of materials, products, or services. | 0.0 | 0.0 | 0.0 |
 | Produce still and animated graphics for on-air and taped portions of television news broadcasts, using electronic video equipment. | 0.0 | 0.0 | 0.0 |
+
+**digital-marketer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Prepare reports of findings, illustrating data graphically and translating complex findings into written text. | 0.8788 | 0.2983 | 0.5805 |
+| Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand. | 0.9548 | 0.4274 | 0.5274 |
 
 ## usability-testing　☐ to review
 
@@ -561,7 +658,7 @@ Reviewer note: [AI 任务初审 2026-10-30] 只有 1 条（审查项目计划、
 
 ## market-analysis　✅ reviewed
 
-Pattern: `market|competit|trend|customer|vendor|industry|new technolog|advances in|cost.?benefit|feasibility` → automation **0.0**, augmentation **0.0**
+Pattern: `market|competit|trend|customer|vendor|industry|new technolog|advances in|cost.?benefit|feasibility` → automation **0.1397**, augmentation **0.2416**
 
 Reviewer note: [AI 规则初审 2026-10-30] 原规则 0 匹配；11-3021（IT 经理）任务里没有 market 字眼，放宽到供应商评估、行业/新技术跟踪、成本效益和可行性分析；[AI 任务初审 2026-10-30] 删除与 user-research/沟通重复的任务；保留跟踪技术进展、评估项目可行性。产品经理映射到 IT 经理本身较弱
 
@@ -572,9 +669,45 @@ Reviewer note: [AI 规则初审 2026-10-30] 原规则 0 匹配；11-3021（IT �
 | Stay abreast of advances in technology. | 0.0 | 0.0 | 0.0 |
 | Evaluate data processing proposals to assess project feasibility and requirements. | 0.0 | 0.0 | 0.0 |
 
+**digital-marketer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Seek and provide information to help companies determine their position in the marketplace. | 0.9792 | 0.3394 | 0.6398 |
+| Gather data on competitors and analyze their prices, sales, and method of marketing and distribution. | 0.9399 | 0.3807 | 0.5592 |
+| Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand. | 0.9548 | 0.4274 | 0.5274 |
+| Monitor industry statistics and follow trends in trade literature. | 0.0 | 0.0 | 0.0 |
+| Measure and assess customer and employee satisfaction. | 0.0 | 0.0 | 0.0 |
+| Measure the effectiveness of marketing, advertising, and communications programs and strategies. | 0.9216 | 0.2888 | 0.6328 |
+| Forecast and track marketing and sales trends, analyzing collected data. | 0.9181 | 0.5374 | 0.3807 |
+| Conduct research on consumer opinions and marketing strategies, collaborating with marketing professionals, statisticians, pollsters, and other professionals. | 0.9697 | 0.3794 | 0.5903 |
+| Identify, develop, or evaluate marketing strategy, based on knowledge of establishment objectives, market characteristics, and cost and markup factors. | 0.7316 | 0.0 | 0.7316 |
+| Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers. | 0.8136 | 0.2732 | 0.5404 |
+| Develop pricing strategies, balancing firm objectives and customer satisfaction. | 0.6326 | 0.0 | 0.6326 |
+| Direct the hiring, training, or performance evaluations of marketing or sales staff and oversee their daily activities. | 0.0 | 0.0 | 0.0 |
+| Use sales forecasting or strategic planning to ensure the sale and profitability of products, lines, or services, analyzing business developments and monitoring market trends. ※ | 0.803 | 0.2342 | 0.5688 |
+| Negotiate contracts with vendors or distributors to manage product distribution, establishing distribution networks or developing distribution strategies. | 0.0 | 0.0 | 0.0 |
+| Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services. | 0.0 | 0.0 | 0.0 |
+| Conduct economic or commercial surveys to identify potential markets for products or services. ※ | 0.9165 | 0.2673 | 0.6492 |
+| Develop business cases for environmental marketing strategies. | 0.0 | 0.0 | 0.0 |
+| Integrate environmental information into product or company marketing strategies, policies, or activities. | 0.0 | 0.0 | 0.0 |
+
+**sales-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders. ※ | 0.9923 | 0.4926 | 0.4997 |
+| Recommend products to customers, based on customers' needs and interests. ※ | 1.0 | 0.4965 | 0.5035 |
+| Answer customers' questions about products, prices, availability, product uses, and credit terms. | 0.9818 | 0.2575 | 0.7243 |
+| Provide customers with product samples and catalogs. | 0.0 | 0.0 | 0.0 |
+| Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences. ※ | 0.9852 | 0.4891 | 0.4961 |
+| Prepare drawings, estimates, and bids that meet specific customer needs. | 0.0 | 0.0 | 0.0 |
+| Monitor market conditions, product innovations, and competitors' products, prices, and sales. | 0.933 | 0.2273 | 0.7057 |
+| Obtain credit information about prospective customers. | 0.0 | 0.0 | 0.0 |
+
 ## accounting　✅ reviewed
 
-Pattern: `account|financial|ledger|statement` → automation **0.2575**, augmentation **0.3422**
+Pattern: `account|financial|ledger|statement` → automation **0.3087**, augmentation **0.4408**
 
 Reviewer note: [AI 任务初审 2026-10-30] 删除归属审计、内控、沟通、代理出庭的任务，只保留记账、报表、会计系统、财务分析
 
@@ -589,9 +722,18 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除归属审计、内控、沟通
 | Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology. | 0.9107 | 0.4101 | 0.5006 |
 | Analyze business operations, trends, costs, revenues, financial commitments, and obligations to project future revenues and expenses or to provide advice. | 0.8571 | 0.2988 | 0.5583 |
 
+**accountant** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards. ※ | 0.8929 | 0.3567 | 0.5362 |
+| Establish tables of accounts and assign entries to proper accounts. ※ | 0.9373 | 0.3744 | 0.5629 |
+| Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology. | 0.9107 | 0.4101 | 0.5006 |
+| Analyze business operations, trends, costs, revenues, financial commitments, and obligations to project future revenues and expenses or to provide advice. | 0.8571 | 0.2988 | 0.5583 |
+
 ## auditing　✅ reviewed
 
-Pattern: `audit|examin|inspect` → automation **0.0992**, augmentation **0.1029**
+Pattern: `audit|examin|inspect` → automation **0.228**, augmentation **0.3196**
 
 Reviewer note: [AI 任务初审 2026-10-30] 13 条都是审计工作，全部保留
 
@@ -612,6 +754,12 @@ Reviewer note: [AI 任务初审 2026-10-30] 13 条都是审计工作，全部保
 | Audit payroll and personnel records to determine unemployment insurance premiums, workers' compensation coverage, liabilities, and compliance with tax laws. | 0.0 | 0.0 | 0.0 |
 | Review taxpayer accounts, and conduct audits on-site, by correspondence, or by summoning taxpayer to office. | 0.0 | 0.0 | 0.0 |
 | Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards. ※ | 0.8929 | 0.4079 | 0.485 |
+
+**accountant** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards. ※ | 0.8929 | 0.3567 | 0.5362 |
 
 ## internal-control　✅ reviewed
 
@@ -668,6 +816,19 @@ Reviewer note: [AI 规则初审 2026-10-30] mediat 加词边界，避免匹配 i
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Negotiate settlements of civil disputes. | 0.0 | 0.0 | 0.0 |
+
+**quantity-surveyor** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Establish and maintain tendering process, and conduct negotiations. | 0.0 | 0.0 | 0.0 |
+
+**sales-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Negotiate details of contracts and payments. | 0.0 | 0.0 | 0.0 |
+| Negotiate with retail merchants to improve product exposure, such as shelf positioning and advertising. | 0.0 | 0.0 | 0.0 |
 
 ## lesson-planning　✅ reviewed
 
@@ -831,6 +992,20 @@ Reviewer note: [AI 任务初审 2026-10-30] 只匹配到 1 条“分析图纸蓝
 |---|---|---|---|
 | Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data. | 0.0 | 0.0 | 0.0 |
 
+**electrical-engineer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Operate computer-assisted engineering or design software or equipment to perform engineering tasks. | 0.0 | 0.0 | 0.0 |
+| Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements. | 0.0 | 0.0 | 0.0 |
+| Operate computer-assisted engineering or design software or equipment to perform electronics engineering tasks. | 0.0 | 0.0 | 0.0 |
+
+**quantity-surveyor** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates. | 0.0 | 0.0 | 0.0 |
+
 ## project-management　✅ reviewed
 
 Pattern: `project|schedul|budget|coordinat` → automation **0.0**, augmentation **0.0**
@@ -853,5 +1028,312 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除交通/环境研究，保留�
 | Manage and direct the construction, operations, or maintenance activities at project site. | 0.0 | 0.0 | 0.0 |
 | Estimate quantities and cost of materials, equipment, or labor to determine project feasibility. | 0.0 | 0.0 | 0.0 |
 | Identify environmental risks and develop risk management strategies for civil engineering projects. | 0.0 | 0.0 | 0.0 |
+
+**quantity-surveyor** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Prepare estimates used by management for purposes such as planning, organizing, and scheduling work. | 0.0 | 0.0 | 0.0 |
+| Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project. | 0.0 | 0.0 | 0.0 |
+| Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops. | 0.0 | 0.0 | 0.0 |
+
+## accounting-software　☐ to review
+
+Pattern: `(recordkeeping and )?accounting systems|data processing systems|computer technology` → automation **0.2051**, augmentation **0.2503**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**accountant** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology. | 0.9107 | 0.4101 | 0.5006 |
+| Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans. | 0.0 | 0.0 | 0.0 |
+
+## accounts-payable-receivable　☐ to review
+
+Pattern: `invoic\w*|billing|payments?|deposits|entries to proper accounts|accounting records` → automation **0.1701**, augmentation **0.2584**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**accountant** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards. ※ | 0.8929 | 0.3567 | 0.5362 |
+| Establish tables of accounts and assign entries to proper accounts. ※ | 0.9373 | 0.3744 | 0.5629 |
+| Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements. | 0.0 | 0.0 | 0.0 |
+
+**customer-service** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Resolve customers' service or billing complaints by performing activities such as exchanging merchandise, refunding money, or adjusting bills. | 0.9872 | 0.3858 | 0.6014 |
+| Determine charges for services requested, collect deposits or payments, or arrange for billing. | 0.0 | 0.0 | 0.0 |
+| Compare disputed merchandise with original requisitions and information from invoices and prepare invoices for returned goods. | 0.0 | 0.0 | 0.0 |
+| Recommend improvements in products, packaging, shipping, service, or billing methods and procedures to prevent future problems. | 0.0 | 0.0 | 0.0 |
+
+## taxation　☐ to review
+
+Pattern: `\btax(es|ing)?\b` → automation **0.0**, augmentation **0.0**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**accountant** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements. | 0.0 | 0.0 | 0.0 |
+| Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans. | 0.0 | 0.0 | 0.0 |
+| Represent clients before taxing authorities and provide support during litigation involving financial issues. | 0.0 | 0.0 | 0.0 |
+
+## electrical-systems　☐ to review
+
+Pattern: `electrical (systems?|instruments|equipment|components)|power (system|generating|distribution)|distribution lines|electronics? (systems?|components|equipment)` → automation **0.093**, augmentation **0.2523**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**electrical-engineer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements. | 0.0 | 0.0 | 0.0 |
+| Design, implement, maintain, or improve electrical instruments, equipment, facilities, components, products, or systems for commercial, industrial, or domestic purposes. | 0.0 | 0.0 | 0.0 |
+| Conduct field surveys or study maps, graphs, diagrams, or other data to identify and correct power system problems. | 0.8568 | 0.1734 | 0.6834 |
+| Design electrical systems or components that minimize electric energy requirements, such as lighting systems designed to account for natural lighting. | 0.0 | 0.0 | 0.0 |
+| Plan layout of electric power generating plants or distribution lines or stations. | 0.0 | 0.0 | 0.0 |
+| Collect data relating to commercial or residential development, population, or power system interconnection to determine operating efficiency of electrical systems. | 1.0 | 0.3019 | 0.6981 |
+| Integrate electrical systems with renewable energy systems to improve overall efficiency. | 0.0 | 0.0 | 0.0 |
+| Analyze electronics system requirements, capacity, cost, or customer needs to determine project feasibility. | 0.8191 | 0.0 | 0.8191 |
+| Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems. | 0.0 | 0.0 | 0.0 |
+| Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities. | 0.0 | 0.0 | 0.0 |
+| Design electronic components, software, products, or systems for commercial, industrial, medical, military, or scientific applications. | 0.9032 | 0.474 | 0.4292 |
+| Inspect electronic equipment, instruments, products, or systems to ensure conformance to specifications, safety standards, or applicable codes or regulations. | 0.0 | 0.0 | 0.0 |
+| Provide technical support or instruction to staff or customers regarding electronics equipment standards. ※ | 0.9107 | 0.2603 | 0.6504 |
+
+## equipment-maintenance　☐ to review
+
+Pattern: `maintenance|repair` → automation **0.0**, augmentation **0.1421**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**electrical-engineer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Direct or coordinate manufacturing, construction, installation, maintenance, support, documentation, or testing activities to ensure compliance with specifications, codes, or customer requirements. | 0.0 | 0.0 | 0.0 |
+| Assist in developing capital project programs for new equipment or major repairs. | 0.0 | 0.0 | 0.0 |
+| Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems. | 0.0 | 0.0 | 0.0 |
+| Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities. | 0.0 | 0.0 | 0.0 |
+| Develop or perform operational, maintenance, or testing procedures for electronic products, components, equipment, or systems. | 0.0 | 0.0 | 0.0 |
+| Prepare, review, or maintain maintenance schedules, design documentation, or operational reports or charts. | 0.8529 | 0.0 | 0.8529 |
+
+## plc-automation　☐ to review
+
+Pattern: `automat\w+|control systems?|instrumentation` → no matching task → shown as "no source"
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+## social-media-marketing　☐ to review
+
+Pattern: `social media|online communit\w+` → no matching task → shown as "no source"
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+## digital-advertising　☐ to review
+
+Pattern: `advertis\w+` → automation **0.1405**, augmentation **0.2933**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**digital-marketer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Measure the effectiveness of marketing, advertising, and communications programs and strategies. | 0.9216 | 0.2888 | 0.6328 |
+| Develop and implement procedures for identifying advertising needs. | 0.0 | 0.0 | 0.0 |
+| Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers. | 0.8136 | 0.2732 | 0.5404 |
+| Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services. | 0.0 | 0.0 | 0.0 |
+
+## web-analytics　☐ to review
+
+Pattern: `effectiveness of marketing|track\w* marketing|marketing and sales trends|customer demographics` → automation **0.4179**, augmentation **0.5136**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**digital-marketer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand. | 0.9548 | 0.4274 | 0.5274 |
+| Measure the effectiveness of marketing, advertising, and communications programs and strategies. | 0.9216 | 0.2888 | 0.6328 |
+| Forecast and track marketing and sales trends, analyzing collected data. | 0.9181 | 0.5374 | 0.3807 |
+
+## content-writing　☐ to review
+
+Pattern: `written text|writ(e|ing) (copy|content|text)` → automation **0.2983**, augmentation **0.5805**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**digital-marketer** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Prepare reports of findings, illustrating data graphically and translating complex findings into written text. | 0.8788 | 0.2983 | 0.5805 |
+
+## quantity-surveying　☐ to review
+
+Pattern: `blueprints|quantit\w+|expenditure statements` → automation **0.0**, augmentation **0.0**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**quantity-surveyor** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates. | 0.0 | 0.0 | 0.0 |
+| Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project. | 0.0 | 0.0 | 0.0 |
+
+## cost-estimation　☐ to review
+
+Pattern: `cost estimat\w+|estimates|cost (monitoring|reduction|effectiveness)|budget` → automation **0.0**, augmentation **0.0**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**quantity-surveyor** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates. | 0.0 | 0.0 | 0.0 |
+| Prepare estimates for use in selecting vendors or subcontractors. | 0.0 | 0.0 | 0.0 |
+| Prepare estimates used by management for purposes such as planning, organizing, and scheduling work. | 0.0 | 0.0 | 0.0 |
+| Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops. | 0.0 | 0.0 | 0.0 |
+| Set up cost monitoring and reporting systems and procedures. | 0.0 | 0.0 | 0.0 |
+
+## contract-administration　☐ to review
+
+Pattern: `tender\w*|\bbids?\b|subcontractors?|contracts?` → automation **0.0**, augmentation **0.0**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**quantity-surveyor** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Prepare estimates for use in selecting vendors or subcontractors. | 0.0 | 0.0 | 0.0 |
+| Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops. | 0.0 | 0.0 | 0.0 |
+| Prepare and maintain a directory of suppliers, contractors and subcontractors. | 0.0 | 0.0 | 0.0 |
+| Establish and maintain tendering process, and conduct negotiations. | 0.0 | 0.0 | 0.0 |
+
+## employee-relations　☐ to review
+
+Pattern: `employee relations|employee concerns|grievances?|personnel policies|exit interviews|laws, standards` → automation **0.0365**, augmentation **0.1601**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**hr-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Interpret and explain human resources policies, procedures, laws, standards, or regulations. | 0.7865 | 0.1459 | 0.6406 |
+| Address employee relations issues, such as harassment allegations, work complaints, or other employee concerns. | 0.0 | 0.0 | 0.0 |
+| Confer with management to develop or implement personnel policies or procedures. | 0.0 | 0.0 | 0.0 |
+| Conduct exit interviews and ensure that necessary employment termination paperwork is completed. | 0.0 | 0.0 | 0.0 |
+
+## recruitment　☐ to review
+
+Pattern: `recruit\w*|\bhir(e|ing)\b|applicants?|candidates|orientations?` → automation **0.2479**, augmentation **0.1883**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**hr-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Hire employees and process hiring-related paperwork. | 0.0 | 0.0 | 0.0 |
+| Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities. | 0.0 | 0.0 | 0.0 |
+| Schedule or conduct new employee orientations. | 0.0 | 0.0 | 0.0 |
+| Select qualified job applicants or refer them to managers, making hiring recommendations when appropriate. ※ | 0.9296 | 0.4758 | 0.4538 |
+| Review employment applications and job orders to match applicants with job requirements. | 0.9369 | 0.4776 | 0.4593 |
+| Conduct reference or background checks on job applicants. | 0.0 | 0.0 | 0.0 |
+| Perform searches for qualified job candidates, using sources such as computer databases, networking, Internet recruiting resources, media advertisements, job fairs, recruiting firms, or employee referrals. | 0.9758 | 0.4337 | 0.5421 |
+| Contact job applicants to inform them of the status of their applications. | 0.91 | 0.5328 | 0.3772 |
+| Interview job applicants to obtain information on work history, training, education, or job skills. | 0.978 | 0.978 | 0.0 |
+| Develop or implement recruiting strategies to meet current or anticipated staffing needs. | 0.0 | 0.0 | 0.0 |
+| Advise management on organizing, preparing, or implementing recruiting or retention programs. | 0.0 | 0.0 | 0.0 |
+| Evaluate recruitment or selection criteria to ensure conformance to professional, statistical, or testing standards, recommending revisions, as needed. | 0.9414 | 0.3254 | 0.616 |
+| Review and evaluate applicant qualifications or eligibility for specified licensing, according to established guidelines and designated licensing codes. | 0.0 | 0.0 | 0.0 |
+
+## payroll　☐ to review
+
+Pattern: `payroll|compensation|employee (health care )?benefits` → automation **0.0**, augmentation **0.0**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**hr-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities. | 0.0 | 0.0 | 0.0 |
+
+## sales-prospecting　☐ to review
+
+Pattern: `prospective customers|solicit\w*|following leads|sales (budgets|records)` → automation **0.3656**, augmentation **0.3709**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**sales-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders. ※ | 0.9923 | 0.4926 | 0.4997 |
+| Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences. ※ | 0.9852 | 0.4891 | 0.4961 |
+| Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports. ※ | 0.9687 | 0.4809 | 0.4878 |
+| Obtain credit information about prospective customers. | 0.0 | 0.0 | 0.0 |
+
+## customer-support　☐ to review
+
+Pattern: `customers?\W? (questions|problems|service|billing|complaints|inquiries|grievances)|resolve customers|respond to inquiries` → automation **0.2576**, augmentation **0.6057**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**sales-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Answer customers' questions about products, prices, availability, product uses, and credit terms. | 0.9818 | 0.2575 | 0.7243 |
+
+**customer-service** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Check to ensure that appropriate changes were made to resolve customers' problems. | 0.0 | 0.0 | 0.0 |
+| Resolve customers' service or billing complaints by performing activities such as exchanging merchandise, refunding money, or adjusting bills. | 0.9872 | 0.3858 | 0.6014 |
+| Refer unresolved customer grievances to designated departments for further investigation. ※ | 1.0 | 0.3238 | 0.6762 |
+| Contact customers to respond to inquiries or to notify them of claim investigation results or any planned adjustments. ※ | 0.9913 | 0.321 | 0.6703 |
+
+## crm-systems　☐ to review
+
+Pattern: `records of customer|customer interactions|sales records` → automation **0.4015**, augmentation **0.5804**
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+
+**sales-executive** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports. ※ | 0.9687 | 0.4809 | 0.4878 |
+
+**customer-service** (career to review: not counted yet)
+
+| O*NET task | Penetration | Automation | Augmentation |
+|---|---|---|---|
+| Keep records of customer interactions or transactions, recording details of inquiries, complaints, or comments, as well as actions taken. ※ | 0.9951 | 0.3222 | 0.6729 |
+
+## workplace-languages　☐ to review
+
+Pattern: `foreign languages?|translat\w* (documents|from|into|between) \w*languages?` → no matching task → shown as "no source"
+
+Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
 
 ※ The task has a penetration but no interaction split; its automation and augmentation shares are the mean of the career's other tasks.

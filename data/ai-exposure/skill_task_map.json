@@ -199,6 +199,152 @@
         "project-management",
         "communication"
       ]
+    },
+    "accountant": {
+      "onet": [
+        "13-2011.01"
+      ],
+      "soc": "13-2011",
+      "skills": [
+        "accounting",
+        "accounts-payable-receivable",
+        "taxation",
+        "accounting-software",
+        "communication",
+        "auditing",
+        "excel",
+        "workplace-languages"
+      ],
+      "reviewed": false,
+      "note": "Added 2026-10-30 from the JobStreet 2025 and LinkedIn data; its tasks count only once reviewed"
+    },
+    "software-engineer": {
+      "onet": [
+        "15-1132.00",
+        "15-1133.00"
+      ],
+      "soc": "15-1252",
+      "skills": [
+        "backend-language",
+        "communication",
+        "sql",
+        "databases",
+        "javascript",
+        "html-css",
+        "cloud-deploy",
+        "react"
+      ],
+      "reviewed": false,
+      "note": "Added 2026-10-30 from the JobStreet 2025 and LinkedIn data; its tasks count only once reviewed"
+    },
+    "electrical-engineer": {
+      "onet": [
+        "17-2071.00",
+        "17-2072.00"
+      ],
+      "soc": "17-2071",
+      "skills": [
+        "communication",
+        "electrical-systems",
+        "equipment-maintenance",
+        "cad",
+        "plc-automation",
+        "workplace-languages",
+        "contract-administration",
+        "prototyping"
+      ],
+      "reviewed": false,
+      "note": "Added 2026-10-30 from the JobStreet 2025 and LinkedIn data; its tasks count only once reviewed"
+    },
+    "digital-marketer": {
+      "onet": [
+        "13-1161.00",
+        "11-2021.00"
+      ],
+      "soc": "13-1161",
+      "skills": [
+        "social-media-marketing",
+        "communication",
+        "web-analytics",
+        "digital-advertising",
+        "content-writing",
+        "workplace-languages",
+        "visual-design",
+        "market-analysis"
+      ],
+      "reviewed": false,
+      "note": "Added 2026-10-30 from the JobStreet 2025 and LinkedIn data; its tasks count only once reviewed"
+    },
+    "quantity-surveyor": {
+      "onet": [
+        "13-1051.00"
+      ],
+      "soc": "13-1051",
+      "skills": [
+        "quantity-surveying",
+        "contract-administration",
+        "cost-estimation",
+        "communication",
+        "negotiation",
+        "cad",
+        "workplace-languages",
+        "project-management"
+      ],
+      "reviewed": false,
+      "note": "Added 2026-10-30 from the JobStreet 2025 and LinkedIn data; its tasks count only once reviewed"
+    },
+    "hr-executive": {
+      "onet": [
+        "13-1071.00"
+      ],
+      "soc": "13-1071",
+      "skills": [
+        "recruitment",
+        "communication",
+        "employee-relations",
+        "payroll",
+        "workplace-languages",
+        "excel",
+        "taxation",
+        "accounting"
+      ],
+      "reviewed": false,
+      "note": "Added 2026-10-30 from the JobStreet 2025 and LinkedIn data; its tasks count only once reviewed"
+    },
+    "sales-executive": {
+      "onet": [
+        "41-4012.00"
+      ],
+      "soc": "41-4012",
+      "skills": [
+        "sales-prospecting",
+        "communication",
+        "customer-support",
+        "negotiation",
+        "workplace-languages",
+        "market-analysis",
+        "crm-systems",
+        "excel"
+      ],
+      "reviewed": false,
+      "note": "Added 2026-10-30 from the JobStreet 2025 and LinkedIn data; its tasks count only once reviewed"
+    },
+    "customer-service": {
+      "onet": [
+        "43-4051.00"
+      ],
+      "soc": "43-4051",
+      "skills": [
+        "customer-support",
+        "communication",
+        "workplace-languages",
+        "excel",
+        "accounts-payable-receivable",
+        "crm-systems",
+        "social-media-marketing"
+      ],
+      "reviewed": false,
+      "note": "Added 2026-10-30 from the JobStreet 2025 and LinkedIn data; its tasks count only once reviewed"
     }
   },
   "skills": {
@@ -620,6 +766,106 @@
         "Conduct studies of traffic patterns or environmental conditions to identify engineering problems and assess potential project impact."
       ],
       "note": "[AI 任务初审 2026-10-30] 删除交通/环境研究，保留项目现场管理、排期、预算、协调"
+    },
+    "accounting-software": {
+      "pattern": "(recordkeeping and )?accounting systems|data processing systems|computer technology",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "accounts-payable-receivable": {
+      "pattern": "invoic\\w*|billing|payments?|deposits|entries to proper accounts|accounting records",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "taxation": {
+      "pattern": "\\btax(es|ing)?\\b",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "electrical-systems": {
+      "pattern": "electrical (systems?|instruments|equipment|components)|power (system|generating|distribution)|distribution lines|electronics? (systems?|components|equipment)",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "equipment-maintenance": {
+      "pattern": "maintenance|repair",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "plc-automation": {
+      "pattern": "automat\\w+|control systems?|instrumentation",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "social-media-marketing": {
+      "pattern": "social media|online communit\\w+",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "digital-advertising": {
+      "pattern": "advertis\\w+",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "web-analytics": {
+      "pattern": "effectiveness of marketing|track\\w* marketing|marketing and sales trends|customer demographics",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "content-writing": {
+      "pattern": "written text|writ(e|ing) (copy|content|text)",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "quantity-surveying": {
+      "pattern": "blueprints|quantit\\w+|expenditure statements",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "cost-estimation": {
+      "pattern": "cost estimat\\w+|estimates|cost (monitoring|reduction|effectiveness)|budget",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "contract-administration": {
+      "pattern": "tender\\w*|\\bbids?\\b|subcontractors?|contracts?",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "employee-relations": {
+      "pattern": "employee relations|employee concerns|grievances?|personnel policies|exit interviews|laws, standards",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "recruitment": {
+      "pattern": "recruit\\w*|\\bhir(e|ing)\\b|applicants?|candidates|orientations?",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "payroll": {
+      "pattern": "payroll|compensation|employee (health care )?benefits",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "sales-prospecting": {
+      "pattern": "prospective customers|solicit\\w*|following leads|sales (budgets|records)",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "customer-support": {
+      "pattern": "customers?\\W? (questions|problems|service|billing|complaints|inquiries|grievances)|resolve customers|respond to inquiries",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "crm-systems": {
+      "pattern": "records of customer|customer interactions|sales records",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
+    },
+    "workplace-languages": {
+      "pattern": "foreign languages?|translat\\w* (documents|from|into|between) \\w*languages?",
+      "reviewed": false,
+      "note": "Added 2026-10-30 (prompt 01c); no O*NET task matching means no source"
     }
   }
 }

@@ -1,0 +1,51 @@
+{
+  "promptVersion": "masco-4-strata-v1",
+  "generatedAt": "2026-10-30T13:56:09.331Z",
+  "coverage": {
+    "jobstreet-2024": {
+      "postings": 59306,
+      "methods": {
+        "rule": 39247,
+        "ai": 18869,
+        "unknown": 1190
+      },
+      "groups": {
+        "managers": 9156,
+        "professionals": 22888,
+        "technicians_and_associate_professionals": 17246,
+        "others": 8826,
+        "unknown": 1190
+      }
+    },
+    "jobstreet-2025": {
+      "postings": 9566,
+      "methods": {
+        "rule": 6379,
+        "ai": 3018,
+        "unknown": 169
+      },
+      "groups": {
+        "managers": 1603,
+        "professionals": 3521,
+        "technicians_and_associate_professionals": 2734,
+        "others": 1539,
+        "unknown": 169
+      }
+    },
+    "window": {
+      "postings": 370,
+      "methods": {
+        "rule": 289,
+        "ai": 80,
+        "unknown": 1
+      },
+      "groups": {
+        "managers": 19,
+        "professionals": 257,
+        "technicians_and_associate_professionals": 68,
+        "others": 25,
+        "unknown": 1
+      }
+    }
+  }
+}

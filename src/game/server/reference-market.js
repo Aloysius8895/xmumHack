@@ -2,56 +2,69 @@ import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 /**
- * Last year's reference columns of the market heatmap: JobStreet Malaysia postings listed 2025-03-03 to 2025-05-08
- * (Hugging Face seemarn/jobstreet), counted per career by the crawler's own rules (src/data/scripts/jobstreet-reference.mjs).
- * Another platform and another period: shown beside this year's months with their own colour scale, never joined to
- * them, never in trends, momentum or scenarios. REFERENCE_MARKET_FILE=off hides it.
+ * Past months of the market heatmap from JobStreet Malaysia datasets on Hugging Face, counted per career by the
+ * crawler's own rules (src/data/scripts/jobstreet-reference.mjs), inside each dataset's collection window.
+ * Another platform and other collectors than this year's months: shown as shares of each month's sample with their
+ * own colour scale, never joined to this year's counts. REFERENCE_MARKET_DIR=off hides them.
  */
-const DEFAULT_FILE = fileURLToPath(new URL('../../../data/reference/jobstreet-2025/reference.json', import.meta.url))
-const SHA256 = 'b59db2797edf7567b34aa9cbd64dfc5818d2c870811cbf071f5710aaceb17263'
+const DEFAULT_DIRECTORY = fileURLToPath(new URL('../../../data/reference/', import.meta.url))
+// The pinned file of each dataset: a reference built from anything else is refused
+export const DATASETS = {
+    'jobstreet-2024': '4bdd026944f1c2527402ca5ee7b83d63b3a82e6acaa4c78898a9ee90430b45c7',
+    'jobstreet-2025': 'b59db2797edf7567b34aa9cbd64dfc5818d2c870811cbf071f5710aaceb17263',
+}
 const count = (value) => Number.isSafeInteger(value) && value >= 0
 const MONTH = /^\d{4}-(0[1-9]|1[0-2])$/
-let cache = { signature: null, value: null }
+const DAY = /^\d{4}-\d{2}-\d{2}$/
+const cache = new Map()
 
 /**
- * { id, platform, url, from, to, postings, months: [ 'YYYY-MM' ], partialMonth, careers: { careerId: { postings, share, byMonth } } },
- * throws on a malformed file. partialMonth: the last month, when the listings stop before its end.
+ * { id, platform, url, licence, author, from, to, postings, months: [ 'YYYY-MM' ], monthTotals: { month: n },
+ *   partialMonths, careers: { careerId: { postings, share, byMonth } } }, throws on a malformed file.
+ * partialMonths: months the collection window cuts (their shares hold, their counts cover part of the month).
  */
-export function buildReference(data)
+export function buildReference(data, id)
 {
     const { source, period, postings, careers, months: monthCounts } = data ?? {}
-    if(source?.sha256 !== SHA256 || !/^https:\/\/huggingface\.co\/datasets\//.test(source.url ?? '') || !count(postings) || !postings
-        || !/^\d{4}-\d{2}-\d{2}$/.test(period?.from ?? '') || !/^\d{4}-\d{2}-\d{2}$/.test(period?.to ?? '') || typeof careers !== 'object')
+    if(!DATASETS[id] || source?.sha256 !== DATASETS[id] || !/^https:\/\/huggingface\.co\/datasets\//.test(source.url ?? '') || !count(postings) || !postings
+        || !DAY.test(period?.from ?? '') || !DAY.test(period?.to ?? '') || typeof careers !== 'object')
         throw new Error('reference-invalid')
+    const monthTotals = Object.fromEntries(Object.entries(monthCounts ?? {}).filter(([ month, n ]) => MONTH.test(month) && count(n) && n > 0))
+    const months = Object.keys(monthTotals).sort()
     const rows = {}
-    for(const [ id, row ] of Object.entries(careers))
+    for(const [ careerId, row ] of Object.entries(careers))
     {
         if(!count(row.postings))
             throw new Error('reference-invalid-career')
-        const byMonth = Object.fromEntries(Object.entries(row.byMonth ?? {}).filter(([ month, n ]) => MONTH.test(month) && count(n)))
-        rows[id] = { postings: row.postings, share: Math.round(row.postings / postings * 1000) / 10, byMonth }
+        const byMonth = Object.fromEntries(Object.entries(row.byMonth ?? {}).filter(([ month, n ]) => monthTotals[month] && count(n)))
+        rows[careerId] = { postings: row.postings, share: Math.round(row.postings / postings * 1000) / 10, byMonth }
     }
-    const months = Object.keys(monthCounts ?? {}).filter((month) => MONTH.test(month)).sort()
-    const last = months.at(- 1)
-    const lastDay = last ? new Date(Date.UTC(Number(last.slice(0, 4)), Number(last.slice(5)), 0)).getUTCDate() : null
-    const partialMonth = last && period.to.slice(0, 7) === last && Number(period.to.slice(8)) < lastDay ? last : null
-    return { id: 'jobstreet-2025', platform: source.platform, url: source.url, from: period.from, to: period.to, postings, months, partialMonth, careers: rows }
+    return { id, platform: source.platform, url: source.url, licence: source.licence ?? null, author: source.author ?? null,
+        from: period.from, to: period.to, postings, months, monthTotals,
+        partialMonths: (period.partialMonths ?? []).filter((month) => monthTotals[month]), careers: rows }
 }
 
-export function referenceMarket(file = process.env.REFERENCE_MARKET_FILE ?? DEFAULT_FILE)
+function load(id, file)
 {
-    if(file === 'off')
-        return null
     try
     {
         const stat = fs.statSync(file)
-        const signature = `${file}:${stat.mtimeMs}:${stat.size}`
-        if(signature !== cache.signature)
-            cache = { signature, value: buildReference(JSON.parse(fs.readFileSync(file, 'utf8'))) }
-        return cache.value
+        const signature = `${stat.mtimeMs}:${stat.size}`
+        if(cache.get(file)?.signature !== signature)
+            cache.set(file, { signature, value: buildReference(JSON.parse(fs.readFileSync(file, 'utf8')), id) })
+        return cache.get(file).value
     }
     catch
     {
         return null
     }
+}
+
+/** The valid datasets, oldest first */
+export function referenceMarkets(directory = process.env.REFERENCE_MARKET_DIR ?? DEFAULT_DIRECTORY)
+{
+    if(directory === 'off')
+        return []
+    return Object.keys(DATASETS).map((id) => load(id, `${directory}/${id}/reference.json`)).filter(Boolean)
+        .sort((a, b) => a.from.localeCompare(b.from))
 }
