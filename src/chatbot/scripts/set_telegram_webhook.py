@@ -12,6 +12,7 @@ Usage:
 import os
 import re
 import sys
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -35,6 +36,9 @@ def _call(method: str, send) -> dict:
         description = body.get("description", "") if isinstance(body, dict) else ""
         print(f"{method} failed: HTTP {r.status_code} {description}".rstrip())
         raise SystemExit(1)
+    if not isinstance(body, dict) or body.get('ok') is not True:
+        print(f'{method} failed: Telegram did not confirm success')
+        raise SystemExit(1)
     return body
 
 
@@ -52,6 +56,12 @@ def main() -> None:
         print("TELEGRAM_BOT_TOKEN looks incomplete (expected <bot id>:<secret>)")
         raise SystemExit(1)
 
+    target = urlsplit(sys.argv[1])
+    if (target.scheme != 'https' or not target.hostname or target.username or target.password
+            or target.query or target.fragment or target.hostname in {'localhost', '127.0.0.1', '::1'}):
+        print('Webhook base URL must be a public HTTPS address without credentials, query or fragment.')
+        raise SystemExit(1)
+
     api = f"https://api.telegram.org/bot{token}"
     webhook_url = f"{sys.argv[1].rstrip('/')}/telegram/webhook"
 
@@ -59,11 +69,16 @@ def main() -> None:
         "url": webhook_url,
         "secret_token": secret,
         "allowed_updates": ["message", "callback_query"],
+        "drop_pending_updates": False,
     }, timeout=TIMEOUT))
     print("setWebhook:", body)
 
     body = _call("getWebhookInfo", lambda: httpx.get(f"{api}/getWebhookInfo", timeout=TIMEOUT))
-    print("getWebhookInfo:", body)
+    info = body.get('result', {})
+    if info.get('url') != webhook_url:
+        print('getWebhookInfo failed: registered URL does not match requested service')
+        raise SystemExit(1)
+    print('getWebhookInfo:', {key: info[key] for key in ('url', 'pending_update_count', 'last_error_date', 'last_error_message') if key in info})
 
 
 if __name__ == "__main__":

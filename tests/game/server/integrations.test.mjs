@@ -30,6 +30,24 @@ test('integrations need the bearer token', async () =>
     assert.equal((await call('/api/integrations/market', {}, 'wrong')).status, 401)
 })
 
+test('read-only integration health verifies authentication without changing saves', async () =>
+{
+    const before = store.load()
+    store.save(before)
+    async function health(token)
+    {
+        const request = Readable.from([])
+        Object.assign(request, { method: 'GET', url: '/api/integrations/health', headers: { authorization: `Bearer ${token}` } })
+        let body = ''
+        const response = { statusCode: 0, setHeader() {}, end(text) { body = text } }
+        await handle(request, response)
+        return { status: response.statusCode, body: JSON.parse(body) }
+    }
+    assert.equal((await health('wrong')).status, 401)
+    assert.deepEqual(await health('test-token'), { status: 200, body: { ok: true, storage: 'file' } })
+    assert.deepEqual(store.load(), before)
+})
+
 test('market snapshots update the careers trend, change computed from postings', async () =>
 {
     let result = await call('/api/integrations/market', { period: '2026-10', source: 'linkedin+indeed', careers: { 'data-analyst': { postings: 1000 }, 'not-a-career': { postings: 5 } } })

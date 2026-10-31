@@ -13,6 +13,7 @@ import { handle } from './app.js'
 import { status } from './ai.js'
 import { loadWindow } from './market-window.js'
 import { backend } from './persistence.js'
+import { validateStorage } from './storage-config.js'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const DIST = path.resolve(here, '..', 'dist')
@@ -46,11 +47,12 @@ function serveStatic(request, response)
 }
 
 // The accumulated market window is read synchronously by the views: load it before the first request
+validateStorage(backend())
 await loadWindow().catch((error) => console.error('[market-window] not loaded:', error?.code ?? error?.message))
 
 http.createServer(async (request, response) =>
 {
-    if(request.method === 'GET' && request.url === '/healthz')
+    if(request.method === 'GET' && ['/health', '/healthz'].includes(new URL(request.url, 'http://localhost').pathname))
     {
         response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' })
         response.end(JSON.stringify({ ok: true }))

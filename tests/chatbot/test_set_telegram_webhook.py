@@ -70,3 +70,32 @@ def test_incomplete_token_is_rejected_before_any_request(script, capsys, monkeyp
     assert code == 1
     assert "TELEGRAM_BOT_TOKEN looks incomplete (expected <bot id>:<secret>)" in output
     assert "8635265161" not in output
+
+
+def test_registration_preserves_pending_messages_and_verifies_fixed_url(script, capsys, monkeypatch):
+    sent = []
+    def post(url, json, timeout):
+        sent.append(json)
+        return httpx.Response(200, json={'ok': True, 'result': True})
+    monkeypatch.setattr(httpx, 'post', post)
+    monkeypatch.setattr(httpx, 'get', lambda *a, **kw: httpx.Response(200, json={
+        'ok': True, 'result': {'url': 'https://example.test/telegram/webhook', 'pending_update_count': 4}}))
+    script.main()
+    assert sent[0]['drop_pending_updates'] is False
+    assert sent[0]['secret_token'] == SECRET
+    assert sent[0]['allowed_updates'] == ['message', 'callback_query']
+    output = capsys.readouterr().out
+    assert TOKEN not in output and SECRET not in output
+    assert 'pending_update_count' in output
+
+
+@pytest.mark.parametrize('base', ['http://localhost:8000', 'https://user:pass@example.test', 'https://example.test?secret=value'])
+def test_unsafe_webhook_url_rejected(script, capsys, monkeypatch, base):
+    monkeypatch.setattr(sys, 'argv', ['set_telegram_webhook.py', base])
+    monkeypatch.setattr(httpx, 'post', lambda *a, **kw: pytest.fail('must reject before API call'))
+    assert _run(script, capsys)[0] == 1
+
+
+def test_telegram_ok_false_rejected_even_on_http_200(script, capsys, monkeypatch):
+    monkeypatch.setattr(httpx, 'post', lambda *a, **kw: httpx.Response(200, json={'ok': False}))
+    assert _run(script, capsys)[0] == 1

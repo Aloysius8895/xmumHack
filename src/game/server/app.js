@@ -212,6 +212,9 @@ function mentorQuestion(save, body)
 }
 
 const routes = {
+    // Read-only service-to-service probe. The integration bearer check and save
+    // read below verify authentication and the configured storage without AI calls.
+    'GET /api/integrations/health': async () => ({ ok: true, storage: persistence.backend() }),
     'GET /api/state': async () =>
     {
         return { ok: true }

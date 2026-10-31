@@ -7,13 +7,15 @@
   GET  /health                status, which channels are configured, and the active AI provider/model
 """
 import logging
+import os
 from contextlib import asynccontextmanager
 from typing import Optional
 
 from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Query, Request
 from fastapi.responses import PlainTextResponse
 
-from . import ai, db, digest, scheduler, telegram_channel, whatsapp_channel
+from . import ai, career_api, db, digest, scheduler, telegram_channel, whatsapp_channel
+from .deployment import validate_render_settings
 from . import whatsapp_api as wa
 from .config import get_settings
 
@@ -27,6 +29,7 @@ log = logging.getLogger("chatbot")
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    validate_render_settings()
     db.init_db()
     log.info("Ready: dry_run=%s, ai=%s/%s", get_settings().dry_run, ai.provider(), ai.model_name())
     task = scheduler.start() if get_settings().digest_schedule_enabled else None
@@ -47,7 +50,22 @@ def health() -> dict:
             "whatsapp": bool(st.whatsapp_token and st.phone_number_id and st.app_secret),
             "telegram": bool(st.telegram_bot_token and st.telegram_webhook_secret),
         },
+        "game_configured": bool(st.careersphere_api_url and st.integration_token),
+        "storage": {"backend": "aws" if st.aws_backend_url else "sqlite",
+                    "persistence_required": os.getenv('REQUIRE_PERSISTENT_STORAGE') == '1'},
     }
+
+
+@app.get('/internal/health/game')
+def game_health(x_telegram_bot_api_secret_token: Optional[str] = Header(default=None)) -> dict:
+    """Authenticated, read-only probe from this service to the game service."""
+    st = get_settings()
+    if not st.telegram_webhook_secret or x_telegram_bot_api_secret_token != st.telegram_webhook_secret:
+        raise HTTPException(status_code=401, detail='bad secret token')
+    try:
+        return {'ok': True, 'game': career_api.health()}
+    except career_api.CareerAPIError as exc:
+        raise HTTPException(status_code=502, detail=exc.code) from None
 
 
 @app.get("/whatsapp/webhook", response_class=PlainTextResponse)

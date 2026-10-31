@@ -26,6 +26,29 @@ class CareerAPIError(Exception):
         super().__init__(f"{code}: {detail}" if detail else code)
 
 
+def health() -> dict:
+    """Read-only authenticated probe; never creates logs or calls an AI model."""
+    st = get_settings()
+    if not st.careersphere_api_url or not st.integration_token:
+        raise CareerAPIError('service-unavailable')
+    try:
+        response = httpx.get(f'{st.careersphere_api_url}/api/integrations/health',
+                            headers={'Authorization': f'Bearer {st.integration_token}'}, timeout=25.0)
+    except httpx.TimeoutException:
+        raise CareerAPIError('timeout') from None
+    except httpx.HTTPError:
+        raise CareerAPIError('network-error') from None
+    if response.status_code != 200:
+        raise CareerAPIError({401: 'unauthorized', 503: 'service-unavailable'}.get(response.status_code, 'upstream-error'))
+    try:
+        body = response.json()
+    except ValueError:
+        raise CareerAPIError('upstream-error') from None
+    if not isinstance(body, dict) or body.get('ok') is not True:
+        raise CareerAPIError('upstream-error')
+    return body
+
+
 _STATUS_CODE = {401: "unauthorized", 503: "service-unavailable", 502: "upstream-error"}
 
 
