@@ -1,7 +1,10 @@
 > [!IMPORTANT]
 > ## 📁 Submission Documents & Templates
-> - **Final Project & Prototype Report:** [SDC2026_ChillChill_Final Project & Prototype Report.pdf](submission/SDC2026_ChillChill_Final%20Project%20%26%20Prototype%20Report.pdf)
-> - **Technology Declaration (Finalist):** [SDC2026_Chill_Chill_TechDeclaration_finalist.pdf](submission/SDC2026_Chill_Chill_TechDeclaration_finalist.pdf)
+> - **Final Project & Prototype Report:** [SDC2026_ChillChill_FinalReport.pdf](submission/SDC2026_ChillChill_FinalReport.pdf)
+> - **Technology Declaration (Finalist, content corrections pending):** [SDC2026_ChillChill_TechDeclaration.pdf](submission/SDC2026_ChillChill_TechDeclaration.pdf)
+> - **RunPod Proof of Use:** [SDC2026_Chill_chill_Runpod_POU.pdf](submission/SDC2026_Chill_chill_Runpod_POU.pdf)
+>
+> The declaration PDF has only been renamed. Sections 5 and 7 still require corrections and a fresh export from the unavailable editable Word source; see the submission index.
 >
 > The submission documents are indexed in [`submission/README.md`](submission/README.md).
 >
@@ -107,8 +110,9 @@ The interface supports English, Chinese and Malay, with career pets, mentor conv
 │   └── tools/                    # Verification and reference-viewing tools
 ├── data/                         # Runtime AEI, market and reference datasets
 ├── submission/                   # Organizer-required submission documents
-│   ├── SDC2026_ChillChill_Final Project & Prototype Report.pdf
-│   └── SDC2026_Chill_Chill_TechDeclaration_finalist.pdf
+│   ├── SDC2026_ChillChill_FinalReport.pdf
+│   ├── SDC2026_ChillChill_TechDeclaration.pdf
+│   └── SDC2026_Chill_chill_Runpod_POU.pdf
 ├── tests/                        # Game, chatbot, crawler, data and AWS suites
 ├── .env.example                  # Public game environment example
 ├── .gitignore
@@ -241,7 +245,8 @@ The [test guide](tests/README.md) lists the isolated suites and browser requirem
 - [x] Team name, domain, leader and member information filled in.
 - [ ] Team confirms the officially registered SDG track.
 - [x] Slide deck and demo video links added.
-- [x] Latest finalist project report and technology declaration included under their supplied filenames.
+- [x] Supplied finalist project report and technology declaration included under standardised filenames; RunPod proof of use restored.
+- [ ] Re-export the technology declaration from its editable Word source with the Section 5 sponsor disclosures and Section 7 checklist corrections.
 - [ ] Team confirms final PDF contents, signatures and submission readiness.
 - [x] Local production build and game/chatbot regression suites verified during deployment work.
 - [x] Render public health, service authentication and fixed webhook URL verified during deployment work.
