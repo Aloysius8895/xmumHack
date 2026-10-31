@@ -2075,7 +2075,7 @@ export class CareerUI
                 <textarea data-draft="log" rows="3" placeholder="${esc(t('log.placeholder'))}">${esc(this.drafts.log ?? '')}</textarea>
                 <button class="career-button is-wide" data-action="log">${esc(t('log.submit'))}</button>` : `<p class="career-notice is-warning">${esc(t('log.noRoadmap'))}</p>`}
             <p class="career-muted">${esc(t('log.note'))}</p>
-            <p class="career-muted">💬 ${esc(t('log.channels'))}</p>
+            <p class="career-muted">💬 ${esc(t('log.channels', { bot: '{bot}' })).replace('{bot}', '<a href="https://t.me/KerjayaKu_bot" target="_blank" rel="noopener noreferrer">@KerjayaKu_bot</a>')}</p>
             ${logs}
         ` ]
     }

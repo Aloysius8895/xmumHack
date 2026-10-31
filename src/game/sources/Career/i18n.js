@@ -539,7 +539,7 @@ const STRINGS = {
     'log.placeholder': { zh: '例如：今天研究了 SQL JOIN，完成了三道练习，花了 2 小时。', en: 'e.g. Studied SQL JOINs today and did three exercises, 2 hours.', ms: 'cth. Belajar SQL JOIN hari ini dan buat tiga latihan, 2 jam.' },
     'log.submit': { zh: '记录', en: 'Log it', ms: 'Log' },
     'log.noRoadmap': { zh: '先生成学习路线，记录才能对应到任务。', en: 'Plan a roadmap first so logs can be matched to tasks.', ms: 'Rancang peta laluan dahulu supaya log boleh dipadankan dengan tugasan.' },
-    'log.channels': { zh: '即将支持：在 WhatsApp / Telegram 直接发消息记录进度。', en: 'Coming soon: log your progress by messaging us on WhatsApp / Telegram.', ms: 'Akan datang: log kemajuan melalui WhatsApp / Telegram.' },
+    'log.channels': { zh: '也可以在 Telegram 传讯息给 {bot}，告诉它你今天学了什么，会自动记进这里的学习日志并推进路线任务。', en: 'You can also message {bot} on Telegram with what you learnt today: it is logged here and moves your roadmap tasks.', ms: 'Anda juga boleh menghantar mesej kepada {bot} di Telegram tentang apa yang dipelajari hari ini: ia direkodkan di sini dan menggerakkan tugasan peta laluan.' },
     'log.note': { zh: '每推进 1% 任务进度得分：高难度技能 ×3、中等 ×2、低难度 ×1。', en: 'Each 1% of task progress scores: hard skills ×3, medium ×2, easy ×1.', ms: 'Setiap 1% kemajuan tugasan memberi mata: kemahiran sukar ×3, sederhana ×2, mudah ×1.' },
     'log.verdict.vague': { zh: '太笼统，未计入进度', en: 'Too vague, not counted', ms: 'Terlalu umum, tidak dikira' },
     'log.verdict.invalid': { zh: '看不出学习内容，未计入进度', en: 'No learning found, not counted', ms: 'Tiada pembelajaran, tidak dikira' },
