@@ -387,6 +387,8 @@ export class CareerUI
         this.root.addEventListener('change', async (event) =>
         {
             const input = event.target
+            if(input.dataset.draft === 'logQuizAnswer')
+                this.renderPanel()
             if(input.dataset.file && input.files?.[0])
             {
                 this.files[input.dataset.file] = input.files[0]
@@ -644,6 +646,14 @@ export class CareerUI
             case 'sdg-filter': this.panel.sdgFilter = this.panel.sdgFilter === Number(data.goal) ? null : Number(data.goal); return this.renderPanel()
             case 'sdg-explore': return this.openPanel('careers', { sdgFilter: Number(data.goal) })
             case 'stage-toggle': this.panel.openStage = this.panel.openStage === data.stage ? null : data.stage; return this.renderPanel()
+            case 'log-quiz-submit': return this.run(() => this.api.answerLog(this.state.logValidation?.id, this.state.logValidation?.step, Number(this.drafts.logQuizAnswer)), (result) =>
+            {
+                delete this.drafts.logQuizAnswer
+                this.notice = result.next ? null : { type: result.passed ? 'info' : 'error', text: t(result.passed ? 'log.quizPassed' : 'log.quizFailed') }
+                this.renderPanel()
+                if(result.passed && result.log?.advanced.length)
+                    this.game.career.world.cheerPet()
+            })
             case 'stage-force': this.panel.forceConfirm = data.stage; this.panel.openStage = data.stage; return this.renderPanel()
             case 'stage-force-cancel': this.panel.forceConfirm = null; return this.renderPanel()
             case 'stage-force-confirm': return this.forceStage(data.stage, element)
@@ -816,14 +826,14 @@ export class CareerUI
             return
         await this.run(() => this.api.log(text), (result) =>
         {
-            // Not counted (no real learning in it): keep the text so it can be completed, the pet doesn't cheer
-            const counted = result.log.advanced.length > 0
-            if(counted)
+            if(result.quiz)
+            {
                 this.drafts.log = ''
-            this.notice = { type: counted ? 'info' : 'warning', text: result.reply }
+                this.notice = null
+            }
+            else
+                this.notice = { type: 'warning', text: result.reply }
             this.renderPanel()
-            if(counted)
-                this.game.career.world.cheerPet()
         })
     }
 
@@ -1864,6 +1874,11 @@ export class CareerUI
         const stages = state.roadmap.stages
         const career = state.careers.find((item) => item.id === state.target.careerId)
         const stageTitle = (id) => stages.find((stage) => stage.id === id)?.title ?? id
+        const brief = (value) => {
+            const text = String(value ?? '').trim()
+            const first = text.match(/^.*?[。！？.!?](?:\s|$)/u)?.[0]?.trim() ?? text
+            return first.length > 100 ? `${first.slice(0, 97).trimEnd()}...` : first
+        }
         const activeIndex = stages.findIndex((stage) => stage.status === 'active')
 
         // Fit every flag and the chest to the board width, folding the route into alternating rows.
@@ -1919,8 +1934,8 @@ export class CareerUI
                             ${stage.forced && stage.status === 'active' ? `<span class="career-tag is-forced">${esc(t('roadmap.forced'))}</span>` : ''}
                         </div>
                         <div class="career-map-progress">${bar(stage.progress)}<small>${esc(t('roadmap.tasksDone', { done, total: stage.tasks.length }))}</small></div>
-                        <p class="career-map-why">${icon('target')}<span><b>${esc(t('roadmap.why'))}</b>${esc(stage.why)}</span></p>
-                        ${stage.approach?.reason ? `<p class="career-muted">${esc(stage.approach.reason)}</p>` : ''}
+                        <p class="career-map-why">${icon('target')}<span><b>${esc(t('roadmap.why'))}</b>${esc(brief(stage.why))}</span></p>
+                        ${stage.approach?.reason ? `<p class="career-muted">${esc(brief(stage.approach.reason))}</p>` : ''}
                         ${this.renderStageSdgs(stage)}
                         ${this.renderStageResources(stage)}
                         ${stage.requirementRefs.length ? `<p class="career-muted">${esc(t('roadmap.covers', { refs: stage.requirementRefs.join(', ') }))}</p>` : ''}
@@ -1931,7 +1946,7 @@ export class CareerUI
                             <li>
                                 <label>
                                     <input type="checkbox" data-task="${task.id}" ${task.progress >= 100 ? 'checked' : ''} ${locked || alternative ? 'disabled' : ''}>
-                                    <span>${esc(task.title)}<small>${esc(task.why)}</small>${task.deliverable ? `<small>${esc(t('learning.deliverable'))}: ${esc(task.deliverable)}</small>` : ''}${task.completionCriteria ? `<small>${esc(t('learning.criteria'))}: ${esc(task.completionCriteria)}</small>` : ''}</span>
+                                    <span>${esc(task.title)}<small>${esc(brief(task.why))}</small>${task.deliverable ? `<small>${esc(t('learning.deliverable'))}: ${esc(brief(task.deliverable))}</small>` : ''}${task.completionCriteria ? `<small>${esc(t('learning.criteria'))}: ${esc(brief(task.completionCriteria))}</small>` : ''}</span>
                                 </label>
                                 <div class="career-task-meta">
                                     ${task.learningActivity ? `<span class="career-tag is-activity">${esc(t(`roadmap.activity.${task.learningActivity}`))}</span>` : ''}
@@ -1978,7 +1993,8 @@ export class CareerUI
                     </div>
                 </div>
                 <footer class="career-map-footer">
-                    <p><span>${esc(state.roadmap.overview)}</span><small>${esc(t('roadmap.intro'))} ${esc(t('roadmap.mpNote'))}${state.roadmap.oneLanguage ? ` ${esc(t('roadmap.oneLanguage'))}` : ''}</small></p>
+                    <p>${esc(brief(state.roadmap.overview))}</p>
+                    ${state.roadmap.oneLanguage ? `<p class="career-muted">${esc(t('roadmap.oneLanguage'))}</p>` : ''}
                     <button class="career-button is-secondary" data-action="roadmap" data-confirm="1">${esc(t('roadmap.regenerate'))}</button>
                 </footer>
             </div>`
@@ -2059,6 +2075,7 @@ export class CareerUI
     renderLog()
     {
         const state = this.state
+        const quiz = state.logValidation
         const logs = state.logs.length ? `
             <h3>${esc(t('log.recent'))}</h3>
             <ul class="career-logs">${state.logs.map((log) => `
@@ -2070,13 +2087,18 @@ export class CareerUI
             </ul>` : ''
 
         return [ t('log.title'), `
-            <p>${esc(t('log.intro'))}</p>
+            ${quiz ? `<div class="career-log-quiz" role="group" aria-label="${esc(t('log.quizTitle'))}">
+                <strong>${esc(t('log.quizStep', { n: quiz.step + 1, total: quiz.total }))}</strong>
+                <p>${esc(quiz.question)}</p>
+                ${quiz.options.map((option, choice) => `<label><input type="radio" name="log-quiz" value="${choice}" data-draft="logQuizAnswer" ${this.drafts.logQuizAnswer === String(choice) ? 'checked' : ''}>${esc(option)}</label>`).join('')}
+                <button class="career-button is-wide" data-action="log-quiz-submit" ${this.drafts.logQuizAnswer === undefined ? 'disabled' : ''}>${esc(t('log.quizSubmit'))}</button>
+            </div>` : `<p>${esc(t('log.intro'))}</p>
             ${state.roadmap ? `
                 <textarea data-draft="log" rows="3" placeholder="${esc(t('log.placeholder'))}">${esc(this.drafts.log ?? '')}</textarea>
                 <button class="career-button is-wide" data-action="log">${esc(t('log.submit'))}</button>` : `<p class="career-notice is-warning">${esc(t('log.noRoadmap'))}</p>`}
             <p class="career-muted">${esc(t('log.note'))}</p>
             <p class="career-muted">💬 ${esc(t('log.channels', { bot: '{bot}' })).replace('{bot}', '<a href="https://t.me/KerjayaKu_bot" target="_blank" rel="noopener noreferrer">@KerjayaKu_bot</a>')}</p>
-            ${logs}
+            ${logs}`}
         ` ]
     }
 

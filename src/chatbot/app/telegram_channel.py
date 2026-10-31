@@ -6,7 +6,8 @@ is answered directly (not routed through handlers) so we can show the user
 their numeric Telegram id for the allowlist."""
 import logging
 
-from . import db, handlers, messages, expert
+from . import career_api, db, handlers, messages, expert
+from .config import get_settings
 from . import telegram_api as tg
 
 log = logging.getLogger("chatbot")
@@ -69,6 +70,19 @@ def _process_update(update: dict) -> None:
         tg.send_message(chat["id"], messages.t("welcome", uid=user_id))
         return
 
+    if command == "/quiz":
+        if not _quiz_owner(_uid(user_id)):
+            return
+        try:
+            current = career_api.log_quiz(_uid(user_id), action="current")
+            if current.get("quiz"):
+                show_log_quiz(_uid(user_id), current["quiz"])
+            else:
+                _send_text(_uid(user_id), "Send what you learned today to start a two-question check.")
+        except career_api.CareerAPIError:
+            _send_text(_uid(user_id), "Quiz service unavailable. Please try again later.")
+        return
+
     if command == "/reset":
         text = "/reset"
     if expert.handle_text(CHANNEL, _uid(user_id), str(user_id), text):
@@ -85,4 +99,39 @@ def _handle_callback(cq: dict) -> None:
     data = cq.get("data")
     if user_id is None or not data:
         return
+    if data.startswith("logquiz:"):
+        if not chat or chat.get("type") != "private" or str(chat.get("id")) != str(user_id):
+            return
+        _quiz_answer(_uid(user_id), data)
+        return
     handlers.handle_button(CHANNEL, _uid(user_id), data)
+
+
+def _quiz_owner(uid: str) -> bool:
+    if get_settings().allowed_tg_ids == frozenset({uid.removeprefix("tg:")}):
+        return True
+    _send_text(uid, "Quiz access requires this Telegram ID to be the sole linked game owner.")
+    return False
+
+
+def show_log_quiz(uid: str, quiz: dict) -> None:
+    buttons = [(f"logquiz:{quiz['id']}:{quiz['step']}:{index}", option[:60]) for index, option in enumerate(quiz["options"])]
+    _send_buttons(uid, f"Question {quiz['step'] + 1}/{quiz['total']}\n{quiz['question']}", buttons)
+
+
+def _quiz_answer(uid: str, data: str) -> None:
+    if not _quiz_owner(uid):
+        return
+    parts = data.split(":")
+    if len(parts) != 4 or not parts[2].isdigit() or not parts[3].isdigit():
+        return
+    try:
+        result = career_api.log_quiz(uid, action="submit", quizId=parts[1], step=int(parts[2]), optionIndex=int(parts[3]))
+        if result.get("next"):
+            show_log_quiz(uid, result["quiz"])
+        elif result.get("passed"):
+            _send_text(uid, "Verified. Your learning log and game progress are saved.")
+        else:
+            _send_text(uid, "Not passed. Review your work and send a new learning log to retry.")
+    except career_api.CareerAPIError as error:
+        _send_text(uid, "This answer has expired. Send a new learning log." if error.code == "log-quiz-stale" else "Quiz service unavailable. Please try again later.")

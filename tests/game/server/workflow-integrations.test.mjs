@@ -45,7 +45,7 @@ test('historical IDs track novelty without reducing repeated weekly sample count
     assert.equal(JSON.stringify(store.loadMarket()), before)
 })
 
-test('concurrent retries of the same Telegram event advance task progress and points once', async () =>
+test('concurrent retries of the same Telegram report create one quiz, then two answers award progress once', async () =>
 {
     const save = store.createSave()
     save.roadmap = { stages: [ { id: 's1', tasks: [ { id: 's1t1', skillId: 'sql', mp: 10, progress: 0 } ], prerequisites: [] } ] }
@@ -54,9 +54,19 @@ test('concurrent retries of the same Telegram event advance task progress and po
     const results = await Promise.all([ call('/api/integrations/chat', payload), call('/api/integrations/chat', payload) ])
     assert.ok(results.every((result) => result.status === 200))
     assert.equal(results[1].body.duplicate, true)
+    assert.equal(store.load().logs.length, 0)
+    assert.equal(results[0].body.quiz.id, results[1].body.quiz.id)
+    const quizId = results[0].body.quiz.id
+    const answer = (step, optionIndex, messageId) => call('/api/integrations/log-validate', { channel: 'telegram', from: 'tg:123', messageId, action: 'submit', quizId, step, optionIndex })
+    assert.equal((await answer(0, 1, 'tg:43')).body.next, true)
+    assert.equal(store.load().logs.length, 0)
+    assert.equal((await answer(0, 1, 'tg:44')).status, 409)
+    const done = await answer(1, 2, 'tg:45')
+    assert.equal(done.body.passed, true)
     assert.equal(store.load().logs.length, 1)
     assert.equal(store.load().roadmap.stages[0].tasks[0].progress, 20)
-    assert.equal(store.load().points, results[0].body.log.points)
+    assert.equal(store.load().points, done.body.log.points)
+    assert.equal((await answer(1, 2, 'tg:46')).status, 409)
     assert.equal((await call('/api/integrations/chat', { ...payload, text: 'different message' })).status, 409)
 })
 

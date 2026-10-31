@@ -152,6 +152,7 @@ export class CareerApi
     applyLearning(previewId) { return this.request('POST', 'learning/apply', { previewId }) }
     discardLearning() { return this.request('POST', 'learning/discard', {}) }
     setTaskDone(taskId, done) { return this.request('POST', 'task', { taskId, done }) }
+    answerLog(quizId, step, optionIndex) { return this.request('POST', 'log/validate', { quizId, step, optionIndex }) }
     unlockStage(stageId) { return this.request('POST', 'stage/unlock', { stageId }) }
     log(text) { return this.request('POST', 'log', { text, source: 'web' }) }
     // expert: ask the career's distilled industry elite instead of the mentor (server/experts.js)

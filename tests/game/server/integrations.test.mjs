@@ -142,17 +142,18 @@ test('skill trends are empty until the workflow pushes, never authored', async (
     })
 })
 
-test('chat messages from the bots are filed as logs and get a reply', async () =>
+test('chat reports wait for the quiz before becoming logs', async () =>
 {
     const save = store.load()
     save.roadmap = { stages: [ { id: 's1', tasks: [ { id: 's1t1', skillId: 'sql', mp: 10, progress: 0 } ], prerequisites: [] } ] }
     store.save(save)
 
-    const result = await call('/api/integrations/chat', { channel: 'telegram', text: 'Practised SQL joins for 2 hours', lang: 'en' })
+    const result = await call('/api/integrations/chat', { channel: 'telegram', from: 'tg:123', messageId: 'tg:1', text: 'Practised SQL joins for 2 hours', lang: 'en' })
     assert.equal(result.status, 200)
     assert.equal(typeof result.body.reply, 'string')
-    assert.equal(result.body.log.source, 'telegram')
-    assert.equal(store.load().roadmap.stages[0].tasks[0].progress, 20)
+    assert.equal(result.body.quiz.total, 2)
+    assert.equal(store.load().logs.length, 0)
+    assert.equal(store.load().roadmap.stages[0].tasks[0].progress, 0)
     assert.equal((await call('/api/integrations/chat', { channel: 'email', text: 'hi' })).status, 400)
 })
 

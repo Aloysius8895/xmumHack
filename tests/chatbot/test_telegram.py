@@ -128,6 +128,42 @@ def test_button_callback_logs_report_and_answers_callback(tg_client, monkeypatch
     assert db.reports_for_date(db.today_myt())[0]["text"] == "SQL"
 
 
+def test_learning_report_opens_quiz_and_second_answer_saves_progress(tg_client, monkeypatch):
+    monkeypatch.setenv("TELEGRAM_ALLOWED_USER_IDS", str(USER_ID))
+    sent = _capture_telegram(monkeypatch)
+    calls = []
+    quiz = {"id": "test-quiz", "step": 0, "total": 2, "question": "First?", "options": ["A", "B"]}
+
+    def fake_quiz(uid, **fields):
+        action = fields.pop("action")
+        calls.append((action, fields))
+        if action == "current":
+            return {"quiz": None}
+        if fields["step"] == 0:
+            return {"next": True, "quiz": {**quiz, "step": 1, "question": "Second?"}}
+        return {"passed": True}
+
+    monkeypatch.setattr(career_api, "log_quiz", fake_quiz)
+    monkeypatch.setattr(career_api, "chat", lambda *args, **kwargs: {"quiz": quiz, "reply": "Pending"})
+    classify_as(monkeypatch, "report", "en")
+    post_update(tg_client, _update(_text_message("Practised SQL joins for 2 hours")))
+    assert sent[-1]["payload"]["reply_markup"]["inline_keyboard"][1][0]["callback_data"] == "logquiz:test-quiz:0:1"
+    callback = lambda step: {"id": "cbq", "from": {"id": USER_ID}, "message": {"chat": {"id": USER_ID, "type": "private"}}, "data": f"logquiz:test-quiz:{step}:1"}
+    post_update(tg_client, _update(callback_query=callback(0)))
+    assert "Question 2/2" in sent[-1]["payload"]["text"]
+    assert calls[-1] == ("submit", {"quizId": "test-quiz", "step": 0, "optionIndex": 1})
+    post_update(tg_client, _update(callback_query=callback(1)))
+    assert "game progress are saved" in sent[-1]["payload"]["text"]
+
+
+def test_quiz_requires_single_owner_and_matching_private_callback(tg_client, monkeypatch):
+    sent = _capture_telegram(monkeypatch)
+    monkeypatch.setattr(career_api, "log_quiz", lambda *args, **kwargs: pytest.fail("quiz API must not be called"))
+    monkeypatch.setenv("TELEGRAM_ALLOWED_USER_IDS", str(USER_ID))
+    cq = {"id": "cbq", "from": {"id": USER_ID}, "message": {"chat": {"id": USER_ID + 1, "type": "private"}}, "data": "logquiz:test-quiz:0:1"}
+    post_update(tg_client, _update(callback_query=cq))
+
+
 def test_whitelist_blocks_report_for_unknown_telegram_user(tg_client, fake_ai, monkeypatch):
     _capture_telegram(monkeypatch)
     monkeypatch.setenv("TELEGRAM_ALLOWED_USER_IDS", "1,2,3")

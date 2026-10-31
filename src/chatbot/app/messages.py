@@ -31,6 +31,8 @@ MESSAGES = {
             "(Please send this id to the admin to get whitelisted, so your study "
             "progress can be logged.)\n"
             "/expert: meet the expert for your web-game target, then send questions.\n"
+            "Send what you learned today, then answer two questions to save your progress.\n"
+            "/quiz: reopen a pending check.\n"
             "/exit: leave expert mode. /reset: reset the conversation."
         ),
     },

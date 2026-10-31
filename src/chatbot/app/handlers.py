@@ -95,6 +95,10 @@ def _submit_report(channel: Channel, uid: str, text: str, lang: str) -> None:
 
     log_entry = result.get("log")
     reply_text = result.get("reply") or messages.t("fallback")
+    if result.get("quiz") and channel.name == "telegram":
+        from .telegram_channel import show_log_quiz
+        show_log_quiz(uid, result["quiz"])
+        return
     if log_entry and log_entry.get("verdict", "learned") == "learned":
         db.save_report(uid, text, log_entry.get("summary"), log_entry.get("skillIds") or [],
                         log_entry.get("advanced") or [], log_entry.get("points"))

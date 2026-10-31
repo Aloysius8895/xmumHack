@@ -26,6 +26,7 @@ import { PRESETS, compare, defaultInputs, forecast, scenarioOf, scenarioState, s
 import { ACTIVITIES as LEARNING_ACTIVITIES, noRegretSkeleton, presetOf, skeletonChanges, withPrerequisites } from './no-regret.js'
 import { updateLog } from './update-log.js'
 import { learningView } from './adaptive-learning.js'
+import { publicLogValidation } from './log-validation.js'
 import { createHash } from 'node:crypto'
 
 export const RULES = {
@@ -714,6 +715,7 @@ export function view(save, ai, documents = {})
         target: save.target,
         pet,
         roadmap,
+        logValidation: publicLogValidation(save),
         logs: save.logs.slice(0, 30),
         points: save.points,
         player: { id: save.player.id, name: save.player.name, code: friendCode(save) },

@@ -31,6 +31,7 @@ import { snapshot, updateLog } from './update-log.js'
 import { localizePostingSkills } from './posting-skill-localization.js'
 import { localizeProfileEvidence } from './profile-localization.js'
 import * as learning from './adaptive-learning.js'
+import * as logValidation from './log-validation.js'
 import { learningContext } from './learning-rules.js'
 
 const MAX_BODY = 15 * 1024 * 1024 // base64 of a 10 MB file
@@ -130,6 +131,11 @@ function mytDate()
 
 function cloudCommit(path, body, result, save)
 {
+    if(path === '/api/integrations/log-validate' && body.action === 'submit')
+    {
+        const fingerprint = createHash('sha256').update(JSON.stringify([ body.channel, body.from, body.quizId, body.step, body.optionIndex ])).digest('hex')
+        return { operation: 'save', metadata: { idempotencyKey: `log-validate:${body.from}:${body.messageId}`, fingerprint, result } }
+    }
     if(path === '/api/integrations/expert')
     {
         const receipt = expertReceipt(save, body)
@@ -468,10 +474,10 @@ const routes = {
             throw new HttpError(400, 'empty')
         if(!save.roadmap)
             throw new HttpError(409, 'no-roadmap')
-        const classification = await features.classifyLog({ text: content, roadmap: save.roadmap, lang: lang(save, body) })
-        const log = game.applyLog(save, { text: content, source: [ 'web', 'telegram', 'whatsapp' ].includes(body.source) ? body.source : 'web', classification })
-        return { log, reply: classification.reply }
+        return logValidation.submitLog(save, { content, source: 'web', lang: lang(save, body) })
     },
+
+    'POST /api/log/validate': async (save, body) => logValidation.answerLog(save, body),
 
     'POST /api/player': async (save, body) =>
     {
@@ -526,6 +532,17 @@ const routes = {
 
     'POST /api/integrations/expert': (save, body) => telegramExpert(save, body),
 
+    'POST /api/integrations/log-validate': async (save, body) =>
+    {
+        if(body.channel !== 'telegram' || !/^tg:[0-9]{1,30}$/.test(body.from) || !/^tg:[0-9]{1,30}$/.test(body.messageId))
+            throw new HttpError(400, 'bad-channel')
+        if(body.action === 'current')
+            return { quiz: logValidation.publicLogValidation(save) }
+        if(body.action === 'submit')
+            return logValidation.answerLog(save, body)
+        throw new HttpError(400, 'bad-action')
+    },
+
     'POST /api/integrations/chat': async (save, body) =>
     {
         if(!integrations.CHANNELS.includes(body.channel))
@@ -538,9 +555,8 @@ const routes = {
             return { ...receipt.previous, duplicate: true }
         if(!save.roadmap)
             return { log: null, reply: { zh: '先在游戏里生成学习路线，我才能把汇报对应到任务。', en: 'Plan a roadmap in the game first so I can match your reports to tasks.', ms: 'Rancang peta laluan dalam permainan dahulu supaya laporan boleh dipadankan dengan tugasan.' }[lang(save, body)] }
-        const classification = await features.classifyLog({ text: content, roadmap: save.roadmap, lang: lang(save, body) })
-        const log = game.applyLog(save, { text: content, source: body.channel, classification })
-        return integrations.rememberChat(save, receipt, { log, reply: classification.reply })
+        const result = await logValidation.submitLog(save, { content, source: body.channel, lang: lang(save, body) })
+        return integrations.rememberChat(save, receipt, result)
     },
 
     'POST /api/integrations/digest': async (save, body) =>
@@ -817,7 +833,7 @@ export async function handle(request, response)
             send(response, 400, { error: error.code })
             return true
         }
-        if(error instanceof HttpError || error instanceof IntegrationError || error instanceof learning.LearningError)
+        if(error instanceof HttpError || error instanceof IntegrationError || error instanceof learning.LearningError || error instanceof logValidation.LogValidationError)
             send(response, error.status, { error: error.code })
         else if(error instanceof AiError)
             send(response, 502, { error: error.code, detail: error.message.slice(0, 300) })

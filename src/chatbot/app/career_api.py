@@ -46,7 +46,7 @@ def _post(path: str, payload: dict) -> dict:
         return r.json()
 
     code = _STATUS_CODE.get(r.status_code, "upstream-error")
-    if r.status_code == 400:
+    if r.status_code in (400, 404, 409):
         try:
             code = r.json().get("error", "bad-request")
         except ValueError:
@@ -80,4 +80,11 @@ def expert(text: str, from_: str, action: str, session: Optional[dict] = None) -
         "channel": "telegram", "from": from_, "messageId": db.CURRENT_EVENT.get(),
         "action": action, "text": text, "careerId": session.get("careerId"),
         "history": session.get("history", []),
+    })
+
+
+def log_quiz(from_: str, **fields) -> dict:
+    return _post("/api/integrations/log-validate", {
+        "channel": "telegram", "from": from_, "messageId": db.CURRENT_EVENT.get(),
+        **fields,
     })
