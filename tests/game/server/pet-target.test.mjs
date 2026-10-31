@@ -1,10 +1,22 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { SKILLS, useCustom } from '../../../src/game/server/careers.js'
+import { SKILLS, getCareer, useCustom } from '../../../src/game/server/careers.js'
+import * as sc from '../../../src/game/server/scenarios.js'
 import { createSave } from '../../../src/game/server/store.js'
 import * as game from '../../../src/game/server/game.js'
 
 const ai = { mock: true, keyConfigured: false, model: 'test' }
+
+// Affinity by its formula (game.affinityOf): progress weighted by level × weight × future value under the scenario in force
+const expectedAffinity = (save, careerId) =>
+{
+    const career = game.targetedCareer(save, getCareer(careerId))
+    const params = sc.scenarioOf(save), inputs = sc.defaultInputs()
+    const weight = new Map(career.skills.map((skill) => [ skill.id, skill.level * skill.weight * sc.skillValue(skill.id, params, inputs).value ]))
+    const rows = game.skillProgress(save, career)
+    const total = rows.reduce((sum, row) => sum + weight.get(row.id), 0)
+    return total ? Math.round(rows.reduce((sum, row) => sum + weight.get(row.id) * row.progress, 0) / total) : 0
+}
 
 // A data analyst posting that asks for SQL, Python and charts, plus two requirements outside the catalog
 function posting()
@@ -70,8 +82,10 @@ test('the posting skills drive the affinity, and the general mode keeps the care
 
     game.setTarget(save, { careerId: 'data-analyst', mode: 'customise', posting: posting() })
     const customised = game.view(save, ai).pet
-    // SQL and Python (must, 3 × 3 each) met; charts (nice, 2 × 1), retail (nice, 2 × 1), standards (must, 1 × 3) not
-    assert.equal(customised.affinity, Math.round((9 + 9) / (9 + 9 + 2 + 2 + 3) * 100))
+    // SQL and Python (must, 3 × 3 each) met; charts (nice, 2 × 1), retail (nice, 2 × 1), standards (must, 1 × 3) not:
+    // about (9 + 9) / (9 + 9 + 2 + 2 + 3), each weight times the skill's future value under the scenario in force
+    assert.equal(customised.affinity, expectedAffinity(save, 'data-analyst'))
+    assert.ok(Math.abs(customised.affinity - Math.round((9 + 9) / (9 + 9 + 2 + 2 + 3) * 100)) <= 5)
     assert.ok(customised.affinity > general.affinity)
 })
 

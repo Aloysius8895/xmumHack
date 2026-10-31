@@ -1,6 +1,6 @@
 # CareerSphere 马来西亚招聘数据
 
-最新更新（2026-10-24）：已接入 14 个职业，包括带 NEW 标记的 FDE。处理样本为 564 则广告、251 则可用完整描述、1,160 条技能关联。近 30 天定向采集发现 FDE 6 则、5 家公司；4—9 月检索另回收 7 月 1 则、8 月 2 则、9 月 1 则历史广告。4—6 月未取得 FDE 实测历史。2026-10-30 团队决定：热力图里没有数据的月份显示模拟值（`MockMarketHistory.js`，界面不标示，格子带 `data-origin="mock"`），只用于显示，不进入任何趋势、排序或模型计算。参见 [FDE 需求与偏差报告](derived/fde-demand/FDE_RESEARCH.md)、[逐月来源](derived/fde-demand/fde_history_coverage.csv) 和 [档案说明](historical/fde_2026/README.md)。
+最新更新（2026-10-24）：已接入 14 个职业，包括带 NEW 标记的 FDE。处理样本为 564 则广告、251 则可用完整描述、1,160 条技能关联。近 30 天定向采集发现 FDE 6 则、5 家公司；4—9 月检索另回收 7 月 1 则、8 月 2 则、9 月 1 则历史广告。4—6 月未取得 FDE 实测历史。2026-10-30 团队决定：热力图里没有数据的月份显示模拟值（`MockMarketHistory.js`，界面不标示，格子带 `data-origin="mock"`）。2026-10-31（prompt 07）起，模拟数据也可以进入计算，但必须由脚本生成（`src/data/scripts/mock-*.mjs`，输出到 `data/mock/`）、来自真实数据或有出处的报告、在结果里标明 `mock`，并在真实数据累积后自动退场；不可以 hardcode 结果。参见 [FDE 需求与偏差报告](derived/fde-demand/FDE_RESEARCH.md)、[逐月来源](derived/fde-demand/fde_history_coverage.csv) 和 [档案说明](historical/fde_2026/README.md)。
 
 新增：[2026 年 4 月起的真实历史统计](historical/2026-04_onwards/README.md)。已保存 DOSM 官方 4—6 月总量、Techmap 4—9 月独立供应商统计及官方职业季度数据；项目职业和技能月度历史缺失处保留空值。
 

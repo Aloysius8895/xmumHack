@@ -16,24 +16,24 @@ const state = (scenario = 'moderate', thin = false) => ({
         skills: [ skill('sql', 1.1, 'rising'), skill('python', 1.2, 'rising'), skill('excel', 0.8, 'declining') ],
         careers: [ { careerId: 'data-analyst', rank: 1, score: 38, fit: 0.3, outlook: 0.45, weights: { fit: 0.6, outlook: 0.4 }, confidence: 'low', thinProfile: thin,
             skills: [ skill('sql', 1.1, 'rising'), skill('excel', 0.8, 'declining', false) ], raise: [ { skillId: 'sql', gain: 8 } ] } ] },
-    scenarioCompare: { 'data-analyst': { moderate: { score: 38, rank: 1 }, fast: { score: 35, rank: 3 } } },
-    skillStatus: { excel: { moderate: 'declining', fast: 'declining' }, sql: { moderate: 'rising', fast: 'declining' } },
+    scenarioCompare: { 'data-analyst': { moderate: { score: 38, rank: 1 }, extreme: { score: 35, rank: 3 } } },
+    skillStatus: { excel: { moderate: 'declining', extreme: 'declining' }, sql: { moderate: 'rising', extreme: 'declining' } },
 })
 
-test('the toggle marks the current scenario, always says estimate, and asks for skills when the profile is thin', () =>
+test('the toggle marks the current scenario, carries no estimate or mock tags, and asks for skills when the profile is thin', () =>
 {
-    const html = renderScenarioBar(state(), { t, esc })
+    const html = renderScenarioBar({ ...state(), forecast: { ...state().forecast, mock: true } }, { t, esc })
     assert.match(html, /data-preset="moderate" aria-pressed="true"/)
-    assert.match(html, /data-preset="fast" aria-pressed="false"/)
-    assert.match(html, /估算/)
+    assert.match(html, /data-preset="extreme" aria-pressed="false"/)
+    assert.doesNotMatch(html, /is-estimate|is-mock|估算|含模拟数据/)
     assert.doesNotMatch(html, /补充档案/)
     assert.match(renderScenarioBar(state('moderate', true), { t, esc }), /data-panel="profile"/)
 })
 
 test('a card shows the score, the rank change against the other scenario and low confidence', () =>
 {
-    assert.equal(rankDelta(state(), 'data-analyst'), 2)          // 3rd under fast, 1st under moderate
-    assert.equal(rankDelta(state('fast'), 'data-analyst'), - 2)
+    assert.equal(rankDelta(state(), 'data-analyst'), 2)          // 3rd under extreme, 1st under moderate
+    assert.equal(rankDelta(state('extreme'), 'data-analyst'), - 2)
     const html = renderCardScore(state(), 'data-analyst', { t, esc })
     assert.match(html, /匹配分 38/)
     assert.match(html, /↑2/)
@@ -72,7 +72,7 @@ test('every scenario text exists in the three languages', () =>
 {
     const source = fs.readFileSync(new URL('../../../../src/game/sources/Career/i18n.js', import.meta.url), 'utf8')
     const used = [ ...fs.readFileSync(new URL('../../../../src/game/sources/Career/ScenarioView.js', import.meta.url), 'utf8').matchAll(/t\('(scenario\.[\w.]+)'/g) ].map((match) => match[1])
-    for(const key of [ ...new Set([ ...used, 'scenario.moderate', 'scenario.fast', 'scenario.customName', 'scenario.status.rising', 'scenario.status.stable', 'scenario.status.declining' ]) ])
+    for(const key of [ ...new Set([ ...used, 'scenario.moderate', 'scenario.extreme', 'scenario.customName', 'scenario.status.rising', 'scenario.status.stable', 'scenario.status.declining' ]) ])
     {
         const line = source.split('\n').find((row) => row.includes(`'${key}':`))
         assert.ok(line, key)

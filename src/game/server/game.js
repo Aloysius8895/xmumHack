@@ -6,6 +6,7 @@
  */
 import { DEFAULT_MAP, SKILLS, SKILL_IDS, allCareers, getCareer, localText, matchCareer, useCustom } from './careers.js'
 import { postingSkillLocalization } from './posting-skill-localization.js'
+import { cleanEvidence, localizedEvidence } from './profile-localization.js'
 import { SKILL_DETAILS } from './skill-details.js'
 import { expertOf } from './experts.js'
 import { friendCode, leaderboard } from './friends.js'
@@ -18,11 +19,13 @@ import { crawlerStatus } from './crawler-market.js'
 import { withHistoricalMarket } from './historical-market.js'
 import { referenceMarkets } from './reference-market.js'
 import { referenceTrend } from './reference-trend.js'
+import { bigPicture } from './big-picture.js'
 import { nationalEstimate } from './national-estimate.js'
 import { mycolTimeline } from './official-signals.js'
-import { PRESETS, compare, defaultInputs, forecast, scenarioOf } from './scenarios.js'
-import { noRegretSkeleton, skeletonChanges } from './no-regret.js'
+import { PRESETS, compare, defaultInputs, forecast, scenarioOf, scenarioState, skillValue } from './scenarios.js'
+import { ACTIVITIES as LEARNING_ACTIVITIES, noRegretSkeleton, presetOf, skeletonChanges, withPrerequisites } from './no-regret.js'
 import { updateLog } from './update-log.js'
+import { learningView } from './adaptive-learning.js'
 import { createHash } from 'node:crypto'
 
 export const RULES = {
@@ -59,11 +62,11 @@ export function mergeSkills(profile, extracted)
         if(existing)
         {
             existing.level = Math.max(existing.level, skill.level)
-            existing.evidence = skill.evidence || existing.evidence
+            existing.evidence = localizedEvidence(skill.evidence) ?? existing.evidence
         }
         else
         {
-            profile.skills.push({ id, name: skill.name, level: skill.level, evidence: skill.evidence, source: 'ai' })
+            profile.skills.push({ id, name: skill.name, level: skill.level, evidence: cleanEvidence(skill.evidence), source: 'ai' })
         }
     }
 }
@@ -76,7 +79,7 @@ export function setSkills(profile, skills)
             id: skill.id && SKILLS[skill.id] ? skill.id : null,
             name: skill.name.trim().slice(0, 80),
             level: Math.max(0, Math.min(3, Math.round(Number(skill.level) || 0))),
-            evidence: String(skill.evidence ?? '').slice(0, 200),
+            evidence: cleanEvidence(skill.evidence),   // { zh, en, ms }, or one sentence of an older profile
             source: skill.source === 'ai' || skill.source === 'gym' ? skill.source : 'manual',
         }))
 }
@@ -236,13 +239,19 @@ export function skillProgress(save, career)
  * Affinity 0-100 = how ready the player is for the career: skill progress above, weighted like the career match
  * (required level × weight). With no learning yet it equals the match of the profile; tasks and digests raise it.
  */
-export function affinityOf(save, careerId)
+/**
+ * Affinity: how ready the player is for a career, the progress of each required skill weighted by its level, its
+ * weight and (user decision 2026-10-31) its future value under the scenario in force (scenarios.js skillValue), so a
+ * skill that matters more under that scenario counts more. Pass `inputs` to compute many careers from one reading.
+ */
+export function affinityOf(save, careerId, inputs = defaultInputs())
 {
     const found = getCareer(careerId)
     if(!found)
         return 0
     const career = targetedCareer(save, found)
-    const weights = new Map(career.skills.map((skill) => [ skill.id, skill.level * skill.weight ]))
+    const params = scenarioOf(save)
+    const weights = new Map(career.skills.map((skill) => [ skill.id, skill.level * skill.weight * skillValue(skill.id, params, inputs).value ]))
     let total = 0
     let reached = 0
     for(const skill of skillProgress(save, career))
@@ -260,8 +269,9 @@ export function affinityOf(save, careerId)
 export function replaceCandidate(save)
 {
     const lastActive = (careerId) => save.target?.careerId === careerId ? Infinity : Date.parse(save.careers?.[careerId]?.lastActiveAt ?? '') || 0
+    const inputs = defaultInputs()
     return mapSlots(save)
-        .map((careerId, index) => ({ careerId, index, affinity: affinityOf(save, careerId), lastActive: lastActive(careerId) }))
+        .map((careerId, index) => ({ careerId, index, affinity: affinityOf(save, careerId, inputs), lastActive: lastActive(careerId) }))
         .sort((a, b) => a.affinity - b.affinity || a.lastActive - b.lastActive || a.index - b.index)[0].careerId
 }
 
@@ -365,10 +375,20 @@ export function addCustomCareer(save, spec)
     return career
 }
 
+/**
+ * The career the roadmap prepares for: as targeted (a company's job posting replaces the default skills), with the
+ * reviewed prerequisites of its skills added (no-regret.js withPrerequisites). Affinity and progress keep targetedCareer.
+ */
+export function roadmapCareer(save, career = getCareer(save.target?.careerId))
+{
+    return career ? withPrerequisites(targetedCareer(save, career), career) : null
+}
+
+/** The skill gaps toward the target as the roadmap sees it (roadmapCareer): the job posting's skills and their prerequisites */
 export function gapsFor(save)
 {
     const career = getCareer(save.target.careerId)
-    return matchCareer(career, save.profile.skills).skills
+    return matchCareer(roadmapCareer(save, career), save.profile.skills).skills
 }
 
 /**
@@ -399,22 +419,27 @@ export function buildRoadmap(plan)
     return {
         generatedAt: new Date().toISOString(),
         overview: plan.overview,
-        ...(layout ? { chosenBranch: plan.chosenBranch ?? 'moderate', branchChosenBy: 'scenario', forecastBasis: plan.forecastBasis ?? null } : {}),
+        ...(layout ? { chosenBranch: plan.chosenBranch ?? 'moderate', branchChosenBy: 'scenario', forecastBasis: plan.forecastBasis ?? null,
+            scenario: plan.scenario ?? plan.chosenBranch ?? 'moderate' } : {}),
         stages: stages.map((stage, index) => ({
             id: `s${index + 1}`,
             title: stage.title,
             why: stage.why,
             skillIds: stage.skillIds.filter((id) => SKILLS[id]),
             requirementRefs: stage.requirementRefs,
-            ...(layout ? { kind: stage.kind, branch: stage.branch ?? null, basis: stage.basis ?? [], gains: stage.gains ?? {} } : {}),
+            ...(layout ? { kind: stage.kind, branch: stage.branch ?? null, basis: stage.basis ?? [], gains: stage.gains ?? {}, approach: stage.approach ?? null } : {}),
             prerequisites: (layout ? layoutPrerequisites(stages, index) : stage.prerequisiteIndexes.filter((other) => other >= 0 && other < index)).map((other) => `s${other + 1}`),
             tasks: stage.tasks.slice(0, RULES.maxTasksPerStage).map((task, taskIndex) => ({
                 id: `s${index + 1}t${taskIndex + 1}`,
                 title: task.title,
                 why: task.why,
                 skillId: SKILLS[task.skillId] ? task.skillId : null,
+                learningActivity: LEARNING_ACTIVITIES.includes(task.learningActivity) ? task.learningActivity : null,
                 mp: Math.max(1, Math.min(200, Math.round(task.effortHours))),
                 progress: 0,
+                ...(task.deliverable ? { deliverable: task.deliverable } : {}),
+                ...(task.completionCriteria ? { completionCriteria: task.completionCriteria } : {}),
+                ...(task.evidenceRefs ? { evidenceRefs: task.evidenceRefs } : {}),
             })),
             cleared: false,
             clearedAt: null,
@@ -548,23 +573,29 @@ export function setTaskDone(save, taskId, done)
 
 /** The chosen scenario's forecast and both presets' ranks, computed once from the same inputs */
 /**
- * Re-plan prompt: the No-Regret skeleton of the roadmap (forecastBasis) against the current data. Skills the player
- * no longer lacks are left out of both sides, so learning never triggers it; only a changed core, branch order or
- * later set does. Never re-plans by itself (that calls the AI and starts a new roadmap): the player decides.
+ * Re-plan prompt: the No-Regret skeleton of the roadmap (forecastBasis) against the current data, read as the roadmap
+ * is built (AI exposure and hiring demand, the career as targeted). Skills the player no longer lacks are left out of
+ * both sides, so learning never triggers it; only a changed core, branch order or later set does ('trend-data', or
+ * 'method-changed' for a roadmap built on another reading). A roadmap written for another scenario than the effective
+ * one ('scenario-changed') learns its skills another way (prompt 07). Never re-plans by itself (that calls the AI and
+ * starts a new roadmap): the player decides.
  */
 function replanSuggestion(save, inputs)
 {
     const basis = save.roadmap?.forecastBasis
     if(!basis || !save.target)
         return null
-    const now = noRegretSkeleton(save, inputs)
+    const now = noRegretSkeleton(save, undefined, { career: roadmapCareer(save) })
     if(!now)
         return null
     const gaps = new Set([ ...now.core, ...now.later, ...Object.values(now.branches).flat() ])
     const keep = (ids) => (ids ?? []).filter((id) => gaps.has(id))
     const before = { core: keep(basis.core), later: keep(basis.later), branches: Object.fromEntries(Object.entries(basis.branches ?? {}).map(([ preset, ids ]) => [ preset, keep(ids) ])) }
     const changedSkills = skeletonChanges(before, now)
-    return changedSkills.length ? { changedSkills, reason: 'trend-data' } : null
+    if(changedSkills.length)
+        return { changedSkills, reason: basis.demand === 'momentum' ? 'trend-data' : 'method-changed' }
+    const scenario = presetOf(scenarioOf(save))
+    return save.roadmap.scenario && save.roadmap.scenario !== scenario ? { changedSkills: [], reason: 'scenario-changed', scenario, roadmapScenario: save.roadmap.scenario } : null
 }
 
 // The client needs how many tasks an exposure rests on, not their text (that stays in data/ai-exposure)
@@ -579,6 +610,8 @@ function scenarioView(save)
     const skillStatus = Object.fromEntries(current.skills.map((skill) => [ skill.id, Object.fromEntries(Object.entries(statuses).map(([ preset, skills ]) => [ preset, skills.find((row) => row.id === skill.id)?.status ?? null ])) ]))
     return {
         scenario: scenarioOf(save),
+        // Recommended, chosen and effective scenario with the basis of the recommendation (prompt 06)
+        scenarioChoice: scenarioState(save),
         forecast: { ...current, skills: current.skills.map(lighter), careers: current.careers.map((career) => ({ ...career, skills: career.skills.map(lighter) })) },
         scenarioCompare: compare(save, inputs),
         skillStatus,
@@ -594,6 +627,7 @@ export function view(save, ai, documents = {})
 {
     const market = documents.market ?? loadMarket()
     const collected = collectedMarket()
+    const inputs = defaultInputs()   // one reading of the scenario data for every career's affinity
     const careers = allCareers().map((career) => ({
         id: career.id,
         name: career.name,
@@ -606,7 +640,7 @@ export function view(save, ai, documents = {})
             : { heat: null, trend: 'unknown', sample: false, snapshot: marketSnapshot(career.id, market), skills: skillTrendOrEmpty(career.id, market) },
         effortMonths: career.effortMonths,
         pet: career.pet,
-        affinity: affinityOf(save, career.id),
+        affinity: affinityOf(save, career.id, inputs),
         match: matchCareer(career, save.profile.skills),
         onMap: isOnMap(save, career.id),
         saved: Boolean(save.careers?.[career.id]),
@@ -647,7 +681,10 @@ export function view(save, ai, documents = {})
             title: localText(stage.title, save.lang),
             why: localText(stage.why, save.lang),
             ...(stage.basis ? { basis: stage.basis.map((text) => localText(text, save.lang)) } : {}),
-            tasks: stage.tasks.map((task) => ({ ...task, title: localText(task.title, save.lang), why: localText(task.why, save.lang) })),
+            ...(stage.approach ? { approach: { ...stage.approach, reason: localText(stage.approach.reason, save.lang) } } : {}),
+            tasks: stage.tasks.map((task) => ({ ...task, title: localText(task.title, save.lang), why: localText(task.why, save.lang),
+                ...(task.deliverable ? { deliverable: localText(task.deliverable, save.lang) } : {}),
+                ...(task.completionCriteria ? { completionCriteria: localText(task.completionCriteria, save.lang) } : {}) })),
             status: stageStatus(save.roadmap, stage),
             progress: stageProgress(stage),
             mp: stage.tasks.reduce((sum, task) => sum + task.mp, 0),
@@ -668,10 +705,11 @@ export function view(save, ai, documents = {})
         marketSkills: collected?.skills ?? skillTrendOrEmpty(null, market),
         skillMarket: collected?.skillMarket ?? skillMarket(SKILL_IDS, market),
         // references: past JobStreet months (reference-market.js); yearOnYear: their 2024→2025 change (reference-trend.js)
-        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus(),references:referenceMarkets(),yearOnYear:referenceTrend(),nationalEstimate:nationalEstimate()}),
+        trends: withHistoricalMarket({...(collected?.trends ?? trendsView(documents.trends)),crawler:crawlerStatus(),references:referenceMarkets(),yearOnYear:referenceTrend(),bigPicture:bigPicture(),nationalEstimate:nationalEstimate()}),
         // Future scenarios (scenarios.js): every career ranked under the chosen scenario, and both presets' ranks
         ...scenarioView(save),
         learningDirection: save.learningDirection ?? null,
+        learning: learningView(save),
         automation: save.automation ?? null,
         target: save.target,
         pet,

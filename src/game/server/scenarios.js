@@ -9,9 +9,11 @@
  *                   collectors, extrapolated over H years, would outweigh the skill fit)
  *   skill value     V = T × (1 − a·D) × (1 + β·u·D)            a, u from ai-exposure.js (automation, augmentation), 0 when unknown
  *   fit             Σ w·min(cur, req)/req·V ÷ Σ w·V            w = required level × weight, as careers.matchCareer
- *   outlook         clamp(V̄·Tc − 0.5, 0, 1)                    V̄ = Σ w·V ÷ Σ w, Tc the career's demand term
- *   score           round(100 × (0.6·fit + 0.4·outlook))
- *   raise           100 × 0.6 × w·V·(req − cur)/req ÷ Σ w·V    what learning one missing skill to its level adds
+ *   outlook         clamp(V̄·Tc / 2, 0, 1)                      V̄ = Σ w·V ÷ Σ w, Tc the career's demand term; 0.5 when
+ *                                                              neutral, the ceiling only at twice that (was V̄·Tc − 0.5,
+ *                                                              which capped at 1.5 and hid the scenarios' difference)
+ *   score           round(100 × (0.5·fit + 0.5·outlook))
+ *   raise           100 × 0.5 × w·V·(req − cur)/req ÷ Σ w·V    what learning one missing skill to its level adds
  *
  * Only skill levels enter the calculation: no age, gender or other personal attribute is read.
  */
@@ -19,12 +21,17 @@ import { allCareers, SKILLS } from './careers.js'
 import { currentExposure } from './ai-exposure.js'
 import { currentMomentum } from './skill-momentum.js'
 import { careerRecord, currentSignals } from './official-signals.js'
+import { trendClassification } from './aei-evidence.js'
 
-// D10 – D13 (skills/idea/ideas/sdc-domain1-scenarios-2026-10-29/00-README.md)
-export const PRESETS = { moderate: { k: 0.6, H: 3 }, fast: { k: 1.6, H: 3 } }
+// D10 – D13 (skills/idea/ideas/sdc-domain1-scenarios-2026-10-29/00-README.md). Two presets only: no-regret.js walks them.
+// Team assumptions (2026-10-31): extreme is the fastest adoption the model allows (k at LIMITS.k's top, about 83% of
+// related tasks after 3 years); fit and outlook weigh the same, the scenarios acting through the outlook
+export const PRESETS = { moderate: { k: 0.6, H: 3 }, extreme: { k: 3, H: 3 } }
+// Names used before prompt 06, accepted in requests and old saves
+const RENAMED = { fast: 'extreme' }
 export const TAU = 5
 export const BETA = 0.5
-export const WEIGHTS = { fit: 0.6, outlook: 0.4 }
+export const WEIGHTS = { fit: 0.5, outlook: 0.5 }
 export const RISING = 1.05
 export const DECLINING = 0.95
 export const LIMITS = { k: [ 0.2, 3 ], H: [ 1, 3, 5 ] }
@@ -37,15 +44,66 @@ const lowest = (levels) => levels.reduce((low, level) => RANK[level] < RANK[low]
 export const adoption = (k, H) => 1 - Math.exp(- k * H / TAU)
 export const demandTerm = (growth, H) => growth === null || growth === undefined ? 1 : clamp(Math.exp(growth * H), 0.5, 2)
 
-/** The scenario of a save: a preset name, or explicit { k, H } inside LIMITS (anything else falls back to moderate) */
+/** A preset name as used now ('fast' was renamed 'extreme'), or null when it is no preset */
+export function normalizePreset(name)
+{
+    const preset = RENAMED[name] ?? name
+    return PRESETS[preset] ? preset : null
+}
+
+/**
+ * The scenario the player chose, while it lasts: a choice holds for one learning cycle, until `until` (the next
+ * roadmap check-in, adaptive-learning.js setLearningMode); then the recommendation computed from the data applies again
+ */
+export function ownChoice(save, now = Date.now())
+{
+    const preset = normalizePreset(save?.scenario?.preset)
+    if(!preset)
+        return null
+    const until = Date.parse(save.scenario.until ?? '')
+    return Number.isFinite(until) && now >= until ? null : preset
+}
+
+/**
+ * The scenario of a save: the preset the player chose (while it lasts), explicit { k, H } inside LIMITS, or else the
+ * preset recommended from the AI usage evidence (aei-evidence.js trendClassification)
+ */
 export function scenarioOf(save)
 {
     const chosen = save?.scenario ?? {}
-    if(PRESETS[chosen.preset])
-        return { scenario: chosen.preset, ...PRESETS[chosen.preset] }
+    const preset = ownChoice(save)
+    if(preset)
+        return { scenario: preset, ...PRESETS[preset] }
     if(validParams(chosen))
         return { scenario: 'custom', k: chosen.k, H: chosen.H }
-    return { scenario: 'moderate', ...PRESETS.moderate }
+    const recommended = trendClassification(save?.target?.careerId ?? null).recommendedScenario
+    return { scenario: recommended, ...PRESETS[recommended] }
+}
+
+/**
+ * Recommended, chosen and effective scenario kept apart: the player's choice wins, the recommendation (from the AI usage
+ * of the target career's tasks) and its basis stay as they were. Explicit { k, H } is no choice between the two
+ * scenarios (userOverride null).
+ */
+export function scenarioState(save)
+{
+    const trend = trendClassification(save?.target?.careerId ?? null)
+    const userOverride = ownChoice(save)
+    return {
+        trendClassification: trend.trendClassification,
+        recommendedScenario: trend.recommendedScenario,
+        userOverride,
+        effectiveScenario: userOverride ?? trend.recommendedScenario,
+        selectionSource: userOverride ? 'user_override' : 'model_default',
+        overrideUntil: userOverride ? save.scenario.until ?? null : null,
+        reason: trend.reason,
+        evidenceRefs: trend.evidenceRefs,
+        limitations: trend.limitations,
+        change: trend.change ?? null,
+        values: trend.values ?? null,
+        comparability: trend.comparability ?? null,
+        mock: trend.mock ?? false,
+    }
 }
 
 export const validParams = ({ k, H } = {}) => typeof k === 'number' && k >= LIMITS.k[0] && k <= LIMITS.k[1] && LIMITS.H.includes(H)
@@ -55,6 +113,12 @@ export function defaultInputs()
 {
     const official = currentSignals()
     return { momentum: currentMomentum({ official }), exposure: currentExposure(), official }
+}
+
+/** Roadmap priority uses AEI only. Neutral demand means excluded/unknown, not flat measured demand. */
+export function aeiInputs()
+{
+    return { momentum: { skills: {}, careers: {}, basis: { metric: 'excluded_from_learning_priority' } }, exposure: currentExposure(), official: [] }
 }
 
 /** The future value of one skill under a scenario, with its parts and sources */
@@ -75,8 +139,9 @@ export function skillValue(id, params, inputs)
         status: value > RISING ? 'rising' : value < DECLINING ? 'declining' : 'stable',
         parts: { demand: round(demand), automationLoss: round(automationLoss), augmentationGain: round(augmentationGain) },
         sources: {
-            demand: growth === null ? null : { metric: inputs.momentum.basis?.metric ?? null, months: momentum.months, from: inputs.momentum.basis?.from ?? null, through: inputs.momentum.basis?.through ?? null },
-            exposure: exposure ? { tasks: exposure.tasks, source: inputs.exposure.source } : null,
+            demand: growth === null ? null : { metric: inputs.momentum.basis?.metric ?? null, months: momentum.months, from: inputs.momentum.basis?.from ?? null, through: inputs.momentum.basis?.through ?? null,
+                mock: momentum.mock === true, mockMonths: momentum.mockMonths ?? 0 },
+            exposure: exposure ? { tasks: exposure.tasks, source: inputs.exposure.source, mock: exposure.mock === true, method: exposure.method ?? null } : null,
         },
         official: momentum?.official ?? [],
         confidence: known === 2 && momentum.confidence === 'high' ? 'high' : known >= 1 ? 'medium' : 'low',
@@ -112,7 +177,7 @@ export function forecastCareer(career, profileSkills, params, inputs, values = n
     const reached = skills.reduce((sum, skill) => sum + skill.weight * skill.value * Math.min(skill.current, skill.required) / skill.required, 0)
     const fit = weighted ? reached / weighted : 0
     const careerGrowth = inputs.momentum?.careers?.[career.id]?.growth ?? null
-    const outlook = clamp((totalWeight ? weighted / totalWeight : 1) * demandTerm(careerGrowth, params.H) - 0.5, 0, 1)
+    const outlook = clamp((totalWeight ? weighted / totalWeight : 1) * demandTerm(careerGrowth, params.H) / 2, 0, 1)
     const raise = skills.filter((skill) => skill.gap > 0)
         .map((skill) => ({ skillId: skill.id, gain: round(100 * WEIGHTS.fit * skill.weight * skill.value * skill.gap / skill.required / weighted, 1) }))
         .sort((a, b) => b.gain - a.gain)
@@ -149,6 +214,8 @@ export function forecast(save, params = scenarioOf(save), inputs = defaultInputs
         careers,
         skills: Object.keys(SKILLS).map((id) => values.get(id) ?? skillValue(id, params, inputs)),
         sources: { exposure: inputs.exposure?.source ?? null, momentum: inputs.momentum?.basis ?? null },
+        // Some value rests on mock data (data/mock): shown as such, replaced as real data accumulates
+        mock: [ ...values.values() ].some((skill) => skill.sources.demand?.mock || skill.sources.exposure?.mock),
         estimate: true,
     }
 }

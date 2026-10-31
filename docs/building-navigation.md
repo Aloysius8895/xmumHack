@@ -1,23 +1,27 @@
 # Building navigation and display screens
 
 The top navigation opens the workshop exhibit immediately, with a short camera dolly.
-There is no player teleport, map stop, or Enter step. Existing career UI is projected onto
-the original wooden display, retaining the workshop title, subtitle and surrounding frame.
-The two wooden side signs and their arrows are smaller and sit forward of the frame posts,
-so their lettering and navigation remain visible without covering the content.
+There is no player teleport, map stop, or Enter step. All categories share one large live content panel, with an integrated title, close button,
+section navigation and previous/next controls. Decorative wooden frame artwork is no longer rendered. The original 3D workshop remains visible with no backdrop tint or blur. The frame fits the viewport;
+live HTML controls and text are not scaled by the world-space camera projection.
 Press **Esc**, gamepad **B**, or the close button to return to the current category's
 corresponding entrance. Switching from Careers to Trends and then exiting leaves the
 character at the Trends workshop; it does not restart the intro or reset saved progress.
 
-The camera faces the display straight on for a flat rectangular layout. Sign lettering
-uses the face's two actual dimensions (including Blender's XZ planes), avoiding stretched
-Chinese text. Display fonts use a shared sans-serif stack, dark text on white, and white
-text on purple for selected controls. These styles only apply inside the exhibit.
+The camera still faces the workshop display. The active interface uses a shared sans-serif
+stack, navy text on pale parchment, and white text on purple for selected controls.
+These styles only apply inside the exhibit. The transparent illustration cannot intercept input.
 
 The display uses the original CareerUI renderers, forms, file inputs, filters, translations,
-and API actions. Its section buttons jump to existing headings. The compact wooden side controls
+and API actions. Its section buttons jump to existing headings. Labelled footer controls
 switch functional categories. Small arrows below the display browse careers or scroll the
-current content. Square markers jump to sections/careers. Internal links stay on the display.
+current content. Internal links stay on the display.
+
+The retired workshop board, title and side signs are hidden during a visit. Labelled left/right
+category controls are integrated into the content panel and keep using the existing
+`building-room` actions. Footer page controls browse careers or scroll the current content.
+The surrounding game world stays visible. The display fills the available viewport instead
+of constraining live content to the illustration's original aspect ratio.
 
 The following walking entrances remain optional; they are not part of the menu flow:
 

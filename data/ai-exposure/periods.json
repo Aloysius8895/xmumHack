@@ -1,0 +1,177 @@
+{
+  "about": "AI usage per career over several Anthropic Economic Index releases (CC-BY), for the trend classification of the Written by src/data/scripts/build_aei_periods.py.",
+  "metric": "automation-share",
+  "definition": "(directive + feedback loop) / (directive + feedback loop + task iteration + validation + learning) per O*NET task; patterns no category describes are left out; per career the mean over its mapped tasks present in every release",
+  "releases": {
+    "release_2025_03_27": {
+      "file": "release_2025_03_27/automation_vs_augmentation_by_task.csv",
+      "dates": null
+    },
+    "release_2025_09_15": {
+      "file": "aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv",
+      "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/release_2025_09_15/data/intermediate/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv",
+      "sha256": "c8ef9c5eee0c42febc73e358ecc7d2358e0a0ce3b50122c0c15ae8ec569aceff",
+      "dates": [
+        {
+          "from": "2025-08-04",
+          "to": "2025-08-11",
+          "platform": "Claude AI (Free and Pro)"
+        }
+      ]
+    }
+  },
+  "careers": {
+    "data-analyst": {
+      "mappedTasks": 8,
+      "pairedTasks": 4,
+      "automationShare": {
+        "release_2025_03_27": 0.3908,
+        "release_2025_09_15": 0.6123
+      }
+    },
+    "frontend-developer": {
+      "mappedTasks": 1,
+      "pairedTasks": 0,
+      "automationShare": {
+        "release_2025_03_27": null,
+        "release_2025_09_15": null
+      }
+    },
+    "backend-developer": {
+      "mappedTasks": 14,
+      "pairedTasks": 10,
+      "automationShare": {
+        "release_2025_03_27": 0.3409,
+        "release_2025_09_15": 0.4004
+      }
+    },
+    "ui-ux-designer": {
+      "mappedTasks": 13,
+      "pairedTasks": 4,
+      "automationShare": {
+        "release_2025_03_27": 0.543,
+        "release_2025_09_15": 0.3747
+      }
+    },
+    "forward-deployed-engineer": {
+      "mappedTasks": 2,
+      "pairedTasks": 1,
+      "automationShare": {
+        "release_2025_03_27": 0.285,
+        "release_2025_09_15": 0.2343
+      }
+    },
+    "data-scientist": {
+      "mappedTasks": 7,
+      "pairedTasks": 3,
+      "automationShare": {
+        "release_2025_03_27": 0.3633,
+        "release_2025_09_15": 0.6385
+      }
+    },
+    "auditor": {
+      "mappedTasks": 19,
+      "pairedTasks": 3,
+      "automationShare": {
+        "release_2025_03_27": 0.4568,
+        "release_2025_09_15": 0.4625
+      }
+    },
+    "lawyer": {
+      "mappedTasks": 12,
+      "pairedTasks": 3,
+      "automationShare": {
+        "release_2025_03_27": 0.2278,
+        "release_2025_09_15": 0.3245
+      }
+    },
+    "teacher": {
+      "mappedTasks": 16,
+      "pairedTasks": 6,
+      "automationShare": {
+        "release_2025_03_27": 0.4554,
+        "release_2025_09_15": 0.5371
+      }
+    },
+    "doctor": {
+      "mappedTasks": 12,
+      "pairedTasks": 3,
+      "automationShare": {
+        "release_2025_03_27": 0.1952,
+        "release_2025_09_15": 0.0938
+      }
+    },
+    "chef": {
+      "mappedTasks": 8,
+      "pairedTasks": 0,
+      "automationShare": {
+        "release_2025_03_27": null,
+        "release_2025_09_15": null
+      }
+    },
+    "civil-engineer": {
+      "mappedTasks": 6,
+      "pairedTasks": 0,
+      "automationShare": {
+        "release_2025_03_27": null,
+        "release_2025_09_15": null
+      }
+    },
+    "accountant": {
+      "mappedTasks": 7,
+      "pairedTasks": 2,
+      "automationShare": {
+        "release_2025_03_27": 0.3994,
+        "release_2025_09_15": 0.4993
+      }
+    },
+    "software-engineer": {
+      "mappedTasks": 3,
+      "pairedTasks": 2,
+      "automationShare": {
+        "release_2025_03_27": 0.4416,
+        "release_2025_09_15": 0.4626
+      }
+    },
+    "electrical-engineer": {
+      "mappedTasks": 9,
+      "pairedTasks": 2,
+      "automationShare": {
+        "release_2025_03_27": 0.2685,
+        "release_2025_09_15": 0.0
+      }
+    },
+    "digital-marketer": {
+      "mappedTasks": 9,
+      "pairedTasks": 6,
+      "automationShare": {
+        "release_2025_03_27": 0.4149,
+        "release_2025_09_15": 0.6198
+      }
+    },
+    "hr-executive": {
+      "mappedTasks": 16,
+      "pairedTasks": 4,
+      "automationShare": {
+        "release_2025_03_27": 0.4313,
+        "release_2025_09_15": 0.6028
+      }
+    },
+    "sales-executive": {
+      "mappedTasks": 7,
+      "pairedTasks": 2,
+      "automationShare": {
+        "release_2025_03_27": 0.2529,
+        "release_2025_09_15": 0.4715
+      }
+    },
+    "customer-service": {
+      "mappedTasks": 7,
+      "pairedTasks": 1,
+      "automationShare": {
+        "release_2025_03_27": 0.3908,
+        "release_2025_09_15": 1.0
+      }
+    }
+  }
+}

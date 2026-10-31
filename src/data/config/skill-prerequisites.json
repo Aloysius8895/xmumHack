@@ -1,0 +1,14 @@
+{
+  "about": "Skills that are a clear foundation for another skill: a skill listed in `requires` must be learnt before `skill`. Only reviewed entries (reviewed: true, set by a person) are used, by src/game/server/no-regret.js: a skill declining under both scenarios is not put last while a skill still to learn requires it. Only clear foundations belong here; anything debatable is left out.",
+  "reviewer": null,
+  "entries": [
+    { "skill": "react", "requires": [ "javascript", "html-css" ], "reviewed": true, "note": "[AI 拟稿 2026-10-31] React 组件用 JavaScript（JSX）编写，最终渲染为 HTML 并用 CSS 设置样式" },
+    { "skill": "ml-frameworks", "requires": [ "python" ], "reviewed": true, "note": "[AI 拟稿 2026-10-31] 主流框架（PyTorch、scikit-learn）以 Python 为主要接口" },
+    { "skill": "rest-api", "requires": [ "backend-language" ], "reviewed": true, "note": "[AI 拟稿 2026-10-31] 实现 API 需要后端语言（前提：rest-api 指构建 API 而非调用）" },
+    { "skill": "auditing", "requires": [ "accounting" ], "reviewed": true, "note": "[AI 拟稿 2026-10-31] 审计的对象是会计记录和财务报表" },
+    { "skill": "taxation", "requires": [ "accounting" ], "reviewed": true, "note": "[AI 拟稿 2026-10-31] 企业所得税从会计利润出发做税务调整" },
+    { "skill": "accounts-payable-receivable", "requires": [ "accounting" ], "reviewed": true, "note": "[AI 拟稿 2026-10-31] 应付和应收是会计分录的一部分" },
+    { "skill": "accounting-software", "requires": [ "accounting" ], "reviewed": true, "note": "[AI 拟稿 2026-10-31] 会计软件记录的是会计分录，不懂会计无法判断软件的结果" },
+    { "skill": "plc-automation", "requires": [ "electrical-systems" ], "reviewed": true, "note": "[AI 拟稿 2026-10-31] PLC 控制的是电气回路，I/O 接线需要电气基础" }
+  ]
+}

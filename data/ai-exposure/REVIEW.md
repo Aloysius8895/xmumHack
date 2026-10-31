@@ -1,6 +1,6 @@
 # AI exposure mapping review (v2, checkpoint 2)
 
-Generated 2026-10-30. Source: Anthropic Economic Index (https://huggingface.co/datasets/Anthropic/EconomicIndex), CC-BY (data).
+Generated 2026-10-31. Source: Anthropic Economic Index (https://huggingface.co/datasets/Anthropic/EconomicIndex), CC-BY (data).
 
 **How tasks are chosen**: nobody picks them and nothing is ranked by AI penetration. Every task of the career's O*NET occupations that matches the skill's pattern counts, including tasks with no observed AI use (penetration 0).
 
@@ -10,58 +10,44 @@ Generated 2026-10-30. Source: Anthropic Economic Index (https://huggingface.co/d
 
 **Limits**: Usage of Claude on US O*NET tasks: a signal of where AI enters work, not jobs lost and not Malaysian data.
 
-## Career-level cross-check (against AEI's own job exposure; Spearman rank correlation = 0.68)
+## Career-level cross-check (against AEI's own job exposure; Spearman rank correlation = 0.57)
 
 | Career | AEI job exposure | Ours from skills (automation + augmentation) | O*NET tasks | Tasks without penetration data |
 |---|---|---|---|---|
-| data-analyst | 0.4605 | 0.6356 | 35 | 9 |
-| frontend-developer | 0.4802 | 0.5906 | 37 | 3 |
-| backend-developer | 0.288 | 0.6989 | 49 | 17 |
-| ui-ux-designer | 0.249 | 0.2583 | 54 | 5 |
-| ml-engineer | 0.3404 | 0.703 | 33 | 8 |
-| product-manager | 0.1559 | 0.3526 | 17 | 0 |
-| forward-deployed-engineer | 0.288 | 0.7938 | 36 | 12 |
-| data-scientist | 0.4605 | 0.7405 | 35 | 9 |
-| auditor | 0.3478 | 0.5864 | 36 | 13 |
-| lawyer | 0.1673 | 0.171 | 22 | 2 |
-| teacher | 0.2901 | 0.3097 | 32 | 3 |
-| doctor | 0.084 | 0.1726 | 28 | 4 |
-| chef | 0.0 | 0.0493 | 21 | 1 |
-| civil-engineer | 0.0081 | 0.0617 | 17 | 4 |
-| accountant | 0.3478 | 0.4786 | 16 | 8 |
-| software-engineer | 0.288 | 0.6254 | 31 | 15 |
-| electrical-engineer | 0.059 | 0.1401 | 44 | 3 |
-| digital-marketer | 0.6483 | 0.5751 | 33 | 2 |
-| quantity-surveyor | 0.0 | 0.0352 | 13 | 4 |
-| hr-executive | 0.4034 | 0.3645 | 25 | 1 |
-| sales-executive | 0.6279 | 0.5903 | 20 | 1 |
-| customer-service | 0.7011 | 0.6885 | 15 | 0 |
+| data-analyst | 0.4605 | 0.6398 | 35 | 9 |
+| frontend-developer | 0.4802 | 0.0 | 37 | 3 |
+| backend-developer | 0.288 | 0.6762 | 49 | 17 |
+| ui-ux-designer | 0.249 | 0.208 | 54 | 5 |
+| ml-engineer | 0.3404 | 0.3035 | 33 | 8 |
+| product-manager | 0.1559 | 0.4849 | 17 | 0 |
+| forward-deployed-engineer | 0.288 | 0.2383 | 36 | 12 |
+| data-scientist | 0.4605 | 0.5456 | 35 | 9 |
+| auditor | 0.3478 | 0.6158 | 36 | 13 |
+| lawyer | 0.1673 | 0.1846 | 22 | 2 |
+| teacher | 0.2901 | 0.3076 | 32 | 3 |
+| doctor | 0.084 | 0.1725 | 19 | 3 |
+| chef | 0.0 | 0.0477 | 21 | 1 |
+| civil-engineer | 0.0081 | 0.0596 | 17 | 4 |
+| accountant | 0.3478 | 0.5282 | 16 | 8 |
+| software-engineer | 0.288 | 0.5958 | 31 | 15 |
+| electrical-engineer | 0.059 | 0.1007 | 22 | 2 |
+| digital-marketer | 0.6483 | 0.4507 | 13 | 0 |
+| quantity-surveyor | 0.0 | 0.034 | 13 | 4 |
+| hr-executive | 0.4034 | 0.437 | 25 | 1 |
+| sales-executive | 0.6279 | 0.646 | 20 | 1 |
+| customer-service | 0.7011 | 0.5882 | 15 | 0 |
 
 ## sql　✅ reviewed
 
-Pattern: `\bsql\b|\bquer(y|ies)\b|database` → automation **0.4052**, augmentation **0.5559**
+Pattern: `\bsql\b|structured query language` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] 加词边界；[AI 任务初审 2026-10-30] 2 条都是 BI 工具/数据库相关，全部保留
-
-**data-analyst**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Maintain or update business intelligence tools, databases, dashboards, systems, or methods. ※ | 1.0 | 0.374 | 0.626 |
-| Create business intelligence tools or systems, including design of related databases, spreadsheets, or outputs. | 0.9223 | 0.4365 | 0.4858 |
-
-**data-scientist**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Maintain or update business intelligence tools, databases, dashboards, systems, or methods. ※ | 1.0 | 0.374 | 0.626 |
-| Create business intelligence tools or systems, including design of related databases, spreadsheets, or outputs. | 0.9223 | 0.4365 | 0.4858 |
+Reviewer note: [AI 语义审查 2026-10-31] 仅接受明确的 SQL 证据；数据库或 BI 工具任务不能单独证明 SQL。
 
 ## excel　✅ reviewed
 
-Pattern: `spreadsheet` → automation **0.4365**, augmentation **0.4858**
+Pattern: `\A(?:Create\ business\ intelligence\ tools\ or\ systems,\ including\ design\ of\ related\ databases,\ spreadsheets,\ or\ outputs\.)\Z` → automation **0.4365**, augmentation **0.4858**
 
-Reviewer note: [AI 任务初审 2026-10-30] 只有 1 条任务（含 spreadsheets），相关，保留；样本很薄
+Reviewer note: [AI 语义审查 2026-10-31] 保留电子表格任务作为工具族代理；不能称为 Excel 专属观测，且当前样本只有一条。
 
 **data-analyst**
 
@@ -71,9 +57,9 @@ Reviewer note: [AI 任务初审 2026-10-30] 只有 1 条任务（含 spreadsheet
 
 ## statistics　✅ reviewed
 
-Pattern: `statistic` → automation **0.1691**, augmentation **0.296**
+Pattern: `\A(?:Report\ results\ of\ statistical\ analyses,\ including\ information\ in\ the\ form\ of\ graphs,\ charts,\ and\ tables\.|Analyze\ and\ interpret\ statistical\ data\ to\ identify\ significant\ differences\ in\ relationships\ among\ sources\ of\ information\.|Adapt\ statistical\ methods\ to\ solve\ specific\ problems\ in\ many\ fields,\ such\ as\ economics,\ biology,\ and\ engineering\.|Process\ large\ amounts\ of\ data\ for\ statistical\ modeling\ and\ graphic\ analysis,\ using\ computers\.|Evaluate\ the\ statistical\ methods\ and\ procedures\ used\ to\ obtain\ data\ to\ ensure\ validity,\ applicability,\ efficiency,\ and\ accuracy\.|Report\ results\ of\ statistical\ analyses\ in\ peer\-reviewed\ papers\ and\ technical\ manuals\.)\Z` → automation **0.1691**, augmentation **0.296**
 
-Reviewer note: [AI 任务初审 2026-10-30] 6 条都是统计分析，全部保留
+Reviewer note: [AI 语义审查 2026-10-31] 保留报告中的统计分析、方法评估与结果解释任务。
 
 **data-analyst**
 
@@ -99,54 +85,26 @@ Reviewer note: [AI 任务初审 2026-10-30] 6 条都是统计分析，全部保�
 
 ## python　✅ reviewed
 
-Pattern: `\bprogramm|\bcode\b|\bcoding\b|software|\bscript` → automation **0.329**, augmentation **0.5784**
+Pattern: `\bpython\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] 去掉 script 误匹配 description/prescription；program 改为 programm（避免匹配“项目/计划 programs”）；[AI 任务初审 2026-10-30] 删除督导、采购、网络维护、硬件设计、需求分析，只保留写/改代码的任务
-
-**ml-engineer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Analyze problems to develop solutions involving computer hardware and software. | 0.8725 | 0.2786 | 0.5939 |
-
-**forward-deployed-engineer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance. | 0.9592 | 0.5982 | 0.361 |
-| Review and analyze computer printouts and performance indicators to locate code problems, and correct errors by correcting codes. | 0.9237 | 0.4597 | 0.464 |
-| Use object-oriented programming languages, as well as client and server applications development processes and multimedia and Internet technology. | 0.9439 | 0.08 | 0.8639 |
+Reviewer note: [AI 语义审查 2026-10-31] 一般编程任务不能证明使用 Python。
 
 ## data-cleaning　✅ reviewed
 
-Pattern: `clean|data quality|validat|verif|accura|integrity` → automation **0.0**, augmentation **0.0**
+Pattern: `\b(?:clean|cleanse|deduplicate|impute|preprocess)\w*\b.{0,50}\bdata\b|\bdata\s+(?:cleaning|cleansing|deduplication|preprocessing)\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 任务初审 2026-10-30] 删除写设计文档的任务；剩下的“评估统计方法的有效性/准确性”是最接近的，但不是严格意义的数据清洗
-
-**data-analyst**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy. | 0.0 | 0.0 | 0.0 |
-
-**ml-engineer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] 统计方法有效性评估不属于数据清洗；只保留直接的数据清洗或预处理证据。
 
 ## data-visualization　✅ reviewed
 
-Pattern: `chart|\bgraph|visuali|dashboard` → automation **0.4346**, augmentation **0.512**
+Pattern: `\A(?:Report\ results\ of\ statistical\ analyses,\ including\ information\ in\ the\ form\ of\ graphs,\ charts,\ and\ tables\.|Process\ large\ amounts\ of\ data\ for\ statistical\ modeling\ and\ graphic\ analysis,\ using\ computers\.)\Z` → automation **0.3904**, augmentation **0.543**
 
-Reviewer note: [AI 规则初审 2026-10-30] 去掉 report：撰写报告属于写作，不是可视化；[AI 任务初审 2026-10-30] 4 条都是图表/仪表板，全部保留
+Reviewer note: [AI 语义审查 2026-10-31] 保留明确的图表呈现与图形分析；移除 BI 系统维护和一般技术支持。
 
 **data-analyst**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
-| Maintain or update business intelligence tools, databases, dashboards, systems, or methods. ※ | 1.0 | 0.374 | 0.626 |
-| Provide technical support for existing reports, dashboards, or other tools. | 0.9197 | 0.5837 | 0.336 |
 | Report results of statistical analyses, including information in the form of graphs, charts, and tables. | 0.9446 | 0.3699 | 0.5747 |
 | Process large amounts of data for statistical modeling and graphic analysis, using computers. | 0.9223 | 0.411 | 0.5113 |
 
@@ -156,14 +114,12 @@ Reviewer note: [AI 规则初审 2026-10-30] 去掉 report：撰写报告属于�
 |---|---|---|---|
 | Report results of statistical analyses, including information in the form of graphs, charts, and tables. | 0.9446 | 0.3699 | 0.5747 |
 | Process large amounts of data for statistical modeling and graphic analysis, using computers. | 0.9223 | 0.411 | 0.5113 |
-| Maintain or update business intelligence tools, databases, dashboards, systems, or methods. ※ | 1.0 | 0.374 | 0.626 |
-| Provide technical support for existing reports, dashboards, or other tools. | 0.9197 | 0.5837 | 0.336 |
 
 ## communication　✅ reviewed
 
-Pattern: `\bpresent|communicat|explain|consult|advis|discuss|confer` → automation **0.0791**, augmentation **0.1675**
+Pattern: `\A(?:Communicate\ with\ customers,\ competitors,\ suppliers,\ professional\ organizations,\ or\ others\ to\ stay\ abreast\ of\ industry\ or\ business\ trends\.|Confer\ with\ clients\ to\ discuss\ and\ determine\ layout\ design\.|Confer\ with\ management\ or\ development\ teams\ to\ prioritize\ needs,\ resolve\ conflicts,\ develop\ content\ criteria,\ or\ choose\ solutions\.|Communicate\ with\ network\ personnel\ or\ Web\ site\ hosting\ agencies\ to\ address\ hardware\ or\ software\ issues\ affecting\ Web\ sites\.|Provide\ clear,\ detailed\ descriptions\ of\ Web\ site\ specifications,\ such\ as\ product\ features,\ activities,\ software,\ communication\ protocols,\ programming\ languages,\ and\ operating\ systems\ software\ and\ hardware\.|Consult\ with\ users,\ management,\ vendors,\ and\ technicians\ to\ assess\ computing\ needs\ and\ system\ requirements\.|Consult\ with\ management\ to\ ensure\ agreement\ on\ system\ principles\.|Confer\ with\ clients\ regarding\ the\ nature\ of\ the\ information\ processing\ or\ computation\ needs\ a\ computer\ program\ is\ to\ address\.|Confer\ with\ company\ officials\ about\ financial\ and\ regulatory\ matters\.|Advise\ clients\ in\ areas\ such\ as\ compensation,\ employee\ health\ care\ benefits,\ the\ design\ of\ accounting\ or\ data\ processing\ systems,\ or\ long\-range\ tax\ or\ estate\ plans\.|Present\ evidence\ to\ defend\ clients\ or\ prosecute\ defendants\ in\ criminal\ or\ civil\ litigation\.|Present\ and\ summarize\ cases\ to\ judges\ and\ juries\.|Advise\ clients\ concerning\ business\ transactions,\ claim\ liability,\ advisability\ of\ prosecuting\ or\ defending\ lawsuits,\ or\ legal\ rights\ and\ obligations\.|Confer\ with\ colleagues\ with\ specialties\ in\ appropriate\ areas\ of\ legal\ issue\ to\ establish\ and\ verify\ bases\ for\ legal\ proceedings\.|Probate\ wills\ and\ represent\ and\ advise\ executors\ and\ administrators\ of\ estates\.|Instruct\ through\ lectures,\ discussions,\ and\ demonstrations\ in\ one\ or\ more\ subjects,\ such\ as\ English,\ mathematics,\ or\ social\ studies\.|Establish\ clear\ objectives\ for\ all\ lessons,\ units,\ and\ projects\ and\ communicate\ those\ objectives\ to\ students\.|Confer\ with\ parents\ or\ guardians,\ other\ teachers,\ counselors,\ and\ administrators\ to\ resolve\ students'\ behavioral\ and\ academic\ problems\.|Meet\ with\ parents\ and\ guardians\ to\ discuss\ their\ children's\ progress\ and\ to\ determine\ priorities\ for\ their\ children\ and\ their\ resource\ needs\.|Meet\ with\ other\ professionals\ to\ discuss\ individual\ students'\ needs\ and\ progress\.|Confer\ with\ other\ staff\ members\ to\ plan\ and\ schedule\ lessons\ promoting\ learning,\ following\ approved\ curricula\.|Explain\ procedures\ and\ discuss\ test\ results\ or\ prescribed\ treatments\ with\ patients\.|Advise\ patients\ and\ community\ members\ concerning\ diet,\ activity,\ hygiene,\ and\ disease\ prevention\.|Advise\ surgeon\ of\ a\ patient's\ risk\ status\ and\ recommend\ appropriate\ intervention\ to\ minimize\ risk\.|Provide\ consulting\ services\ to\ other\ doctors\ caring\ for\ patients\ with\ special\ or\ difficult\ problems\.|Meet\ with\ customers\ to\ discuss\ menus\ for\ special\ occasions,\ such\ as\ weddings,\ parties,\ or\ banquets\.|Prepare\ or\ present\ public\ reports\ on\ topics\ such\ as\ bid\ proposals,\ deeds,\ environmental\ impact\ statements,\ or\ property\ and\ right\-of\-way\ descriptions\.|Consult\ with\ customers\ or\ other\ departments\ on\ project\ status,\ proposals,\ or\ technical\ issues,\ such\ as\ software\ system\ design\ or\ maintenance\.|Confer\ with\ data\ processing\ or\ project\ managers\ to\ obtain\ information\ on\ limitations\ or\ capabilities\ for\ data\ processing\ projects\.|Confer\ with\ engineers,\ customers,\ or\ others\ to\ discuss\ existing\ or\ potential\ engineering\ projects\ or\ products\.|Confer\ with\ engineers,\ customers,\ vendors,\ or\ others\ to\ discuss\ existing\ or\ potential\ electronics\ engineering\ projects\ or\ products\.|Represent\ employer\ at\ conferences,\ meetings,\ boards,\ panels,\ committees,\ or\ working\ groups\ to\ present,\ explain,\ or\ defend\ findings\ or\ recommendations,\ negotiate\ compromises\ or\ agreements,\ or\ exchange\ information\.|Attend\ staff\ conferences\ to\ provide\ management\ with\ information\ and\ proposals\ concerning\ the\ promotion,\ distribution,\ design,\ and\ pricing\ of\ company\ products\ or\ services\.|Confer\ with\ legal\ staff\ to\ resolve\ problems,\ such\ as\ copyright\ infringement\ or\ royalty\ sharing\ with\ outside\ producers\ or\ distributors\.|Consult\ with\ buying\ personnel\ to\ gain\ advice\ regarding\ the\ types\ of\ products\ or\ services\ expected\ to\ be\ in\ demand\.|Consult\ with\ buying\ personnel\ to\ gain\ advice\ regarding\ environmentally\ sound\ or\ sustainable\ products\.|Advise\ business\ or\ other\ groups\ on\ local,\ national,\ or\ international\ factors\ affecting\ the\ buying\ or\ selling\ of\ products\ or\ services\.|Interpret\ and\ explain\ human\ resources\ policies,\ procedures,\ laws,\ standards,\ or\ regulations\.|Confer\ with\ management\ to\ develop\ or\ implement\ personnel\ policies\ or\ procedures\.|Advise\ management\ on\ organizing,\ preparing,\ or\ implementing\ recruiting\ or\ retention\ programs\.|Evaluate\ selection\ or\ testing\ techniques\ by\ conducting\ research\ or\ follow\-up\ activities\ and\ conferring\ with\ management\ or\ supervisory\ personnel\.|Contact\ regular\ and\ prospective\ customers\ to\ demonstrate\ products,\ explain\ product\ features,\ and\ solicit\ orders\.|Consult\ with\ clients\ after\ sales\ or\ contract\ signings\ to\ resolve\ problems\ and\ to\ provide\ ongoing\ support\.|Confer\ with\ customers\ by\ telephone\ or\ in\ person\ to\ provide\ information\ about\ products\ or\ services,\ take\ or\ enter\ orders,\ cancel\ accounts,\ or\ obtain\ details\ of\ complaints\.)\Z` → automation **0.0766**, augmentation **0.1617**
 
-Reviewer note: [AI 规则初审 2026-10-30] present 加词边界，避免匹配 represent（律师代表客户是核心法律工作）；[AI 任务初审 2026-10-30] 删除只是字面命中的任务：画草图、食物摆盘（presentation）、持续学习/参会、法律分析（advisability）、使用教具
+Reviewer note: [AI 语义审查 2026-10-31] 保留解释、表达、咨询和讨论；移除营销效果测量与以查找名单为主的潜客识别。完整任务可能仍包含其他能力。
 
 **data-analyst**
 
@@ -180,7 +136,7 @@ Reviewer note: [AI 规则初审 2026-10-30] present 加词边界，避免匹配 
 | Communicate with network personnel or Web site hosting agencies to address hardware or software issues affecting Web sites. | 0.0 | 0.0 | 0.0 |
 | Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware. | 0.778 | 0.2593 | 0.5187 |
 
-**product-manager**
+**product-manager** (career to review: not counted yet)
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -248,39 +204,32 @@ Reviewer note: [AI 规则初审 2026-10-30] present 加词边界，避免匹配 
 |---|---|---|---|
 | Prepare or present public reports on topics such as bid proposals, deeds, environmental impact statements, or property and right-of-way descriptions. | 0.0 | 0.0 | 0.0 |
 
-**accountant** (career to review: not counted yet)
+**accountant**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans. | 0.0 | 0.0 | 0.0 |
 
-**software-engineer** (career to review: not counted yet)
+**software-engineer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Consult with customers or other departments on project status, proposals, or technical issues, such as software system design or maintenance. | 0.6464 | 0.1678 | 0.4786 |
 | Confer with data processing or project managers to obtain information on limitations or capabilities for data processing projects. | 0.0 | 0.0 | 0.0 |
 
-**electrical-engineer** (career to review: not counted yet)
+**electrical-engineer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Confer with engineers, customers, or others to discuss existing or potential engineering projects or products. | 0.0 | 0.0 | 0.0 |
-| Confer with engineers, customers, vendors, or others to discuss existing or potential electronics engineering projects or products. | 0.0 | 0.0 | 0.0 |
-| Represent employer at conferences, meetings, boards, panels, committees, or working groups to present, explain, or defend findings or recommendations, negotiate compromises or agreements, or exchange information. | 0.0 | 0.0 | 0.0 |
 
-**digital-marketer** (career to review: not counted yet)
+**digital-marketer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
-| Measure the effectiveness of marketing, advertising, and communications programs and strategies. | 0.9216 | 0.2888 | 0.6328 |
 | Attend staff conferences to provide management with information and proposals concerning the promotion, distribution, design, and pricing of company products or services. | 0.0 | 0.0 | 0.0 |
-| Confer with legal staff to resolve problems, such as copyright infringement or royalty sharing with outside producers or distributors. | 0.0 | 0.0 | 0.0 |
-| Consult with buying personnel to gain advice regarding the types of products or services expected to be in demand. | 0.0 | 0.0 | 0.0 |
-| Consult with buying personnel to gain advice regarding environmentally sound or sustainable products. | 0.0 | 0.0 | 0.0 |
-| Advise business or other groups on local, national, or international factors affecting the buying or selling of products or services. | 0.0 | 0.0 | 0.0 |
 
-**hr-executive** (career to review: not counted yet)
+**hr-executive**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -289,15 +238,14 @@ Reviewer note: [AI 规则初审 2026-10-30] present 加词边界，避免匹配 
 | Advise management on organizing, preparing, or implementing recruiting or retention programs. | 0.0 | 0.0 | 0.0 |
 | Evaluate selection or testing techniques by conducting research or follow-up activities and conferring with management or supervisory personnel. | 0.0 | 0.0 | 0.0 |
 
-**sales-executive** (career to review: not counted yet)
+**sales-executive**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders. ※ | 0.9923 | 0.4926 | 0.4997 |
 | Consult with clients after sales or contract signings to resolve problems and to provide ongoing support. ※ | 1.0 | 0.4965 | 0.5035 |
-| Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences. ※ | 0.9852 | 0.4891 | 0.4961 |
 
-**customer-service** (career to review: not counted yet)
+**customer-service**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -305,104 +253,60 @@ Reviewer note: [AI 规则初审 2026-10-30] present 加词边界，避免匹配 
 
 ## html-css　✅ reviewed
 
-Pattern: `\bweb|html|page` → automation **0.3846**, augmentation **0.3089**
+Pattern: `\bhtml\b|\bcss\b|hypertext markup|cascading style` → no matching task → shown as "no source"
 
-Reviewer note: [AI 任务初审 2026-10-30] 只保留建站、写页面代码、页面模板、样式指南、链接维护；删除备份、数据库、商业策略、测试、SEO、写规格文档、技术选型
-
-**frontend-developer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media. | 0.9054 | 0.5003 | 0.4051 |
-| Perform or direct Web site updates. | 0.0 | 0.0 | 0.0 |
-| Write supporting code for Web applications or Web sites. | 0.8944 | 0.4384 | 0.456 |
-| Develop and document style guidelines for Web site content. | 0.8662 | 0.3022 | 0.564 |
-| Develop Web site maps, application models, image templates, or page templates that meet project goals, user needs, or industry standards. | 0.8819 | 0.3888 | 0.4931 |
-| Identify or maintain links to and from other Web sites and check links to ensure proper functioning. | 1.0 | 0.4473 | 0.5527 |
-| Create searchable indices for Web page content. | 1.0 | 1.0 | 0.0 |
-| Create web models or prototypes that include physical, interface, logical, or data models. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] 一般建站或页面维护不能独立识别 HTML/CSS 的暴露度。
 
 ## javascript　✅ reviewed
 
-Pattern: `\bprogramm|\bcode\b|\bcoding\b|web application|\bscript` → automation **0.2159**, augmentation **0.2478**
+Pattern: `\bjavascript\b|\becmascript\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] 同 python：修 script / program 误匹配；[AI 任务初审 2026-10-30] 只保留写代码、评估代码、用脚本语言建站
-
-**frontend-developer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media. | 0.9054 | 0.5003 | 0.4051 |
-| Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems. | 0.9824 | 0.3566 | 0.6258 |
-| Write supporting code for Web applications or Web sites. | 0.8944 | 0.4384 | 0.456 |
-
-**software-engineer** (career to review: not counted yet)
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Supervise the work of programmers, technologists and technicians and other engineering and scientific personnel. | 0.0 | 0.0 | 0.0 |
-| Supervise and assign work to programmers, designers, technologists, technicians, or other engineering or scientific personnel. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] 一般编程或脚本任务不能证明使用 JavaScript。
 
 ## react　✅ reviewed
 
-Pattern: `\binterface|front.?end|web application` → automation **0.2192**, augmentation **0.228**
+Pattern: `\breact(?:\.js|js)?\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] 去掉 user：太宽，与 user-research 重叠；[AI 任务初审 2026-10-30] 删除数据库任务
-
-**frontend-developer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Write supporting code for Web applications or Web sites. | 0.8944 | 0.4384 | 0.456 |
-| Create web models or prototypes that include physical, interface, logical, or data models. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] 界面开发与网页应用不等于 React；此规则按前端框架名称理解。
 
 ## git　✅ reviewed
 
-Pattern: `\bversion|source code|configuration management|revision control` → no matching task → shown as "no source"
+Pattern: `\bgit\b|\bversion control\b|\brevision control\b|\bsource control\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] 原规则 0 匹配；version 加词边界（避免 conversion），新增 back up（网页开发任务里的备份/恢复最接近版本管理）；[AI 任务初审 2026-10-30] O*NET 没有版本管理相关任务；“备份文件/数据库集群”不是 git，用作代理会误导（渗透率 0 会被理解成 AI 用不上 git）。规则恢复为不放宽，显示「无来源」
+Reviewer note: [AI 语义审查 2026-10-31] 接受版本控制这一直接能力族，不以备份任务替代；不是 Git 品牌专属统计。
 
 ## accessibility　✅ reviewed
 
-Pattern: `accessib|usab|compatib|disab` → automation **0.1783**, augmentation **0.3129**
+Pattern: `\A(?:Incorporate\ technical\ considerations\ into\ Web\ site\ design\ plans,\ such\ as\ budgets,\ equipment,\ performance\ requirements,\ or\ legal\ issues\ including\ accessibility\ and\ privacy\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 任务初审 2026-10-30] 2 条：浏览器/设备兼容性检查、网站设计考虑无障碍。是最接近的任务，保留；上一轮你没通过这个技能，请再确认
+Reviewer note: [AI 语义审查 2026-10-31] 仅保留明确提及 accessibility 的任务；浏览器和设备兼容性不等于无障碍。
 
 **frontend-developer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
-| Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems. | 0.9824 | 0.3566 | 0.6258 |
 | Incorporate technical considerations into Web site design plans, such as budgets, equipment, performance requirements, or legal issues including accessibility and privacy. | 0.0 | 0.0 | 0.0 |
 
-## api-integration　☐ to review
+## api-integration　✅ reviewed
 
-Pattern: `\binterface|integrat|\bapi\b|coordinate and link` → automation **0.398**, augmentation **0.4596**
+Pattern: `\bapi\b|application programming interfaces?` → no matching task → shown as "no source"
 
-Reviewer note: [AI 任务初审 2026-10-30] 删除商业策略、原型任务。规则新增 coordinate and link，以匹配系统分析师“连接组织内各计算机系统”这类任务；新匹配到的任务还没看过
-
-**forward-deployed-engineer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Use the computer in the analysis and solution of business problems, such as development of integrated production and inventory control and cost analysis systems. | 0.8576 | 0.398 | 0.4596 |
+Reviewer note: [AI 语义审查 2026-10-31] 系统整合、库存系统和一般 interface 不足以证明 API 集成。
 
 ## backend-language　✅ reviewed
 
-Pattern: `\bprogramm|\bcode\b|\bcoding\b|software|\bapplications?\b` → automation **0.4966**, augmentation **0.4206**
+Pattern: `\A(?:Modify\ existing\ software\ to\ correct\ errors,\ allow\ it\ to\ adapt\ to\ new\ hardware,\ or\ to\ improve\ its\ performance\.|Develop\ or\ maintain\ archived\ procedures,\ procedural\ codes,\ or\ queries\ for\ applications\.)\Z` → automation **0.532**, augmentation **0.4085**
 
-Reviewer note: [AI 任务初审 2026-10-30] 规则与 python 统一（program→programm）；删除督导、沟通、安装、选型、测试任务，只保留写/改代码与数据模型
+Reviewer note: [AI 语义审查 2026-10-31] 保留代码修改与过程代码开发；通用编程代理，不识别具体后端语言，也不将数据库建模当成编程。
 
 **backend-developer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Modify existing software to correct errors, allow it to adapt to new hardware, or to improve its performance. | 0.9592 | 0.5982 | 0.361 |
-| Develop data models for applications, metadata tables, views or related database structures. | 0.8337 | 0.2987 | 0.535 |
-| Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure. | 0.8235 | 0.3496 | 0.4739 |
 | Develop or maintain archived procedures, procedural codes, or queries for applications. | 0.8849 | 0.3337 | 0.5512 |
 
-**software-engineer** (career to review: not counted yet)
+**software-engineer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -410,9 +314,9 @@ Reviewer note: [AI 任务初审 2026-10-30] 规则与 python 统一（program→
 
 ## databases　✅ reviewed
 
-Pattern: `database` → automation **0.1846**, augmentation **0.424**
+Pattern: `\A(?:Develop\ database\ architectural\ strategies\ at\ the\ modeling,\ design\ and\ implementation\ stages\ to\ address\ business\ or\ industry\ requirements\.|Develop\ data\ models\ for\ applications,\ metadata\ tables,\ views\ or\ related\ database\ structures\.|Set\ up\ database\ clusters,\ backup,\ or\ recovery\ processes\.|Create\ and\ enforce\ database\ development\ standards\.|Develop\ and\ document\ database\ architectures\.|Design\ database\ applications,\ such\ as\ interfaces,\ data\ transfer\ mechanisms,\ global\ temporary\ tables,\ data\ partitions,\ and\ function\-based\ indexes\ to\ enable\ efficient\ access\ of\ the\ generic\ database\ structure\.|Document\ and\ communicate\ database\ schemas,\ using\ accepted\ notations\.|Identify,\ evaluate\ and\ recommend\ hardware\ or\ software\ technologies\ to\ achieve\ desired\ database\ performance\.|Demonstrate\ database\ technical\ functionality,\ such\ as\ performance,\ security\ and\ reliability\.|Test\ changes\ to\ database\ applications\ or\ systems\.|Identify\ and\ correct\ deviations\ from\ database\ development\ standards\.|Plan\ and\ install\ upgrades\ of\ database\ management\ system\ software\ to\ enhance\ database\ performance\.)\Z` → automation **0.1846**, augmentation **0.424**
 
-Reviewer note: [AI 任务初审 2026-10-30] 12 条都是数据库工作，全部保留
+Reviewer note: [AI 语义审查 2026-10-31] 数据库架构、建模、标准、备份恢复、性能、测试与升级均相关。
 
 **backend-developer**
 
@@ -433,48 +337,21 @@ Reviewer note: [AI 任务初审 2026-10-30] 12 条都是数据库工作，全部
 
 ## rest-api　✅ reviewed
 
-Pattern: `(?<!user )interface|web service|\bapi\b` → automation **0.3496**, augmentation **0.4739**
+Pattern: `\brestful\b|\brest\s+(?:apis?|services?|interfaces?)\b|representational state transfer` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] 排除 user interface（那是前端，不是 API）；[AI 任务初审 2026-10-30] 只有 1 条（数据库应用的接口与数据传输机制），相关，保留；样本很薄
-
-**backend-developer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure. | 0.8235 | 0.3496 | 0.4739 |
+Reviewer note: [AI 语义审查 2026-10-31] 数据库接口不能证明 REST API；一般 API 也不能证明 REST。
 
 ## cloud-deploy　✅ reviewed
 
-Pattern: `deploy|install|configur|server|cloud|network` → automation **0.2584**, augmentation **0.407**
+Pattern: `\bcloud\b.{0,80}\b(?:deploy|provision|configur|install|migrat)\w*\b|\b(?:deploy|provision|configur|install|migrat)\w*\b.{0,80}\bcloud\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 任务初审 2026-10-30] 删除机房供电、温湿度设备采购（硬件设施）和写代码任务
-
-**backend-developer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system. | 0.8614 | 0.2642 | 0.5972 |
-| Coordinate installation of software system. | 0.0 | 0.0 | 0.0 |
-| Plan and install upgrades of database management system software to enhance database performance. ※ | 0.9184 | 0.2799 | 0.6385 |
-
-**forward-deployed-engineer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems. | 0.9722 | 0.4617 | 0.5105 |
-
-**software-engineer** (career to review: not counted yet)
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Analyze information to determine, recommend, and plan installation of a new system or modification of an existing system. | 0.8614 | 0.2642 | 0.5972 |
-| Coordinate installation of software system. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] 普通系统安装、数据库升级与网络维护不等于云部署。
 
 ## testing　✅ reviewed
 
-Pattern: `\btest|debug|\berrors?\b` → automation **0.2991**, augmentation **0.1805**
+Pattern: `\A(?:Modify\ existing\ software\ to\ correct\ errors,\ allow\ it\ to\ adapt\ to\ new\ hardware,\ or\ to\ improve\ its\ performance\.|Test\ changes\ to\ database\ applications\ or\ systems\.)\Z` → automation **0.2991**, augmentation **0.1805**
 
-Reviewer note: [AI 规则初审 2026-10-30] test 加词边界，避免匹配 latest/contest/attest；[AI 任务初审 2026-10-30] 2 条都是修错/测试，保留
+Reviewer note: [AI 语义审查 2026-10-31] 保留软件测试与错误修复；包含调试这一相邻能力，非单一测试类型专属统计。
 
 **backend-developer**
 
@@ -485,69 +362,47 @@ Reviewer note: [AI 规则初审 2026-10-30] test 加词边界，避免匹配 lat
 
 ## user-research　✅ reviewed
 
-Pattern: `\busers?\b|client|customer|requirement|survey|interview|(user|customer|client) needs` → automation **0.0688**, augmentation **0.213**
+Pattern: `\A(?:Confer\ with\ clients\ to\ discuss\ and\ determine\ layout\ design\.|Analyze\ user\ needs\ to\ determine\ technical\ requirements\.|Consult\ with\ users,\ management,\ vendors,\ and\ technicians\ to\ assess\ computing\ needs\ and\ system\ requirements\.)\Z` → automation **0.0777**, augmentation **0.2756**
 
-Reviewer note: [AI 规则初审 2026-10-30] 去掉 need：会匹配所有 “as needed”；[AI 任务初审 2026-10-30] 删除只因 client/user 字眼命中的制作和技术支持任务；保留与客户/用户沟通需求、分析用户需求、处理用户反馈
+Reviewer note: [AI 语义审查 2026-10-31] 保留需求访谈与用户需求分析；移除一般商业策略、项目可行性和没有明确研究活动的故障反馈处理。
 
 **ui-ux-designer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Confer with clients to discuss and determine layout design. | 0.0 | 0.0 | 0.0 |
-| Identify problems uncovered by testing or customer feedback, and correct problems or refer problems to appropriate personnel for correction. | 0.0 | 0.0 | 0.0 |
 | Analyze user needs to determine technical requirements. | 0.0 | 0.0 | 0.0 |
-| Collaborate with management or users to develop e-commerce strategies and to integrate these strategies with Web sites. | 0.8411 | 0.24 | 0.6011 |
 
-**product-manager**
+**product-manager** (career to review: not counted yet)
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Consult with users, management, vendors, and technicians to assess computing needs and system requirements. | 0.7066 | 0.1555 | 0.5511 |
-| Evaluate data processing proposals to assess project feasibility and requirements. | 0.0 | 0.0 | 0.0 |
 
 ## prototyping　✅ reviewed
 
-Pattern: `prototyp|mock-?up|sketch|layout|wireframe|storyboard` → automation **0.033**, augmentation **0.0733**
+Pattern: `\A(?:Prepare\ illustrations\ or\ rough\ sketches\ of\ material,\ discussing\ them\ with\ clients\ or\ supervisors\ and\ making\ necessary\ changes\.|Create\ web\ models\ or\ prototypes\ that\ include\ physical,\ interface,\ logical,\ or\ data\ models\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 规则初审 2026-10-30] 去掉 model（ML/统计模型），加 wireframe/storyboard；上轮未通过，需人工确认；[AI 任务初审 2026-10-30] 删除印刷排版流程和客户沟通；保留设计概念、草图、版式、网页原型。上一轮你没通过这个技能，请再确认
+Reviewer note: [AI 语义审查 2026-10-31] 仅保留网页原型和概念草图；移除发电设施布局、工程施工草图及成品平面设计。按数字产品概念原型理解。
 
 **ui-ux-designer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
-| Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts. | 0.0 | 0.0 | 0.0 |
-| Develop graphics and layouts for product illustrations, company logos, and Web sites. | 0.8504 | 0.2636 | 0.5868 |
 | Prepare illustrations or rough sketches of material, discussing them with clients or supervisors and making necessary changes. | 0.0 | 0.0 | 0.0 |
 | Create web models or prototypes that include physical, interface, logical, or data models. | 0.0 | 0.0 | 0.0 |
 
-**electrical-engineer** (career to review: not counted yet)
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Plan layout of electric power generating plants or distribution lines or stations. | 0.0 | 0.0 | 0.0 |
-| Prepare engineering sketches or specifications for construction, relocation, or installation of equipment, facilities, products, or systems. | 0.0 | 0.0 | 0.0 |
-
 ## figma　✅ reviewed
 
-Pattern: `layout|graphic|illustrat|mock-?up|wireframe` → automation **0.1406**, augmentation **0.1958**
+Pattern: `\bfigma\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] 去掉 design：几乎匹配设计师全部任务，失去区分度；[AI 任务初审 2026-10-30] 只保留数字化设计与排版任务；删除手绘草图、印刷流程、电视广播图像、客户沟通
-
-**ui-ux-designer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Create designs, concepts, and sample layouts, based on knowledge of layout principles and esthetic design concepts. | 0.0 | 0.0 | 0.0 |
-| Determine size and arrangement of illustrative material and copy, and select style and size of type. | 0.8319 | 0.4396 | 0.3923 |
-| Develop graphics and layouts for product illustrations, company logos, and Web sites. | 0.8504 | 0.2636 | 0.5868 |
-| Key information into computer equipment to create layouts for client or supervisor. | 0.0 | 0.0 | 0.0 |
-| Draw and print charts, graphs, illustrations, and other artwork, using computer. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] 一般数字设计或排版任务不能证明使用 Figma。
 
 ## visual-design　✅ reviewed
 
-Pattern: `visual|colou?r|graphic|illustrat|layout|typograph` → automation **0.2317**, augmentation **0.3469**
+Pattern: `\A(?:Create\ designs,\ concepts,\ and\ sample\ layouts,\ based\ on\ knowledge\ of\ layout\ principles\ and\ esthetic\ design\ concepts\.|Determine\ size\ and\ arrangement\ of\ illustrative\ material\ and\ copy,\ and\ select\ style\ and\ size\ of\ type\.|Develop\ graphics\ and\ layouts\ for\ product\ illustrations,\ company\ logos,\ and\ Web\ sites\.|Prepare\ illustrations\ or\ rough\ sketches\ of\ material,\ discussing\ them\ with\ clients\ or\ supervisors\ and\ making\ necessary\ changes\.|Draw\ and\ print\ charts,\ graphs,\ illustrations,\ and\ other\ artwork,\ using\ computer\.|Study\ illustrations\ and\ photographs\ to\ plan\ presentation\ of\ materials,\ products,\ or\ services\.|Produce\ still\ and\ animated\ graphics\ for\ on\-air\ and\ taped\ portions\ of\ television\ news\ broadcasts,\ using\ electronic\ video\ equipment\.)\Z` → automation **0.1005**, augmentation **0.1399**
 
-Reviewer note: [AI 任务初审 2026-10-30] 删除印刷制作流程和客户沟通，保留视觉设计本身
+Reviewer note: [AI 语义审查 2026-10-31] 保留视觉构图、字体、图形与版式任务；移除研究报告和客户人口特征分析。品牌设计、动态图形是视觉设计的宽类代理。
 
 **ui-ux-designer**
 
@@ -561,115 +416,60 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除印刷制作流程和客户沟
 | Study illustrations and photographs to plan presentation of materials, products, or services. | 0.0 | 0.0 | 0.0 |
 | Produce still and animated graphics for on-air and taped portions of television news broadcasts, using electronic video equipment. | 0.0 | 0.0 | 0.0 |
 
-**digital-marketer** (career to review: not counted yet)
+## usability-testing　✅ reviewed
 
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Prepare reports of findings, illustrating data graphically and translating complex findings into written text. | 0.8788 | 0.2983 | 0.5805 |
-| Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand. | 0.9548 | 0.4274 | 0.5274 |
+Pattern: `(?!)` → no matching task → shown as "no source"
 
-## usability-testing　☐ to review
-
-Pattern: `usab|uncovered by testing|(customer|user) feedback|user experience` → automation **0.0**, augmentation **0.0**
-
-Reviewer note: [AI 规则初审 2026-10-30] 原来 test 会匹配网页开发的代码测试；改为必须与 user 同时出现；[AI 任务初审 2026-10-30] 原规则 0 匹配；改为匹配“测试或客户反馈中发现的问题”这类任务（网页开发职业里有）。新匹配到的任务还没看过
-
-**ui-ux-designer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Identify problems uncovered by testing or customer feedback, and correct problems or refer problems to appropriate personnel for correction. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] 一般测试发现问题或客户反馈不能确认执行了可用性测试；当前候选不通过。
 
 ## ml-math　✅ reviewed
 
-Pattern: `mathemat|statistic|model|algorithm` → automation **0.1593**, augmentation **0.3018**
+Pattern: `\A(?:Conduct\ logical\ analyses\ of\ business,\ scientific,\ engineering,\ and\ other\ technical\ problems,\ formulating\ mathematical\ models\ of\ problems\ for\ solution\ by\ computers\.|Analyze\ and\ interpret\ statistical\ data\ to\ identify\ significant\ differences\ in\ relationships\ among\ sources\ of\ information\.|Adapt\ statistical\ methods\ to\ solve\ specific\ problems\ in\ many\ fields,\ such\ as\ economics,\ biology,\ and\ engineering\.|Process\ large\ amounts\ of\ data\ for\ statistical\ modeling\ and\ graphic\ analysis,\ using\ computers\.|Evaluate\ the\ statistical\ methods\ and\ procedures\ used\ to\ obtain\ data\ to\ ensure\ validity,\ applicability,\ efficiency,\ and\ accuracy\.|Examine\ theories,\ such\ as\ those\ of\ probability\ and\ inference,\ to\ discover\ mathematical\ bases\ for\ new\ or\ improved\ methods\ of\ obtaining\ and\ evaluating\ numerical\ data\.)\Z` → automation **0.1119**, augmentation **0.1916**
 
-Reviewer note: [AI 任务初审 2026-10-30] 8 条都是数学/统计建模，全部保留
+Reviewer note: [AI 语义审查 2026-10-31] 保留数学建模、概率、统计分析与方法评估作为数学基础代理；移除仅写作或呈现结果的任务，不称为 ML 专属暴露度。
 
-**ml-engineer**
+**ml-engineer** (career to review: not counted yet)
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Conduct logical analyses of business, scientific, engineering, and other technical problems, formulating mathematical models of problems for solution by computers. | 0.8987 | 0.2602 | 0.6385 |
-| Report results of statistical analyses, including information in the form of graphs, charts, and tables. | 0.9446 | 0.3699 | 0.5747 |
 | Analyze and interpret statistical data to identify significant differences in relationships among sources of information. | 0.0 | 0.0 | 0.0 |
 | Adapt statistical methods to solve specific problems in many fields, such as economics, biology, and engineering. | 0.0 | 0.0 | 0.0 |
 | Process large amounts of data for statistical modeling and graphic analysis, using computers. | 0.9223 | 0.411 | 0.5113 |
 | Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy. | 0.0 | 0.0 | 0.0 |
 | Examine theories, such as those of probability and inference, to discover mathematical bases for new or improved methods of obtaining and evaluating numerical data. | 0.0 | 0.0 | 0.0 |
-| Report results of statistical analyses in peer-reviewed papers and technical manuals. | 0.9237 | 0.2335 | 0.6902 |
 
 ## ml-frameworks　✅ reviewed
 
-Pattern: `machine learning|model|algorithm|data mining` → automation **0.3733**, augmentation **0.5431**
+Pattern: `\btensorflow\b|\bpytorch\b|\bscikit[ -]learn\b|\bkeras\b|\bmachine learning frameworks?\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 任务初审 2026-10-30] 删除“维护模型文档模板库”（model 指文档模板，不是 ML 模型）
-
-**ml-engineer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Conduct logical analyses of business, scientific, engineering, and other technical problems, formulating mathematical models of problems for solution by computers. | 0.8987 | 0.2602 | 0.6385 |
-| Process large amounts of data for statistical modeling and graphic analysis, using computers. | 0.9223 | 0.411 | 0.5113 |
-
-**data-scientist**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Process large amounts of data for statistical modeling and graphic analysis, using computers. | 0.9223 | 0.411 | 0.5113 |
+Reviewer note: [AI 语义审查 2026-10-31] 数学模型和统计建模不证明使用机器学习框架。
 
 ## mlops　✅ reviewed
 
-Pattern: `deploy|monitor|production|maintain.*(system|software|model)` → automation **0.4617**, augmentation **0.5105**
+Pattern: `\bmlops\b|(?:machine learning|\bml\b).{0,80}(?:deploy|monitor|production|lifecycle)|(?:deploy|monitor|production|lifecycle).{0,80}(?:machine learning|\bml\b)` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] 去掉单独的 model 和 maintain：与 ml-frameworks 几乎重复、会匹配 maintain records；[AI 任务初审 2026-10-30] 删除网络维护、预算监控、生产库存系统；只剩 1 条（测试、维护、监控程序与系统），样本很薄
-
-**forward-deployed-engineer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Test, maintain, and monitor computer programs and systems, including coordinating the installation of computer programs and systems. | 0.9722 | 0.4617 | 0.5105 |
+Reviewer note: [AI 语义审查 2026-10-31] 一般程序测试、维护和监控不是机器学习模型运维的直接证据。
 
 ## roadmapping　✅ reviewed
 
-Pattern: `\bplan|strateg|priorit|\bgoals?\b` → automation **0.0874**, augmentation **0.1574**
+Pattern: `\broad\s?maps?\b|\bproduct\s+(?:strategy|priorities|planning)\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation；[AI 任务初审 2026-10-30] 删除 IT 基础设施/灾备任务，保留计划、目标、优先级
-
-**product-manager**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Review project plans to plan and coordinate project activity. | 0.0 | 0.0 | 0.0 |
-| Develop and interpret organizational goals, policies, and procedures. | 0.7344 | 0.2623 | 0.4721 |
-| Direct daily operations of department, analyzing workflow, establishing priorities, developing standards and setting deadlines. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] IT 部门日常运营和组织政策不等于产品路线图。
 
 ## agile　✅ reviewed
 
-Pattern: `coordinat|team|schedul|collaborat` → automation **0.0**, augmentation **0.0**
+Pattern: `\bagile\b|\bscrum\b|\bkanban\b|\bsprints?\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 任务初审 2026-10-30] 只有 1 条（审查项目计划、协调项目活动），保留；样本很薄
-
-**product-manager**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Review project plans to plan and coordinate project activity. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] 一般团队协调、排期和项目计划不等于敏捷方法。
 
 ## market-analysis　✅ reviewed
 
-Pattern: `market|competit|trend|customer|vendor|industry|new technolog|advances in|cost.?benefit|feasibility` → automation **0.1397**, augmentation **0.2416**
+Pattern: `\A(?:Seek\ and\ provide\ information\ to\ help\ companies\ determine\ their\ position\ in\ the\ marketplace\.|Gather\ data\ on\ competitors\ and\ analyze\ their\ prices,\ sales,\ and\ method\ of\ marketing\ and\ distribution\.|Collect\ and\ analyze\ data\ on\ customer\ demographics,\ preferences,\ needs,\ and\ buying\ habits\ to\ identify\ potential\ markets\ and\ factors\ affecting\ product\ demand\.|Monitor\ industry\ statistics\ and\ follow\ trends\ in\ trade\ literature\.|Forecast\ and\ track\ marketing\ and\ sales\ trends,\ analyzing\ collected\ data\.|Conduct\ research\ on\ consumer\ opinions\ and\ marketing\ strategies,\ collaborating\ with\ marketing\ professionals,\ statisticians,\ pollsters,\ and\ other\ professionals\.|Conduct\ economic\ or\ commercial\ surveys\ to\ identify\ potential\ markets\ for\ products\ or\ services\.|Monitor\ market\ conditions,\ product\ innovations,\ and\ competitors'\ products,\ prices,\ and\ sales\.)\Z` → automation **0.2856**, augmentation **0.5776**
 
-Reviewer note: [AI 规则初审 2026-10-30] 原规则 0 匹配；11-3021（IT 经理）任务里没有 market 字眼，放宽到供应商评估、行业/新技术跟踪、成本效益和可行性分析；[AI 任务初审 2026-10-30] 删除与 user-research/沟通重复的任务；保留跟踪技术进展、评估项目可行性。产品经理映射到 IT 经理本身较弱
+Reviewer note: [AI 语义审查 2026-10-31] 保留市场、竞争者、消费者和趋势研究；移除一般客户沟通、销售、人员管理、合同谈判和纯技术跟踪。
 
-**product-manager**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Stay abreast of advances in technology. | 0.0 | 0.0 | 0.0 |
-| Evaluate data processing proposals to assess project feasibility and requirements. | 0.0 | 0.0 | 0.0 |
-
-**digital-marketer** (career to review: not counted yet)
+**digital-marketer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -677,39 +477,20 @@ Reviewer note: [AI 规则初审 2026-10-30] 原规则 0 匹配；11-3021（IT �
 | Gather data on competitors and analyze their prices, sales, and method of marketing and distribution. | 0.9399 | 0.3807 | 0.5592 |
 | Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand. | 0.9548 | 0.4274 | 0.5274 |
 | Monitor industry statistics and follow trends in trade literature. | 0.0 | 0.0 | 0.0 |
-| Measure and assess customer and employee satisfaction. | 0.0 | 0.0 | 0.0 |
-| Measure the effectiveness of marketing, advertising, and communications programs and strategies. | 0.9216 | 0.2888 | 0.6328 |
 | Forecast and track marketing and sales trends, analyzing collected data. | 0.9181 | 0.5374 | 0.3807 |
 | Conduct research on consumer opinions and marketing strategies, collaborating with marketing professionals, statisticians, pollsters, and other professionals. | 0.9697 | 0.3794 | 0.5903 |
-| Identify, develop, or evaluate marketing strategy, based on knowledge of establishment objectives, market characteristics, and cost and markup factors. | 0.7316 | 0.0 | 0.7316 |
-| Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers. | 0.8136 | 0.2732 | 0.5404 |
-| Develop pricing strategies, balancing firm objectives and customer satisfaction. | 0.6326 | 0.0 | 0.6326 |
-| Direct the hiring, training, or performance evaluations of marketing or sales staff and oversee their daily activities. | 0.0 | 0.0 | 0.0 |
-| Use sales forecasting or strategic planning to ensure the sale and profitability of products, lines, or services, analyzing business developments and monitoring market trends. ※ | 0.803 | 0.2342 | 0.5688 |
-| Negotiate contracts with vendors or distributors to manage product distribution, establishing distribution networks or developing distribution strategies. | 0.0 | 0.0 | 0.0 |
-| Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services. | 0.0 | 0.0 | 0.0 |
-| Conduct economic or commercial surveys to identify potential markets for products or services. ※ | 0.9165 | 0.2673 | 0.6492 |
-| Develop business cases for environmental marketing strategies. | 0.0 | 0.0 | 0.0 |
-| Integrate environmental information into product or company marketing strategies, policies, or activities. | 0.0 | 0.0 | 0.0 |
 
-**sales-executive** (career to review: not counted yet)
+**sales-executive**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
-| Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders. ※ | 0.9923 | 0.4926 | 0.4997 |
-| Recommend products to customers, based on customers' needs and interests. ※ | 1.0 | 0.4965 | 0.5035 |
-| Answer customers' questions about products, prices, availability, product uses, and credit terms. | 0.9818 | 0.2575 | 0.7243 |
-| Provide customers with product samples and catalogs. | 0.0 | 0.0 | 0.0 |
-| Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences. ※ | 0.9852 | 0.4891 | 0.4961 |
-| Prepare drawings, estimates, and bids that meet specific customer needs. | 0.0 | 0.0 | 0.0 |
 | Monitor market conditions, product innovations, and competitors' products, prices, and sales. | 0.933 | 0.2273 | 0.7057 |
-| Obtain credit information about prospective customers. | 0.0 | 0.0 | 0.0 |
 
 ## accounting　✅ reviewed
 
-Pattern: `account|financial|ledger|statement` → automation **0.3087**, augmentation **0.4408**
+Pattern: `\A(?:Inspect\ account\ books\ and\ accounting\ systems\ for\ efficiency,\ effectiveness,\ and\ use\ of\ accepted\ accounting\ procedures\ to\ record\ transactions\.|Examine\ inventory\ to\ verify\ journal\ and\ ledger\ entries\.|Prepare,\ examine,\ or\ analyze\ accounting\ records,\ financial\ statements,\ or\ other\ financial\ reports\ to\ assess\ accuracy,\ completeness,\ and\ conformance\ to\ reporting\ and\ procedural\ standards\.|Establish\ tables\ of\ accounts\ and\ assign\ entries\ to\ proper\ accounts\.|Develop,\ implement,\ modify,\ and\ document\ recordkeeping\ and\ accounting\ systems,\ making\ use\ of\ current\ computer\ technology\.|Analyze\ business\ operations,\ trends,\ costs,\ revenues,\ financial\ commitments,\ and\ obligations\ to\ project\ future\ revenues\ and\ expenses\ or\ to\ provide\ advice\.)\Z` → automation **0.3087**, augmentation **0.4408**
 
-Reviewer note: [AI 任务初审 2026-10-30] 删除归属审计、内控、沟通、代理出庭的任务，只保留记账、报表、会计系统、财务分析
+Reviewer note: [AI 语义审查 2026-10-31] 保留会计记录、报表、账簿与会计系统任务；与审计有真实重叠，不以强制互斥方式删除。
 
 **auditor**
 
@@ -722,7 +503,7 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除归属审计、内控、沟通
 | Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology. | 0.9107 | 0.4101 | 0.5006 |
 | Analyze business operations, trends, costs, revenues, financial commitments, and obligations to project future revenues and expenses or to provide advice. | 0.8571 | 0.2988 | 0.5583 |
 
-**accountant** (career to review: not counted yet)
+**accountant**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -733,9 +514,9 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除归属审计、内控、沟通
 
 ## auditing　✅ reviewed
 
-Pattern: `audit|examin|inspect` → automation **0.228**, augmentation **0.3196**
+Pattern: `\A(?:Prepare\ detailed\ reports\ on\ audit\ findings\.|Supervise\ auditing\ of\ establishments,\ and\ determine\ scope\ of\ investigation\ required\.|Report\ to\ management\ about\ asset\ utilization\ and\ audit\ results,\ and\ recommend\ changes\ in\ operations\ and\ financial\ activities\.|Inspect\ account\ books\ and\ accounting\ systems\ for\ efficiency,\ effectiveness,\ and\ use\ of\ accepted\ accounting\ procedures\ to\ record\ transactions\.|Examine\ records\ and\ interview\ workers\ to\ ensure\ recording\ of\ transactions\ and\ compliance\ with\ laws\ and\ regulations\.|Examine\ and\ evaluate\ financial\ and\ information\ systems,\ recommending\ controls\ to\ ensure\ system\ reliability\ and\ data\ integrity\.|Examine\ whether\ the\ organization's\ objectives\ are\ reflected\ in\ its\ management\ activities,\ and\ whether\ employees\ understand\ the\ objectives\.|Inspect\ cash\ on\ hand,\ notes\ receivable\ and\ payable,\ negotiable\ securities,\ and\ canceled\ checks\ to\ confirm\ records\ are\ accurate\.|Examine\ inventory\ to\ verify\ journal\ and\ ledger\ entries\.|Conduct\ pre\-implementation\ audits\ to\ determine\ if\ systems\ and\ programs\ under\ development\ will\ work\ as\ planned\.|Audit\ payroll\ and\ personnel\ records\ to\ determine\ unemployment\ insurance\ premiums,\ workers'\ compensation\ coverage,\ liabilities,\ and\ compliance\ with\ tax\ laws\.|Review\ taxpayer\ accounts,\ and\ conduct\ audits\ on\-site,\ by\ correspondence,\ or\ by\ summoning\ taxpayer\ to\ office\.|Prepare,\ examine,\ or\ analyze\ accounting\ records,\ financial\ statements,\ or\ other\ financial\ reports\ to\ assess\ accuracy,\ completeness,\ and\ conformance\ to\ reporting\ and\ procedural\ standards\.)\Z` → automation **0.228**, augmentation **0.3196**
 
-Reviewer note: [AI 任务初审 2026-10-30] 13 条都是审计工作，全部保留
+Reviewer note: [AI 语义审查 2026-10-31] 保留审计、记录核查、系统检查与审计报告任务；会计与审计可能真实重叠。
 
 **auditor**
 
@@ -755,7 +536,7 @@ Reviewer note: [AI 任务初审 2026-10-30] 13 条都是审计工作，全部保
 | Review taxpayer accounts, and conduct audits on-site, by correspondence, or by summoning taxpayer to office. | 0.0 | 0.0 | 0.0 |
 | Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards. ※ | 0.8929 | 0.4079 | 0.485 |
 
-**accountant** (career to review: not counted yet)
+**accountant**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -763,9 +544,9 @@ Reviewer note: [AI 任务初审 2026-10-30] 13 条都是审计工作，全部保
 
 ## internal-control　✅ reviewed
 
-Pattern: `\bcontrols?\b|risk|complian|fraud` → automation **0.2129**, augmentation **0.2531**
+Pattern: `\A(?:Collect\ and\ analyze\ data\ to\ detect\ deficient\ controls,\ duplicated\ effort,\ extravagance,\ fraud,\ or\ non\-compliance\ with\ laws,\ regulations,\ and\ management\ policies\.|Examine\ records\ and\ interview\ workers\ to\ ensure\ recording\ of\ transactions\ and\ compliance\ with\ laws\ and\ regulations\.|Examine\ and\ evaluate\ financial\ and\ information\ systems,\ recommending\ controls\ to\ ensure\ system\ reliability\ and\ data\ integrity\.)\Z` → automation **0.2838**, augmentation **0.3375**
 
-Reviewer note: [AI 规则初审 2026-10-30] control 加词边界，避免匹配 controller；[AI 任务初审 2026-10-30] 删除报税任务
+Reviewer note: [AI 语义审查 2026-10-31] 保留控制缺陷、舞弊、合规和系统控制评估；移除不明确针对内控的薪资审计任务。
 
 **auditor**
 
@@ -774,13 +555,12 @@ Reviewer note: [AI 规则初审 2026-10-30] control 加词边界，避免匹配 
 | Collect and analyze data to detect deficient controls, duplicated effort, extravagance, fraud, or non-compliance with laws, regulations, and management policies. ※ | 0.9099 | 0.4156 | 0.4943 |
 | Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations. ※ | 0.954 | 0.4358 | 0.5182 |
 | Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity. | 0.0 | 0.0 | 0.0 |
-| Audit payroll and personnel records to determine unemployment insurance premiums, workers' compensation coverage, liabilities, and compliance with tax laws. | 0.0 | 0.0 | 0.0 |
 
 ## legal-research　✅ reviewed
 
-Pattern: `research|statute|regulation|case law|precedent|interpret` → automation **0.0185**, augmentation **0.1696**
+Pattern: `\A(?:Study\ Constitution,\ statutes,\ decisions,\ regulations,\ and\ ordinances\ of\ quasi\-judicial\ bodies\ to\ determine\ ramifications\ for\ cases\.|Interpret\ laws,\ rulings\ and\ regulations\ for\ individuals\ and\ businesses\.|Analyze\ the\ probable\ outcomes\ of\ cases,\ using\ knowledge\ of\ legal\ precedents\.)\Z` → automation **0.0247**, augmentation **0.2261**
 
-Reviewer note: [AI 任务初审 2026-10-30] 4 条都是法律研究/解释，全部保留
+Reviewer note: [AI 语义审查 2026-10-31] 保留法规、判例研究与法律解释；移除同时包含立法及政策执行的宽泛任务。
 
 **lawyer**
 
@@ -789,13 +569,12 @@ Reviewer note: [AI 任务初审 2026-10-30] 4 条都是法律研究/解释，全
 | Study Constitution, statutes, decisions, regulations, and ordinances of quasi-judicial bodies to determine ramifications for cases. | 0.0 | 0.0 | 0.0 |
 | Interpret laws, rulings and regulations for individuals and businesses. | 0.7523 | 0.0741 | 0.6782 |
 | Analyze the probable outcomes of cases, using knowledge of legal precedents. | 0.0 | 0.0 | 0.0 |
-| Help develop federal and state programs, draft and interpret laws and legislation, and establish enforcement procedures. | 0.0 | 0.0 | 0.0 |
 
 ## legal-writing　✅ reviewed
 
-Pattern: `prepare|draft|writ|document` → automation **0.1458**, augmentation **0.1035**
+Pattern: `\A(?:Prepare\ legal\ briefs\ and\ opinions,\ and\ file\ appeals\ in\ state\ and\ federal\ courts\ of\ appeal\.|Search\ for\ and\ examine\ public\ and\ other\ legal\ records\ to\ write\ opinions\ or\ establish\ ownership\.|Help\ develop\ federal\ and\ state\ programs,\ draft\ and\ interpret\ laws\ and\ legislation,\ and\ establish\ enforcement\ procedures\.)\Z` → automation **0.1458**, augmentation **0.1035**
 
-Reviewer note: [AI 任务初审 2026-10-30] 3 条都是法律文书写作，全部保留
+Reviewer note: [AI 语义审查 2026-10-31] 法律意见、诉状和法律草案写作均相关；保留复合任务并提示写作只是其中一部分。
 
 **lawyer**
 
@@ -807,9 +586,9 @@ Reviewer note: [AI 任务初审 2026-10-30] 3 条都是法律文书写作，全�
 
 ## negotiation　✅ reviewed
 
-Pattern: `negotiat|\bsettle|\bmediat|agreement` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Negotiate\ settlements\ of\ civil\ disputes\.|Establish\ and\ maintain\ tendering\ process,\ and\ conduct\ negotiations\.|Negotiate\ details\ of\ contracts\ and\ payments\.|Negotiate\ with\ retail\ merchants\ to\ improve\ product\ exposure,\ such\ as\ shelf\ positioning\ and\ advertising\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 规则初审 2026-10-30] mediat 加词边界，避免匹配 immediately/intermediate；[AI 任务初审 2026-10-30] 只有 1 条（谈判民事和解），保留
+Reviewer note: [AI 语义审查 2026-10-31] 保留直接的民事和解谈判任务；仅代表已覆盖的职业情境。
 
 **lawyer**
 
@@ -823,7 +602,7 @@ Reviewer note: [AI 规则初审 2026-10-30] mediat 加词边界，避免匹配 i
 |---|---|---|---|
 | Establish and maintain tendering process, and conduct negotiations. | 0.0 | 0.0 | 0.0 |
 
-**sales-executive** (career to review: not counted yet)
+**sales-executive**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -832,9 +611,9 @@ Reviewer note: [AI 规则初审 2026-10-30] mediat 加词边界，避免匹配 i
 
 ## lesson-planning　✅ reviewed
 
-Pattern: `\bplan|lesson|curricul|instruction|material` → automation **0.1683**, augmentation **0.195**
+Pattern: `\A(?:Adapt\ teaching\ methods\ and\ instructional\ materials\ to\ meet\ students'\ varying\ needs\ and\ interests\.|Prepare\ materials\ and\ classrooms\ for\ class\ activities\.|Plan\ and\ conduct\ activities\ for\ a\ balanced\ program\ of\ instruction,\ demonstration,\ and\ work\ time\ that\ provides\ students\ with\ opportunities\ to\ observe,\ question,\ and\ investigate\.|Establish\ clear\ objectives\ for\ all\ lessons,\ units,\ and\ projects\ and\ communicate\ those\ objectives\ to\ students\.|Prepare\ objectives\ and\ outlines\ for\ courses\ of\ study,\ following\ curriculum\ guidelines\ or\ requirements\ of\ states\ and\ schools\.|Confer\ with\ other\ staff\ members\ to\ plan\ and\ schedule\ lessons\ promoting\ learning,\ following\ approved\ curricula\.|Plan\ and\ supervise\ class\ projects,\ field\ trips,\ visits\ by\ guest\ speakers,\ or\ other\ experiential\ activities,\ and\ guide\ students\ in\ learning\ from\ those\ activities\.)\Z` → automation **0.1683**, augmentation **0.195**
 
-Reviewer note: [AI 规则初审 2026-10-30] plan 加词边界，避免匹配 explanation；[AI 任务初审 2026-10-30] 删除器材安全、教具使用、物资管理任务
+Reviewer note: [AI 语义审查 2026-10-31] 教学目标、课程活动、教材调整与课程安排均属于教学规划。
 
 **teacher**
 
@@ -850,9 +629,9 @@ Reviewer note: [AI 规则初审 2026-10-30] plan 加词边界，避免匹配 exp
 
 ## classroom-management　✅ reviewed
 
-Pattern: `classroom|behavio|disciplin|\border\b(?! to)|rules` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Establish\ and\ enforce\ rules\ for\ behavior\ and\ procedures\ for\ maintaining\ order\ among\ students\.|Enforce\ all\ administration\ policies\ and\ rules\ governing\ students\.|Confer\ with\ parents\ or\ guardians,\ other\ teachers,\ counselors,\ and\ administrators\ to\ resolve\ students'\ behavioral\ and\ academic\ problems\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 规则初审 2026-10-30] order 只匹配独立单词且排除 in order to，避免匹配 disorder/border；[AI 任务初审 2026-10-30] 删除备课物资任务；“观察评估学生表现”归入 assessment（它的替代度 0.80 原本把课堂管理拉高了）
+Reviewer note: [AI 语义审查 2026-10-31] 保留课堂秩序、行为规则和学生行为问题处理。
 
 **teacher**
 
@@ -864,9 +643,9 @@ Reviewer note: [AI 规则初审 2026-10-30] order 只匹配独立单词且排除
 
 ## assessment　✅ reviewed
 
-Pattern: `evaluat|assess|\bgrad(e|es|ing)\b(?! level)|\btest|progress` → automation **0.4664**, augmentation **0.1626**
+Pattern: `\A(?:Assign\ and\ grade\ class\ work\ and\ homework\.|Observe\ and\ evaluate\ students'\ performance,\ behavior,\ social\ development,\ and\ physical\ health\.|Prepare,\ administer,\ and\ grade\ tests\ and\ assignments\ to\ evaluate\ students'\ progress\.)\Z` → automation **0.4664**, augmentation **0.1626**
 
-Reviewer note: [AI 规则初审 2026-10-30] test 加词边界；grade 排除 grade level（年级不是评分）；[AI 任务初审 2026-10-30] 删除年级（grades）误匹配、家长/同事沟通、学校项目评估
+Reviewer note: [AI 语义审查 2026-10-31] 保留作业评分、学生表现评估与考试评量。
 
 **teacher**
 
@@ -878,9 +657,9 @@ Reviewer note: [AI 规则初审 2026-10-30] test 加词边界；grade 排除 gra
 
 ## clinical-knowledge　✅ reviewed
 
-Pattern: `diagnos|treat|prescri|disease|clinical|condition|examin` → automation **0.0396**, augmentation **0.067**
+Pattern: `\A(?:Prescribe\ or\ administer\ medication,\ therapy,\ and\ other\ specialized\ medical\ care\ to\ treat\ or\ prevent\ illness,\ disease,\ or\ injury\.|Analyze\ records,\ reports,\ test\ results,\ or\ examination\ information\ to\ diagnose\ medical\ condition\ of\ patient\.|Provide\ and\ manage\ long\-term,\ comprehensive\ medical\ care,\ including\ diagnosis\ and\ nonsurgical\ treatment\ of\ diseases,\ for\ adult\ patients\ in\ an\ office\ or\ hospital\.|Make\ diagnoses\ when\ different\ illnesses\ occur\ together\ or\ in\ situations\ where\ the\ diagnosis\ may\ be\ obscure\.|Monitor\ patients'\ conditions\ and\ progress\ and\ reevaluate\ treatments\ as\ necessary\.|Immunize\ patients\ to\ protect\ them\ from\ preventable\ diseases\.|Operate\ on\ patients\ to\ remove,\ repair,\ or\ improve\ functioning\ of\ diseased\ or\ injured\ body\ parts\ and\ systems\.|Prescribe\ or\ administer\ treatment,\ therapy,\ medication,\ vaccination,\ and\ other\ specialized\ medical\ care\ to\ treat\ or\ prevent\ illness,\ disease,\ or\ injury\.|Order,\ perform,\ and\ interpret\ tests\ and\ analyze\ records,\ reports,\ and\ examination\ information\ to\ diagnose\ patients'\ condition\.)\Z` → automation **0.0509**, augmentation **0.0862**
 
-Reviewer note: [AI 任务初审 2026-10-30] 删除归属沟通、行政报告、公共卫生项目管理、科研的任务，保留诊断、治疗、开药、手术、监测
+Reviewer note: [AI 语义审查 2026-10-31] 保留诊断、治疗、处方与监测等临床任务；具体任务仍须受职业范围限制。
 
 **doctor**
 
@@ -893,42 +672,35 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除归属沟通、行政报告、
 | Monitor patients' conditions and progress and reevaluate treatments as necessary. | 0.0 | 0.0 | 0.0 |
 | Immunize patients to protect them from preventable diseases. | 0.0 | 0.0 | 0.0 |
 | Operate on patients to remove, repair, or improve functioning of diseased or injured body parts and systems. | 0.0 | 0.0 | 0.0 |
-| Prescribe or administer treatment, therapy, medication, vaccination, and other specialized medical care to treat or prevent illness, disease, or injury. | 0.0 | 0.0 | 0.0 |
-| Order, perform, and interpret tests and analyze records, reports, and examination information to diagnose patients' condition. | 0.0 | 0.0 | 0.0 |
 
 ## patient-care　✅ reviewed
 
-Pattern: `patient` → automation **0.049**, augmentation **0.1157**
+Pattern: `\A(?:Explain\ procedures\ and\ discuss\ test\ results\ or\ prescribed\ treatments\ with\ patients\.|Provide\ and\ manage\ long\-term,\ comprehensive\ medical\ care,\ including\ diagnosis\ and\ nonsurgical\ treatment\ of\ diseases,\ for\ adult\ patients\ in\ an\ office\ or\ hospital\.|Monitor\ patients'\ conditions\ and\ progress\ and\ reevaluate\ treatments\ as\ necessary\.|Advise\ patients\ and\ community\ members\ concerning\ diet,\ activity,\ hygiene,\ and\ disease\ prevention\.|Immunize\ patients\ to\ protect\ them\ from\ preventable\ diseases\.|Refer\ patient\ to\ medical\ specialist\ or\ other\ practitioner\ when\ necessary\.|Refer\ patients\ to\ medical\ specialists\ or\ other\ practitioners\ when\ necessary\.)\Z` → automation **0.0304**, augmentation **0.1116**
 
-Reviewer note: [AI 任务初审 2026-10-30] 删除医生之间会诊（不直接面对病人）
+Reviewer note: [AI 语义审查 2026-10-31] 保留直接病患沟通、照护、监测、预防与转诊；不把所有含 patient 的诊断、手术和医生间建议都视为照护。
 
 **doctor**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Explain procedures and discuss test results or prescribed treatments with patients. | 0.8522 | 0.1826 | 0.6696 |
-| Analyze records, reports, test results, or examination information to diagnose medical condition of patient. | 0.9595 | 0.3564 | 0.6031 |
 | Provide and manage long-term, comprehensive medical care, including diagnosis and nonsurgical treatment of diseases, for adult patients in an office or hospital. | 0.0 | 0.0 | 0.0 |
 | Monitor patients' conditions and progress and reevaluate treatments as necessary. | 0.0 | 0.0 | 0.0 |
 | Advise patients and community members concerning diet, activity, hygiene, and disease prevention. | 0.0 | 0.0 | 0.0 |
 | Immunize patients to protect them from preventable diseases. | 0.0 | 0.0 | 0.0 |
 | Refer patient to medical specialist or other practitioner when necessary. | 0.0 | 0.0 | 0.0 |
-| Advise surgeon of a patient's risk status and recommend appropriate intervention to minimize risk. | 0.0 | 0.0 | 0.0 |
-| Operate on patients to remove, repair, or improve functioning of diseased or injured body parts and systems. | 0.0 | 0.0 | 0.0 |
-| Order, perform, and interpret tests and analyze records, reports, and examination information to diagnose patients' condition. | 0.0 | 0.0 | 0.0 |
-| Refer patients to medical specialists or other practitioners when necessary. | 0.0 | 0.0 | 0.0 |
 
 ## medical-ethics　✅ reviewed
 
-Pattern: `ethic|confidential|consent|privacy` → no matching task → shown as "no source"
+Pattern: `\bethic\w*\b|\binformed consent\b|\bconfidential\w*\b|\bprivacy\b` → no matching task → shown as "no source"
 
-Reviewer note: [AI 规则初审 2026-10-30] 原规则 0 匹配；O*NET 医生任务基本不写伦理，用“向病人解释风险/治疗方案”（知情同意）做近似。这是代理指标，需人工确认是否接受；[AI 任务初审 2026-10-30] 撤回我上次加的代理规则：它只命中 1 条渗透率 0.85 的任务，单独把医生总分从 0.14 拉到 0.32。O*NET 没有伦理相关任务，恢复原规则，显示「无来源」
+Reviewer note: [AI 语义审查 2026-10-31] 不以一般病患解释或诊疗任务替代医学伦理。
 
 ## cooking-technique　✅ reviewed
 
-Pattern: `\bcooking\b|\bcook (food|meat|dish)|\bdish(es)?\b|season|ingredient|prepar\w* (food|meal|dish|sauce)` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Instruct\ cooks\ or\ other\ workers\ in\ the\ preparation,\ cooking,\ garnishing,\ or\ presentation\ of\ food\.|Prepare\ and\ cook\ foods\ of\ all\ types,\ either\ on\ a\ regular\ basis\ or\ for\ special\ guests\ or\ functions\.|Demonstrate\ new\ cooking\ techniques\ or\ equipment\ to\ staff\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 规则初审 2026-10-30] 原来 cook 匹配 supervise cooks（管理任务），prepar 匹配 prepare budgets；改为只匹配烹饪动作；[AI 任务初审 2026-10-30] 删除成本估算和菜单规划，保留烹饪、示范和指导烹饪技巧
+Reviewer note: [AI 语义审查 2026-10-31] 实际烹饪、示范与指导烹饪技巧均相关。
 
 **chef**
 
@@ -940,9 +712,9 @@ Reviewer note: [AI 规则初审 2026-10-30] 原来 cook 匹配 supervise cooks�
 
 ## food-safety　✅ reviewed
 
-Pattern: `sanit|safety|hygien|clean|inspect|storage` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Monitor\ sanitation\ practices\ to\ ensure\ that\ employees\ follow\ standards\ and\ regulations\.|Inspect\ supplies,\ equipment,\ or\ work\ areas\ to\ ensure\ conformance\ to\ established\ standards\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 任务初审 2026-10-30] 2 条都是卫生检查，保留
+Reviewer note: [AI 语义审查 2026-10-31] 保留卫生监控与供应品、设备、工作区检查。
 
 **chef**
 
@@ -953,9 +725,9 @@ Reviewer note: [AI 任务初审 2026-10-30] 2 条都是卫生检查，保留
 
 ## menu-planning　✅ reviewed
 
-Pattern: `menu|recipe|food cost|\bprice|portion` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Analyze\ recipes\ to\ assign\ prices\ to\ menu\ items,\ based\ on\ food,\ labor,\ and\ overhead\ costs\.|Collaborate\ with\ other\ personnel\ to\ plan\ and\ develop\ recipes\ or\ menus,\ taking\ into\ account\ such\ factors\ as\ seasonal\ availability\ of\ ingredients\ or\ the\ likely\ number\ of\ customers\.|Meet\ with\ customers\ to\ discuss\ menus\ for\ special\ occasions,\ such\ as\ weddings,\ parties,\ or\ banquets\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 规则初审 2026-10-30] 去掉单独的 cost：与 project-management 的预算重叠；[AI 任务初审 2026-10-30] 删除采购议价
+Reviewer note: [AI 语义审查 2026-10-31] 保留菜单定价、食谱开发与菜单需求讨论。
 
 **chef**
 
@@ -967,9 +739,9 @@ Reviewer note: [AI 规则初审 2026-10-30] 去掉单独的 cost：与 project-m
 
 ## engineering-math　✅ reviewed
 
-Pattern: `calculat|\bcompute\b|computation|estimat|analy` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Compute\ load\ and\ grade\ requirements,\ water\ flow\ rates,\ or\ material\ stress\ factors\ to\ determine\ design\ specifications\.|Estimate\ quantities\ and\ cost\ of\ materials,\ equipment,\ or\ labor\ to\ determine\ project\ feasibility\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 规则初审 2026-10-30] comput 改为 compute/computation，避免匹配 computer-aided（那是 cad）；[AI 任务初审 2026-10-30] 4 条都是工程计算/分析，全部保留
+Reviewer note: [AI 语义审查 2026-10-31] 保留明确工程计算与数量成本估算；移除只写 analyze 的一般调查和工艺研究。
 
 **civil-engineer**
 
@@ -977,48 +749,24 @@ Reviewer note: [AI 规则初审 2026-10-30] comput 改为 compute/computation，
 |---|---|---|---|
 | Compute load and grade requirements, water flow rates, or material stress factors to determine design specifications. | 0.0 | 0.0 | 0.0 |
 | Estimate quantities and cost of materials, equipment, or labor to determine project feasibility. | 0.0 | 0.0 | 0.0 |
-| Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data. | 0.0 | 0.0 | 0.0 |
-| Analyze manufacturing processes or byproducts to identify engineering solutions to minimize the output of carbon or other pollutants. | 0.0 | 0.0 | 0.0 |
 
-## cad　☐ to review
+## cad　✅ reviewed
 
-Pattern: `drawing|\bcad\b|computer-a(ided|ssisted)|blueprint|drafting` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Operate\ computer\-assisted\ engineering\ or\ design\ software\ or\ equipment\ to\ perform\ engineering\ tasks\.|Operate\ computer\-assisted\ engineering\ or\ design\ software\ or\ equipment\ to\ perform\ electronics\ engineering\ tasks\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 任务初审 2026-10-30] 只匹配到 1 条“分析图纸蓝图”。规则新增 computer-assisted/drafting，以匹配“用计算机辅助设计或绘图工具设计交通、水利系统”这类任务；新匹配到的任务还没看过
+Reviewer note: [AI 语义审查 2026-10-31] 保留明确的计算机辅助工程或设计工具操作，属于 CAE/CAD 宽类代理；读蓝图或制作图纸不能单独证明使用 CAD 软件。
 
-**civil-engineer**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data. | 0.0 | 0.0 | 0.0 |
-
-**electrical-engineer** (career to review: not counted yet)
+**electrical-engineer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Operate computer-assisted engineering or design software or equipment to perform engineering tasks. | 0.0 | 0.0 | 0.0 |
-| Prepare technical drawings, specifications of electrical systems, or topographical maps to ensure that installation and operations conform to standards and customer requirements. | 0.0 | 0.0 | 0.0 |
-| Operate computer-assisted engineering or design software or equipment to perform electronics engineering tasks. | 0.0 | 0.0 | 0.0 |
-
-**quantity-surveyor** (career to review: not counted yet)
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates. | 0.0 | 0.0 | 0.0 |
 
 ## project-management　✅ reviewed
 
-Pattern: `project|schedul|budget|coordinat` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Inspect\ project\ sites\ to\ monitor\ progress\ and\ ensure\ conformance\ to\ design\ specifications\ and\ safety\ or\ sanitation\ standards\.|Manage\ and\ direct\ the\ construction,\ operations,\ or\ maintenance\ activities\ at\ project\ site\.|Estimate\ quantities\ and\ cost\ of\ materials,\ equipment,\ or\ labor\ to\ determine\ project\ feasibility\.|Identify\ environmental\ risks\ and\ develop\ risk\ management\ strategies\ for\ civil\ engineering\ projects\.|Prepare\ estimates\ used\ by\ management\ for\ purposes\ such\ as\ planning,\ organizing,\ and\ scheduling\ work\.|Prepare\ cost\ and\ expenditure\ statements\ and\ other\ necessary\ documentation\ at\ regular\ intervals\ for\ the\ duration\ of\ the\ project\.|Assess\ cost\ effectiveness\ of\ products,\ projects\ or\ services,\ tracking\ actual\ costs\ relative\ to\ bids\ as\ the\ project\ develops\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: [AI 任务初审 2026-10-30] 删除交通/环境研究，保留项目现场管理、排期、预算、协调
-
-**chef**
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Supervise or coordinate activities of cooks or workers engaged in food preparation. | 0.0 | 0.0 | 0.0 |
-| Determine production schedules and staff requirements necessary to ensure timely delivery of services. | 0.0 | 0.0 | 0.0 |
-| Coordinate planning, budgeting, or purchasing for all the food operations within establishments such as clubs, hotels, or restaurant chains. | 0.0 | 0.0 | 0.0 |
+Reviewer note: [AI 语义审查 2026-10-31] 保留项目现场管理、进度、预算和成本控制；移除餐饮日常运营及排班作为项目管理的替代。
 
 **civil-engineer**
 
@@ -1037,49 +785,39 @@ Reviewer note: [AI 任务初审 2026-10-30] 删除交通/环境研究，保留�
 | Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project. | 0.0 | 0.0 | 0.0 |
 | Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops. | 0.0 | 0.0 | 0.0 |
 
-## accounting-software　☐ to review
+## accounting-software　✅ reviewed
 
-Pattern: `(recordkeeping and )?accounting systems|data processing systems|computer technology` → automation **0.2051**, augmentation **0.2503**
+Pattern: `\A(?:Develop,\ implement,\ modify,\ and\ document\ recordkeeping\ and\ accounting\ systems,\ making\ use\ of\ current\ computer\ technology\.)\Z` → automation **0.4101**, augmentation **0.5006**
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留明确使用计算机技术处理会计系统的任务作为软件系统代理；移除仅向客户提供系统设计建议。
 
-**accountant** (career to review: not counted yet)
+**accountant**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology. | 0.9107 | 0.4101 | 0.5006 |
-| Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans. | 0.0 | 0.0 | 0.0 |
 
-## accounts-payable-receivable　☐ to review
+## accounts-payable-receivable　✅ reviewed
 
-Pattern: `invoic\w*|billing|payments?|deposits|entries to proper accounts|accounting records` → automation **0.1701**, augmentation **0.2584**
+Pattern: `\A(?:Resolve\ customers'\ service\ or\ billing\ complaints\ by\ performing\ activities\ such\ as\ exchanging\ merchandise,\ refunding\ money,\ or\ adjusting\ bills\.|Determine\ charges\ for\ services\ requested,\ collect\ deposits\ or\ payments,\ or\ arrange\ for\ billing\.|Compare\ disputed\ merchandise\ with\ original\ requisitions\ and\ information\ from\ invoices\ and\ prepare\ invoices\ for\ returned\ goods\.)\Z` → automation **0.1286**, augmentation **0.2005**
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留账单、收款、押金和发票相关任务，属于 billing/collections 局部代理；移除报税、一般财务记录、科目表与流程建议，不能代表完整 AP/AR 职能。
 
-**accountant** (career to review: not counted yet)
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards. ※ | 0.8929 | 0.3567 | 0.5362 |
-| Establish tables of accounts and assign entries to proper accounts. ※ | 0.9373 | 0.3744 | 0.5629 |
-| Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements. | 0.0 | 0.0 | 0.0 |
-
-**customer-service** (career to review: not counted yet)
+**customer-service**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Resolve customers' service or billing complaints by performing activities such as exchanging merchandise, refunding money, or adjusting bills. | 0.9872 | 0.3858 | 0.6014 |
 | Determine charges for services requested, collect deposits or payments, or arrange for billing. | 0.0 | 0.0 | 0.0 |
 | Compare disputed merchandise with original requisitions and information from invoices and prepare invoices for returned goods. | 0.0 | 0.0 | 0.0 |
-| Recommend improvements in products, packaging, shipping, service, or billing methods and procedures to prevent future problems. | 0.0 | 0.0 | 0.0 |
 
-## taxation　☐ to review
+## taxation　✅ reviewed
 
-Pattern: `\btax(es|ing)?\b` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Compute\ taxes\ owed\ and\ prepare\ tax\ returns,\ ensuring\ compliance\ with\ payment,\ reporting,\ or\ other\ tax\ requirements\.|Advise\ clients\ in\ areas\ such\ as\ compensation,\ employee\ health\ care\ benefits,\ the\ design\ of\ accounting\ or\ data\ processing\ systems,\ or\ long\-range\ tax\ or\ estate\ plans\.|Represent\ clients\ before\ taxing\ authorities\ and\ provide\ support\ during\ litigation\ involving\ financial\ issues\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留报税、税务规划及税务机关代理；复合咨询任务只构成局部税务证据。
 
-**accountant** (career to review: not counted yet)
+**accountant**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -1087,13 +825,13 @@ Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no so
 | Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans. | 0.0 | 0.0 | 0.0 |
 | Represent clients before taxing authorities and provide support during litigation involving financial issues. | 0.0 | 0.0 | 0.0 |
 
-## electrical-systems　☐ to review
+## electrical-systems　✅ reviewed
 
-Pattern: `electrical (systems?|instruments|equipment|components)|power (system|generating|distribution)|distribution lines|electronics? (systems?|components|equipment)` → automation **0.093**, augmentation **0.2523**
+Pattern: `\A(?:Prepare\ technical\ drawings,\ specifications\ of\ electrical\ systems,\ or\ topographical\ maps\ to\ ensure\ that\ installation\ and\ operations\ conform\ to\ standards\ and\ customer\ requirements\.|Design,\ implement,\ maintain,\ or\ improve\ electrical\ instruments,\ equipment,\ facilities,\ components,\ products,\ or\ systems\ for\ commercial,\ industrial,\ or\ domestic\ purposes\.|Conduct\ field\ surveys\ or\ study\ maps,\ graphs,\ diagrams,\ or\ other\ data\ to\ identify\ and\ correct\ power\ system\ problems\.|Design\ electrical\ systems\ or\ components\ that\ minimize\ electric\ energy\ requirements,\ such\ as\ lighting\ systems\ designed\ to\ account\ for\ natural\ lighting\.|Plan\ layout\ of\ electric\ power\ generating\ plants\ or\ distribution\ lines\ or\ stations\.|Collect\ data\ relating\ to\ commercial\ or\ residential\ development,\ population,\ or\ power\ system\ interconnection\ to\ determine\ operating\ efficiency\ of\ electrical\ systems\.|Integrate\ electrical\ systems\ with\ renewable\ energy\ systems\ to\ improve\ overall\ efficiency\.|Analyze\ electronics\ system\ requirements,\ capacity,\ cost,\ or\ customer\ needs\ to\ determine\ project\ feasibility\.|Recommend\ repair\ or\ design\ modifications\ of\ electronics\ components\ or\ systems,\ based\ on\ factors\ such\ as\ environment,\ service,\ cost,\ or\ system\ capabilities\.|Design\ electronic\ components,\ software,\ products,\ or\ systems\ for\ commercial,\ industrial,\ medical,\ military,\ or\ scientific\ applications\.|Inspect\ electronic\ equipment,\ instruments,\ products,\ or\ systems\ to\ ensure\ conformance\ to\ specifications,\ safety\ standards,\ or\ applicable\ codes\ or\ regulations\.)\Z` → automation **0.0679**, augmentation **0.1974**
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留电气与电子系统设计、分析、检查；职业层另行去除电子工程师，避免与电气工程师 SOC 错位。
 
-**electrical-engineer** (career to review: not counted yet)
+**electrical-engineer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -1104,88 +842,55 @@ Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no so
 | Plan layout of electric power generating plants or distribution lines or stations. | 0.0 | 0.0 | 0.0 |
 | Collect data relating to commercial or residential development, population, or power system interconnection to determine operating efficiency of electrical systems. | 1.0 | 0.3019 | 0.6981 |
 | Integrate electrical systems with renewable energy systems to improve overall efficiency. | 0.0 | 0.0 | 0.0 |
-| Analyze electronics system requirements, capacity, cost, or customer needs to determine project feasibility. | 0.8191 | 0.0 | 0.8191 |
-| Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems. | 0.0 | 0.0 | 0.0 |
-| Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities. | 0.0 | 0.0 | 0.0 |
-| Design electronic components, software, products, or systems for commercial, industrial, medical, military, or scientific applications. | 0.9032 | 0.474 | 0.4292 |
-| Inspect electronic equipment, instruments, products, or systems to ensure conformance to specifications, safety standards, or applicable codes or regulations. | 0.0 | 0.0 | 0.0 |
-| Provide technical support or instruction to staff or customers regarding electronics equipment standards. ※ | 0.9107 | 0.2603 | 0.6504 |
 
-## equipment-maintenance　☐ to review
+## equipment-maintenance　✅ reviewed
 
-Pattern: `maintenance|repair` → automation **0.0**, augmentation **0.1421**
+Pattern: `\A(?:Recommend\ repair\ or\ design\ modifications\ of\ electronics\ components\ or\ systems,\ based\ on\ factors\ such\ as\ environment,\ service,\ cost,\ or\ system\ capabilities\.|Develop\ or\ perform\ operational,\ maintenance,\ or\ testing\ procedures\ for\ electronic\ products,\ components,\ equipment,\ or\ systems\.)\Z` → no matching task → shown as "no source"
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留维修建议和维护程序；移除维修预算、一般生产协调及维护文档整理。电气职业去除电子工程后可能无匹配，这表示无来源。
 
-**electrical-engineer** (career to review: not counted yet)
+## plc-automation　✅ reviewed
 
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Direct or coordinate manufacturing, construction, installation, maintenance, support, documentation, or testing activities to ensure compliance with specifications, codes, or customer requirements. | 0.0 | 0.0 | 0.0 |
-| Assist in developing capital project programs for new equipment or major repairs. | 0.0 | 0.0 | 0.0 |
-| Direct or coordinate activities concerned with manufacture, construction, installation, maintenance, operation, or modification of electronic equipment, products, or systems. | 0.0 | 0.0 | 0.0 |
-| Recommend repair or design modifications of electronics components or systems, based on factors such as environment, service, cost, or system capabilities. | 0.0 | 0.0 | 0.0 |
-| Develop or perform operational, maintenance, or testing procedures for electronic products, components, equipment, or systems. | 0.0 | 0.0 | 0.0 |
-| Prepare, review, or maintain maintenance schedules, design documentation, or operational reports or charts. | 0.8529 | 0.0 | 0.8529 |
+Pattern: `\bplcs?\b|programmable logic controllers?` → no matching task → shown as "no source"
 
-## plc-automation　☐ to review
+Reviewer note: [AI 语义审查 2026-10-31] 普通自动化、仪表或控制系统不足以确认 PLC 能力。
 
-Pattern: `automat\w+|control systems?|instrumentation` → no matching task → shown as "no source"
+## social-media-marketing　✅ reviewed
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Pattern: `\bsocial media\b|\bsocial networking\b|\bonline communit\w*\b` → no matching task → shown as "no source"
 
-## social-media-marketing　☐ to review
+Reviewer note: [AI 语义审查 2026-10-31] 没有社交媒体相关任务时保留无来源；不以一般营销任务填充。
 
-Pattern: `social media|online communit\w+` → no matching task → shown as "no source"
+## digital-advertising　✅ reviewed
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Pattern: `\A(?:Measure\ the\ effectiveness\ of\ marketing,\ advertising,\ and\ communications\ programs\ and\ strategies\.|Develop\ and\ implement\ procedures\ for\ identifying\ advertising\ needs\.)\Z` → automation **0.1444**, augmentation **0.3164**
 
-## digital-advertising　☐ to review
+Reviewer note: [AI 语义审查 2026-10-31] 保留广告需求与效果任务作为广告宽类代理；未证明数字渠道，须显示来源局限，不能宣称数字广告专属统计。
 
-Pattern: `advertis\w+` → automation **0.1405**, augmentation **0.2933**
-
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
-
-**digital-marketer** (career to review: not counted yet)
+**digital-marketer**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Measure the effectiveness of marketing, advertising, and communications programs and strategies. | 0.9216 | 0.2888 | 0.6328 |
 | Develop and implement procedures for identifying advertising needs. | 0.0 | 0.0 | 0.0 |
-| Formulate, direct, or coordinate marketing activities or policies to promote products or services, working with advertising or promotion managers. | 0.8136 | 0.2732 | 0.5404 |
-| Coordinate or participate in promotional activities or trade shows, working with developers, advertisers, or production managers, to market products or services. | 0.0 | 0.0 | 0.0 |
 
-## web-analytics　☐ to review
+## web-analytics　✅ reviewed
 
-Pattern: `effectiveness of marketing|track\w* marketing|marketing and sales trends|customer demographics` → automation **0.4179**, augmentation **0.5136**
+Pattern: `\bweb\s+(?:analytics|metrics)\b|\bwebsite\s+(?:analytics|traffic|metrics)\b|\bpage views?\b|\bclick.through\b|\bconversion rates?\b` → no matching task → shown as "no source"
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 一般市场趋势、客户人口特征或营销效果分析不足以证明网站分析。
 
-**digital-marketer** (career to review: not counted yet)
+## content-writing　✅ reviewed
 
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Collect and analyze data on customer demographics, preferences, needs, and buying habits to identify potential markets and factors affecting product demand. | 0.9548 | 0.4274 | 0.5274 |
-| Measure the effectiveness of marketing, advertising, and communications programs and strategies. | 0.9216 | 0.2888 | 0.6328 |
-| Forecast and track marketing and sales trends, analyzing collected data. | 0.9181 | 0.5374 | 0.3807 |
+Pattern: `\b(?:write|writing|draft|drafting|create|creating|produce|producing)\b.{0,60}\b(?:copy|blog|blogs|articles?|social media content|marketing content|advertising content)\b` → no matching task → shown as "no source"
 
-## content-writing　☐ to review
+Reviewer note: [AI 语义审查 2026-10-31] 将研究结果写成报告不等于营销内容写作。
 
-Pattern: `written text|writ(e|ing) (copy|content|text)` → automation **0.2983**, augmentation **0.5805**
+## quantity-surveying　✅ reviewed
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Pattern: `\A(?:Analyze\ blueprints\ and\ other\ documentation\ to\ prepare\ time,\ cost,\ materials,\ and\ labor\ estimates\.|Prepare\ cost\ and\ expenditure\ statements\ and\ other\ necessary\ documentation\ at\ regular\ intervals\ for\ the\ duration\ of\ the\ project\.)\Z` → automation **0.0**, augmentation **0.0**
 
-**digital-marketer** (career to review: not counted yet)
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Prepare reports of findings, illustrating data graphically and translating complex findings into written text. | 0.8788 | 0.2983 | 0.5805 |
-
-## quantity-surveying　☐ to review
-
-Pattern: `blueprints|quantit\w+|expenditure statements` → automation **0.0**, augmentation **0.0**
-
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 成本估算与支出记录仅覆盖工料测量的局部职能；职业级映射因不足以代表全职能而停用。
 
 **quantity-surveyor** (career to review: not counted yet)
 
@@ -1194,11 +899,11 @@ Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no so
 | Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates. | 0.0 | 0.0 | 0.0 |
 | Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project. | 0.0 | 0.0 | 0.0 |
 
-## cost-estimation　☐ to review
+## cost-estimation　✅ reviewed
 
-Pattern: `cost estimat\w+|estimates|cost (monitoring|reduction|effectiveness)|budget` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Analyze\ blueprints\ and\ other\ documentation\ to\ prepare\ time,\ cost,\ materials,\ and\ labor\ estimates\.|Prepare\ estimates\ for\ use\ in\ selecting\ vendors\ or\ subcontractors\.|Prepare\ estimates\ used\ by\ management\ for\ purposes\ such\ as\ planning,\ organizing,\ and\ scheduling\ work\.|Assess\ cost\ effectiveness\ of\ products,\ projects\ or\ services,\ tracking\ actual\ costs\ relative\ to\ bids\ as\ the\ project\ develops\.|Set\ up\ cost\ monitoring\ and\ reporting\ systems\ and\ procedures\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留工程数量、材料人工成本、分包估算及成本效果评估。
 
 **quantity-surveyor** (career to review: not counted yet)
 
@@ -1210,28 +915,25 @@ Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no so
 | Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops. | 0.0 | 0.0 | 0.0 |
 | Set up cost monitoring and reporting systems and procedures. | 0.0 | 0.0 | 0.0 |
 
-## contract-administration　☐ to review
+## contract-administration　✅ reviewed
 
-Pattern: `tender\w*|\bbids?\b|subcontractors?|contracts?` → automation **0.0**, augmentation **0.0**
+Pattern: `\A(?:Establish\ and\ maintain\ tendering\ process,\ and\ conduct\ negotiations\.)\Z` → automation **0.0**, augmentation **0.0**
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留招标流程及谈判作为采购合同生命周期的局部代理；移除单纯估算、成本比较和供应商通讯录。
 
 **quantity-surveyor** (career to review: not counted yet)
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
-| Prepare estimates for use in selecting vendors or subcontractors. | 0.0 | 0.0 | 0.0 |
-| Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops. | 0.0 | 0.0 | 0.0 |
-| Prepare and maintain a directory of suppliers, contractors and subcontractors. | 0.0 | 0.0 | 0.0 |
 | Establish and maintain tendering process, and conduct negotiations. | 0.0 | 0.0 | 0.0 |
 
-## employee-relations　☐ to review
+## employee-relations　✅ reviewed
 
-Pattern: `employee relations|employee concerns|grievances?|personnel policies|exit interviews|laws, standards` → automation **0.0365**, augmentation **0.1601**
+Pattern: `\A(?:Interpret\ and\ explain\ human\ resources\ policies,\ procedures,\ laws,\ standards,\ or\ regulations\.|Address\ employee\ relations\ issues,\ such\ as\ harassment\ allegations,\ work\ complaints,\ or\ other\ employee\ concerns\.|Confer\ with\ management\ to\ develop\ or\ implement\ personnel\ policies\ or\ procedures\.|Conduct\ exit\ interviews\ and\ ensure\ that\ necessary\ employment\ termination\ paperwork\ is\ completed\.)\Z` → automation **0.0365**, augmentation **0.1601**
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留员工申诉、政策解释、政策制定与离职面谈。
 
-**hr-executive** (career to review: not counted yet)
+**hr-executive**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -1240,19 +942,18 @@ Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no so
 | Confer with management to develop or implement personnel policies or procedures. | 0.0 | 0.0 | 0.0 |
 | Conduct exit interviews and ensure that necessary employment termination paperwork is completed. | 0.0 | 0.0 | 0.0 |
 
-## recruitment　☐ to review
+## recruitment　✅ reviewed
 
-Pattern: `recruit\w*|\bhir(e|ing)\b|applicants?|candidates|orientations?` → automation **0.2479**, augmentation **0.1883**
+Pattern: `\A(?:Hire\ employees\ and\ process\ hiring\-related\ paperwork\.|Inform\ job\ applicants\ of\ details\ such\ as\ duties\ and\ responsibilities,\ compensation,\ benefits,\ schedules,\ working\ conditions,\ or\ promotion\ opportunities\.|Select\ qualified\ job\ applicants\ or\ refer\ them\ to\ managers,\ making\ hiring\ recommendations\ when\ appropriate\.|Review\ employment\ applications\ and\ job\ orders\ to\ match\ applicants\ with\ job\ requirements\.|Conduct\ reference\ or\ background\ checks\ on\ job\ applicants\.|Perform\ searches\ for\ qualified\ job\ candidates,\ using\ sources\ such\ as\ computer\ databases,\ networking,\ Internet\ recruiting\ resources,\ media\ advertisements,\ job\ fairs,\ recruiting\ firms,\ or\ employee\ referrals\.|Contact\ job\ applicants\ to\ inform\ them\ of\ the\ status\ of\ their\ applications\.|Interview\ job\ applicants\ to\ obtain\ information\ on\ work\ history,\ training,\ education,\ or\ job\ skills\.|Develop\ or\ implement\ recruiting\ strategies\ to\ meet\ current\ or\ anticipated\ staffing\ needs\.|Advise\ management\ on\ organizing,\ preparing,\ or\ implementing\ recruiting\ or\ retention\ programs\.|Evaluate\ recruitment\ or\ selection\ criteria\ to\ ensure\ conformance\ to\ professional,\ statistical,\ or\ testing\ standards,\ recommending\ revisions,\ as\ needed\.)\Z` → automation **0.293**, augmentation **0.2226**
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留寻才、筛选、面试、录用与候选人沟通；移除入职培训及一般执照资格审查。
 
-**hr-executive** (career to review: not counted yet)
+**hr-executive**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Hire employees and process hiring-related paperwork. | 0.0 | 0.0 | 0.0 |
 | Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities. | 0.0 | 0.0 | 0.0 |
-| Schedule or conduct new employee orientations. | 0.0 | 0.0 | 0.0 |
 | Select qualified job applicants or refer them to managers, making hiring recommendations when appropriate. ※ | 0.9296 | 0.4758 | 0.4538 |
 | Review employment applications and job orders to match applicants with job requirements. | 0.9369 | 0.4776 | 0.4593 |
 | Conduct reference or background checks on job applicants. | 0.0 | 0.0 | 0.0 |
@@ -1262,48 +963,39 @@ Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no so
 | Develop or implement recruiting strategies to meet current or anticipated staffing needs. | 0.0 | 0.0 | 0.0 |
 | Advise management on organizing, preparing, or implementing recruiting or retention programs. | 0.0 | 0.0 | 0.0 |
 | Evaluate recruitment or selection criteria to ensure conformance to professional, statistical, or testing standards, recommending revisions, as needed. | 0.9414 | 0.3254 | 0.616 |
-| Review and evaluate applicant qualifications or eligibility for specified licensing, according to established guidelines and designated licensing codes. | 0.0 | 0.0 | 0.0 |
 
-## payroll　☐ to review
+## payroll　✅ reviewed
 
-Pattern: `payroll|compensation|employee (health care )?benefits` → automation **0.0**, augmentation **0.0**
+Pattern: `\b(?:calculate|compute|process|prepare|administer|manage)\w*\b.{0,50}\b(?:payroll|wages|salaries)\b|\bpayroll\s+(?:processing|calculation|administration)\b` → no matching task → shown as "no source"
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 向求职者说明薪酬福利不属于薪资核算或发薪；审计 payroll 也不是执行 payroll。
 
-**hr-executive** (career to review: not counted yet)
+## sales-prospecting　✅ reviewed
 
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Inform job applicants of details such as duties and responsibilities, compensation, benefits, schedules, working conditions, or promotion opportunities. | 0.0 | 0.0 | 0.0 |
+Pattern: `\A(?:Contact\ regular\ and\ prospective\ customers\ to\ demonstrate\ products,\ explain\ product\ features,\ and\ solicit\ orders\.|Identify\ prospective\ customers\ by\ using\ business\ directories,\ following\ leads\ from\ existing\ clients,\ participating\ in\ organizations\ and\ clubs,\ and\ attending\ trade\ shows\ and\ conferences\.)\Z` → automation **0.4909**, augmentation **0.4979**
 
-## sales-prospecting　☐ to review
+Reviewer note: [AI 语义审查 2026-10-31] 保留联系潜客和寻找线索；移除销售行政报告与客户信用调查。
 
-Pattern: `prospective customers|solicit\w*|following leads|sales (budgets|records)` → automation **0.3656**, augmentation **0.3709**
-
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
-
-**sales-executive** (career to review: not counted yet)
+**sales-executive**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Contact regular and prospective customers to demonstrate products, explain product features, and solicit orders. ※ | 0.9923 | 0.4926 | 0.4997 |
 | Identify prospective customers by using business directories, following leads from existing clients, participating in organizations and clubs, and attending trade shows and conferences. ※ | 0.9852 | 0.4891 | 0.4961 |
-| Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports. ※ | 0.9687 | 0.4809 | 0.4878 |
-| Obtain credit information about prospective customers. | 0.0 | 0.0 | 0.0 |
 
-## customer-support　☐ to review
+## customer-support　✅ reviewed
 
-Pattern: `customers?\W? (questions|problems|service|billing|complaints|inquiries|grievances)|resolve customers|respond to inquiries` → automation **0.2576**, augmentation **0.6057**
+Pattern: `\A(?:Answer\ customers'\ questions\ about\ products,\ prices,\ availability,\ product\ uses,\ and\ credit\ terms\.|Check\ to\ ensure\ that\ appropriate\ changes\ were\ made\ to\ resolve\ customers'\ problems\.|Resolve\ customers'\ service\ or\ billing\ complaints\ by\ performing\ activities\ such\ as\ exchanging\ merchandise,\ refunding\ money,\ or\ adjusting\ bills\.|Refer\ unresolved\ customer\ grievances\ to\ designated\ departments\ for\ further\ investigation\.|Contact\ customers\ to\ respond\ to\ inquiries\ or\ to\ notify\ them\ of\ claim\ investigation\ results\ or\ any\ planned\ adjustments\.)\Z` → automation **0.2576**, augmentation **0.6057**
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 保留客户问题解答、投诉处理、转交调查、服务跟进与通知。
 
-**sales-executive** (career to review: not counted yet)
+**sales-executive**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
 | Answer customers' questions about products, prices, availability, product uses, and credit terms. | 0.9818 | 0.2575 | 0.7243 |
 
-**customer-service** (career to review: not counted yet)
+**customer-service**
 
 | O*NET task | Penetration | Automation | Augmentation |
 |---|---|---|---|
@@ -1312,28 +1004,16 @@ Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no so
 | Refer unresolved customer grievances to designated departments for further investigation. ※ | 1.0 | 0.3238 | 0.6762 |
 | Contact customers to respond to inquiries or to notify them of claim investigation results or any planned adjustments. ※ | 0.9913 | 0.321 | 0.6703 |
 
-## crm-systems　☐ to review
+## crm-systems　✅ reviewed
 
-Pattern: `records of customer|customer interactions|sales records` → automation **0.4015**, augmentation **0.5804**
+Pattern: `\bcrm\b|customer relationship management|\bsalesforce\b|\bhubspot\b` → no matching task → shown as "no source"
 
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 记录客户互动或销售记录不一定使用 CRM 系统。
 
-**sales-executive** (career to review: not counted yet)
+## workplace-languages　✅ reviewed
 
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Perform administrative duties, such as preparing sales budgets and reports, keeping sales records, and filing expense account reports. ※ | 0.9687 | 0.4809 | 0.4878 |
+Pattern: `\b(?:foreign languages?|multilingual|multi-lingual|bilingual)\b|\b(?:translate|interpret)\w*\b.{0,60}\blanguages?\b` → no matching task → shown as "no source"
 
-**customer-service** (career to review: not counted yet)
-
-| O*NET task | Penetration | Automation | Augmentation |
-|---|---|---|---|
-| Keep records of customer interactions or transactions, recording details of inquiries, complaints, or comments, as well as actions taken. ※ | 0.9951 | 0.3222 | 0.6729 |
-
-## workplace-languages　☐ to review
-
-Pattern: `foreign languages?|translat\w* (documents|from|into|between) \w*languages?` → no matching task → shown as "no source"
-
-Reviewer note: Added 2026-10-30 (prompt 01c); no O*NET task matching means no source
+Reviewer note: [AI 语义审查 2026-10-31] 一般沟通和 translating findings into written text 不属于多语言能力。
 
 ※ The task has a penetration but no interaction split; its automation and augmentation shares are the mean of the career's other tasks.

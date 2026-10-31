@@ -17,7 +17,7 @@ test('values need their source tasks; anything else is left out', () =>
         excel: { automation: 0.3, augmentation: 0.3, tasks: [] },          // no source task
         python: { automation: 1.4, augmentation: 0.2, tasks: [ 'code' ] }, // out of range
     } })
-    const exposure = loadExposure(file)
+    const exposure = loadExposure(file, path.join(directory, 'no-mock.json'))
     assert.deepEqual(Object.keys(exposure.skills), [ 'sql' ])
     assert.equal(exposure.source.name, 'AEI')
 })
@@ -25,8 +25,9 @@ test('values need their source tasks; anything else is left out', () =>
 test('a missing or broken file keeps the last good table', () =>
 {
     const good = write('good.json', { skills: { sql: { automation: 0.5, augmentation: 0.5, tasks: [ 't' ] } } })
-    assert.equal(Object.keys(loadExposure(good).skills).length, 1)
-    assert.equal(Object.keys(loadExposure(path.join(directory, 'missing.json')).skills).length, 1)
+    const noMock = path.join(directory, 'no-mock.json')
+    assert.equal(Object.keys(loadExposure(good, noMock).skills).length, 1)
+    assert.equal(Object.keys(loadExposure(path.join(directory, 'missing.json'), noMock).skills).length, 1)
 })
 
 test('the game file holds only reviewed skills, each with a value and its source tasks', () =>
@@ -41,4 +42,19 @@ test('the game file holds only reviewed skills, each with a value and its source
         assert.equal(map.skills[id]?.reviewed, true, `${id} was reviewed`)
         assert.ok(row.tasks.length > 0, `${id} has source tasks`)
     }
+})
+
+test('a mock value fills only a skill without a real one, marked mock', () =>
+{
+    const real = write('real.json', { skills: { sql: { automation: 0.5, augmentation: 0.5, tasks: [ 't' ] } } })
+    const mock = write('mock.json', { mock: true, skills: {
+        sql: { automation: 0.9, augmentation: 0.1, mock: true, method: 'career-mean-imputation' },
+        git: { automation: 0.3, augmentation: 0.4, mock: true, method: 'career-mean-imputation' },
+        cad: { automation: 1.5, augmentation: 0.4, mock: true },   // out of range
+    } })
+    const exposure = loadExposure(real, mock)
+    assert.equal(exposure.skills.sql.automation, 0.5)
+    assert.equal(exposure.skills.sql.mock, undefined)
+    assert.deepEqual(exposure.skills.git, { automation: 0.3, augmentation: 0.4, tasks: [], note: null, mock: true, method: 'career-mean-imputation' })
+    assert.equal(exposure.skills.cad, undefined)
 })

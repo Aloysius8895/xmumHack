@@ -14,7 +14,7 @@ const { handle } = await import('../../../src/game/server/app.js')
 const store = await import('../../../src/game/server/store.js')
 const game = await import('../../../src/game/server/game.js')
 const { SKILLS } = await import('../../../src/game/server/careers.js')
-const { noRegretSkeleton, presetOf, skeletonChanges, skeletonStages } = await import('../../../src/game/server/no-regret.js')
+const { aeiOnlyInputs, noRegretSkeleton, presetOf, skeletonChanges, skeletonStages } = await import('../../../src/game/server/no-regret.js')
 
 async function call(route, body = {})
 {
@@ -27,7 +27,7 @@ async function call(route, body = {})
 }
 
 // Data analyst: sql and data-cleaning gain most under both presets; communication (strong automation and augmentation)
-// leads under moderate, data-visualization (a little augmentation) under fast; excel declines under both
+// leads under moderate, data-visualization (a little augmentation) under extreme; excel declines under both
 const exposure = (automation, augmentation) => ({ automation, augmentation, tasks: [ 't' ] })
 const inputs = { official: [], momentum: { skills: {}, careers: {}, basis: {} }, exposure: { source: {}, skills: {
     sql: exposure(0, 0.9), 'data-cleaning': exposure(0.05, 0.6), communication: exposure(0.4, 1.0), 'data-visualization': exposure(0, 0.05),
@@ -43,7 +43,7 @@ test('core: the skills high under both presets, the biggest mean gain first', ()
 {
     const skeleton = noRegretSkeleton(analyst(), inputs)
     assert.deepEqual(skeleton.core, [ 'sql', 'data-cleaning' ])
-    assert.match(skeleton.reasons.sql.zh, /两个情景下都排在前面（温和 \+17\.1 分，快速 \+18\.8 分）/)
+    assert.match(skeleton.reasons.sql.zh, /两个情景下都排在前面（温和 \+14\.2 分，极端 \+16\.7 分）/)
 })
 
 test('branches: each preset orders the rest by its own gains; a skill declining under both goes last', () =>
@@ -51,8 +51,8 @@ test('branches: each preset orders the rest by its own gains; a skill declining 
     const skeleton = noRegretSkeleton(analyst(), inputs)
     assert.equal(skeleton.identical, false)
     assert.equal(skeleton.branches.moderate[0], 'communication')
-    assert.equal(skeleton.branches.fast[0], 'data-visualization')
-    assert.ok(skeleton.branches.fast.indexOf('communication') > skeleton.branches.moderate.indexOf('communication'))
+    assert.equal(skeleton.branches.extreme[0], 'data-visualization')
+    assert.ok(skeleton.branches.extreme.indexOf('communication') > skeleton.branches.moderate.indexOf('communication'))
     assert.deepEqual(skeleton.later, [ 'excel' ])
     assert.match(skeleton.reasons.excel.zh, /两个情景下都在下降/)
 })
@@ -82,7 +82,7 @@ test('roadmap: core in a line, both branches after the core, the branch not foll
             tasks: [ { title: { zh: 't', en: 't', ms: 't' }, why: { zh: 'w', en: 'w', ms: 'w' }, effortHours: 3, skillId: stage.skillIds[0] } ] })) }
     const roadmap = game.buildRoadmap(plan)
     const kinds = roadmap.stages.map((stage) => `${stage.kind}:${stage.branch ?? '-'}:${stage.prerequisites.join(',')}`)
-    assert.deepEqual(kinds, [ 'core:-:', 'core:-:s1', 'branch:moderate:s2', 'branch:moderate:s3', 'branch:fast:s2', 'branch:fast:s5', 'later:-:' ])
+    assert.deepEqual(kinds, [ 'core:-:', 'core:-:s1', 'branch:moderate:s2', 'branch:moderate:s3', 'branch:extreme:s2', 'branch:extreme:s5', 'later:-:' ])
     // every stage covers catalog skills and carries a reason for each
     for(const stage of roadmap.stages)
     {
@@ -97,7 +97,7 @@ test('roadmap: core in a line, both branches after the core, the branch not foll
     for(const stage of save.roadmap.stages.slice(0, 4))
         stage.cleared = true
     assert.equal(statuses()[6], 'active')
-    save.roadmap.chosenBranch = 'fast'
+    save.roadmap.chosenBranch = 'extreme'
     assert.deepEqual(statuses().slice(2), [ 'alternative', 'alternative', 'active', 'locked', 'locked' ])
 })
 
@@ -118,29 +118,40 @@ test('re-plan: a changed core is suggested, unchanged data or a skill learnt is 
     assert.deepEqual(skeletonChanges(before, before), [])
 
     const save = analyst()
-    save.roadmap = { stages: [], chosenBranch: 'moderate', forecastBasis: { core: [ 'excel' ], branches: { moderate: [], fast: [] }, later: [], identical: true } }
+    save.roadmap = { stages: [], chosenBranch: 'moderate', forecastBasis: { core: [ 'excel' ], branches: { moderate: [], extreme: [] }, later: [], identical: true } }
     assert.ok(game.view(save, { mock: true }).replanSuggested.changedSkills.includes('excel'))
-    // the basis of the current data: nothing to suggest
-    const current = noRegretSkeleton(save)
-    save.roadmap.forecastBasis = { core: current.core, branches: current.branches, later: current.later, identical: current.identical }
+    // a basis from before prompt 06 (demand term in) reports its changes as a method change
+    assert.equal(game.view(save, { mock: true }).replanSuggested.reason, 'method-changed')
+    // the basis of the current data, read on AEI only as the roadmap is: nothing to suggest
+    const current = noRegretSkeleton(save, aeiOnlyInputs())
+    save.roadmap.forecastBasis = { core: current.core, branches: current.branches, later: current.later, identical: current.identical, demand: 'neutral' }
     assert.equal(game.view(save, { mock: true }).replanSuggested, null)
 })
 
-test('switching scenario moves the branch followed, not the roadmap, unless the player chose a branch', async () =>
+test('switching scenario saves a preference; moving the formal branch requires preview confirmation', async () =>
 {
     store.reset()
     await call('/api/profile/skills', { skills: [ { id: 'python', name: 'Python', level: 1 } ] })
     await call('/api/target', { careerId: 'data-analyst', mode: 'general' })
+    await call('/api/scenario', { preset: 'moderate' })
     const planned = await call('/api/roadmap', {})
     assert.equal(planned.status, 200)
     const stages = JSON.stringify(store.load().roadmap.stages)
     assert.equal(store.load().roadmap.chosenBranch, 'moderate')
-    await call('/api/scenario', { preset: 'fast' })
-    assert.equal(store.load().roadmap.chosenBranch, 'fast')
+    await call('/api/scenario', { preset: 'extreme' })
+    assert.equal(store.load().roadmap.chosenBranch, 'moderate')
     assert.equal(JSON.stringify(store.load().roadmap.stages), stages)
-    await call('/api/roadmap/branch', { branch: 'moderate' })
-    await call('/api/scenario', { preset: 'fast' })
+    const preview = await call('/api/roadmap/branch', { branch: 'extreme' })
+    assert.equal(preview.body.requiresConfirmation, true)
+    assert.equal(store.load().roadmap.chosenBranch, 'moderate')
+    await call('/api/learning/apply', { previewId: preview.body.state.learning.pending.id })
+    assert.equal(store.load().roadmap.chosenBranch, 'extreme')
+    assert.equal(JSON.stringify(store.load().roadmap.stages), stages)
+    const back = await call('/api/roadmap/branch', { branch: 'moderate' })
+    await call('/api/learning/apply', { previewId: back.body.state.learning.pending.id })
+    await call('/api/scenario', { preset: 'extreme' })
     assert.equal(store.load().roadmap.chosenBranch, 'moderate')
     assert.equal((await call('/api/roadmap/branch', { branch: 'slow' })).status, 400)
-    assert.equal(presetOf({ scenario: 'custom', k: 1.3, H: 3 }), 'fast')
+    assert.equal(presetOf({ scenario: 'custom', k: 2.5, H: 3 }), 'extreme')
+    assert.equal(presetOf({ scenario: 'custom', k: 1.3, H: 3 }), 'moderate')
 })

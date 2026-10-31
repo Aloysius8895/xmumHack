@@ -770,6 +770,9 @@ button.career-points {
 
 .career-tag {
     display: inline-block;
+    align-self: start;
+    justify-self: start;
+    height: fit-content;
     padding: 2px 8px;
     margin: 2px 4px 2px 0;
     border-radius: 999px;
@@ -1518,7 +1521,8 @@ button.career-points {
 
 .career-tasks li {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
     gap: 4px 8px;
     padding: 8px 0;
     border-top: 1px solid var(--career-line);
@@ -1533,6 +1537,29 @@ button.career-points {
     gap: 8px;
     align-items: flex-start;
     cursor: pointer;
+}
+
+.career-tasks label > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.career-task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 4px 8px;
+    min-width: 0;
+    padding-left: 26px;
+}
+
+.career-task-meta .career-tag {
+    flex: 0 1 auto;
+    max-width: 100%;
+    margin: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
 }
 
 .career-tasks input {
@@ -1626,7 +1653,8 @@ button.career-points {
     min-height: 0;
     margin: 0 23px;
     padding: 18px 34px 12px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     border-top: 3px solid var(--outline);
     border-bottom: 3px solid var(--outline);
     background: var(--paper);
@@ -1677,7 +1705,9 @@ button.career-points {
 .career-map {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 0 0 auto;
+    min-width: 0;
+    width: 100%;
     min-height: 0;
     gap: 10px;
 }
@@ -1685,10 +1715,11 @@ button.career-points {
 /* The map drawn on the paper */
 .career-map-viewport {
     position: relative;
-    flex: 1;
+    flex: 0 0 auto;
+    width: 100%;
+    box-sizing: border-box;
     min-height: 0;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     border: 3px solid var(--outline);
     border-radius: 18px;
     box-shadow: 0 5px 0 var(--extrude-soft);
@@ -1696,7 +1727,9 @@ button.career-points {
 
 .career-map-board {
     position: relative;
-    height: 100%;
+    width: 100%;
+    min-width: 0;
+    height: var(--map-height, 440px);
     min-height: 420px;
     overflow: hidden;
     background-size: 165% auto; /* East side of the world map picture (woods, lakes), away from the circuit */
@@ -1953,6 +1986,7 @@ button.career-points {
 
 .career-map-note {
     position: absolute;
+    box-sizing: border-box;
     z-index: 3;
     top: 0;
     bottom: 0;
@@ -3935,6 +3969,38 @@ html:not(.is-started) .career-ui {
     font-style: italic;
 }
 
+// Results resting on mock data (prompt 07): dashed, so they never pass for collected data
+.career-tag.is-mock {
+    outline: 1px dashed currentColor;
+    outline-offset: -1px;
+    font-style: italic;
+}
+
+// The scenario on (system recommendation by default) reads as pressed, in every theme (fantasy exhibit included)
+.career-ui .career-learning .career-button.is-secondary[aria-pressed="true"],
+.career-learning .career-button.is-secondary[aria-pressed="true"] {
+    background: #4b2a9c;
+    border-color: #2f1870;
+    color: #ffffff !important;
+    box-shadow: inset 0 3px 6px #0006;
+    transform: translateY(1px);
+}
+
+.career-scenario-recommended {
+    margin-left: 4px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--amber-soft, #fff3d6);
+    color: inherit;
+    font-size: 0.75em;
+    font-weight: 700;
+}
+
+.career-tag.is-activity {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px currentColor;
+}
+
 .career-tag.is-low {
     opacity: 0.8;
 }
@@ -4884,3 +4950,94 @@ button.career-trend-row:hover {
 .career-market-refresh-message { font-size: 16px; line-height: 1.65; margin: 12px 0 0; overflow-wrap: anywhere; }
 .career-market-refresh-timing { font-size: 14px; line-height: 1.5; margin: 8px 0 0; opacity: .8; overflow-wrap: anywhere; }
 .career-market-refresh-message:empty { display: none; }
+
+/* Keep the adaptive controls usable without covering the treasure map. */
+.career-learning {
+    flex: 0 0 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+.career-learning > summary {
+    cursor: pointer;
+    font-weight: 700;
+    padding: 6px 0;
+}
+.career-learning[open] {
+    max-height: 44vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+.career-learning .career-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 4px 0 8px;
+}
+.career-learning-analysis {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 16px 0 20px;
+}
+.career-learning-analysis .career-button {
+    max-width: 100%;
+    white-space: normal;
+}
+.career-learning-content > details {
+    margin-top: 12px;
+}
+.career-learning .career-field {
+    display: block;
+    margin: 12px 0;
+}
+.career-learning .career-field > span {
+    display: block;
+    margin-bottom: 6px;
+}
+.career-learning li small {
+    display: block;
+}
+@media (max-width: 600px) {
+    .career-learning[open] { max-height: 38vh; }
+    .career-learning-content { font-size: 16px; }
+    .career-map-header { right: 12px; }
+    .career-map-banner { max-width: 100%; padding: 8px; gap: 6px; }
+    .career-map-banner strong { font-size: 20px; }
+    .career-map-emblem { flex: 0 0 32px; width: 32px; height: 32px; }
+    .career-map-emblem svg { width: 24px; height: 24px; }
+    .career-map-ribbon { margin-left: 0; }
+    .career-map-mp, .career-map-hint { display: none; }
+    .career-map-avatar { display: none; }
+    .career-map-note { left: 6px !important; right: 6px !important; width: auto; max-width: none; padding: 8px; }
+    .career-map-footer { flex-direction: column; align-items: stretch; }
+}
+
+
+.career-map-resources button {
+    display: grid;
+    gap: 2px;
+    padding: 8px 12px;
+    border: 2px solid var(--outline);
+    border-radius: 14px;
+    background: var(--amber-soft);
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+.career-map-resource-prompt {
+    display: grid;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 2px solid var(--outline);
+    border-radius: 14px;
+    background: var(--face);
+}
+
+.career-map-resource-prompt textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+}

@@ -6,14 +6,15 @@ import { buildMockMarketHistory } from '../../../../src/game/sources/Career/Mock
 const shown = ['2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10']
 
 test('rising and falling classifications agree with the displayed heatmap, preserving raw observations', () => {
-    const trends = { periods:['2026-10'], careers:[{id:'ml-engineer',ads:[31]},{id:'chef',ads:[43]}] }
+    // The preview follows each career's big-picture direction (MockMarketHistory.js): ml-engineer up, chef down
+    const bigPicture = { careers: { 'ml-engineer': { growth: 0.6 }, chef: { growth: -0.6 } } }
+    const trends = { periods:['2026-10'], bigPicture, careers:[{id:'ml-engineer',ads:[31]},{id:'chef',ads:[43]}] }
     const before = structuredClone(trends)
     const preview = buildMockMarketHistory(trends, shown)
     const rows = buildMarketRows(trends, shown, preview)
-    assert.equal(rows[0].trend, 'rising')
-    assert.equal(rows[1].trend, 'falling')
     for(const row of rows)
     {
+        assert.equal(row.trend, row.latest > row.previous ? 'rising' : 'falling')
         assert.equal(row.latest, row.displayAds.at(-1))
         assert.equal(row.previous, row.displayAds.at(-2))
         assert.equal(row.changeOrigin, 'preview')

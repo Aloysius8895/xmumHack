@@ -1,0 +1,79 @@
+{
+  "about": "When the Anthropic Economic Index data behind exposure.json was observed, per dataset folder, as the publisher states it. Read by src/game/server/aei-evidence.js. A period not stated by the publisher is null: the download date (exposure.json source.downloadedAt) is never an observation date.",
+  "checkedAt": "2026-10-31",
+  "releases": {
+    "release_2025_03_27": {
+      "files": [
+        "automation_vs_augmentation_by_task.csv"
+      ],
+      "metric": "automation-share",
+      "definition": "Per O*NET task, the automation share of the five collaboration patterns: (directive + feedback loop) / (directive + feedback loop + task iteration + validation + learning); computed by src/data/scripts/build_aei_periods.py into data/ai-exposure/periods.json",
+      "observationPeriod": {
+        "from": null,
+        "to": null,
+        "approximate": "2025-02/2025-03",
+        "text": {
+          "zh": "Claude 3.7 Sonnet 发布后的 11 天（约 2025 年 2 月至 3 月，发布方没有写确切日期）",
+          "en": "The 11 days after the launch of Claude 3.7 Sonnet (about February to March 2025; the publisher gives no exact dates)",
+          "ms": "11 hari selepas pelancaran Claude 3.7 Sonnet (kira-kira Februari hingga Mac 2025; penerbit tidak memberi tarikh tepat)"
+        },
+        "quote": "We reran our previous analysis on data from the 11 days following the launch [...] covering 1 million anonymized Claude.ai Free and Pro conversations.",
+        "url": "https://www.anthropic.com/news/anthropic-economic-index-insights-from-claude-sonnet-3-7"
+      },
+      "published": "2025-03-27",
+      "platform": "Claude.ai Free and Pro"
+    },
+    "labor_market_impacts": {
+      "files": [
+        "task_penetration.csv",
+        "job_exposure.csv"
+      ],
+      "metric": "task-penetration",
+      "definition": "Per O*NET task, observed use of Claude for the task (penetration, 0-1); per US occupation, observed exposure",
+      "observationPeriod": null,
+      "periodNote": {
+        "zh": "这两个文件没有写观测时期。相关报告的注脚说，这个指标用了 2025 年 8 月和 11 月的使用数据，但没有明确说就是这两个文件。",
+        "en": "These files state no observation period. A footnote of the report says the measure uses usage data from August and November 2025, without naming these files.",
+        "ms": "Fail ini tidak menyatakan tempoh pemerhatian. Nota kaki laporan menyatakan ukuran ini menggunakan data penggunaan Ogos dan November 2025, tanpa menamakan fail ini."
+      },
+      "quote": "We use the previous two Anthropic Economic Index datasets, covering usage from August and November 2025.",
+      "url": "https://www.anthropic.com/research/labor-market-impacts",
+      "published": "2026-03-05"
+    },
+    "release_2025_09_15": {
+      "files": [
+        "data/intermediate/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv"
+      ],
+      "metric": "automation-share",
+      "definition": "Per O*NET task, the automation share of the five collaboration patterns: (directive + feedback loop) / (directive + feedback loop + task iteration + validation + learning); computed by src/data/scripts/build_aei_periods.py into data/ai-exposure/periods.json",
+      "platform": "Claude AI (Free and Pro)",
+      "observationPeriod": {
+        "from": "2025-08-04",
+        "to": "2025-08-11",
+        "approximate": null,
+        "text": {
+          "zh": "2025 年 8 月 4 日至 11 日",
+          "en": "4 to 11 August 2025",
+          "ms": "4 hingga 11 Ogos 2025"
+        },
+        "quote": "date_start 2025-08-04, date_end 2025-08-11 (columns of the file itself)",
+        "url": "https://huggingface.co/datasets/Anthropic/EconomicIndex/blob/main/release_2025_09_15/data_documentation.md"
+      },
+      "comparability": {
+        "zh": "和 2025-03-27 版一样是 Claude.ai 免费和 Pro 用户、同样的合作模式定义；但分析的模型换了（数据集说明写的是 Sonnet 4，之前是 Claude 3.7 Sonnet），没有归类的对话改为 none 和 not_classified 两类，计算时和之前的 filtered 一样排除。",
+        "en": "Like release_2025_03_27: Claude.ai Free and Pro, the same collaboration patterns; but the model changed (the dataset card names Sonnet 4, Claude 3.7 Sonnet before), and unclassified conversations are now 'none' and 'not_classified', left out like 'filtered' before.",
+        "ms": "Seperti release_2025_03_27: Claude.ai Free dan Pro, corak kerjasama yang sama; tetapi model berubah (kad set data menamakan Sonnet 4, sebelum ini Claude 3.7 Sonnet), dan perbualan tanpa kelas kini 'none' dan 'not_classified', dikecualikan seperti 'filtered' sebelum ini."
+      },
+      "published": "2025-09-15"
+    }
+  },
+  "classificationCriteria": {
+    "metric": "automation-share",
+    "scope": "target-career tasks present in every release (data/ai-exposure/periods.json)",
+    "extremeChangeAbove": 0.05,
+    "minimumPairedTasks": 3,
+    "setAt": "2026-10-31",
+    "setBy": "team (user decision, prompt 07), before the classification was computed",
+    "note": "A change of the automation share of 5 percentage points or more between the first and the last release reads as extreme; otherwise moderate. Careers with fewer paired tasks than minimumPairedTasks (the fewTasks threshold) are insufficient evidence."
+  }
+}

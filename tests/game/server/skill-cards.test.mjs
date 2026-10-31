@@ -1,11 +1,23 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { CAREERS, SKILLS } from '../../../src/game/server/careers.js'
+import { CAREERS, SKILLS, getCareer } from '../../../src/game/server/careers.js'
+import * as sc from '../../../src/game/server/scenarios.js'
 import { SKILL_DETAILS } from '../../../src/game/server/skill-details.js'
 import { createSave } from '../../../src/game/server/store.js'
 import * as game from '../../../src/game/server/game.js'
 
 const ai = { mock: true, keyConfigured: false, model: 'test' }
+
+// Affinity by its formula (game.affinityOf): progress weighted by level × weight × future value under the scenario in force
+const expectedAffinity = (save, careerId) =>
+{
+    const career = game.targetedCareer(save, getCareer(careerId))
+    const params = sc.scenarioOf(save), inputs = sc.defaultInputs()
+    const weight = new Map(career.skills.map((skill) => [ skill.id, skill.level * skill.weight * sc.skillValue(skill.id, params, inputs).value ]))
+    const rows = game.skillProgress(save, career)
+    const total = rows.reduce((sum, row) => sum + weight.get(row.id), 0)
+    return total ? Math.round(rows.reduce((sum, row) => sum + weight.get(row.id) * row.progress, 0) / total) : 0
+}
 
 function learner()
 {
@@ -46,26 +58,29 @@ test('affinity starts at the profile match and grows with learning progress', ()
     // Nothing learned and an empty profile: 0 everywhere
     assert.equal(game.view(createSave(), ai).careers.every(({ affinity }) => affinity === 0), true)
 
-    // Profile only: affinity equals the match of every career
+    // Profile only: affinity follows its formula for every career, close to the plain match (future values near 1)
     const save = learner()
     save.profile.skills = [ { id: 'data-visualization', name: 'Charts', level: 2, evidence: '', source: 'manual' } ]
     let state = game.view(save, ai)
     for(const career of state.careers)
-        assert.equal(career.affinity, career.match.percent, career.id)
+    {
+        assert.equal(career.affinity, expectedAffinity(save, career.id), career.id)
+        assert.ok(Math.abs(career.affinity - career.match.percent) <= 5, career.id)
+    }
     const analyst = () => state.careers.find(({ id }) => id === 'data-analyst')
-    assert.equal(analyst().affinity, 11) // data-visualization: level 2 × weight 2 of 35
+    const before = analyst().affinity
 
-    // The SQL task done: + level 3 × weight 3 of 35, the match itself doesn't move
+    // The SQL task done: the affinity grows, the match itself doesn't move
     game.setTaskDone(save, 's1t1', true)
     state = game.view(save, ai)
-    assert.equal(analyst().affinity, 37)
+    assert.ok(analyst().affinity > before)
+    assert.equal(analyst().affinity, expectedAffinity(save, 'data-analyst'))
     assert.equal(analyst().match.percent, 11)
-    assert.equal(state.pet.affinity, 37)
-    assert.equal(state.pet.level, 2)
+    assert.equal(state.pet.affinity, analyst().affinity)
 
     // Daily digest mastery counts too
     save.mastery = { 'data-cleaning': 50 }
-    assert.equal(game.view(save, ai).careers.find(({ id }) => id === 'data-analyst').affinity, 50)
+    assert.equal(game.view(save, ai).careers.find(({ id }) => id === 'data-analyst').affinity, expectedAffinity(save, 'data-analyst'))
 })
 
 test('task completion unlocks the next stage without an exam, including legacy roadmaps', () =>
@@ -152,4 +167,24 @@ test('unticking a task ticked by mistake puts its progress back', () =>
     assert.equal(task.progress, 100)
     game.setTaskDone(save, task.id, false)
     assert.equal(task.progress, 50)
+})
+
+test('affinity follows the scenario: a skill worth more under it counts more', () =>
+{
+    const save = createSave()
+    game.setTarget(save, { careerId: 'data-analyst', mode: 'general' })
+    // Only SQL learnt; SQL handed to AI (automation), every other skill neutral: SQL is worth less the faster AI spreads
+    save.profile.skills = [ { id: 'sql', level: 3 } ]
+    const inputs = { official: [], momentum: null, exposure: { source: {}, skills: { sql: { automation: 0.9, augmentation: 0, tasks: [ 't' ] } } } }
+    save.scenario = { preset: 'moderate' }
+    const moderate = game.affinityOf(save, 'data-analyst', inputs)
+    save.scenario = { preset: 'extreme' }
+    const extreme = game.affinityOf(save, 'data-analyst', inputs)
+    assert.ok(extreme < moderate, `${extreme} < ${moderate}`)
+    // without AI data the scenario changes nothing
+    const neutral = { official: [], momentum: null, exposure: { source: {}, skills: {} } }
+    save.scenario = { preset: 'moderate' }
+    const plain = game.affinityOf(save, 'data-analyst', neutral)
+    save.scenario = { preset: 'extreme' }
+    assert.equal(game.affinityOf(save, 'data-analyst', neutral), plain)
 })
