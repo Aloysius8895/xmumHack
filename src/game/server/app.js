@@ -317,7 +317,7 @@ const routes = {
         if(!text(body.text).trim() && !file)
             throw new HttpError(400, 'empty')
         const result = await features.extractSkills({ text: text(body.text), file, lang: lang(save, body) })
-        game.mergeSkills(save.profile, result.skills)
+        game.replaceExtractedSkills(save.profile, result.skills)
         save.profile.summary = result.summary
         return { summary: result.summary, found: result.skills.length }
     },

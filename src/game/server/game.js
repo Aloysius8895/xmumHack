@@ -74,6 +74,16 @@ export function mergeSkills(profile, extracted)
     }
 }
 
+/**
+ * A new CV or text is a fresh assessment: the skills an earlier extraction read are dropped and only this one's stay
+ * (no overlap between submissions). Skills the player added by hand are kept.
+ */
+export function replaceExtractedSkills(profile, extracted)
+{
+    profile.skills = profile.skills.filter((skill) => skill.source !== 'ai')
+    mergeSkills(profile, extracted)
+}
+
 export function setSkills(profile, skills)
 {
     profile.skills = skills

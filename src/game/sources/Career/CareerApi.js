@@ -138,7 +138,8 @@ export class CareerApi
     setScenario(preset) { return this.request('POST', 'scenario', { preset }) }
     markUpdatesSeen() { return this.request('POST', 'update-log/seen', {}) }
     setLearningDirection(text) { return this.request('POST', 'learning-direction', { text }) }
-    extractProfile(text, file) { return this.request('POST', 'profile/extract', { text, file }) }
+    // Always the real AI, even in the guided tour: the skills read from the CV drive every result (Domain 1 demo step 1)
+    extractProfile(text, file) { return this.request('POST', 'profile/extract', { text, file, demo: false }) }
     setSkills(skills) { return this.request('POST', 'profile/skills', { skills }) }
     setTarget(careerId, mode, text, file, replace = false, sourceUrl = '') { return this.request('POST', 'target', { careerId, mode, text, file, replace, sourceUrl }) }
     trackPosting(sourceUrl) { return this.request('POST', 'target/track', { sourceUrl }) }

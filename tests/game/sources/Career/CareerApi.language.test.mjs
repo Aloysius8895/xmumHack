@@ -24,6 +24,19 @@ test('startup, roadmap generation and background reloads carry the UI language',
     assert.equal(api.state.lang, 'en')
 })
 
+test('skill extraction from a CV uses the real AI even while the guided tour runs on demo answers', async () =>
+{
+    setLang('en')
+    const calls = [], api = new CareerApi()
+    globalThis.fetch = async (url, options) => { calls.push({ url, ...options }); return response('en') }
+    api.demo = true
+    await api.extractProfile('I write SQL every day', null)
+    await api.generateRoadmap()
+    assert.equal(JSON.parse(calls[0].body).demo, false)
+    assert.equal(JSON.parse(calls[0].body).text, 'I write SQL every day')
+    assert.equal(JSON.parse(calls[1].body).demo, true, 'the other tour calls stay on demo answers')
+})
+
 test('a background response from the old language is discarded and reloaded in the new selection', async () =>
 {
     setLang('en')
