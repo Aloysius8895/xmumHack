@@ -54,7 +54,22 @@ test('a concrete learning log advances its task and scores', async () =>
     assert.equal(entry.verdict, 'learned')
     assert.equal(entry.advanced.length, 1)
     assert.equal(target.roadmap.stages[0].tasks[0].progress, 33)
+    assert.equal(entry.advanced[0].taskTitle, 'SQL basics')
+    assert.equal(entry.advanced[0].skillId, 'sql')
+    assert.equal(entry.advanced[0].hours, 2)
     assert.ok(target.points > 0)
+})
+
+test('unmatched concrete study stays recorded without inventing progress or points', () =>
+{
+    const target = save()
+    const entry = game.applyLog(target, { text: 'Trained a scikit-learn model for 2 hours', source: 'telegram', classification: {
+        verdict: 'learned', summary: 'ML frameworks do not match this SQL roadmap.', items: [{ taskId: 'none', skillId: 'ml-frameworks', hours: 2 }],
+    } })
+    assert.equal(entry.points, 0)
+    assert.deepEqual(entry.advanced, [])
+    assert.equal(target.logs[0], entry)
+    assert.equal(target.roadmap.stages[0].tasks[0].progress, 0)
 })
 
 test('items of a log the AI judged vague or invalid are ignored anyway', () =>

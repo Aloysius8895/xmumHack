@@ -61,8 +61,7 @@ export class CareerTour
             { say: [ 'tour.roadmap.open' ], target: 'roadmap', until: () => this.panel === 'roadmap' },
             { say: [ 'tour.roadmap.generate' ], focus: panel('[data-action="roadmap"]'), until: (state) => Boolean(state.roadmap) },
             { say: [ 'tour.roadmap.explain' ] },
-            // The roadmap scroll hides the menu: point at its close button first
-            { say: [ 'tour.log.open' ], target: 'log', focus: () => this.panel === 'roadmap' ? panel('.career-close')() : this.railItem('log'), until: () => this.panel === 'log' },
+            { say: [ 'tour.log.open' ], target: 'log', until: () => this.panel === 'log' },
             { say: [ 'tour.log.write' ], focus: panel('textarea[data-draft="log"], [data-action="log"]'), until: (state) => this.newLogs(state).some((log) => log.advanced.length > 0), retry: (state) => this.newLogs(state)[0]?.id ?? null, done: 'tour.log.done', enter: (state) => { this.lastLogId = state?.logs[0]?.id ?? null } },
             { say: [ 'tour.outro.1', 'tour.outro.2' ] },
         ]
@@ -382,7 +381,7 @@ export class CareerTour
         const height = this.element.offsetHeight
         const margin = 16
         const inPanel = this.ui.panelElement.contains(last) && !last.classList.contains('career-close')
-        const narrowPanel = inPanel && innerWidth <= 720
+        const narrowPanel = inPanel && (innerWidth <= 720 || this.ui.root.classList.contains('is-building-view'))
         this.ui.panelBody.style.paddingBottom = narrowPanel ? `${height + margin}px` : this.originalPanelPadding
         let x
         let y

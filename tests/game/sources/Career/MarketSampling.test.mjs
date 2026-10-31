@@ -80,7 +80,7 @@ test('the learning direction form shows the matched skills and what matched noth
 test('months our collection did not reach are simulated in the heatmap, ranking and skill trends, in one unit',()=>{
     const source=fs.readFileSync(new URL('../../../../src/game/sources/Career/CareerUI.js',import.meta.url),'utf8')
     assert.match(source,/const careers = buildMarketRows\(trends, rowMonths, historyPreview\)/)
-    assert.match(source,/buildMockSkillHistory\(trends, calendar\)/)
+    assert.match(source,/buildMockSkillHistory\(trends, comparisonMonths\)/)
     // past JobStreet months are not mixed into the heatmap: every cell counts postings
     assert.match(source,/referenceView\(\[\], shown/)
 })

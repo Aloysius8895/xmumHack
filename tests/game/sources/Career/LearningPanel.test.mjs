@@ -4,7 +4,7 @@ import { LEARNING_STRINGS, renderLearningPanel } from '../../../../src/game/sour
 
 const esc = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
 const t = (id, vars = {}) => Object.entries(vars).reduce((value, [ key, text ]) => value.replaceAll(`{${key}}`, String(text)), LEARNING_STRINGS[id]?.en ?? id)
-const learning = { mode: 'extreme', userOverride: 'extreme', weeklyHours: 10, checkpointDays: 7, appliedMode: 'moderate', evidence: { skills: [] }, checkpointDueAt: '2026-11-07T00:00:00.000Z', canReview: true, checkpoint: { id: 'c', question: '<script>bad()</script>' }, analysis: '<img onerror="bad()">', pending: { id: 'p', mode: 'extreme', summary: '<svg>', preservedTasks: 2, hoursDelta: 1, changes: [ { title: '<script>', why: '<img>', before: '<b>' } ] } }
+const learning = { mode: 'extreme', userOverride: 'extreme', weeklyHours: 10, checkpointDays: 7, appliedMode: 'moderate', evidence: { skills: [] }, checkpointDueAt: '2026-11-07T00:00:00.000Z', canReview: true, checkpoint: { id: 'c', question: '<script>bad()</script>' }, analysis: '<img onerror="bad()">', latestReview: { understanding: 'ready', feedback: 'Review' }, pending: { id: 'p', mode: 'extreme', summary: '<svg>', preservedTasks: 2, hoursDelta: 1, changes: [ { title: '<script>', why: '<img>', before: '<b>' } ] } }
 
 test('learning panel exposes two choices, checkpoint and explicit confirmation while escaping model/user text', () =>
 {
@@ -22,6 +22,34 @@ test('learning panel exposes two choices, checkpoint and explicit confirmation w
 test('new controls and errors have complete three-language labels', () =>
 {
     for(const [ id, entry ] of Object.entries(LEARNING_STRINGS)) for(const lang of [ 'zh', 'en', 'ms' ]) assert.ok(entry[lang]?.trim(), `${id}.${lang}`)
+})
+
+test('skill mapping details stay hidden while scenario selection remains available', () =>
+{
+    const state = { learning: { ...learning, latestReview: null, evidence: {skills: [{
+        skillId: 'python', mock: true, taskCount: 0, tasks: [], mockTasks: ['Write a script', '<script>unsafe</script>', 'Test a function'],
+        automation: 0.267, augmentation: 0.3659, thinMapping: true,
+    }, {skillId: 'statistics', mock: false, taskCount: 1, tasks: ['Analyze data'], automation: 0.1, augmentation: 0.2}]} } }
+    const html = renderLearningPanel(state, {}, { t, esc, skillName: id => id })
+    assert.ok(!html.includes(t('learning.evidence')))
+    assert.ok(!html.includes(t('learning.mockSource')))
+    assert.ok(!html.includes('Write a script'))
+    assert.ok(!html.includes('Analyze data'))
+    assert.ok(!html.includes('Anthropic Economic Index'))
+    assert.ok(html.includes('data-mode="moderate"'))
+    assert.ok(html.includes('data-mode="extreme"'))
+    assert.ok(!html.includes('<script>'))
+})
+
+test('scenario selection offers direct customisation without a redundant confirmation or preview', () =>
+{
+    const html = renderLearningPanel({ learning: { ...learning, latestReview: null, appliedMode: 'extreme' }, roadmap: {} }, {}, { t, esc, skillName: id => id })
+    assert.ok(html.includes(t('learning.selectHint')))
+    assert.ok(html.includes(t('learning.applied', {mode: 'Extreme'})))
+    assert.ok(!html.includes('data-action="learning-preview"'))
+    assert.ok(!html.includes('data-action="learning-apply"'))
+    assert.ok(!html.includes(t('learning.changed')))
+    assert.match(html, /career-learning" open>/)
 })
 
 test('the recommended scenario is pressed by default and its basis shown; an own choice says until when, with no reset button', () =>

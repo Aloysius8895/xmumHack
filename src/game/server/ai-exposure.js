@@ -30,7 +30,9 @@ function mockRows(file, real)
         {
             const automation = share(row.automation), augmentation = share(row.augmentation)
             if(!real[id] && row.mock === true && automation !== null && augmentation !== null)
-                rows[id] = { automation, augmentation, tasks: [], note: null, mock: true, method: row.method ?? null }
+                rows[id] = { automation, augmentation, tasks: [], note: null, mock: true, method: row.method ?? null,
+                    ...(Array.isArray(row.mockTasks) && row.mockTasks.length ? { mockTasks: row.mockTasks.filter(task =>
+                        typeof task === 'string' ? task.trim() : task && ['zh', 'en', 'ms'].every(lang => typeof task[lang] === 'string' && task[lang].trim())) } : {}) }
         }
         return rows
     }

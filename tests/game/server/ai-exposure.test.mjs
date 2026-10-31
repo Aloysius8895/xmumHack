@@ -5,6 +5,8 @@ import path from 'node:path'
 import test from 'node:test'
 import { loadExposure, EXPOSURE_FILE } from '../../../src/game/server/ai-exposure.js'
 import { SKILLS } from '../../../src/game/server/careers.js'
+import { aeiEvidence } from '../../../src/game/server/learning-rules.js'
+import { imputeExposure } from '../../../src/data/scripts/mock-ai-exposure.mjs'
 
 const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ai-exposure-'))
 test.after(() => fs.rmSync(directory, { recursive: true, force: true }))
@@ -57,4 +59,34 @@ test('a mock value fills only a skill without a real one, marked mock', () =>
     assert.equal(exposure.skills.sql.mock, undefined)
     assert.deepEqual(exposure.skills.git, { automation: 0.3, augmentation: 0.4, tasks: [], note: null, mock: true, method: 'career-mean-imputation' })
     assert.equal(exposure.skills.cad, undefined)
+})
+
+test('six missing ML skills have reproducible multilingual mock examples without inventing observed evidence', () =>
+{
+    const read = relative => JSON.parse(fs.readFileSync(new URL(relative, import.meta.url), 'utf8'))
+    const real = read('../../../data/ai-exposure/exposure.json')
+    const mapping = read('../../../data/ai-exposure/skill_task_map.json')
+    const config = read('../../../src/data/config/mock-skill-tasks.json')
+    const generated = imputeExposure(real, mapping, config.skills)
+    const written = read('../../../data/mock/ai-exposure.json')
+    const loaded = loadExposure()
+    for(const id of ['python', 'ml-math', 'ml-frameworks', 'data-cleaning', 'mlops', 'sql'])
+    {
+        assert.equal(generated[id].mockTasks.length, 3)
+        assert.deepEqual(written.skills[id], generated[id])
+        assert.deepEqual(loaded.skills[id].tasks, [])
+        assert.equal(loaded.skills[id].mock, true)
+        for(const task of loaded.skills[id].mockTasks)
+            for(const lang of ['zh', 'en', 'ms']) assert.ok(task[lang]?.trim())
+    }
+    const evidence = aeiEvidence({target: {careerId: 'ml-engineer'}, lang: 'zh'}, loaded)
+    for(const row of evidence.skills)
+    {
+        assert.equal(row.mockTasks.length, 3)
+        assert.equal(row.taskCount, 0, 'synthetic examples cannot increase direct AEI task counts')
+        assert.equal(row.thinMapping, true, 'synthetic examples cannot improve evidence quality')
+        assert.equal(row.mockTasks[0], config.skills[row.skillId][0].zh)
+    }
+    assert.equal(loaded.skills.statistics.mock, undefined)
+    assert.deepEqual(loaded.skills.statistics.tasks, real.skills.statistics.tasks)
 })

@@ -1,8 +1,8 @@
 {
   "mock": true,
   "generator": "src/data/scripts/mock-ai-exposure.mjs",
-  "generatedAt": "2026-10-31T07:02:46.263Z",
-  "about": "MOCK AI exposure, not observed data: imputed from the reviewed Anthropic Economic Index values of data/ai-exposure/exposure.json for skills without one. Read by src/game/server/ai-exposure.js only where no real value exists. Every result using it is marked mock.",
+  "generatedAt": "2026-10-31T15:49:38.609Z",
+  "about": "MOCK AI exposure, not observed data: imputed from reviewed Anthropic Economic Index skill values. mockTasks are synthetic project-created examples from src/data/config/mock-skill-tasks.json, not observed AEI/O*NET tasks and not used to calculate exposure values or evidence quality. Real values always take precedence. Every result using imputed values is marked mock.",
   "basis": {
     "exposure": "data/ai-exposure/exposure.json",
     "map": "data/ai-exposure/skill_task_map.json",
@@ -13,6 +13,23 @@
       "automation": 0.2588,
       "augmentation": 0.3592,
       "mock": true,
+      "mockTasks": [
+        {
+          "zh": "编写 SQL JOIN 查询，合并多个数据表。",
+          "en": "Write SQL JOIN queries to combine multiple tables.",
+          "ms": "Tulis pertanyaan SQL JOIN untuk menggabungkan beberapa jadual."
+        },
+        {
+          "zh": "使用 GROUP BY 与聚合函数生成统计报表。",
+          "en": "Generate summary reports with GROUP BY and aggregate functions.",
+          "ms": "Jana laporan ringkasan dengan GROUP BY dan fungsi agregat."
+        },
+        {
+          "zh": "检查查询执行计划，并验证优化后的结果。",
+          "en": "Inspect query execution plans and validate results after optimization.",
+          "ms": "Periksa pelan pelaksanaan pertanyaan dan sahkan hasil selepas pengoptimuman."
+        }
+      ],
       "method": "career-mean-imputation",
       "basis": {
         "careers": [
@@ -39,6 +56,23 @@
       "automation": 0.267,
       "augmentation": 0.3659,
       "mock": true,
+      "mockTasks": [
+        {
+          "zh": "编写 Python 脚本读取 CSV 文件并汇总数据。",
+          "en": "Write a Python script to read CSV files and summarize data.",
+          "ms": "Tulis skrip Python untuk membaca fail CSV dan meringkaskan data."
+        },
+        {
+          "zh": "调试 Python 函数，并编写单元测试验证输出。",
+          "en": "Debug a Python function and verify its outputs with unit tests.",
+          "ms": "Nyahpepijat fungsi Python dan sahkan output dengan ujian unit."
+        },
+        {
+          "zh": "使用 Python 自动整理重复的数据处理步骤。",
+          "en": "Automate repetitive data-processing steps with Python.",
+          "ms": "Automasikan langkah pemprosesan data berulang dengan Python."
+        }
+      ],
       "method": "career-mean-imputation",
       "basis": {
         "careers": [
@@ -59,6 +93,23 @@
       "automation": 0.267,
       "augmentation": 0.3659,
       "mock": true,
+      "mockTasks": [
+        {
+          "zh": "检查缺失值，并选择合适的填补或删除方法。",
+          "en": "Inspect missing values and choose an appropriate imputation or removal method.",
+          "ms": "Periksa nilai hilang dan pilih kaedah pengisian atau pembuangan yang sesuai."
+        },
+        {
+          "zh": "删除重复记录，统一日期与数值格式。",
+          "en": "Remove duplicate records and standardize date and numeric formats.",
+          "ms": "Buang rekod pendua dan seragamkan format tarikh serta nombor."
+        },
+        {
+          "zh": "识别异常值，并验证清洗前后的数据质量。",
+          "en": "Identify outliers and validate data quality before and after cleaning.",
+          "ms": "Kenal pasti nilai terpencil dan sahkan kualiti data sebelum serta selepas pembersihan."
+        }
+      ],
       "method": "career-mean-imputation",
       "basis": {
         "careers": [
@@ -236,6 +287,23 @@
       "automation": 0.158,
       "augmentation": 0.2073,
       "mock": true,
+      "mockTasks": [
+        {
+          "zh": "计算梯度并解释它如何影响模型参数更新。",
+          "en": "Calculate gradients and explain how they affect model parameter updates.",
+          "ms": "Kira kecerunan dan terangkan kesannya pada kemas kini parameter model."
+        },
+        {
+          "zh": "使用矩阵运算表达输入特征与模型预测。",
+          "en": "Represent input features and model predictions using matrix operations.",
+          "ms": "Wakilkan ciri input dan ramalan model menggunakan operasi matriks."
+        },
+        {
+          "zh": "用概率与统计方法检查模型评估结果。",
+          "en": "Check model evaluation results using probability and statistics.",
+          "ms": "Semak hasil penilaian model menggunakan kebarangkalian dan statistik."
+        }
+      ],
       "method": "all-skills-mean-imputation",
       "basis": {
         "careers": [
@@ -287,6 +355,23 @@
       "automation": 0.2105,
       "augmentation": 0.3259,
       "mock": true,
+      "mockTasks": [
+        {
+          "zh": "使用 scikit-learn 构建预处理与分类模型管道。",
+          "en": "Build a preprocessing and classification pipeline with scikit-learn.",
+          "ms": "Bina saluran prapemprosesan dan pengelasan dengan scikit-learn."
+        },
+        {
+          "zh": "使用 PyTorch 训练小型神经网络并检查损失变化。",
+          "en": "Train a small neural network with PyTorch and inspect its loss.",
+          "ms": "Latih rangkaian neural kecil dengan PyTorch dan periksa nilai kerugiannya."
+        },
+        {
+          "zh": "通过交叉验证比较模型参数，并检查数据泄漏。",
+          "en": "Compare model parameters with cross-validation and check for data leakage.",
+          "ms": "Bandingkan parameter model melalui pengesahan silang dan semak kebocoran data."
+        }
+      ],
       "method": "career-mean-imputation",
       "basis": {
         "careers": [
@@ -305,6 +390,23 @@
       "automation": 0.0719,
       "augmentation": 0.1388,
       "mock": true,
+      "mockTasks": [
+        {
+          "zh": "记录模型版本、训练配置与评估结果。",
+          "en": "Track model versions, training configurations and evaluation results.",
+          "ms": "Jejak versi model, konfigurasi latihan dan hasil penilaian."
+        },
+        {
+          "zh": "将模型封装成预测服务，并测试部署流程。",
+          "en": "Package a model as a prediction service and test its deployment pipeline.",
+          "ms": "Bungkus model sebagai perkhidmatan ramalan dan uji saluran penggunaannya."
+        },
+        {
+          "zh": "监控模型输入漂移与预测表现，设置告警。",
+          "en": "Monitor model input drift and prediction performance and configure alerts.",
+          "ms": "Pantau hanyutan input model serta prestasi ramalan dan tetapkan amaran."
+        }
+      ],
       "method": "career-mean-imputation",
       "basis": {
         "careers": [

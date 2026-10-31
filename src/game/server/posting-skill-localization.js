@@ -1,4 +1,5 @@
 import { useCustom } from './careers.js'
+import { localizedSkillName } from './profile-localization.js'
 
 const LANGS = [ 'zh', 'en', 'ms' ]
 
@@ -18,7 +19,7 @@ function localizedText(value, limit)
 
 export function postingSkillLocalization(requirement)
 {
-    const name = localizedText(requirement.skillName, 100)
+    const name = localizedSkillName(requirement.skillName)
     const description = localizedText(requirement.skillDescription, 600)
     return name && description ? { name, description } : null
 }
@@ -36,7 +37,7 @@ export function missingPostingSkillTranslations(save)
     {
         const skill = save.customSkills?.[id]
         if(!skill) return []
-        const name = localizedText(skill.name, 100)
+        const name = localizedSkillName(skill.name)
         const description = localizedText(skill.detail?.description, 600)
         if(name && description && (skill.localizationVersion === 1 || !copied(name) || !copied(description)))
             return []

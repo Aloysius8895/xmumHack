@@ -1,9 +1,44 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { buildMarketRows } from '../../../../src/game/sources/Career/MarketSeries.js'
+import { buildMarketRows, buildSkillRows } from '../../../../src/game/sources/Career/MarketSeries.js'
 import { buildMockMarketHistory } from '../../../../src/game/sources/Career/MockMarketHistory.js'
 
 const shown = ['2026-04','2026-05','2026-06','2026-07','2026-08','2026-09','2026-10']
+
+test('changing the selected range updates endpoint counts, monthly changes and sparklines', () => {
+    const trends = { periods: ['2024-05', '2024-06', '2024-07', '2026-10'], careers: [
+        { id: 'a', ads: [10, 20, 15, 300] }, { id: 'b', ads: [30, 15, 30, 1] },
+    ] }
+    const june = buildMarketRows(trends, ['2024-05', '2024-06'])
+    const july = buildMarketRows(trends, ['2024-06', '2024-07'])
+    assert.deepEqual(june.map(row => [row.latest, row.change, row.trend]), [[20, 100, 'rising'], [15, -50, 'falling']])
+    assert.deepEqual(july.map(row => [row.latest, row.change, row.trend]), [[15, -25, 'falling'], [30, 100, 'rising']])
+    assert.deepEqual(july[0].displayAds, [20, 15])
+    assert.equal(july[0].previousPeriod, '2024-06')
+    assert.equal(buildMarketRows(trends, ['2024-07'])[0].change, -25)
+})
+
+test('a missing selected endpoint does not fall back to current counts', () => {
+    const trends = { periods: ['2024-12', '2026-10'], careers: [{id: 'a', ads: [20, 300]}] }
+    const row = buildMarketRows(trends, ['2025-01'])[0]
+    assert.equal(row.latest, null)
+    assert.equal(row.previousPeriod, '2024-12')
+    assert.equal(row.change, null)
+    assert.equal(row.trend, 'unknown')
+})
+
+test('skill trends use selected months and preserve observed zero over simulated shares', () => {
+    const trends = { periods: ['2024-06', '2024-07', '2026-10'], skills: [{id: 'sql', share: [20, 0, 80]}] }
+    const mock = {sql: {'2024-05': 10, '2024-07': 99}}
+    const june = buildSkillRows(trends, ['2024-05', '2024-06'], mock)[0]
+    const july = buildSkillRows(trends, ['2024-07'], mock)[0]
+    assert.deepEqual(june.series, [10, 20])
+    assert.equal(june.points, 10)
+    assert.deepEqual(july.series, [0])
+    assert.equal(july.latest, 0)
+    assert.equal(july.points, -20)
+    assert.equal(buildSkillRows(trends, ['2025-01'])[0].points, null)
+})
 
 test('rising and falling classifications agree with the displayed heatmap, preserving raw observations', () => {
     // The preview follows each career's big-picture direction (MockMarketHistory.js): ml-engineer up, chef down

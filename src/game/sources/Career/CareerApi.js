@@ -89,14 +89,15 @@ export class CareerApi
 
     async request(method, path, body)
     {
+        const language = getLang()
         this.busy++
         this.events.trigger('busy', [ this.busy > 0 ])
         try
         {
             const response = await fetch(`./api/${path}`, {
                 method,
-                headers: { 'X-Career-Client': this.clientId, 'X-Career-Lang': getLang(), ...(body ? { 'Content-Type': 'application/json' } : {}) },
-                body: body ? JSON.stringify({ lang: getLang(), ...(this.demo ? { demo: true } : {}), ...body }) : undefined,
+                headers: { 'X-Career-Client': this.clientId, 'X-Career-Lang': language, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+                body: body ? JSON.stringify({ lang: language, ...(this.demo ? { demo: true } : {}), ...body }) : undefined,
             })
             const payload = await response.json().catch(() => ({ error: 'generic' }))
             if(!response.ok)
@@ -105,18 +106,20 @@ export class CareerApi
                 error.code = payload.error ?? 'generic'
                 throw error
             }
-            if(payload.state)
+            if(payload.state && language === getLang())
             {
                 const previous = this.state
                 this.state = payload.state
                 this.events.trigger('state', [ this.state, previous ])
             }
+            else if(payload.state) this.refreshAgain = true
             return payload
         }
         finally
         {
             this.busy--
             this.events.trigger('busy', [ this.busy > 0 ])
+            if(this.busy === 0 && this.refreshAgain) this.refresh()
         }
     }
 

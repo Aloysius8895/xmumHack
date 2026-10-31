@@ -18,7 +18,8 @@ export class BuildingVisit
     open(station, { direct = false } = {})
     {
         const { game, ui } = this
-        if(this.active || game.view.cinematic.active || ui.panel || ui.dialogue || ui.touring) return false
+        // Guided menu clicks use the same exhibit, while walking interactions stay disabled during the tour.
+        if(this.active || game.view.cinematic.active || ui.panel || ui.dialogue || (ui.touring && !direct)) return false
         this.active = true
         const generation = this.generation = (this.generation ?? 0) + 1
         this.station = station

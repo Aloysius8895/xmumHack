@@ -3,10 +3,10 @@
   "requests": 1,
   "httpStatus": 200,
   "ok": true,
-  "responseSha256": "3b63ccb9ef64618867a22914e4e4e79d84f5c1bab86f281ec16f2a7fe60a772e",
+  "responseSha256": "ab8e90028522757f49b364ddae4caa6a46326b42281dedf882afc102fc30f91c",
   "returned": 10,
   "eligibleByPlatform": {
-    "linkedin": 1,
+    "linkedin": 2,
     "indeed": 0,
     "ricebowl": 0
   },

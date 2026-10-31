@@ -178,25 +178,77 @@ test('save migration preserves old fast choices and existing progress', async ()
     assert.equal(save.roadmap.chosenBranch, 'fast', 'migration does not mutate its input')
 })
 
-test('API scenario, review and confirm flow never applies a preview before confirmation', async () =>
+test('API scenario applies immediately while later review changes still require confirmation', async () =>
 {
     const save = await learner()
     store.save(save)
     assert.equal((await call('POST', '/api/learning/scenario', { mode: 'invalid' })).status, 400)
-    assert.equal((await call('POST', '/api/learning/scenario', { mode: 'extreme' })).state.learning.mode, 'extreme')
+    const selected = await call('POST', '/api/learning/scenario', { mode: 'extreme' })
+    assert.equal(selected.state.learning.mode, 'extreme')
+    assert.equal(selected.state.roadmap.learningScenario, 'extreme')
+    assert.equal(selected.state.learning.pending, null)
+    const selectedRoadmap = structuredClone(store.load().roadmap)
     assert.equal((await call('POST', '/api/learning/analyze', {})).state.learning.trendClassification, 'insufficient_evidence')
     const started = await call('POST', '/api/learning/checkpoint', {})
     const reviewed = await call('POST', '/api/learning/review', { checkpointId: started.state.learning.checkpoint.id, progress: 'A project', difficulty: '', answer: 'A concrete explanation' })
     assert.equal(reviewed.status, 200)
     const preview = await call('POST', '/api/learning/preview', {})
     assert.equal(preview.state.learning.pending.requiresConfirmation, true)
-    assert.deepEqual(store.load().roadmap, save.roadmap)
+    assert.deepEqual(store.load().roadmap, selectedRoadmap)
     const applied = await call('POST', '/api/learning/apply', { previewId: preview.state.learning.pending.id })
     assert.equal(applied.status, 200)
     assert.equal(applied.state.roadmap.learningScenario, 'extreme')
     assert.equal(applied.state.points, save.points)
     assert.equal(applied.state.learning.pending, null)
     assert.equal((await call('POST', '/api/learning/apply', { previewId: preview.state.learning.pending.id })).status, 409)
+})
+
+test('scenario clicks customise both modes immediately, retain progress and do not repeat edits for the same mode', async () =>
+{
+    const save = await learner()
+    store.save(save)
+    for(const mode of ['extreme', 'moderate'])
+    {
+        const result = await call('POST', '/api/learning/scenario', {mode})
+        assert.equal(result.status, 200)
+        const saved = store.load()
+        assert.equal(saved.roadmap.learningScenario, mode)
+        assert.equal(saved.learning.pending, null)
+        assert.deepEqual(saved.roadmap.stages[0].tasks.slice(0, 2), save.roadmap.stages[0].tasks.slice(0, 2))
+        assert.equal(saved.roadmap.stages[0].approach.scenario, mode)
+        assert.equal(saved.roadmap.stages[0].tasks[2].learningActivity, mode === 'extreme' ? 'verification' : 'independent_practice')
+        for(const key of ['points', 'mastery', 'logs', 'target']) assert.deepEqual(saved[key], save[key])
+        await call('POST', '/api/learning/scenario', {mode})
+        assert.deepEqual(store.load().roadmap, saved.roadmap)
+    }
+})
+
+test('first scenario selection generates a matching roadmap without a second action', async () =>
+{
+    for(const mode of ['moderate', 'extreme'])
+    {
+        const save = store.createSave()
+        game.setTarget(save, {careerId: 'ml-engineer', mode: 'general'})
+        store.save(save)
+        const result = await call('POST', '/api/learning/scenario', {mode})
+        assert.equal(result.status, 200)
+        assert.equal(result.state.roadmap.learningScenario, mode)
+        assert.ok(result.state.roadmap.stages.length)
+        assert.equal(result.state.learning.pending, null)
+    }
+})
+
+test('rejected scenario selection keeps the existing choice and roadmap', async () =>
+{
+    const save = await learner()
+    store.save(save)
+    const before = store.load()
+    assert.equal((await call('POST', '/api/learning/scenario', {mode: 'invalid'})).status, 400)
+    assert.deepEqual(store.load(), before)
+    save.target.posting = {monitor: {requiresRegeneration: true}}
+    store.save(save)
+    assert.equal((await call('POST', '/api/learning/scenario', {mode: 'extreme'})).status, 409)
+    assert.deepEqual(store.load().roadmap, save.roadmap)
 })
 
 test('existing roadmap generation also requires a preview and legacy scenarios stay in sync', async () =>

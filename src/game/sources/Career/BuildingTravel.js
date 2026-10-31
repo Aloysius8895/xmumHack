@@ -15,7 +15,7 @@ export function travelToBuilding(game, ui, panel)
 {
     const entrances = game.career?.buildingEntrances
     const station = entrances?.stations.get(panel)
-    if(!station || ui.touring) return false
+    if(!station) return false
     // Already inside the exhibit: change its content without showing the map in between.
     if(entrances.visit.active)
     {

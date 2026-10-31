@@ -6,7 +6,7 @@
  */
 import { DEFAULT_MAP, SKILLS, SKILL_IDS, allCareers, getCareer, localText, matchCareer, useCustom } from './careers.js'
 import { postingSkillLocalization } from './posting-skill-localization.js'
-import { cleanEvidence, localizedEvidence } from './profile-localization.js'
+import { cleanEvidence, localizedEvidence, localizedSkillName, profileSkillNames } from './profile-localization.js'
 import { SKILL_DETAILS } from './skill-details.js'
 import { expertOf } from './experts.js'
 import { friendCode, leaderboard } from './friends.js'
@@ -64,10 +64,12 @@ export function mergeSkills(profile, extracted)
         {
             existing.level = Math.max(existing.level, skill.level)
             existing.evidence = localizedEvidence(skill.evidence) ?? existing.evidence
+            if(localizedSkillName(skill.localizedName)) Object.assign(existing, {localizedName: localizedSkillName(skill.localizedName), localizedNameSource: existing.name})
         }
         else
         {
-            profile.skills.push({ id, name: skill.name, level: skill.level, evidence: cleanEvidence(skill.evidence), source: 'ai' })
+            profile.skills.push({ id, name: skill.name, level: skill.level, evidence: cleanEvidence(skill.evidence), source: 'ai',
+                ...(localizedSkillName(skill.localizedName) ? {localizedName: localizedSkillName(skill.localizedName), localizedNameSource: skill.name} : {}) })
         }
     }
 }
@@ -79,6 +81,7 @@ export function setSkills(profile, skills)
         .map((skill) => ({
             id: skill.id && SKILLS[skill.id] ? skill.id : null,
             name: skill.name.trim().slice(0, 80),
+            ...(profileSkillNames(skill) ? {localizedName: profileSkillNames(skill), localizedNameSource: skill.name.trim().slice(0, 80)} : {}),
             level: Math.max(0, Math.min(3, Math.round(Number(skill.level) || 0))),
             evidence: cleanEvidence(skill.evidence),   // { zh, en, ms }, or one sentence of an older profile
             source: skill.source === 'ai' || skill.source === 'gym' ? skill.source : 'manual',
@@ -308,7 +311,7 @@ export function setTarget(save, { careerId, mode, posting })
         save.pet = shelved?.pet ?? { careerId, name: career.pet.name, species: career.pet.species, affinity: 0, createdAt: now }
         // A new posting changes the requirements: plan again. Otherwise the saved roadmap comes back
         save.roadmap = posting ? null : shelved?.roadmap ?? null
-        const keptPosting = mode === 'customise' && shelved?.target?.mode === 'customise' ? shelved.target.posting : null
+        const keptPosting = mode === shelved?.target?.mode ? shelved.target.posting : null
         save.target = { careerId, mode, posting: posting ?? keptPosting, setAt: now }
     }
     else
@@ -441,6 +444,7 @@ export function buildRoadmap(plan)
                 ...(task.deliverable ? { deliverable: task.deliverable } : {}),
                 ...(task.completionCriteria ? { completionCriteria: task.completionCriteria } : {}),
                 ...(task.evidenceRefs ? { evidenceRefs: task.evidenceRefs } : {}),
+                ...(Number.isInteger(task.resourceIndex) ? { resourceIndex: task.resourceIndex } : {}),
             })),
             cleared: false,
             clearedAt: null,
@@ -532,7 +536,7 @@ export function applyLog(save, { text, source, classification })
             if(task.progressBeforeDone !== undefined)
                 task.progressBeforeDone = Math.min(99, Math.round(task.progressBeforeDone + hours / task.mp * 100))
             const difficulty = difficultyTier(task.skillId)
-            advanced.push({ taskId: task.id, from: before, to: task.progress, difficulty, points: (task.progress - before) * RULES.difficultyWeights[difficulty] })
+            advanced.push({ taskId: task.id, taskTitle: task.title, skillId: task.skillId, hours, from: before, to: task.progress, difficulty, points: (task.progress - before) * RULES.difficultyWeights[difficulty] })
         }
     }
 
@@ -699,7 +703,8 @@ export function view(save, ai, documents = {})
         skillNames: SKILLS,
         // Heat = share of the collected postings asking for the skill; null without collected data
         skillDetails: Object.fromEntries(Object.entries(SKILL_DETAILS).map(([ id, { demand: _authored, ...detail } ]) => [ id, { ...detail, heat: collected?.skillMarket[id]?.share ?? null, sample: Boolean(collected) } ])),
-        profile: save.profile,
+        profile: { ...save.profile, skills: save.profile.skills.map(skill => ({...skill,
+            ...(profileSkillNames(skill) ? {localizedName: profileSkillNames(skill)} : {})})) },
         careers,
         map: { slots: mapSlots(save), replaceCandidate: replaceCandidate(save) },
         pending,

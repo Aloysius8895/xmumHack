@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
-import { rankDelta, renderAssumptions, renderCardScore, renderScenarioBar, renderScoreBreakdown, renderSkillRadar } from '../../../../src/game/sources/Career/ScenarioView.js'
+import { rankDelta, renderCardScore, renderScenarioBar, renderSkillRadar } from '../../../../src/game/sources/Career/ScenarioView.js'
 import { t } from '../../../../src/game/sources/Career/i18n.js'
 
 const esc = (value) => String(value)
@@ -27,6 +27,7 @@ test('the toggle marks the current scenario, carries no estimate or mock tags, a
     assert.match(html, /data-preset="extreme" aria-pressed="false"/)
     assert.doesNotMatch(html, /is-estimate|is-mock|估算|含模拟数据/)
     assert.doesNotMatch(html, /补充档案/)
+    assert.doesNotMatch(html, /scenario-assumptions/, 'no assumptions button (removed at the user\'s request)')
     assert.match(renderScenarioBar(state('moderate', true), { t, esc }), /data-panel="profile"/)
 })
 
@@ -39,25 +40,6 @@ test('a card shows the score, the rank change against the other scenario and low
     assert.match(html, /↑2/)
     assert.match(html, /低置信/)
     assert.equal(renderCardScore(state(), 'chef', { t, esc }), '')
-})
-
-test('why this score: the formula with the numbers, each skill with its parts, how to raise it, no source said', () =>
-{
-    const html = renderScoreBreakdown(state(), 'data-analyst', { t, esc, skillName })
-    assert.match(html, /匹配分 38 = 技能契合度 30 × 60% \+ 职业前景 45 × 40%/)
-    assert.match(html, /SQL[\s\S]*↑ 1\.10/)
-    assert.match(html, /学会SQL：\+8 分/)
-    assert.match(html, /无来源/)           // excel has no exposure source
-})
-
-test('the assumptions card states the parameters, the formula, the sources and the limits', () =>
-{
-    const html = renderAssumptions(state(), { t, esc })
-    assert.match(html, /k = 0\.6/)
-    assert.match(html, /30%/)
-    assert.match(html, /未满 3 个月/)
-    assert.match(html, /不是数据/)
-    assert.match(html, /最后的决定由你做/)
 })
 
 test('the skill radar lists rising and declining skills, and those declining under both scenarios', () =>

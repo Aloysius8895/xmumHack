@@ -1544,6 +1544,23 @@ button.career-points {
     overflow-wrap: anywhere;
 }
 
+/* The task's learning link (CareerUI.taskResource), under its one-sentence description */
+.career-task-resource {
+    justify-self: start;
+    max-width: calc(100% - 26px);
+    margin-left: 26px;
+    color: var(--career-accent, #5127a8);
+    font-size: 0.88em;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.career-task-resource:hover {
+    text-decoration-thickness: 2px;
+}
+
 .career-task-meta {
     display: flex;
     flex-wrap: wrap;
@@ -3944,7 +3961,7 @@ html:not(.is-started) .career-ui {
     border-right: 4px solid var(--line-soft);
 }
 
-// Future scenarios (ScenarioView.js): toggle, card score, why-this-score, assumptions, skill radar
+// Future scenarios (ScenarioView.js): toggle, card score, skill radar
 .career-scenario {
     margin: 0 0 14px;
     padding: 10px 12px;
@@ -4047,8 +4064,6 @@ html:not(.is-started) .career-ui {
     }
 }
 
-.career-score,
-.career-assumptions,
 .career-radar {
     margin: 12px 0 16px;
     padding: 10px 12px;
@@ -4082,47 +4097,6 @@ html:not(.is-started) .career-ui {
         margin: 0;
         overflow-wrap: anywhere;
     }
-}
-
-.career-score-formula {
-    font-weight: 700;
-}
-
-.career-score-skills {
-    margin: 6px 0;
-    padding: 0;
-    list-style: none;
-
-    li {
-        border-top: 1px solid var(--line-soft);
-        padding: 4px 0;
-    }
-
-    summary {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        gap: 4px 10px;
-        cursor: pointer;
-    }
-
-    li.is-rising .career-score-value {
-        color: #1F6B35;
-    }
-
-    li.is-declining .career-score-value {
-        color: #A3271A;
-    }
-
-    dl {
-        margin: 6px 0 2px 14px;
-        font-size: 14px;
-    }
-}
-
-.career-score-value {
-    margin-left: auto;
-    font-weight: 700;
 }
 
 .career-radar-columns {

@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-31T13:10:02.607944+00:00",
+  "workflowId": "CSPostingWatch01",
+  "name": "CareerSphere: weekly job posting watch",
+  "active": true,
+  "versionId": "cb1ba64c-d491-4f73-877a-9e7042a9fa07",
+  "activeVersionId": "cb1ba64c-d491-4f73-877a-9e7042a9fa07",
+  "publishedVersionId": "cb1ba64c-d491-4f73-877a-9e7042a9fa07",
+  "schedule": {
+    "cron": "0 8 * * 1",
+    "timezone": "Asia/Kuala_Lumpur"
+  },
+  "apiUrl": "http://127.0.0.1:5000/api/integrations/jobs/check",
+  "lastExecution": {
+    "id": 14,
+    "status": "success",
+    "workflowVersionId": "cb1ba64c-d491-4f73-877a-9e7042a9fa07",
+    "startedAt": "2026-10-31 13:09:18.214",
+    "stoppedAt": "2026-10-31 13:09:18.476"
+  },
+  "manualWebhookResult": {
+    "httpStatus": 200,
+    "watching": 0,
+    "checked": 0,
+    "changed": 0,
+    "failed": 0
+  },
+  "liveSave": "No source URLs registered; no company changes claimed or invented.",
+  "validation": {
+    "targetedTestsPassed": 43,
+    "buildPassed": true,
+    "formViewports": [
+      1200,
+      390
+    ],
+    "horizontalOverflow": false
+  },
+  "runtimeRequirement": "The local n8n process and game API must keep running; no machine startup task has been added."
+}

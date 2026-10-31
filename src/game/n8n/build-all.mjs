@@ -24,7 +24,7 @@ const descriptions = [
     '每天 08:00（马来西亚）：公开 LinkedIn 采集 13 个职业 → 校验原始任务 → 清洗与技能提取 → 校验派生数据 → 发布并刷新热度。无需 RapidAPI；失败保留旧数据。Indeed 索引摘要不自动刷新。',
     '接收 Telegram 私聊 → 校验演示玩家 ID → 分离文字、确认按钮和附件 → 转发给已有 chatbot。chatbot 负责 AI 分类、游戏记账、去重和回复，附件返回仅支持文字的提示。',
     '每天 00:05（马来西亚）：取昨天 → 读取演示玩家已成功提交的汇报 → 原文摘录 → 保存总结。无记录跳过；skills 为空，不额外加熟练度或积分。',
-    '每 30 分钟（马来西亚）：检查 customise 岗位原始链接 → 首次建立基线 → 检测正文变化 → 保留原路线并在游戏内提醒用户查看更新、重新生成。失败不当作变更；不发送外部消息。',
+    '每周一 08:00（马来西亚）：检查 Roadmap 保存的岗位原始链接（普通或定制目标） → 首次建立基线 → 检测正文变化 → 保留原路线并在游戏内提醒用户查看更新、重新生成。失败不当作变更；不发送外部消息。',
 ]
 const html = `<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CareerSphere · n8n 工作流总览</title>

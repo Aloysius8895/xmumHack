@@ -47,3 +47,25 @@ test('a background response from the old language is discarded and reloaded in t
     assert.deepEqual(updates, [ 'ms' ])
     assert.equal(api.state.lang, 'ms')
 })
+
+test('a slow mutation response cannot restore the previous language after a switch', async () =>
+{
+    setLang('zh')
+    const api = new CareerApi(), updates = []
+    api.state = {lang: 'zh'}
+    api.events.on('state', state => updates.push(state.lang))
+    let finishOld
+    globalThis.fetch = async (url, options) => {
+        if(String(url).endsWith('/roadmap')) return new Promise(resolve => {finishOld = resolve})
+        return response(options.headers['X-Career-Lang'])
+    }
+    const old = api.generateRoadmap()
+    setLang('en')
+    await api.setLang('en')
+    finishOld(response('zh'))
+    await old
+    for(let i = 0; i < 10 && api.refreshing; i++) await setImmediate()
+    assert.equal(api.state.lang, 'en')
+    assert.ok(updates.length > 0)
+    assert.ok(updates.every(lang => lang === 'en'))
+})

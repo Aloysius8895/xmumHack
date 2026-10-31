@@ -4,13 +4,14 @@ import { CharacterSelect } from '../Game/CharacterSelect.js'
 import { readFile } from './CareerApi.js'
 import { LANGS, getLang, pick, setLang, t } from './i18n.js'
 import { renderMarketHistory } from './MarketHistory.js'
-import { marketMonthWindow } from './MarketWindow.js'
-import { buildMarketRows } from './MarketSeries.js'
+import { marketRangeWindow } from './MarketWindow.js'
+import { buildMarketRows, buildSkillRows } from './MarketSeries.js'
+import { renderSkillTrendSummary } from './SkillTrendSummary.js'
 import { buildMockMarketHistory, buildMockSkillHistory } from './MockMarketHistory.js'
 import { newCareerBadge, renderSamplingDiagnostics } from './MarketSampling.js'
 import { renderMycolTimeline } from './OfficialRecord.js'
-import { forecastOf, renderAssumptions, renderCardScore, renderScenarioBar, renderScoreBreakdown, renderSkillRadar } from './ScenarioView.js'
-import { MAX_RANGE_MONTHS, chosenRange, limitRange, monthsBetween, referenceView, yearOnYearColumn, yearOnYearText } from './MarketReference.js'
+import { forecastOf, renderCardScore, renderScenarioBar } from './ScenarioView.js'
+import { MAX_RANGE_MONTHS, limitRange, referenceView, yearOnYearColumn, yearOnYearText } from './MarketReference.js'
 import { collectNewSample } from './SampleRefresh.js'
 import { travelToBuilding } from './BuildingTravel.js'
 import { renderLearningPanel } from './LearningPanel.js'
@@ -173,8 +174,12 @@ export class CareerUI
 
         const gap = 16
         const minimap = this.root.querySelector('.career-minimap')
-        const left = minimap ? minimap.offsetLeft + minimap.offsetWidth + gap : gap
-        const right = this.menuElement.offsetLeft - gap
+        // In a building (no minimap, no HUD) the bar centers on the screen, clear of the zoom and exit buttons
+        const zoom = this.root.classList.contains('is-building-view') && this.root.querySelector('.building-exhibit-zoom')
+        const zoomLeft = zoom && zoom.offsetWidth ? zoom.getBoundingClientRect().left - this.root.getBoundingClientRect().left : this.root.offsetWidth - 230
+        const reserve = zoom ? this.root.offsetWidth - zoomLeft + gap : 0
+        const left = zoom ? reserve : minimap ? minimap.offsetLeft + minimap.offsetWidth + gap : gap
+        const right = zoom ? this.root.offsetWidth - reserve : this.menuElement.offsetLeft - gap
         const room = Math.max(0, right - left)
 
         this.menuElement.style.setProperty('--career-bar-center', `${(left + right) / 2}px`)
@@ -222,6 +227,7 @@ export class CareerUI
                     <span class="building-screen-brand building-only">KerjayaKu <span> / </span></span>
                     <h2 class="js-career-panel-title"></h2>
                     <span class="fantasy-exhibit-brand building-only">KerjayaKu · Team Chill Chill</span>
+                    <button type="button" class="career-zoom" data-action="building-zoom" aria-label="${esc(t('exhibit.zoomOut'))}" title="${esc(t('exhibit.zoomOut'))}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21M7.5 10.5h6"/></svg></button>
                     <button class="career-close" data-action="close" aria-label="${esc(t('common.close'))}">×</button>
                 </header>
                 <nav class="building-screen-sections building-only js-building-sections"></nav>
@@ -230,12 +236,6 @@ export class CareerUI
                     <button type="button" data-action="building-room" data-direction="-1" class="exhibit-room-button js-exhibit-previous">←</button>
                     <button type="button" data-action="building-room" data-direction="1" class="exhibit-room-button js-exhibit-next">→</button>
                 </nav>
-                <footer class="building-screen-footer building-only">
-                    <button type="button" data-action="building-page" data-direction="-1" class="exhibit-page-button" aria-label="${esc(t('exhibit.previousPage'))}">‹</button>
-                    <span class="js-building-position"></span>
-                    <button type="button" data-action="building-page" data-direction="1" class="exhibit-page-button" aria-label="${esc(t('exhibit.nextPage'))}">›</button>
-                    <span class="building-screen-hint">Esc · <span class="js-building-exit"></span></span>
-                </footer>
             </section>
             <section class="career-dialogue js-career-dialogue" aria-hidden="true"></section>
             <nav class="career-menu is-bar js-career-menu" aria-label="${esc(t('menu.title'))}">
@@ -589,7 +589,7 @@ export class CareerUI
         setLang(lang)
         await this.run(() => this.api.setLang(lang), (result) =>
         {
-            if(result.skillTranslationPending)
+            if(result.skillTranslationPending || result.evidenceTranslationPending)
                 this.notice = { type: 'warning', text: t('settings.skillTranslationPending') }
         })
         this.rebuildStatic()
@@ -614,6 +614,9 @@ export class CareerUI
     {
         this.root.querySelector('.js-career-busy-text').textContent = t('common.loading')
         this.root.querySelector('.career-close').setAttribute('aria-label', t('common.close'))
+        const zoom = this.root.querySelector('.career-zoom')
+        zoom.setAttribute('aria-label', t('exhibit.zoomOut'))
+        zoom.title = t('exhibit.zoomOut')
         this.menuElement.setAttribute('aria-label', t('menu.title'))
         this.root.querySelector('.js-career-menu-label').textContent = t('menu.title')
     }
@@ -629,6 +632,7 @@ export class CareerUI
             case 'building-page': return this.turnBuildingPage(Number(data.direction))
             case 'building-section': return this.buildingHeadings?.[Number(data.section)]?.scrollIntoView({ block: 'start', behavior: 'smooth' })
             case 'building-room': return this.switchBuildingRoom(Number(data.direction))
+            case 'building-zoom': return this.buildingVisit?.active && this.buildingVisit.stage.setZoomed(!this.buildingVisit.stage.zoomed)
             case 'building-dot': return this.selectBuildingDot(Number(data.index))
             case 'extract': return this.extractProfile()
             case 'skill-remove': return this.updateSkill(Number(data.index), null)
@@ -640,7 +644,6 @@ export class CareerUI
             case 'market-refresh': return this.refreshMarketSample()
             // 'default': back to the scenario recommended from the data
             case 'scenario': return this.run(() => this.api.setScenario(data.preset === 'default' ? null : data.preset), () => this.renderPanel())
-            case 'scenario-assumptions': this.panel.assumptionsOpen = !this.panel.assumptionsOpen; return this.renderPanel()
             case 'market-rising': Object.assign(this.panel, { marketTab: 'ranking', marketFilter: 'rising' }); return this.renderPanel()
             case 'mode': this.panel.mode = data.mode; return this.renderPanel()
             case 'sdg-filter': this.panel.sdgFilter = this.panel.sdgFilter === Number(data.goal) ? null : Number(data.goal); return this.renderPanel()
@@ -668,7 +671,6 @@ export class CareerUI
             case 'roadmap': return this.generateRoadmap(data.confirm === '1')
             case 'learning-mode': return this.run(() => this.api.setLearningScenario(data.mode))
             case 'learning-default': return this.run(() => this.api.setLearningScenario(null))
-            case 'learning-analyze': return this.run(() => this.api.analyzeLearning())
             case 'learning-checkpoint': return this.run(() => this.api.startCheckpoint())
             case 'learning-checkpoint-refresh': return this.run(() => this.api.refreshCheckpoint(this.state.learning?.checkpoint?.id), () =>
             {
@@ -687,7 +689,6 @@ export class CareerUI
                 delete this.drafts.reviewDifficulty
                 delete this.drafts.reviewAnswer
             })
-            case 'track-posting': return this.run(() => this.api.trackPosting(this.drafts.postingTrackUrl ?? ''))
             case 'refresh-posting':
                 if(!confirm(t('roadmap.regenerateConfirm'))) return
                 return this.run(() => this.api.refreshPosting(this.state.target?.posting?.monitor?.pending?.hash))
@@ -1043,8 +1044,6 @@ export class CareerUI
         this.buildingHeadings = [...this.panelBody.querySelectorAll('h3')]
         // No section shortcut tabs above the panel (user decision 2026-10-31): the body scrolls on its own
         this.root.querySelector('.js-building-sections').innerHTML = ''
-        this.root.querySelector('.js-building-position').textContent = t(`menu.${this.panel.name}`)
-        this.root.querySelector('.js-building-exit').textContent = t('common.close')
         this.buildingVisit.stage.syncContent()
     }
 
@@ -1087,7 +1086,9 @@ export class CareerUI
 
     skillName(id, fallback)
     {
-        return id && this.state.skillNames[id] ? pick(this.state.skillNames[id]) : fallback
+        const names = id && this.state.skillNames[id]
+        const text = names ? pick(names) : fallback && typeof fallback === 'object' ? pick(fallback) : fallback
+        return getLang() !== 'zh' && /\p{Script=Han}/u.test(text ?? '') ? t('profile.translationPending') : text
     }
 
     renderProfile()
@@ -1096,8 +1097,8 @@ export class CareerUI
         const list = skills.length
             ? `<ul class="career-skill-list">${skills.map((skill, index) => `
                 <li>
-                    <span class="career-skill-name">${esc(this.skillName(skill.id, skill.name))}<small>${esc(t(`profile.source.${skill.source}`))}${skill.evidence ? ` · ${esc(typeof skill.evidence === 'string' ? skill.evidence : pick(skill.evidence))}` : ''}</small></span>
-                    <select data-skill-level="${index}" aria-label="${esc(this.skillName(skill.id, skill.name))}">
+                    <span class="career-skill-name">${esc(this.skillName(skill.id, skill.localizedName ?? skill.name))}<small>${esc(t(`profile.source.${skill.source}`))}${skill.evidence ? ` · ${esc(typeof skill.evidence === 'string' ? skill.evidence : pick(skill.evidence))}` : ''}</small></span>
+                    <select data-skill-level="${index}" aria-label="${esc(this.skillName(skill.id, skill.localizedName ?? skill.name))}">
                         ${[ 0, 1, 2, 3 ].map((level) => `<option value="${level}" ${skill.level === level ? 'selected' : ''}>${esc(t(`level.${level}`))}</option>`).join('')}
                     </select>
                     <button class="career-icon-button" data-action="skill-remove" data-index="${index}" aria-label="${esc(t('common.remove'))}">×</button>
@@ -1224,8 +1225,7 @@ export class CareerUI
             // Ranked by the score of the current scenario (server/scenarios.js); affinity still shows on the cards
             .sort((a, b) => (forecastOf(this.state, a.id)?.rank ?? Infinity) - (forecastOf(this.state, b.id)?.rank ?? Infinity) || (b.affinity ?? 0) - (a.affinity ?? 0))
         return [ t('careers.title'), `
-            ${renderScenarioBar(this.state, { t, esc, open: Boolean(this.panel.assumptionsOpen), lang: getLang() })}
-            ${this.panel.assumptionsOpen ? renderAssumptions(this.state, { t, esc }) : ''}
+            ${renderScenarioBar(this.state, { t, esc, lang: getLang() })}
             <div class="career-search">
                 <input type="search" data-draft="careerSearch" placeholder="${esc(t('careers.search.placeholder'))}" aria-label="${esc(t('careers.search.placeholder'))}" value="${esc(this.drafts.careerSearch ?? '')}">
                 <small class="career-muted">${esc(t('careers.search.count', { n: careers.length }))}</small>
@@ -1281,10 +1281,8 @@ export class CareerUI
         const last = periods.length - 1
         const month = (period, options) => new Date(`${period}-01T00:00:00`).toLocaleString(locale, options)
         const short = (period) => month(period, { month: 'short' })
-        const long = (period) => month(period, { month: 'long' })
         const withYear = (period) => month(period, { month: 'short', year: 'numeric' })
         const rangeLabel = (from, to) => from === to ? withYear(to) : from.slice(0, 4) === to.slice(0, 4) ? `${short(from)} – ${withYear(to)}` : `${withYear(from)} – ${withYear(to)}`
-        const change = (values, index) => index > 0 && values[index] !== null && values[index - 1] ? Math.round((values[index] - values[index - 1]) / values[index - 1] * 1000) / 10 : null
         const percent = (value) => `${value > 0 ? '+' : ''}${value.toFixed(1)}%`
         const direction = (value) => value > 0 ? 'up' : value < 0 ? 'down' : 'flat'
         const spark = (values) =>
@@ -1298,22 +1296,17 @@ export class CareerUI
         }
 
         // Range (last N months), search, filter and sort
-        const calendar = marketMonthWindow()
-        const currentMonth = calendar.at(-1)
-        // From / to menus: every month from the first with data (our collection, archives, past JobStreet months) to now
-        const references = trends.references ?? []
-        const firstMonth = [ ...calendar, ...periods, ...(trends.historical?.periods ?? []), ...references.flatMap((reference) => reference.months) ].sort()[0]
-        const allMonths = monthsBetween(firstMonth, currentMonth)
-        const { from: rangeFrom, to: rangeTo, shown } = chosenRange(allMonths, panel, calendar)
+        const { from: rangeFrom, to: rangeTo, shown, allMonths, currentMonth, previousMonth, comparisonMonths } = marketRangeWindow(trends, { ...this.marketRange, ...panel })
+        this.marketRange = { marketFrom: rangeFrom, marketTo: rangeTo }
         const shownIndexes = shown.map(period => periods.indexOf(period))
         // A range across years labels its months with the year ("Mar 25"), so last year's March is not this year's
         const columnLabel = new Set(shown.map((period) => period.slice(0, 4))).size > 1 ? (period) => month(period, { month: 'short', year: '2-digit' }) : short
         // Only months our own collection reached are real; every other cell is simulated, in the same unit (postings),
         // including the ranking and its rising / falling (user decision 2026-10-30, overriding D5). Simulated cells
         // carry data-origin="mock"; the scenario model never reads them.
-        // The range menus belong to the overview; the ranking and skill tabs always end at the current month
-        const rowMonths = tab === 'overview' ? shown : calendar
-        const historyPreview = buildMockMarketHistory(trends, rowMonths)
+        // Every tab follows the selected months. Include the preceding month for single-month comparisons.
+        const rowMonths = shown
+        const historyPreview = buildMockMarketHistory(trends, comparisonMonths)
         const query = (this.drafts.marketSearch ?? '').trim()
         const matches = (name) => !query || Object.values(name).some((text) => String(text).toLowerCase().includes(query.toLowerCase()))
         const careers = buildMarketRows(trends, rowMonths, historyPreview)
@@ -1336,6 +1329,16 @@ export class CareerUI
             <select data-market="filter" aria-label="${esc(t('market.filterLabel'))}">
                 ${[ 'all', 'rising', 'falling' ].map((name) => option(name, filter, t(`market.filter.${name}`, { n: counts[name] }))).join('')}
             </select>`
+        const rangeControls = `
+            <div class="career-trend-controls">
+                ${[ [ 'from', rangeFrom ], [ 'to', rangeTo ] ].map(([ end, value ]) => `
+                <label class="career-range-field"><span>${esc(t(`market.range.${end}`))}</span>
+                    <select data-market="${end}" aria-label="${esc(t(`market.range.${end}`))}">
+                        ${allMonths.map((month) => option(month, value, withYear(month))).join('')}
+                    </select>
+                </label>`).join('')}
+            </div>
+            ${panel.marketRangeWarning ? `<p class="career-notice is-warning career-range-warning" role="alert">${esc(t('market.range.tooLong', { n: MAX_RANGE_MONTHS, end: t(`market.range.${panel.marketRangeWarning}`), month: withYear(panel.marketRangeWarning === 'to' ? rangeTo : rangeFrom) }))}</p>` : ''}`
 
         const tabs = [ 'overview', 'ranking', 'skills' ].map((name) => `
             <button class="career-trend-tab ${tab === name ? 'is-active' : ''}" data-action="market-tab" data-tab="${name}" aria-pressed="${tab === name}">${esc(t(`market.tab.${name}`))}</button>`).join('')
@@ -1379,10 +1382,8 @@ export class CareerUI
                     ${shown.map((period, index) => reference.isReference(period) ? reference.cell(career, period) : cell(displayedValue(career, index), period, historyPreview.cells[career.id]?.[period], career.ads[shownIndexes[index]] == null && trends.careerObservations?.[career.id]?.[period])).join('')}${yearOnYear ? yearOnYear.cell(career) : ''}
                 </tr>`).join('')
 
-            // Movers: change in the chosen month versus the month before
-            const chosen = periods.indexOf(panel.marketMovers)
-            const moversIndex = chosen > 0 ? chosen : last
-            const moved = trends.sample ? careers.filter(career => career.change !== null) : trends.careers.map((career) => ({ ...career, change: change(career.ads, moversIndex) })).filter((career) => career.change !== null)
+            // Movers use the same endpoint and comparison month as the ranking.
+            const moved = careers.filter(career => career.change !== null)
             const rising = moved.filter((career) => career.change > 0).sort((a, b) => b.change - a.change)
             const falling = moved.filter((career) => career.change < 0).sort((a, b) => a.change - b.change)
             const moverList = (items, kind) => items.length
@@ -1394,15 +1395,7 @@ export class CareerUI
                 <section class="career-trend-card">
                     ${head(t(hasBackfill ? 'market.heatmap' : trends.sample ? 'market.sampleHeatmap' : 'market.heatmap'), t(hasBackfill ? 'market.trendSub' : trends.sample ? 'market.sampleSub' : 'market.heatmapSub', { n: trends.postings, d: trends.denominator }))}
                     ${!hasBackfill && trends.sample ? `<p class="career-market-coverage">${esc(t('market.history.sampleCoverage', { range: rangeLabel(periods[0], periods[last]) }))}</p>` : ''}
-                    <div class="career-trend-controls">
-                        ${[ [ 'from', rangeFrom ], [ 'to', rangeTo ] ].map(([ end, value ]) => `
-                        <label class="career-range-field"><span>${esc(t(`market.range.${end}`))}</span>
-                            <select data-market="${end}" aria-label="${esc(t(`market.range.${end}`))}">
-                                ${allMonths.map((month) => option(month, value, withYear(month))).join('')}
-                            </select>
-                        </label>`).join('')}
-                    </div>
-                    ${panel.marketRangeWarning ? `<p class="career-notice is-warning career-range-warning" role="alert">${esc(t('market.range.tooLong', { n: MAX_RANGE_MONTHS, end: t(`market.range.${panel.marketRangeWarning}`), month: withYear(panel.marketRangeWarning === 'to' ? rangeTo : rangeFrom) }))}</p>` : ''}
+                    ${rangeControls}
                     <small class="career-history-scrollhint">${esc(t('market.history.scroll'))}</small>
                     ${none || `
                     <div class="career-trend-scroll">
@@ -1422,12 +1415,9 @@ export class CareerUI
 
                 ${renderMarketHistory(trends.historical, { t, esc, locale, short, rangeLabel })}
 
-                ${(periods.length > 1 && !trends.sample) || (trends.sample && moved.length) ? `
+                ${moved.length ? `
                 <section class="career-trend-movers">
-                    ${head(t('market.movers'), t('market.moversSub', { month: long(trends.sample ? careers[0].previousPeriod : periods[moversIndex - 1]) }), trends.sample ? '' : `
-                        <select data-market="movers" aria-label="${esc(t('market.moversLabel'))}">
-                            ${periods.slice(1).map((period) => option(period, periods[moversIndex], withYear(period))).join('')}
-                        </select>`)}
+                    ${head(t('market.movers'), t('market.moversSub', { month: withYear(previousMonth) }), '')}
                     <div class="career-trend-columns">
                         <div class="career-trend-column is-up">
                             <h4>↑ ${esc(t('market.rising'))}</h4>
@@ -1447,7 +1437,8 @@ export class CareerUI
             const max = Math.max(1, ...visible.map((career) => career.latest ?? 0))
             body = `
                 <section class="career-trend-card">
-                    ${head(t('market.tab.ranking'), t(trends.sample ? 'market.sampleSub' : 'market.rankingSub', { n: trends.postings, d: trends.denominator, month: long(periods[last]), previous: long(periods[Math.max(0, last - 1)]) }))}
+                    ${head(t('market.tab.ranking'), `${rangeLabel(rangeFrom, rangeTo)} · ${t('market.rankingSub', { month: withYear(rangeTo), previous: withYear(previousMonth) })}`)}
+                    ${rangeControls}
                     <div class="career-trend-controls">${filterSelect}</div>
                     ${nationalNote}
                     ${none}
@@ -1464,17 +1455,15 @@ export class CareerUI
         }
         else
         {
-            const mockSkills = buildMockSkillHistory(trends, calendar)
-            const skillSeries = (skill) => calendar.map((period) => skill.share[periods.indexOf(period)] ?? mockSkills[skill.id]?.[period] ?? null)
-            const skills = trends.skills
-                .map((skill) => ({ ...skill, series: skillSeries(skill) }))
-                .map((skill) => ({ ...skill, latest: skill.series.at(- 1), points: skill.series.length > 1 && skill.series.at(- 1) !== null && skill.series.at(- 2) !== null ? Math.round((skill.series.at(- 1) - skill.series.at(- 2)) * 10) / 10 : null }))
+            const mockSkills = buildMockSkillHistory(trends, comparisonMonths)
+            const skills = buildSkillRows(trends, rowMonths, mockSkills)
                 .filter((skill) => matches(skill.name))
                 .sort((a, b) => (b.latest ?? - 1) - (a.latest ?? - 1))
             body = `
                 <section class="career-trend-card">
-                    ${head(t('market.tab.skills'), t(trends.sample ? 'market.sampleSkills' : 'market.skillsSub', { n: trends.denominator, month: long(periods[last]), previous: long(periods[Math.max(0, last - 1)]) }))}
-                    ${renderSkillRadar(state, { t, esc, skillName: (id) => this.skillName(id, id) })}
+                    ${head(t('market.tab.skills'), `${rangeLabel(rangeFrom, rangeTo)} · ${t('market.skillsSub', { month: withYear(rangeTo), previous: withYear(previousMonth) })}`)}
+                    ${rangeControls}
+                    ${renderSkillTrendSummary(skills, { t, esc, skillName: (skill) => pick(skill.name), range: rangeLabel(rangeFrom, rangeTo), month: withYear(rangeTo), previous: withYear(previousMonth) })}
                     ${nationalNote}
                     ${query && !skills.length ? `<p class="career-muted">${esc(t('market.none', { q: query }))}</p>` : ''}
                     <ol class="career-trend-ranking">${skills.map((skill, index) => `
@@ -1491,7 +1480,7 @@ export class CareerUI
 
         const targetCareer = target && state.careers.find((career) => career.id === target)
         return [ t('market.title'), `
-            <p class="career-muted career-trend-intro">${esc(t(tab === 'overview' && historyPreview.count ? 'market.trendIntro' : trends.sample ? 'market.sampleSub' : 'market.subtitle', { n: trends.postings, d: trends.denominator }))}</p>
+            <p class="career-muted career-trend-intro">${esc(t(historyPreview.count ? 'market.trendIntro' : trends.sample ? 'market.sampleSub' : 'market.subtitle', { n: trends.postings, d: trends.denominator }))}</p>
             <label class="career-trend-search">
                 ${icon('magnifier')}
                 <input type="search" data-draft="marketSearch" placeholder="${esc(t('market.search'))}" aria-label="${esc(t('market.search'))}" value="${esc(this.drafts.marketSearch ?? '')}">
@@ -1576,7 +1565,6 @@ export class CareerUI
             <p>${this.marketBadges(career)} <span class="career-tag">${esc(t('careers.pet', { name: career.pet.name }))}</span></p>
             ${this.yearOnYearLine(this.state.trends?.yearOnYear?.careers[career.id], 'careers.yoy')}
             <p class="career-muted">${esc(t('careers.effort', { range }))} · ${esc(t(career.market.sample ? 'market.accumulating' : 'careers.marketNoData'))}</p>
-            ${renderScoreBreakdown(this.state, career.id, { t, esc, skillName: (id) => this.skillName(id, id) })}
             ${this.renderCareerSdgs(career)}
             ${renderMycolTimeline(career.mycol, { t, esc })}
             <h3>${esc(t('careers.chooseMode'))}</h3>
@@ -1736,7 +1724,6 @@ export class CareerUI
                 <dl class="career-skill-stats">
                     <div><dt title="${esc(t('skill.market'))}">${esc(t('skill.heat'))}</dt><dd>${detail.heat === null || detail.heat === undefined ? esc(t('market.noData')) : `${detail.heat}%`}</dd></div>
                     ${this.skillTrendStat(requirement.skillId)}
-                    ${this.skillYearOnYear(requirement.skillId)}
                     <div><dt>${esc(t('skill.difficulty'))}</dt><dd>${detail.difficulty}/5</dd></div>
                 </dl>` : ''}
                 ${requirement.note ? `<p class="career-skill-description">${esc(requirement.note)}</p>` : ''}
@@ -1773,11 +1760,24 @@ export class CareerUI
      */
     skillTrendStat(skillId)
     {
+        const trends = this.state.trends
+        const skill = trends?.skills?.find(row => row.id === skillId)
+        if(skill && trends.periods?.length)
+        {
+            const range = marketRangeWindow(trends, this.marketRange)
+            const selected = { ...trends, skills: [skill] }
+            const row = buildSkillRows(selected, range.shown, buildMockSkillHistory(selected, range.comparisonMonths))[0]
+            const direction = row.points > 0 ? 'up' : row.points < 0 ? 'down' : 'flat'
+            const change = row.points === null ? '—' : t('careers.skillChange', { arrow: row.points > 0 ? '↑' : row.points < 0 ? '↓' : '→', n: Math.abs(row.points) })
+            const value = row.latest === null ? t('market.noData') : `${row.latest}% · ${change}`
+            const title = t('skill.trendMonthly', { from: range.from, to: range.to, previous: range.previousMonth })
+            return `<div><dt title="${esc(title)}">${esc(t('skill.trend'))}</dt><dd class="career-skill-trend-change is-${direction}">${esc(value)}</dd></div>`
+        }
         const market = this.state.skillMarket?.[skillId]
         if(!market)
             return ''
         if(market.sample)
-            return `<div><dt title="${esc(t('market.sampleSkills', { n: market.denominator }))}">${esc(t('skill.trend'))}</dt><dd>${esc(t('market.accumulating'))}</dd></div>`
+            return `<div><dt title="${esc(t('market.sampleSkills', { n: market.denominator }))}">${esc(t('skill.trend'))}</dt><dd>${esc(market.share == null ? t('market.noData') : `${market.share}% · —`)}</dd></div>`
         if(!market.live)
             return ''
         const direction = market.change > 0 ? 'up' : market.change < 0 ? 'down' : 'flat'
@@ -1795,12 +1795,6 @@ export class CareerUI
             return ''
         const window = this.state.trends.yearOnYear.window.periods[0]
         return `<p class="career-muted career-yoy is-${shown.direction}">${esc(t(key, { from: window.from.slice(5), to: window.to.slice(5), arrow: shown.arrow }))} · ${esc(shown.text)}</p>`
-    }
-
-    skillYearOnYear(skillId)
-    {
-        const shown = yearOnYearText(this.state.trends?.yearOnYear?.skills[skillId], { t })
-        return shown ? `<div><dt title="${esc(shown.text)}">${esc(t('skill.yoy'))}</dt><dd class="career-skill-trend-change is-${shown.direction}">${esc(shown.arrow)}</dd></div>` : ''
     }
 
     renderSkillCard(skill, showRequirement = false)
@@ -1822,7 +1816,6 @@ export class CareerUI
                 <dl class="career-skill-stats">
                     <div><dt title="${esc(t('skill.market'))}">${esc(t('skill.heat'))}</dt><dd>${detail.heat === null || detail.heat === undefined ? esc(t('market.noData')) : `${detail.heat}%`}</dd></div>
                     ${this.skillTrendStat(skill.id)}
-                    ${this.skillYearOnYear(skill.id)}
                     <div><dt>${esc(t('skill.difficulty'))}</dt><dd>${detail.difficulty}/5</dd></div>
                 </dl>
                 <p class="career-skill-description">${esc(pick(detail.description))}</p>
@@ -1837,27 +1830,23 @@ export class CareerUI
             return [ t('roadmap.title'), `<p>${esc(t('roadmap.noTarget'))}</p><button class="career-button" data-action="menu" data-panel="careers">${esc(t('menu.careers'))}</button>` ]
         const learningPanel = renderLearningPanel(state, this.drafts, { t, esc, skillName: id => this.skillName(id, id), locale: getLang() === 'zh' ? 'zh-CN' : getLang() })
         if(!state.roadmap)
-            return [ t('roadmap.title'), `${learningPanel}${this.renderPostingWatch()}<p>${esc(t('roadmap.intro'))}</p>${state.target.posting?.monitor?.requiresRegeneration ? '' : `<button class="career-button is-wide" data-action="roadmap">${esc(t('roadmap.generate'))}</button>`}` ]
+            return [ t('roadmap.title'), `${this.renderPostingWatch()}${learningPanel}<p>${esc(t('roadmap.intro'))}</p>${state.target.posting?.monitor?.requiresRegeneration ? '' : `<button class="career-button is-wide" data-action="roadmap">${esc(t('roadmap.generate'))}</button>`}` ]
 
-        return [ t('roadmap.title'), learningPanel + this.renderPostingWatch() + this.renderRoadmapMap() ]
+        return [ t('roadmap.title'), this.renderPostingWatch() + learningPanel + this.renderRoadmapMap() ]
     }
 
     renderPostingWatch()
     {
         const target = this.state.target
-        if(target?.mode !== 'customise') return ''
+        if(!target) return ''
         const monitor = target.posting?.monitor
-        if(!monitor) return `<section class="career-notice">
-            <p>${esc(t('watch.missing'))}</p>
-            <div class="career-row career-posting-track">
-                <label>${esc(t('watch.sourceLabel'))}<input type="url" data-draft="postingTrackUrl" value="${esc(this.drafts.postingTrackUrl ?? '')}" placeholder="https://www.linkedin.com/jobs/view/…"></label>
-                <button class="career-button" data-action="track-posting">${esc(t('watch.attach'))}</button>
-            </div>
-        </section>`
+        if(!monitor) return ''
+        const heading = `<h3>${esc(t('watch.title'))}</h3><p>${esc(t('watch.schedule'))}</p>`
         return `<section class="career-notice ${monitor.requiresRegeneration ? 'is-warning' : 'is-info'}" role="status">
-            <p>${esc(t(monitor.requiresRegeneration ? 'watch.changed' : 'watch.tracking'))}</p>
+            ${heading}
+            <p>${esc(t(monitor.requiresRegeneration ? 'watch.changed' : !monitor.acceptedHash ? 'watch.pending' : 'watch.tracking'))}</p>
             <a href="${esc(monitor.sourceUrl)}" target="_blank" rel="noopener noreferrer">${esc(t('watch.openSource'))}</a>
-            <p>${esc(t('watch.lastChecked', { at: monitor.lastCheckedAt ? new Date(monitor.lastCheckedAt).toLocaleString() : '—' }))}</p>
+            <p>${esc(t('watch.lastChecked', { at: monitor.lastCheckedAt ? new Date(monitor.lastCheckedAt).toLocaleString(getLang() === 'zh' ? 'zh-CN' : getLang(), {timeZone: 'Asia/Kuala_Lumpur'}) : '—' }))}</p>
             ${monitor.lastError ? `<p>${esc(t('watch.failed'))} (${esc(monitor.lastError)})</p>` : ''}
             ${monitor.pending ? `<details><summary>${esc(t('watch.review'))}</summary><strong>${esc(monitor.pending.title)}</strong><p style="white-space:pre-wrap">${esc(monitor.pending.description)}</p></details><button class="career-button" data-action="refresh-posting">${esc(t('watch.regenerate'))}</button>` : ''}
         </section>`
@@ -1874,10 +1863,15 @@ export class CareerUI
         const stages = state.roadmap.stages
         const career = state.careers.find((item) => item.id === state.target.careerId)
         const stageTitle = (id) => stages.find((stage) => stage.id === id)?.title ?? id
+        // One short sentence per card line (user decision 2026-10-31): the first sentence free of internal numbers and codes
+        // (texts planned before the plain writing rules), about 40 Chinese or 90 Latin characters; none when every one has them
+        const JARGON = /%|份额|情景|项目模型|AI 使用数据|AEI|\bR\d+\b|\bshares?\b|scenario|project model|bahagian|senario/i
         const brief = (value) => {
-            const text = String(value ?? '').trim()
-            const first = text.match(/^.*?[。！？.!?](?:\s|$)/u)?.[0]?.trim() ?? text
-            return first.length > 100 ? `${first.slice(0, 97).trimEnd()}...` : first
+            // Chinese stops end a sentence; a Latin one only before a space (not the point of "+5.2")
+            const sentences = String(value ?? '').trim().split(/(?<=[。！？])|(?<=[.!?])\s+/u)
+            const first = sentences.map((sentence) => sentence.trim()).find((sentence) => sentence && !JARGON.test(sentence)) ?? ''
+            const limit = /[\u3400-\u9fff]/u.test(first) ? 40 : 90
+            return first.length > limit ? `${first.slice(0, limit - 1).trimEnd()}…` : first
         }
         const activeIndex = stages.findIndex((stage) => stage.status === 'active')
 
@@ -1934,11 +1928,9 @@ export class CareerUI
                             ${stage.forced && stage.status === 'active' ? `<span class="career-tag is-forced">${esc(t('roadmap.forced'))}</span>` : ''}
                         </div>
                         <div class="career-map-progress">${bar(stage.progress)}<small>${esc(t('roadmap.tasksDone', { done, total: stage.tasks.length }))}</small></div>
-                        <p class="career-map-why">${icon('target')}<span><b>${esc(t('roadmap.why'))}</b>${esc(brief(stage.why))}</span></p>
-                        ${stage.approach?.reason ? `<p class="career-muted">${esc(brief(stage.approach.reason))}</p>` : ''}
+                        ${brief(stage.why) ? `<p class="career-map-why">${icon('target')}<span>${esc(brief(stage.why))}</span></p>` : ''}
                         ${this.renderStageSdgs(stage)}
                         ${this.renderStageResources(stage)}
-                        ${stage.requirementRefs.length ? `<p class="career-muted">${esc(t('roadmap.covers', { refs: stage.requirementRefs.join(', ') }))}</p>` : ''}
                         ${alternative ? `<p class="career-muted">${esc(t('learning.otherBranch'))}</p>` : ''}
                         ${locked ? this.renderStageLock(stage, stage.prerequisites.map(stageTitle).join(', ')) : `
                         ${stage.prerequisites.length ? `<p class="career-map-lock">${icon('lock')}${esc(t('roadmap.needs', { stages: stage.prerequisites.map(stageTitle).join(', ') }))}</p>` : ''}
@@ -1946,8 +1938,9 @@ export class CareerUI
                             <li>
                                 <label>
                                     <input type="checkbox" data-task="${task.id}" ${task.progress >= 100 ? 'checked' : ''} ${locked || alternative ? 'disabled' : ''}>
-                                    <span>${esc(task.title)}<small>${esc(brief(task.why))}</small>${task.deliverable ? `<small>${esc(t('learning.deliverable'))}: ${esc(brief(task.deliverable))}</small>` : ''}${task.completionCriteria ? `<small>${esc(t('learning.criteria'))}: ${esc(brief(task.completionCriteria))}</small>` : ''}</span>
+                                    <span>${esc(task.title)}${brief(task.why) ? `<small>${esc(brief(task.why))}</small>` : ''}</span>
                                 </label>
+                                ${this.taskResource(task)}
                                 <div class="career-task-meta">
                                     ${task.learningActivity ? `<span class="career-tag is-activity">${esc(t(`roadmap.activity.${task.learningActivity}`))}</span>` : ''}
                                     <span class="career-tag is-mp">${esc(t('roadmap.mp', { n: task.mp }))}</span>
@@ -2012,29 +2005,31 @@ export class CareerUI
         return `<p class="career-map-sdgs"><b>${esc(t('sdg.stage'))}</b>${targets.map((target) => this.sdgBadge(Number(target.split('.')[0]), target)).join('')}</p>`
     }
 
-    /**
-     * Where to start learning the stage skills (server/skill-details.js RESOURCES), nothing for custom skills
-     */
+    /** The learning link of a roadmap task: the resource it picked (features.js resourceIndex), else its skill's first one */
+    taskResource(task)
+    {
+        const resources = this.state.skillDetails[task.skillId]?.resources ?? []
+        const resource = resources[task.resourceIndex] ?? resources[0]
+        return resource ? `<a class="career-task-resource" href="${esc(resource.url)}" target="_blank" rel="noopener noreferrer">📖 ${esc(resource.title)} ↗</a>` : ''
+    }
+
+    /** Skills without a learning link (an AI study prompt instead): links sit on the tasks themselves */
     renderStageResources(stage)
     {
         const skillIds = [ ...new Set([ ...stage.skillIds, ...stage.tasks.map((task) => task.skillId) ]) ]
-        const resources = skillIds.map((id) => ({ id, resource: this.state.skillDetails[id]?.resource })).filter(({ resource }) => resource)
+        const resources = skillIds.map((id) => ({ id, resource: this.state.skillDetails[id]?.resource })).filter(({ resource }) => resource?.prompt)
         if(!resources.length)
             return ''
-        const promptSkill = resources.find(({ id, resource }) => resource.prompt && id === this.panel.resourcePrompt)?.id
+        const promptSkill = resources.find(({ id }) => id === this.panel.resourcePrompt)?.id
 
         return `
             <div class="career-map-resources">
                 <b>${icon('compass')}${esc(t('roadmap.startHere'))}</b>
-                ${resources.map(({ id, resource }) => resource.prompt ? `
+                ${resources.map(({ id }) => `
                 <button type="button" data-action="resource-prompt" data-skill="${esc(id)}">
                     <span>${esc(this.skillName(id, id))}</span>
                     <small>${esc(t('roadmap.promptButton'))}</small>
-                </button>` : `
-                <a href="${esc(resource.url)}" target="_blank" rel="noopener noreferrer">
-                    <span>${esc(resource.title)} ↗</span>
-                    <small>${esc(t(resource.open ? 'roadmap.resourceOpen' : 'roadmap.resourceFree'))}</small>
-                </a>`).join('')}
+                </button>`).join('')}
                 ${promptSkill ? `
                 <div class="career-map-resource-prompt">
                     <label for="career-resource-prompt-${esc(stage.id)}">${esc(t('roadmap.promptTitle', { skill: this.skillName(promptSkill, promptSkill) }))}</label>
@@ -2082,7 +2077,10 @@ export class CareerUI
                 <li>
                     <time>${esc(new Date(log.at).toLocaleString(getLang() === 'zh' ? 'zh-CN' : getLang()))} · ${esc(log.source)}</time>
                     <span>${esc(log.text)}${log.verdict && log.verdict !== 'learned' ? ` <em class="career-tag is-off-map">${esc(t(`log.verdict.${log.verdict}`))}</em>` : ''}</span>
-                    <small>${log.skillIds.map((id) => esc(this.skillName(id))).join(' · ')}${log.advanced.map((item) => ` · ${esc(t('log.advanced', item))}`).join('')}${log.points ? ` · ${esc(t('log.points', { n: log.points }))}` : ''}</small>
+                    <small>${log.skillIds.map((id) => esc(this.skillName(id))).join(' · ')}</small>
+                    ${(log.advanced ?? []).length ? log.advanced.map((item) => `<small>${esc(item.taskTitle ? pick(item.taskTitle) : item.skillId ? this.skillName(item.skillId) : item.taskId)} · ${esc(t('log.advanced', item))} · ${esc(t('log.gained', { n: item.to - item.from }))}</small>`).join('') : `<small>${esc(t('log.noAdvance'))}</small>`}
+                    <small>${esc(t('log.points', { n: log.points ?? 0 }))}</small>
+                    ${!(log.advanced ?? []).length ? `<p class="career-muted">${esc(t(log.verdict === 'vague' || log.verdict === 'invalid' ? `log.verdict.${log.verdict}` : 'log.unmatched'))}</p>${log.summary ? `<p class="career-muted">${esc(log.summary)}</p>` : ''}` : ''}
                 </li>`).join('')}
             </ul>` : ''
 

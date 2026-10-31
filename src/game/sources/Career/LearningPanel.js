@@ -1,7 +1,9 @@
 /** Pure renderer; model text and user drafts must always be escaped. */
 export const LEARNING_STRINGS = {
     'roadmap.status.alternative': { zh: '备选分支', en: 'Alternative branch', ms: 'Cabang alternatif' },
-    'learning.otherBranch': { zh: '此分支可查看。在上方选择对应情境，预览并确认后可切换；原有进度保留。', en: 'You can view this branch. Select its scenario above, preview and confirm to switch; progress is retained.', ms: 'Anda boleh melihat cabang ini. Pilih senario di atas, pratonton dan sahkan untuk bertukar; kemajuan dikekalkan.' },
+    'learning.otherBranch': { zh: '在上方选择对应情景，即可定制并切换到这个分支；原有进度保留。', en: 'Select its scenario above to customise and switch to this branch; progress is retained.', ms: 'Pilih senario di atas untuk menyesuaikan dan bertukar ke cabang ini; kemajuan dikekalkan.' },
+    'learning.selectHint': { zh: '选择温和或极端，下方会自动生成或更新对应的定制路线，保留已有学习进度。', en: 'Choose Moderate or Extreme to generate or update your customised roadmap below. Existing learning progress is retained.', ms: 'Pilih Sederhana atau Ekstrem untuk menjana atau mengemas kini peta laluan tersuai di bawah. Kemajuan pembelajaran dikekalkan.' },
+    'learning.applied': { zh: '下方已应用{mode}路线。', en: 'The {mode} roadmap is applied below.', ms: 'Peta laluan {mode} telah digunakan di bawah.' },
     'learning.title': { zh: 'AI 变化下的学习安排', en: 'Learning as AI changes', ms: 'Pembelajaran apabila AI berubah' },
     'learning.moderate': { zh: '温和', en: 'Moderate', ms: 'Sederhana' },
     'learning.extreme': { zh: '极端', en: 'Extreme', ms: 'Ekstrem' },
@@ -11,6 +13,9 @@ export const LEARNING_STRINGS = {
     'learning.analyze': { zh: '分析 AEI 学习依据', en: 'Analyze AEI learning evidence', ms: 'Analisis bukti pembelajaran AEI' },
     'learning.evidence': { zh: '查看技能映射依据', en: 'View skill-mapping evidence', ms: 'Lihat bukti pemetaan kemahiran' },
     'learning.mapping': { zh: '{name}：映射 {count} 项任务', en: '{name}: {count} mapped tasks', ms: '{name}: {count} tugas dipetakan' },
+    'learning.mockMapping': { zh: '{name}：Mock · {count} 项模拟任务示例', en: '{name}: Mock · {count} synthetic task examples', ms: '{name}: Mock · {count} contoh tugas sintetik' },
+    'learning.mockSource': { zh: '模拟任务由项目补充，并非 AEI 原始任务。自动化和增强指标沿用相关技能数据的均值推算。', en: 'These are project-created task examples, not original AEI tasks. Automation and augmentation values are imputed from the mean of related skill data.', ms: 'Ini contoh tugas ciptaan projek, bukan tugas asal AEI. Nilai automasi dan augmentasi dianggar daripada purata data kemahiran berkaitan.' },
+    'learning.exposureValues': { zh: '自动化 {automation}% · 增强 {augmentation}%', en: 'Automation {automation}% · Augmentation {augmentation}%', ms: 'Automasi {automation}% · Augmentasi {augmentation}%' },
     'learning.thin': { zh: '依据较少或缺失；低值和零值不代表安全。', en: 'Thin or missing evidence; low and zero values do not mean safety.', ms: 'Bukti terhad atau tiada; nilai rendah dan sifar tidak bermakna selamat.' },
     'learning.changed': { zh: '选择已保存；正式路线保留原安排。点击预览，确认后才应用调整。', en: 'Choice saved; your roadmap keeps its current arrangement. Preview and confirm before applying changes.', ms: 'Pilihan disimpan; susunan peta laluan dikekalkan. Pratonton dan sahkan sebelum perubahan digunakan.' },
     'learning.resetMode': { zh: '使用系统默认', en: 'Use system default', ms: 'Guna lalai sistem' },
@@ -53,24 +58,21 @@ export function renderLearningPanel(state, drafts, { t, esc, skillName, locale =
     if(!learning) return ''
     const button = (action, label, extra = '', disabled = false) => `<button type="button" class="career-button is-secondary" data-action="${action}" ${extra} ${disabled ? 'disabled' : ''}>${esc(label)}</button>`
     const field = (key, label) => `<label class="career-field"><span>${esc(label)}</span><textarea class="career-textarea" data-draft="${key}" maxlength="2000" rows="3">${esc(drafts[key] ?? '')}</textarea></label>`
-    const pending = learning.pending
-    const evidence = learning.evidence?.skills ?? []
-    return `<details class="career-notice career-learning" ${pending || learning.checkpoint || learning.checkpointDue || !state.roadmap ? 'open' : ''}>
+    const pending = learning.latestReview ? learning.pending : null
+    return `<details class="career-notice career-learning" open>
         <summary>${esc(t('learning.title'))} · ${esc(t(`learning.${learning.mode}`))}</summary><div class="career-learning-content">
         <p>${esc(t('learning.default', { scenario: t(`learning.${learning.recommendedScenario ?? 'moderate'}`), reason: learning.recommendationReason ?? '' }))}</p>
         ${learning.userOverride ? `<p class="career-muted">${esc(t('learning.ownChoice', { mode: t(`learning.${learning.mode}`), date: learning.overrideUntil ? new Date(learning.overrideUntil).toLocaleDateString(locale) : '—' }))}</p>` : ''}
+        <p>${esc(t('learning.selectHint'))}</p>
         <div class="career-actions">${[ 'moderate', 'extreme' ].map(mode => button('learning-mode', t(`learning.${mode}`), `data-mode="${mode}" aria-pressed="${learning.mode === mode}"`)).join('')}</div>
         <p class="career-muted">${esc(t('learning.hours', { hours: learning.weeklyHours, days: learning.checkpointDays }))}</p>
-        ${learning.appliedMode !== learning.mode && state.roadmap ? `<p>${esc(t('learning.changed'))}</p>` : ''}
-        <div class="career-learning-analysis">${button('learning-analyze', t('learning.analyze'))}${learning.analysis ? `<p>${esc(learning.analysis)}</p>` : ''}</div>
-        <details><summary>${esc(t('learning.evidence'))}</summary><ul>${evidence.map(row => `<li>${esc(t('learning.mapping', { name: skillName(row.skillId), count: row.taskCount }))}${row.thinMapping || row.zeroIsNotSafety ? `<small> ${esc(t('learning.thin'))}</small>` : ''}<ul>${row.tasks.map(task => `<li>${esc(task)}</li>`).join('')}</ul>${row.note ? `<small>${esc(row.note)}</small>` : ''}</li>`).join('')}</ul>
-        <a href="https://huggingface.co/datasets/Anthropic/EconomicIndex" target="_blank" rel="noopener noreferrer">Anthropic Economic Index</a></details>
+        ${learning.appliedMode === learning.mode && state.roadmap ? `<p role="status">${esc(t('learning.applied', { mode: t(`learning.${learning.mode}`) }))}</p>` : ''}
         ${state.roadmap ? `<h3>${esc(t('learning.reviewTitle'))}</h3>
         <p>${esc(learning.checkpointDue ? t('learning.due') : t('learning.nextDue', { date: learning.checkpointDueAt ? new Date(learning.checkpointDueAt).toLocaleDateString(locale) : '—' }))}</p>
         ${learning.hasStudyEvidence ? '' : `<p>${esc(t('learning.noStudy'))}</p>`}${learning.canReview && !learning.checkpoint ? button('learning-checkpoint', t('learning.start')) : ''}
         ${learning.checkpoint ? `<div><div class="career-actions">${button('learning-checkpoint-refresh', t('learning.refreshQuestions'))}</div><p class="career-muted">${esc(t('learning.refreshHint'))}</p>${field('reviewProgress', learning.checkpoint.progressQuestion || t('learning.progress'))}${field('reviewDifficulty', learning.checkpoint.difficultyQuestion || t('learning.difficulty'))}<p><strong>${esc(learning.checkpoint.question)}</strong></p>${learning.checkpoint.feedbackOnly ? '' : field('reviewAnswer', t('learning.answer'))}${button('learning-review', t('learning.submit'))}</div>` : ''}
         ${learning.latestReview ? `<p><strong>${esc(t(`learning.review.${learning.latestReview.understanding}`))}</strong></p><p>${esc(learning.latestReview.feedback)}</p>` : ''}
-        ${button('learning-preview', t('learning.preview'))}` : ''}
+        ${learning.latestReview ? button('learning-preview', t('learning.preview')) : ''}` : ''}
         ${pending ? `<article aria-live="polite"><h3>${esc(t('learning.previewTitle'))} · ${esc(t(`learning.${pending.mode}`))}</h3><p>${esc(pending.summary)}</p>
         ${pending.branchChanged ? `<p>${esc(t('learning.branchChange', { before: t(`learning.${pending.previousMode}`), after: t(`learning.${pending.mode}`) }))}</p>` : ''}
         <p>${esc(t('learning.preserved', { count: pending.preservedTasks, hours: pending.hoursDelta > 0 ? `+${pending.hoursDelta}` : pending.hoursDelta }))}</p>

@@ -1,6 +1,6 @@
 {
   "id": "CSPostingWatch01",
-  "name": "CareerSphere: customised job posting watch",
+  "name": "CareerSphere: weekly job posting watch",
   "active": false,
   "nodes": [
     {
@@ -16,7 +16,7 @@
     },
     {
       "id": "watch-schedule",
-      "name": "Every 30 minutes MYT",
+      "name": "Every Monday 08:00 MYT",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
@@ -28,7 +28,7 @@
           "interval": [
             {
               "field": "cronExpression",
-              "expression": "*/30 * * * *"
+              "expression": "0 8 * * 1"
             }
           ]
         }
@@ -60,7 +60,7 @@
     },
     {
       "id": "watch-check",
-      "name": "Check postings and refresh sample",
+      "name": "Check saved posting links",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -97,8 +97,8 @@
       ],
       "parameters": {
         "width": 700,
-        "height": 200,
-        "content": "## Customised job watch\nEvery 30 minutes (Asia/Kuala_Lumpur), check saved source URLs. The server compares job content, preserves the roadmap, and sends in-app live updates when a revision needs review.\nFirst fetch establishes baseline. HTTP/parse failures do not count as changes. Existing targets need a source URL.\nSet Header Auth: Authorization = Bearer <INTEGRATION_TOKEN>. No secrets are embedded in this JSON. This workflow checks postings; it does not re-scrape the full market dataset."
+        "height": 220,
+        "content": "## Weekly job posting watch\nEvery Monday 08:00 (Asia/Kuala_Lumpur), check source URLs registered in Roadmap for general or customised career targets. The server compares job content, preserves the roadmap, and sends in-app live updates when a revision needs review.\nFirst successful fetch establishes baseline. HTTP/parse failures do not count as changes. No external messages or automatic roadmap replacement.\nSet Header Auth: Authorization = Bearer <INTEGRATION_TOKEN>. No secrets are embedded in this JSON. This workflow checks saved posting links; it does not re-scrape the full market dataset."
       }
     }
   ],
@@ -107,18 +107,18 @@
       "main": [
         [
           {
-            "node": "Check postings and refresh sample",
+            "node": "Check saved posting links",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Every 30 minutes MYT": {
+    "Every Monday 08:00 MYT": {
       "main": [
         [
           {
-            "node": "Check postings and refresh sample",
+            "node": "Check saved posting links",
             "type": "main",
             "index": 0
           }
@@ -129,7 +129,7 @@
       "main": [
         [
           {
-            "node": "Check postings and refresh sample",
+            "node": "Check saved posting links",
             "type": "main",
             "index": 0
           }

@@ -247,7 +247,22 @@ const routes = {
         if(!save.target) throw new HttpError(409, 'no-target')
         await learning.analyzeEvidence(save)
     },
-    'POST /api/learning/scenario': async (save, body) => learning.setLearningMode(save, body.mode),
+    'POST /api/learning/scenario': async (save, body) =>
+    {
+        if(!save.target) throw new HttpError(409, 'no-target')
+        if(save.target.posting?.monitor?.requiresRegeneration) throw new HttpError(409, 'posting-changed-regenerate')
+        const next = structuredClone(save)
+        learning.setLearningMode(next, body.mode)
+        const mode = learningContext(next).effectiveScenario
+        const applied = next.roadmap?.learningScenario ?? next.roadmap?.chosenBranch
+        if(!next.roadmap) await routes['POST /api/roadmap'](next, {})
+        else if(applied !== mode)
+        {
+            const pending = await learning.proposeUpdate(next, { scenarioSelection: true })
+            learning.applyPreview(next, pending.id)
+        }
+        Object.assign(save, next)
+    },
     'POST /api/learning/checkpoint': async (save, body) => learning.createCheckpoint(save, { refresh: body.refresh === true, checkpointId: body.checkpointId }),
     'POST /api/learning/review': async (save, body) => { await learning.reviewCheckpoint(save, body) },
     'POST /api/learning/preview': async (save) => { await learning.proposeUpdate(save) },
@@ -413,8 +428,8 @@ const routes = {
 
     'POST /api/target/track': async (save, body) =>
     {
-        if(save.target?.mode !== 'customise' || !save.target.posting) throw new HttpError(409, 'no-custom-posting')
-        save.target.posting = attachPostingWatch(save.target.posting, text(body.sourceUrl, 2000).trim())
+        if(!save.target) throw new HttpError(409, 'no-target')
+        save.target.posting = attachPostingWatch(save.target.posting ?? {}, text(body.sourceUrl, 2000).trim())
         return { tracking: true }
     },
 
@@ -427,6 +442,7 @@ const routes = {
         const updated = await features.analyzePosting({ text: `${monitor.pending.title}\n${monitor.pending.company ?? ''}\n${monitor.pending.description}`, file: null,
             careerId: save.target.careerId, profile: save.profile, lang: lang(save, body) })
         const next = structuredClone(save)
+        next.target.mode = 'customise'
         next.target.posting = { ...updated, sourceName: current.sourceName, sourceUrl: current.sourceUrl, monitor: structuredClone(monitor) }
         game.adoptPostingSkills(next)
         const plan = await features.generateRoadmap({ target: next.target, profile: next.profile, gaps: game.gapsFor(next), lang: lang(save, body), learning: learningContext(next) })

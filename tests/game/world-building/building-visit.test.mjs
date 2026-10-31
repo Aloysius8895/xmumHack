@@ -81,6 +81,23 @@ test('direct menu entry opens content in the same action, with no delayed Enter 
     assert.deepEqual([...s.filters], ['wandering'])
 })
 
+test('tutorial uses the real exhibit and supports category changes while world interactions stay frozen', () =>
+{
+    const s = setup()
+    s.ui.touring = true
+    assert.equal(s.visit.open({panel: 'profile'}), false)
+    assert.equal(s.visit.open({panel: 'profile'}, {direct: true}), true)
+    assert.deepEqual(s.calls, ['zoom', 'direct', 'profile', 'display'])
+    assert.equal(s.jobs.length, 0)
+    s.ui.openPanel('careers')
+    assert.equal(s.visit.active, true)
+    assert.equal(s.visit.exitPanel, 'careers')
+    s.visit.cancel()
+    assert.equal(s.visit.active, false)
+    assert.equal(s.game.view.cinematic.active, false)
+    assert.equal(s.ui.touring, true)
+})
+
 test('Escape after a category switch uses that category entrance rather than the original start', () =>
 {
     const s = setup()

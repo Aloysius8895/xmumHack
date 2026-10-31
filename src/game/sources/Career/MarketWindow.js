@@ -1,3 +1,17 @@
+import { chosenRange, monthsBetween, shiftMonth } from './MarketReference.js'
+
+/** Resolve the shared market range for trend pages and skill cards. */
+export function marketRangeWindow(trends, selection = {}, calendar = marketMonthWindow())
+{
+    const currentMonth = calendar.at(-1)
+    const firstMonth = [...calendar, ...trends.periods, ...(trends.historical?.periods ?? []),
+        ...(trends.references ?? []).flatMap(reference => reference.months)].sort()[0]
+    const allMonths = monthsBetween(firstMonth, currentMonth)
+    const range = chosenRange(allMonths, selection, calendar)
+    const previousMonth = shiftMonth(range.to, -1)
+    return {...range, allMonths, currentMonth, previousMonth, comparisonMonths: [...new Set([...range.shown, previousMonth])]}
+}
+
 /** Display months follow the Malaysia calendar, independently of observation coverage. */
 export function marketMonthWindow(months = 7, now = new Date())
 {

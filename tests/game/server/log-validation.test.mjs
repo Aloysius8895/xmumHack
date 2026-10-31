@@ -1,8 +1,11 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { createSave } from '../../../src/game/server/store.js'
-import * as game from '../../../src/game/server/game.js'
-import { submitLog, answerLog, publicLogValidation } from '../../../src/game/server/log-validation.js'
+
+// Canned AI answers, set before the modules read it (like the other server tests)
+process.env.AI_MOCK = '1'
+const { createSave } = await import('../../../src/game/server/store.js')
+const game = await import('../../../src/game/server/game.js')
+const { submitLog, answerLog, publicLogValidation } = await import('../../../src/game/server/log-validation.js')
 
 function learner()
 {

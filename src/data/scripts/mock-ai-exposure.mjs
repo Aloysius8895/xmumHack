@@ -17,11 +17,12 @@ import { pathToFileURL } from 'node:url'
 const OUT = new URL('../../../data/mock/ai-exposure.json', import.meta.url)
 const EXPOSURE = new URL('../../../data/ai-exposure/exposure.json', import.meta.url)
 const MAP = new URL('../../../data/ai-exposure/skill_task_map.json', import.meta.url)
+const TASKS = new URL('../config/mock-skill-tasks.json', import.meta.url)
 
 const round = (value) => Math.round(value * 10000) / 10000
 const mean = (values) => values.length ? round(values.reduce((sum, value) => sum + value, 0) / values.length) : null
 
-export function imputeExposure(exposure, map)
+export function imputeExposure(exposure, map, mockTasks = {})
 {
     const real = Object.fromEntries(Object.entries(exposure.skills ?? {}).filter(([ , row ]) => Array.isArray(row.tasks) && row.tasks.length))
     const everyReal = Object.keys(real)
@@ -35,6 +36,7 @@ export function imputeExposure(exposure, map)
             automation: mean(basis.map((skill) => real[skill].automation)),
             augmentation: mean(basis.map((skill) => real[skill].augmentation)),
             mock: true,
+            ...(mockTasks[id]?.length ? { mockTasks: mockTasks[id] } : {}),
             method: neighbours.length ? 'career-mean-imputation' : 'all-skills-mean-imputation',
             basis: { careers, skills: basis },
         }
@@ -46,12 +48,13 @@ if(process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href)
 {
     const exposure = JSON.parse(fs.readFileSync(EXPOSURE, 'utf8'))
     const map = JSON.parse(fs.readFileSync(MAP, 'utf8'))
-    const skills = imputeExposure(exposure, map)
+    const tasks = JSON.parse(fs.readFileSync(TASKS, 'utf8'))
+    const skills = imputeExposure(exposure, map, tasks.mock === true ? tasks.skills : {})
     const document = {
         mock: true,
         generator: 'src/data/scripts/mock-ai-exposure.mjs',
         generatedAt: new Date().toISOString(),
-        about: 'MOCK AI exposure, not observed data: imputed from the reviewed Anthropic Economic Index values of data/ai-exposure/exposure.json for skills without one. Read by src/game/server/ai-exposure.js only where no real value exists. Every result using it is marked mock.',
+        about: 'MOCK AI exposure, not observed data: imputed from reviewed Anthropic Economic Index skill values. mockTasks are synthetic project-created examples from src/data/config/mock-skill-tasks.json, not observed AEI/O*NET tasks and not used to calculate exposure values or evidence quality. Real values always take precedence. Every result using imputed values is marked mock.',
         basis: { exposure: 'data/ai-exposure/exposure.json', map: 'data/ai-exposure/skill_task_map.json', downloadedAt: exposure.source?.downloadedAt ?? null },
         skills,
     }

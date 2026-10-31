@@ -83,13 +83,32 @@ test('switching rooms while viewing the exhibit changes content without restarti
     assert.deepEqual(s.calls, [['content', 'market']])
 })
 
-test('unknown rooms, tours and unrelated cinematics are not hijacked', () =>
+test('tour menu buttons use the same exhibit entry as normal navigation', () =>
+{
+    const s = setup()
+    s.ui.touring = true
+    for(const panel of Object.keys(BUILDING_DESTINATIONS))
+    {
+        assert.equal(travelToBuilding(s.game, s.ui, panel), true)
+        assert.deepEqual(s.calls.at(-1), [panel, {direct: true}])
+    }
+    assert.equal(s.calls.length, Object.keys(BUILDING_DESTINATIONS).length)
+})
+
+test('missing tour destinations never fall back to the old sidebar', () =>
+{
+    const s = setup()
+    s.ui.touring = true
+    delete s.game.career.buildingEntrances
+    assert.equal(travelToBuilding(s.game, s.ui, 'profile'), false)
+    assert.equal(travelToBuilding(s.game, s.ui, 'unknown'), false)
+    assert.deepEqual(s.calls, [])
+})
+
+test('unknown rooms and unrelated cinematics are not hijacked', () =>
 {
     const s = setup()
     assert.equal(travelToBuilding(s.game, s.ui, 'unknown'), false)
-    s.ui.touring = true
-    assert.equal(travelToBuilding(s.game, s.ui, 'careers'), false)
-    s.ui.touring = false
     s.game.view.cinematic.active = true
     assert.equal(travelToBuilding(s.game, s.ui, 'careers'), false)
     assert.deepEqual(s.calls, [])

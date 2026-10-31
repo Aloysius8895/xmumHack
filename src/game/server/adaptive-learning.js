@@ -1,10 +1,11 @@
 import { createHash, randomUUID } from 'node:crypto'
 import { ask, isMock } from './ai.js'
 import { SKILLS, localText } from './careers.js'
-import { generateRoadmap } from './features.js'
+import { generateRoadmap, resourceIndexOf } from './features.js'
 import { LEARNING_DEFAULTS, MODES, localized, localizedSchema as L, learningContext, learningPrompt, aeiEvidence, effectiveMode } from './learning-rules.js'
 import { trendClassification } from './aei-evidence.js'
 import { ownChoice } from './scenarios.js'
+import { stageApproach } from './no-regret.js'
 
 export class LearningError extends Error
 {
@@ -134,7 +135,7 @@ export async function reviewCheckpoint(save, body)
     return review
 }
 
-export async function proposeUpdate(save)
+export async function proposeUpdate(save, { scenarioSelection = false } = {})
 {
     requireRoadmap(save)
     const tasks = walkedTasks(save, effectiveMode(save)), editable = tasks.filter(task => task.progress === 0 && task.progressBeforeDone === undefined && !save.roadmap.stages.find(stage => stage.id === task.stageId)?.cleared)
@@ -143,7 +144,7 @@ export async function proposeUpdate(save)
     let result
     if(isMock())
     {
-        const task = editable[0]
+        const task = scenarioSelection ? editable.find(task => task.learningActivity !== 'foundation') ?? editable[0] : editable[0]
         result = { summary: localized('（演示）保留已完成和进行中的任务，调整一项尚未开始的练习。',
             '(Demo) Preserve completed and in-progress tasks and adapt one unstarted exercise.',
             '(Demo) Kekalkan tugas selesai dan sedang berjalan; sesuaikan satu latihan yang belum bermula.'), updates: [], additions: [] }
@@ -152,16 +153,19 @@ export async function proposeUpdate(save)
                 `Explain and check ${context.effectiveScenario === 'extreme' ? 'AI-assisted ' : ''}${SKILLS[task.skillId]?.en ?? 'task'} results`,
                 `Terangkan dan semak hasil ${SKILLS[task.skillId]?.ms ?? 'tugas'}${context.effectiveScenario === 'extreme' ? ' berbantu AI' : ''}`),
             why: result.summary, effortHours: 2,
+            learningActivity: task.learningActivity === 'foundation' ? 'foundation' : context.effectiveScenario === 'extreme' ? 'verification' : 'independent_practice',
             deliverable: localized('一个结果及检查记录', 'A result and verification notes', 'Hasil dan nota pengesahan'),
             completionCriteria: localized('解释一个概念，发现并修正一个错误。', 'Explain a concept and find and correct an error.', 'Terangkan konsep serta cari dan betulkan kesilapan.') })
     }
     else result = await generateRoadmap({ target: save.target, profile: save.profile, gaps: [], lang: save.lang,
-        learning: context, adjustment: { roadmap: save.roadmap, editableTasks: editable, latestReview: review } })
+        learning: context, adjustment: { roadmap: save.roadmap, editableTasks: editable, latestReview: review,
+            scenarioSelection, previousScenario: save.roadmap.learningScenario ?? save.roadmap.chosenBranch ?? null } })
     return buildPreview(save, result, context)
 }
 
 function validateFields(change)
 {
+    if(change.learningActivity && !['foundation', 'independent_practice', 'ai_collaboration', 'verification', 'transfer'].includes(change.learningActivity)) throw new LearningError('bad-learning-plan', 422)
     if(!Number.isInteger(change.effortHours) || change.effortHours < 1 || change.effortHours > 200) throw new LearningError('bad-learning-plan', 422)
     for(const key of [ 'title', 'why', 'deliverable', 'completionCriteria' ])
         if(!change[key] || [ 'zh', 'en', 'ms' ].some(lang => typeof change[key][lang] !== 'string' || !change[key][lang].trim() || change[key][lang].length > 3000))
@@ -184,6 +188,8 @@ export function buildPreview(save, result, context = learningContext(save))
         const { title, why, deliverable, completionCriteria } = change
         changes.push({ operation: 'revise', taskId: task.id, before: task.title, title, why, effortHours: change.effortHours, previousHours: task.mp })
         Object.assign(task, { title, why, deliverable, completionCriteria, mp: change.effortHours })
+        if(change.learningActivity) task.learningActivity = change.learningActivity
+        if(Number.isInteger(change.resourceIndex)) task.resourceIndex = resourceIndexOf(task.skillId, change.resourceIndex)
     }
     for(const change of result.additions)
     {
@@ -192,11 +198,15 @@ export function buildPreview(save, result, context = learningContext(save))
         if(!stage || stage.cleared || stage.tasks.every(task => task.progress >= 100) || (stage.kind === 'branch' && stage.branch !== context.effectiveScenario) || stage.tasks.length >= 8 || !stage.skillIds.includes(change.skillId) || !SKILLS[change.skillId]) throw new LearningError('bad-learning-plan', 422)
         const id = `a${randomUUID()}`
         stage.tasks.push({ id, title: change.title, why: change.why, deliverable: change.deliverable,
-            completionCriteria: change.completionCriteria, skillId: change.skillId, mp: change.effortHours, progress: 0 })
+            completionCriteria: change.completionCriteria, skillId: change.skillId, mp: change.effortHours, progress: 0,
+            resourceIndex: resourceIndexOf(change.skillId, change.resourceIndex),
+            ...(change.learningActivity ? { learningActivity: change.learningActivity } : {}) })
         changes.push({ operation: 'add', taskId: id, title: change.title, why: change.why, effortHours: change.effortHours, previousHours: 0 })
     }
     roadmap.learningScenario = context.effectiveScenario
     roadmap.scenario = context.effectiveScenario
+    for(const stage of roadmap.stages)
+        stage.approach = stageApproach(stage.skillIds ?? [...new Set(stage.tasks.map(task => task.skillId))], stage.branch ?? context.effectiveScenario)
     if(roadmap.chosenBranch)
     {
         roadmap.chosenBranch = context.effectiveScenario

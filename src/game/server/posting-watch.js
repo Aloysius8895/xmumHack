@@ -26,6 +26,8 @@ export function postingSource(value)
 export function attachPostingWatch(posting, url)
 {
     const source = postingSource(url)
+    if(posting?.monitor?.sourceUrl === source.sourceUrl)
+        return { ...posting, sourceUrl: source.sourceUrl }
     return { ...posting, sourceUrl: source.sourceUrl, monitor: { id: crypto.randomUUID(), ...source, status: 'pending_baseline',
         acceptedHash: null, latest: null, pending: null, lastCheckedAt: null, lastError: null, changedAt: null, requiresRegeneration: false } }
 }
@@ -127,7 +129,7 @@ export function applyPostingCheck(monitor, snapshot, now = new Date().toISOStrin
 
 export async function checkPostings(save, fetcher = fetch)
 {
-    const targets = [save.target, ...Object.values(save.careers ?? {}).map(item => item.target)].filter(target => target?.mode === 'customise' && target.posting?.monitor)
+    const targets = [save.target, ...Object.values(save.careers ?? {}).map(item => item.target)].filter(target => target?.posting?.monitor)
     const cache = new Map()
     const result = { checkedAt: new Date().toISOString(), watching: targets.length, checked: 0, changed: 0, failed: 0, skipped: Math.max(0, targets.length - 20) }
     for(const target of targets.slice(0, 20))

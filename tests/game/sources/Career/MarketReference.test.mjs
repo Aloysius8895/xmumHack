@@ -64,7 +64,7 @@ test('every new text exists in the three languages', () =>
 {
     const source = fs.readFileSync(new URL('../../../../src/game/sources/Career/i18n.js', import.meta.url), 'utf8')
     for(const key of [ 'market.range.from', 'market.range.to', 'market.range.tooLong', 'market.national.value', 'market.national.none', 'market.national.note', 'market.reference.cell', 'market.reference.note', 'market.yoy.title',
-        'market.yoy.thin', 'market.yoy.detail', 'market.yoy.unclear', 'market.yoy.note', 'careers.yoy', 'skill.yoy' ])
+        'market.yoy.thin', 'market.yoy.detail', 'market.yoy.unclear', 'market.yoy.note', 'careers.yoy' ])
     {
         const line = source.split('\n').find((row) => row.includes(`'${key}':`))
         assert.ok(line, key)
