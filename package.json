@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "description": "KerjayaKu career exploration and learning companion",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "npm --prefix src/game run dev",
     "build": "npm --prefix src/game run build",
@@ -15,5 +17,8 @@
     "test:browser": "node tests/run.mjs browser",
     "market:setup": "npm --prefix src/game run crawler:setup",
     "market:serve": "npm --prefix src/game run crawler:serve"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
   }
 }

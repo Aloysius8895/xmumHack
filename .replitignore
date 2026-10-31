@@ -1,0 +1,2 @@
+# Ignore local saves, dependency caches and builds left by the previous layout.
+/GamePlat/

@@ -1,3 +1,5 @@
 - [Dependency audit ranges](dependency-audit-ranges.md) — compound Python version ranges can produce stale vulnerable-version findings; compare with installed metadata.
 - [Browser graphics verification](browser-graphics-verification.md) — headless GPU crashes can block gameplay verification even when the server and build work.
 - [KerjayaKu deployment target](kerjayaku-deployment-target.md) — use this final project for the bot integration; the old xmumHack project is retired.
+- [Public project branding](project-branding.md) — the project is KerjayaKu, not CareerSphere; do not use Bruno Simon branding in share previews.
+- [Python toolchain](python-toolchain.md) — use a full Python Tools module for pip dependencies; the basic module caused missing-pip and Nix environment errors.

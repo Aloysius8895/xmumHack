@@ -10,6 +10,9 @@ venv/
 # Node
 node_modules/
 
+# Retired layout may still contain local saves and previous build outputs.
+/GamePlat/
+
 # Env / secrets
 .env
 .env.*
