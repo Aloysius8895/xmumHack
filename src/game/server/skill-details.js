@@ -198,25 +198,43 @@ const MORE_RESOURCES = {
 }
 
 /**
- * Topics a custom skill (made from a job posting) can be about, with their links (checked reachable 2026-10-31): the
- * first topic its English name or description mentions wins, the more specific topics first
+ * Topics a custom skill (made from a job posting) can be about: [ pattern, links (checked reachable 2026-10-31), closest
+ * catalog skill (for its SDG links) ]. The first topic its English name or description mentions wins, the more specific first
  */
 export const TOPIC_RESOURCES = [
-    [ /\bnlp\b|natural language|text (?:analy|classif|mining)/i, [ { title: 'GeeksforGeeks: NLP Tutorial', url: 'https://www.geeksforgeeks.org/nlp/natural-language-processing-nlp-tutorial/' }, { title: 'Hugging Face: LLM Course', url: 'https://huggingface.co/learn/llm-course/chapter1/1', open: true } ] ],
-    [ /\bllms?\b|large language model|generative ai|\bgenai\b/i, [ { title: 'Hugging Face: LLM Course', url: 'https://huggingface.co/learn/llm-course/chapter1/1', open: true }, { title: 'GeeksforGeeks: Large Language Model (LLM)', url: 'https://www.geeksforgeeks.org/artificial-intelligence/large-language-model-llm/' } ] ],
-    [ /computer vision|image (?:recognition|processing)/i, [ { title: 'GeeksforGeeks: Computer Vision Tutorial', url: 'https://www.geeksforgeeks.org/computer-vision/computer-vision/' } ] ],
-    [ /deep learning|neural network/i, [ { title: 'GeeksforGeeks: Deep Learning Tutorial', url: 'https://www.geeksforgeeks.org/deep-learning/deep-learning-tutorial/' }, { title: 'Dive into Deep Learning', url: 'https://d2l.ai/', open: true } ] ],
-    [ /machine learning|\bml\b/i, [ { title: 'GeeksforGeeks: Machine Learning Tutorial', url: 'https://www.geeksforgeeks.org/machine-learning/machine-learning-tutorial/' }, { title: 'scikit-learn: Getting Started', url: 'https://scikit-learn.org/stable/getting_started.html', open: true } ] ],
-    [ /data structure|algorithm/i, [ { title: 'GeeksforGeeks: DSA Tutorial', url: 'https://www.geeksforgeeks.org/dsa/dsa-tutorial-learn-data-structures-and-algorithms/' }, { title: 'W3Schools: DSA', url: 'https://www.w3schools.com/dsa/' } ] ],
-    [ /system design|software architecture/i, [ { title: 'GeeksforGeeks: System Design Tutorial', url: 'https://www.geeksforgeeks.org/system-design/system-design-tutorial/' } ] ],
-    [ /cloud|\baws\b|azure|\bgcp\b/i, [ { title: 'GeeksforGeeks: Cloud Computing Tutorial', url: 'https://www.geeksforgeeks.org/cloud-computing/cloud-computing-tutorial/' } ] ],
-    [ /linux|unix|shell script/i, [ { title: 'GeeksforGeeks: Linux Tutorial', url: 'https://www.geeksforgeeks.org/linux-unix/linux-tutorial/' } ] ],
-    [ /\bjava\b/i, [ { title: 'W3Schools: Java', url: 'https://www.w3schools.com/java/' }, { title: 'GeeksforGeeks: Java Tutorial', url: 'https://www.geeksforgeeks.org/java/java/' } ] ],
-    [ /security|cyber/i, [ { title: 'GeeksforGeeks: Cyber Security Tutorial', url: 'https://www.geeksforgeeks.org/cybersecurity/cyber-security-tutorial/' } ] ],
+    [ /\bnlp\b|natural language|text (?:analy|classif|mining)/i, [ { title: 'GeeksforGeeks: NLP Tutorial', url: 'https://www.geeksforgeeks.org/nlp/natural-language-processing-nlp-tutorial/' }, { title: 'Hugging Face: LLM Course', url: 'https://huggingface.co/learn/llm-course/chapter1/1', open: true } ], 'ml-frameworks' ],
+    [ /\bllms?\b|large language model|generative ai|\bgenai\b/i, [ { title: 'Hugging Face: LLM Course', url: 'https://huggingface.co/learn/llm-course/chapter1/1', open: true }, { title: 'GeeksforGeeks: Large Language Model (LLM)', url: 'https://www.geeksforgeeks.org/artificial-intelligence/large-language-model-llm/' } ], 'ml-frameworks' ],
+    [ /computer vision|image (?:recognition|processing)/i, [ { title: 'GeeksforGeeks: Computer Vision Tutorial', url: 'https://www.geeksforgeeks.org/computer-vision/computer-vision/' } ], 'ml-frameworks' ],
+    [ /deep learning|neural network/i, [ { title: 'GeeksforGeeks: Deep Learning Tutorial', url: 'https://www.geeksforgeeks.org/deep-learning/deep-learning-tutorial/' }, { title: 'Dive into Deep Learning', url: 'https://d2l.ai/', open: true } ], 'ml-frameworks' ],
+    [ /machine learning|\bml\b/i, [ { title: 'GeeksforGeeks: Machine Learning Tutorial', url: 'https://www.geeksforgeeks.org/machine-learning/machine-learning-tutorial/' }, { title: 'scikit-learn: Getting Started', url: 'https://scikit-learn.org/stable/getting_started.html', open: true } ], 'ml-frameworks' ],
+    [ /data structure|algorithm/i, [ { title: 'GeeksforGeeks: DSA Tutorial', url: 'https://www.geeksforgeeks.org/dsa/dsa-tutorial-learn-data-structures-and-algorithms/' }, { title: 'W3Schools: DSA', url: 'https://www.w3schools.com/dsa/' } ], 'backend-language' ],
+    [ /system design|software architecture/i, [ { title: 'GeeksforGeeks: System Design Tutorial', url: 'https://www.geeksforgeeks.org/system-design/system-design-tutorial/' } ], 'backend-language' ],
+    [ /cloud|\baws\b|azure|\bgcp\b/i, [ { title: 'GeeksforGeeks: Cloud Computing Tutorial', url: 'https://www.geeksforgeeks.org/cloud-computing/cloud-computing-tutorial/' } ], 'cloud-deploy' ],
+    [ /linux|unix|shell script/i, [ { title: 'GeeksforGeeks: Linux Tutorial', url: 'https://www.geeksforgeeks.org/linux-unix/linux-tutorial/' } ], 'cloud-deploy' ],
+    [ /\bjava\b/i, [ { title: 'W3Schools: Java', url: 'https://www.w3schools.com/java/' }, { title: 'GeeksforGeeks: Java Tutorial', url: 'https://www.geeksforgeeks.org/java/java/' } ], 'backend-language' ],
+    [ /security|cyber/i, [ { title: 'GeeksforGeeks: Cyber Security Tutorial', url: 'https://www.geeksforgeeks.org/cybersecurity/cyber-security-tutorial/' } ], 'backend-language' ],
 ]
 
 const STOP_WORDS = new Set([ 'and', 'the', 'with', 'for', 'from', 'into', 'your', 'use', 'using', 'basic', 'understanding', 'knowledge', 'skill', 'skills', 'work', 'working', 'clear', 'good', 'other', 'their', 'that', 'this' ])
 const words = (text) => new Set(String(text).toLowerCase().match(/[a-z][a-z+#]{2,}/g)?.filter((word) => !STOP_WORDS.has(word)) ?? [])
+
+const textOf = (name, description) => `${name?.en ?? ''} ${description?.en ?? ''}`
+
+/** The catalog skill sharing the most words with a text (at least 2) among those passing `keep`, or null */
+function closestSkill(text, keep = () => true)
+{
+    const own = words(text)
+    const [ best ] = DETAILS.map(([ id, , , , en ]) => [ id, [ ...words(`${id.replaceAll('-', ' ')} ${en}`) ].filter((word) => own.has(word)).length ])
+        .filter(([ id, score ]) => score >= 2 && keep(id)).sort((a, b) => b[1] - a[1])
+    return best?.[0] ?? null
+}
+
+/** The catalog skill a custom skill ({ en } name and description) is closest to: its topic's, else by shared words, else null */
+export function relatedSkillId(name, description)
+{
+    const text = textOf(name, description)
+    return TOPIC_RESOURCES.find(([ pattern ]) => pattern.test(text))?.[2] ?? closestSkill(text)
+}
 
 /**
  * Links for a custom skill ({ en } name and description): its topic's, else those of the catalog skill sharing the most
@@ -224,15 +242,13 @@ const words = (text) => new Set(String(text).toLowerCase().match(/[a-z][a-z+#]{2
  */
 export function relatedResources(name, description)
 {
-    const text = `${name?.en ?? ''} ${description?.en ?? ''}`
+    const text = textOf(name, description)
     const topic = TOPIC_RESOURCES.find(([ pattern ]) => pattern.test(text))
     if(topic)
         return topic[1].map((resource) => ({ open: false, ...resource }))
-    const own = words(text)
-    const [ best ] = DETAILS.map(([ id, , , , en ]) => [ id, [ ...words(`${id.replaceAll('-', ' ')} ${en}`) ].filter((word) => own.has(word)).length ])
-        .filter(([ id, score ]) => score >= 2 && resourcesOf(id).length).sort((a, b) => b[1] - a[1])
+    const best = closestSkill(text, (id) => resourcesOf(id).length)
     if(best)
-        return resourcesOf(best[0])
+        return resourcesOf(best)
     const query = String(name?.en ?? '').trim()
     return query ? [ { title: `Wikipedia: ${query}`, url: `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(query)}`, open: true } ] : []
 }

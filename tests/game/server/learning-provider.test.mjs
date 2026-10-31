@@ -55,11 +55,12 @@ test('the actual provider path receives AEI policy and cannot change the No-Regr
 
 test('the same generator accepts adjustment requests and returns a patch rather than a replacement roadmap', async () =>
 {
-    answers.push({ summary: text, updates: [ { taskId: 's1t2', title: text, why: text, deliverable: text, completionCriteria: text, effortHours: 3 } ], additions: [] })
+    answers.push({ summary: text, updates: [ { taskId: 's1t2', title: text, why: text, deliverable: text, completionCriteria: text, effortHours: 3, learningActivity: 'verification' } ], additions: [] })
     const patch = await generateRoadmap({ target, profile, gaps: [], lang: 'en', learning: context,
         adjustment: { editableTasks: [ { id: 's1t2', skillId: 'python', progress: 0 } ], latestReview: { understanding: 'needs_practice' } } })
     assert.equal(patch.stages, undefined)
     assert.equal(patch.updates[0].taskId, 's1t2')
+    assert.equal(patch.updates[0].learningActivity, 'verification')
     assert.ok(requests.at(-1).content.includes('needs_practice'))
 })
 

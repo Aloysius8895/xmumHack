@@ -11,7 +11,7 @@ import { SKILL_DETAILS } from './skill-details.js'
 import { expertOf } from './experts.js'
 import { friendCode, leaderboard } from './friends.js'
 import { marketSnapshot, skillMarket, skillTrendOrEmpty } from './market-trends.js'
-import { GOALS, PLATFORM_TARGETS, SKILL_TARGETS, SOURCE as SDG_SOURCE, TARGETS, TARGET_IDS, careerSdgs, contribution } from './sdg.js'
+import { GOALS, PLATFORM_TARGETS, SKILL_TARGETS, SKILL_SDG_REASONS, SOURCE as SDG_SOURCE, TARGETS, TARGET_IDS, careerSdgs, contribution } from './sdg.js'
 import { loadMarket } from './store.js'
 import { trendsView } from './trends.js'
 import { collectedMarket } from './collected-market.js'
@@ -743,6 +743,7 @@ function sdgView(save)
         goals: GOALS,
         targets: TARGETS,
         skills: SKILL_TARGETS,
+        skillReasons: SKILL_SDG_REASONS,
         platform: PLATFORM_TARGETS,
         contribution: career ? { careerId: career.id, goals: contribution(career, skillProgress(save, career), affinityOf(save, career.id)) } : null,
     }

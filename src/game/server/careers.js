@@ -5,7 +5,8 @@
  * Skill levels: 0 none, 1 basic, 2 working, 3 solid. Career skills give the required level and a weight (1-3).
  * Names are { zh, en, ms }.
  */
-import { SKILL_DETAILS, relatedResources } from './skill-details.js'
+import { SKILL_DETAILS, relatedResources, relatedSkillId } from './skill-details.js'
+import { SKILL_TARGETS, SKILL_SDG_REASONS, postingSkillSdgs } from './sdg.js'
 
 export const SKILLS = {
     'sql':                { zh: 'SQL 查询', en: 'SQL', ms: 'SQL' },
@@ -568,6 +569,8 @@ export function useCustom(save)
     {
         delete SKILLS[id]
         delete SKILL_DETAILS[id]
+        delete SKILL_TARGETS[id]
+        delete SKILL_SDG_REASONS[id]
         SKILL_IDS.splice(SKILL_IDS.indexOf(id), 1)
     }
     customSkillIds.clear()
@@ -578,6 +581,11 @@ export function useCustom(save)
             continue
         SKILLS[id] = skill.name
         SKILL_DETAILS[id] = { ...skill.detail, resources: skill.detail.resources ?? relatedResources(skill.name, skill.detail.description) }
+        // SDG links of the closest catalog skill, each reason naming it (sdg.postingSkillSdgs)
+        const related = relatedSkillId(skill.name, skill.detail.description)
+        const sdgs = postingSkillSdgs(related, related && SKILLS[related])
+        SKILL_TARGETS[id] = sdgs.targets
+        SKILL_SDG_REASONS[id] = sdgs.reasons
         SKILL_IDS.push(id)
         customSkillIds.add(id)
     }

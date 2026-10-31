@@ -1602,6 +1602,19 @@ export class CareerUI
         return `<span class="career-sdg" style="--sdg:${info.color}" title="${esc(title)}">${esc(target ?? goal)}</span>`
     }
 
+    /** A skill's SDG targets, each with the reason of the link (server/sdg.js SKILL_SDG_REASONS), nothing without targets */
+    skillSdgs(skillId)
+    {
+        const sdg = this.state.sdg
+        const targets = sdg?.skills?.[skillId] ?? []
+        if(!targets.length)
+            return ''
+        return `
+            <ul class="career-skill-sdgs" aria-label="${esc(t('sdg.skillTitle'))}">${targets.map((target) => `
+                <li>${this.sdgBadge(Number(target.split('.')[0]), target)}<span>${esc(sdg.skillReasons?.[skillId]?.[target] ? pick(sdg.skillReasons[skillId][target]) : pick(sdg.targets[target]))}</span></li>`).join('')}
+            </ul>`
+    }
+
     renderSdgFilter(selected)
     {
         const goals = [ ...new Set(this.state.careers.flatMap((career) => career.sdgs.map((tag) => tag.goal))) ].sort((a, b) => a - b)
@@ -1658,7 +1671,11 @@ export class CareerUI
                         <strong>${esc(pick(sdg.goals[item.goal].name))}</strong>
                         <small>${item.targets.map((target) => `${esc(target)} ${esc(pick(sdg.targets[target]))}`).join(' · ')}</small>
                         <span class="career-sdg-bar">${bar(item.progress)}<em>${item.progress}%</em></span>
-                        <small>${esc(t(item.career ? 'sdg.byCareer' : item.skillIds.length ? 'sdg.bySkills' : 'sdg.byLearning'))}${item.skillIds.length ? ` · ${esc(item.skillIds.map((id) => this.skillName(id, id)).join('、'))}` : ''}</small>
+                        <small>${esc(t(item.career ? 'sdg.byCareer' : item.skillIds.length ? 'sdg.bySkills' : 'sdg.byLearning'))}</small>
+                        ${item.skillIds.length ? `<ul class="career-sdg-reasons">${item.skillIds.map((id) => {
+                            const target = item.targets.find((candidate) => sdg.skillReasons?.[id]?.[candidate])
+                            return `<li><b>${esc(this.skillName(id, id))}</b>${target ? ` ${esc(target)} · ${esc(pick(sdg.skillReasons[id][target]))}` : ''}</li>`
+                        }).join('')}</ul>` : ''}
                     </span>
                 </li>`).join('')}
             </ul>
@@ -1727,6 +1744,7 @@ export class CareerUI
                     <div><dt>${esc(t('skill.difficulty'))}</dt><dd>${detail.difficulty}/5</dd></div>
                 </dl>` : ''}
                 ${requirement.note ? `<p class="career-skill-description">${esc(requirement.note)}</p>` : ''}
+                ${this.skillSdgs(requirement.skillId)}
                 <p class="career-skill-requirement">${esc(t('careers.yours', { c: t(`level.${Math.min(3, current)}`) }))} / ${esc(t('careers.required', { r: t(`level.${Math.min(3, required)}`) }))}</p>
             </li>`
     }
@@ -1819,6 +1837,7 @@ export class CareerUI
                     <div><dt>${esc(t('skill.difficulty'))}</dt><dd>${detail.difficulty}/5</dd></div>
                 </dl>
                 <p class="career-skill-description">${esc(pick(detail.description))}</p>
+                ${this.skillSdgs(skill.id)}
                 ${showRequirement ? `<p class="career-skill-requirement">${esc(t('careers.yours', { c: t(`level.${skill.current}`) }))} / ${esc(t('careers.required', { r: t(`level.${skill.required}`) }))}</p>` : ''}
             </li>`
     }

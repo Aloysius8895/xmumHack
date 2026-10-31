@@ -241,6 +241,97 @@ export const SKILL_TARGETS = {
     'workplace-languages': [ '4.4' ],
 }
 
+/**
+ * Why each catalog skill moves each of its targets: one line per link (Domain 1 Finalist Guide, SDG mapping method)
+ */
+export const SKILL_SDG_REASONS = {
+    'sql': { '17.18': name("用 SQL 从数据库取出准确数据，支持可靠的统计和决策。", "Pulls accurate data from databases for reliable statistics and decisions.", "Mengambil data tepat dari pangkalan data untuk statistik dan keputusan yang boleh dipercayai.") },
+    'excel': { '8.2': name("用表格自动完成计算和报表，提高日常工作效率。", "Automates calculations and reports in spreadsheets, raising everyday productivity.", "Mengautomasikan pengiraan dan laporan dalam hamparan, meningkatkan produktiviti harian.") },
+    'statistics': { '17.18': name("正确分析数据，让统计结果可信。", "Analyses data correctly so statistics can be trusted.", "Menganalisis data dengan betul supaya statistik boleh dipercayai."), '9.5': name("统计方法是科学研究和实验的基础。", "Statistical methods underpin scientific research and experiments.", "Kaedah statistik menjadi asas penyelidikan saintifik dan eksperimen.") },
+    'python': { '9.5': name("Python 是做研究、数据分析和开发新技术的常用工具。", "Python is a core tool for research, data analysis and new technology.", "Python ialah alat utama untuk penyelidikan, analisis data dan teknologi baharu.") },
+    'data-cleaning': { '17.18': name("清理错误和缺失的数据，让数据更准确可靠。", "Fixes errors and gaps so data is accurate and reliable.", "Membetulkan ralat dan kekosongan supaya data tepat dan boleh dipercayai.") },
+    'data-visualization': { '17.18': name("用图表把数据讲清楚，让更多人看懂并用好数据。", "Makes data clear in charts so more people can understand and use it.", "Menjadikan data jelas dalam carta supaya lebih ramai faham dan menggunakannya.") },
+    'communication': { '8.5': name("清楚沟通是几乎所有体面工作都需要的基本能力。", "Clear communication is a core skill for almost every decent job.", "Komunikasi yang jelas ialah kemahiran teras untuk hampir semua pekerjaan wajar.") },
+    'html-css': { '9.c': name("做出在各种设备上都能打开的网页，让更多人上网获取信息。", "Builds web pages that work on any device, widening access to online information.", "Membina laman web yang berfungsi pada semua peranti, meluaskan akses maklumat dalam talian.") },
+    'javascript': { '9.c': name("让网站和网络服务可以互动，扩大数字服务的覆盖。", "Makes websites and online services interactive, extending digital services.", "Menjadikan laman web dan perkhidmatan dalam talian interaktif, meluaskan perkhidmatan digital.") },
+    'react': { '9.c': name("快速搭建好用的网页应用，让更多服务上线。", "Builds usable web apps quickly, bringing more services online.", "Membina aplikasi web yang mudah digunakan dengan pantas, membawa lebih banyak perkhidmatan ke dalam talian.") },
+    'git': { '9.5': name("版本管理让团队可靠地协作开发和改进技术。", "Version control lets teams build and improve technology together reliably.", "Kawalan versi membolehkan pasukan membina dan menambah baik teknologi bersama dengan andal.") },
+    'accessibility': { '10.2': name("让残障人士也能使用网站和应用，促进数字包容。", "Lets people with disabilities use websites and apps, making digital services inclusive.", "Membolehkan orang kurang upaya menggunakan laman web dan aplikasi, menjadikan perkhidmatan digital inklusif.") },
+    'api-integration': { '9.c': name("把不同系统连接起来，让数据和服务更容易被使用。", "Connects systems so data and services are easier to reach.", "Menghubungkan sistem supaya data dan perkhidmatan lebih mudah dicapai.") },
+    'backend-language': { '9.1': name("搭建稳定的服务器程序，是数字基础设施的核心。", "Builds stable server software, the core of digital infrastructure.", "Membina perisian pelayan yang stabil, teras infrastruktur digital.") },
+    'databases': { '9.1': name("可靠地保存数据，支撑各种数字服务。", "Stores data reliably to support digital services.", "Menyimpan data dengan andal untuk menyokong perkhidmatan digital.") },
+    'rest-api': { '9.c': name("设计清晰的接口，让其他应用也能接入服务。", "Designs clear interfaces so other apps can connect to a service.", "Mereka antara muka yang jelas supaya aplikasi lain boleh berhubung dengan perkhidmatan.") },
+    'cloud-deploy': { '9.1': name("把服务稳定地部署上线，让基础设施可靠、可扩展。", "Deploys services reliably so infrastructure is dependable and scalable.", "Melancarkan perkhidmatan dengan andal supaya infrastruktur boleh diharap dan boleh berkembang.") },
+    'testing': { '9.1': name("测试减少故障，让系统更可靠。", "Testing reduces failures and makes systems more reliable.", "Ujian mengurangkan kegagalan dan menjadikan sistem lebih andal.") },
+    'user-research': { '10.2': name("了解不同用户的需要，让产品照顾到更多人。", "Understands different users' needs so products serve more people.", "Memahami keperluan pengguna yang berbeza supaya produk melayani lebih ramai orang.") },
+    'prototyping': { '9.5': name("快速做原型验证想法，推动产品创新。", "Tests ideas quickly with prototypes, driving product innovation.", "Menguji idea dengan pantas melalui prototaip, memacu inovasi produk.") },
+    'figma': { '9.5': name("用设计工具快速试验新的产品方案。", "Explores new product ideas quickly with a design tool.", "Meneroka idea produk baharu dengan pantas menggunakan alat reka bentuk.") },
+    'visual-design': { '10.2': name("清楚易读的设计让更多人能看懂和使用。", "Clear, readable design lets more people understand and use a product.", "Reka bentuk yang jelas dan mudah dibaca membolehkan lebih ramai orang memahami dan menggunakan produk.") },
+    'usability-testing': { '10.2': name("请真实用户试用，找出妨碍别人使用的问题。", "Tests with real users to find what stops people from using a product.", "Menguji dengan pengguna sebenar untuk mencari halangan penggunaan produk.") },
+    'ml-math': { '9.5': name("机器学习的数学是研究和改进 AI 的基础。", "The maths of machine learning underpins AI research and improvement.", "Matematik pembelajaran mesin menjadi asas penyelidikan dan penambahbaikan AI.") },
+    'ml-frameworks': { '9.5': name("用框架训练和评估模型，推动 AI 技术研发。", "Trains and evaluates models with frameworks, advancing AI research.", "Melatih dan menilai model dengan rangka kerja, memajukan penyelidikan AI."), '8.2': name("模型能自动化重复工作，提高生产力。", "Models automate repetitive work and raise productivity.", "Model mengautomasikan kerja berulang dan meningkatkan produktiviti.") },
+    'mlops': { '9.5': name("让 AI 模型从研究走到可靠的实际应用。", "Takes AI models from research into reliable real use.", "Membawa model AI dari penyelidikan ke penggunaan sebenar yang andal."), '8.2': name("自动部署和监控模型，节省人力、提高效率。", "Automates deploying and monitoring models, saving effort and raising efficiency.", "Mengautomasikan pelancaran dan pemantauan model, menjimatkan tenaga dan meningkatkan kecekapan.") },
+    'roadmapping': { '8.3': name("规划产品方向，帮助新产品和创业项目落地。", "Plans product direction, helping new products and ventures launch.", "Merancang hala tuju produk, membantu produk dan usaha niaga baharu dilancarkan.") },
+    'agile': { '8.2': name("敏捷方法让团队更快交付、减少浪费。", "Agile methods help teams deliver faster with less waste.", "Kaedah tangkas membantu pasukan menyampaikan lebih pantas dengan kurang pembaziran.") },
+    'market-analysis': { '8.3': name("看懂市场需求，帮助企业和创业者做出好决定。", "Reads market demand to help businesses and founders decide well.", "Memahami permintaan pasaran untuk membantu perniagaan dan usahawan membuat keputusan yang baik.") },
+    'accounting': { '16.6': name("准确的账目让机构的财务透明、可问责。", "Accurate accounts make finances transparent and accountable.", "Akaun yang tepat menjadikan kewangan telus dan bertanggungjawab.") },
+    'auditing': { '16.5': name("审计能发现舞弊和贿赂，减少腐败。", "Audits uncover fraud and bribery, reducing corruption.", "Audit mendedahkan penipuan dan sogokan, mengurangkan rasuah."), '16.6': name("独立检查让机构更透明、更负责。", "Independent checks make institutions more transparent and accountable.", "Semakan bebas menjadikan institusi lebih telus dan bertanggungjawab.") },
+    'internal-control': { '16.5': name("内部控制从流程上防止舞弊和贿赂。", "Internal controls prevent fraud and bribery in everyday processes.", "Kawalan dalaman mencegah penipuan dan sogokan dalam proses harian."), '12.6': name("好的控制和报告帮助公司落实负责任的做法。", "Good controls and reporting help companies follow responsible practices.", "Kawalan dan pelaporan yang baik membantu syarikat mengamalkan amalan bertanggungjawab.") },
+    'legal-research': { '16.3': name("找准法律依据，帮助人们得到公正的对待。", "Finds the right legal basis so people are treated fairly under the law.", "Mencari asas undang-undang yang betul supaya orang dilayan dengan adil.") },
+    'legal-writing': { '16.3': name("清楚的法律文书让人们更容易理解和维护自己的权利。", "Clear legal writing helps people understand and defend their rights.", "Penulisan undang-undang yang jelas membantu orang memahami dan mempertahankan hak mereka.") },
+    'negotiation': { '16.3': name("通过协商公平解决纠纷，不必都上法庭。", "Settles disputes fairly by negotiation, without always going to court.", "Menyelesaikan pertikaian secara adil melalui rundingan tanpa sentiasa ke mahkamah."), '10.3': name("公平谈判让各方获得平等的机会和条件。", "Fair negotiation gives every side equal opportunity and terms.", "Rundingan yang adil memberi peluang dan terma yang sama kepada semua pihak.") },
+    'lesson-planning': { '4.1': name("好的教案让学生学得更扎实。", "Good lesson plans help students learn more solidly.", "Rancangan pengajaran yang baik membantu murid belajar dengan lebih kukuh.") },
+    'classroom-management': { '4.1': name("有序的课堂让每个学生都能专心学习。", "A well-run classroom lets every student focus on learning.", "Bilik darjah yang teratur membolehkan setiap murid menumpukan perhatian pada pembelajaran."), '4.c': name("管好课堂是合格教师的核心能力。", "Managing a class is a core skill of a qualified teacher.", "Mengurus kelas ialah kemahiran teras guru yang berkelayakan.") },
+    'assessment': { '4.1': name("合理的评估帮助老师知道学生哪里需要帮助。", "Sound assessment shows teachers where students need help.", "Penilaian yang baik menunjukkan kepada guru di mana murid memerlukan bantuan.") },
+    'clinical-knowledge': { '3.8': name("扎实的临床知识让更多人得到可靠的医疗服务。", "Solid clinical knowledge brings reliable health care to more people.", "Pengetahuan klinikal yang kukuh membawa penjagaan kesihatan yang andal kepada lebih ramai orang."), '3.4': name("及早发现和处理慢性病，减少过早死亡。", "Spots and treats chronic disease early, reducing premature deaths.", "Mengesan dan merawat penyakit kronik lebih awal, mengurangkan kematian pramatang.") },
+    'patient-care': { '3.8': name("用心护理让病人得到完整、安全的照顾。", "Careful nursing gives patients complete and safe care.", "Penjagaan yang teliti memberi pesakit penjagaan yang lengkap dan selamat."), '3.c': name("护理人员是卫生人力的重要组成部分。", "Carers are a key part of the health workforce.", "Penjaga ialah bahagian penting tenaga kerja kesihatan.") },
+    'medical-ethics': { '3.8': name("尊重知情同意和公平分配，让医疗更值得信任。", "Respecting consent and fair allocation makes health care more trustworthy.", "Menghormati persetujuan dan agihan yang adil menjadikan penjagaan kesihatan lebih dipercayai."), '16.6': name("伦理规范让医疗机构对病人负责。", "Ethical standards keep health institutions accountable to patients.", "Piawaian etika memastikan institusi kesihatan bertanggungjawab kepada pesakit.") },
+    'cooking-technique': { '8.9': name("好的烹饪推广本地美食，带动旅游和就业。", "Good cooking promotes local food, supporting tourism and jobs.", "Masakan yang baik mempromosikan makanan tempatan, menyokong pelancongan dan pekerjaan.") },
+    'food-safety': { '2.1': name("安全处理食物，让人人吃得安全。", "Handling food safely keeps it safe for everyone.", "Mengendalikan makanan dengan selamat memastikannya selamat untuk semua.") },
+    'menu-planning': { '12.3': name("合理规划菜单和份量，减少食物浪费。", "Planning menus and portions well reduces food waste.", "Merancang menu dan hidangan dengan baik mengurangkan pembaziran makanan.") },
+    'engineering-math': { '9.1': name("工程计算保证建筑和设施安全可靠。", "Engineering calculations keep buildings and facilities safe and reliable.", "Pengiraan kejuruteraan memastikan bangunan dan kemudahan selamat dan andal.") },
+    'cad': { '9.1': name("精确的设计图是建好基础设施的第一步。", "Precise drawings are the first step to building good infrastructure.", "Lukisan yang tepat ialah langkah pertama membina infrastruktur yang baik."), '11.2': name("设计道路和交通设施，让出行更安全。", "Designs roads and transport facilities for safer travel.", "Mereka jalan dan kemudahan pengangkutan untuk perjalanan yang lebih selamat.") },
+    'project-management': { '8.2': name("管好时间、成本和人力，让项目更有效率。", "Manages time, cost and people so projects run efficiently.", "Mengurus masa, kos dan tenaga kerja supaya projek berjalan dengan cekap.") },
+    'accounting-software': { '8.2': name("用会计软件自动记账，减少人工错误、提高效率。", "Automates bookkeeping with software, cutting errors and raising efficiency.", "Mengautomasikan simpan kira dengan perisian, mengurangkan ralat dan meningkatkan kecekapan.") },
+    'accounts-payable-receivable': { '16.6': name("准确记录收付款，让财务清楚透明。", "Accurate payment records keep finances clear and transparent.", "Rekod bayaran yang tepat memastikan kewangan jelas dan telus.") },
+    'taxation': { '16.6': name("依法申报税务，支持透明、负责的公共财政。", "Filing taxes correctly supports transparent, accountable public finances.", "Memfailkan cukai dengan betul menyokong kewangan awam yang telus dan bertanggungjawab.") },
+    'electrical-systems': { '9.1': name("安全可靠的电力系统是基础设施的根本。", "Safe, reliable electrical systems are basic infrastructure.", "Sistem elektrik yang selamat dan andal ialah infrastruktur asas.") },
+    'equipment-maintenance': { '9.1': name("定期维护让设备和设施持续可靠运行。", "Regular maintenance keeps equipment and facilities running reliably.", "Penyelenggaraan berkala memastikan peralatan dan kemudahan berfungsi dengan andal.") },
+    'plc-automation': { '9.5': name("自动化控制提升工厂的技术水平。", "Automated control upgrades the technology of factories.", "Kawalan automatik meningkatkan teknologi kilang.") },
+    'social-media-marketing': { '8.3': name("社交媒体让小企业低成本找到顾客。", "Social media helps small businesses find customers at low cost.", "Media sosial membantu perniagaan kecil mencari pelanggan dengan kos rendah.") },
+    'digital-advertising': { '8.3': name("精准的数字广告帮助新企业成长。", "Targeted digital ads help new businesses grow.", "Iklan digital yang tepat membantu perniagaan baharu berkembang.") },
+    'web-analytics': { '17.18': name("用网站数据了解用户，做出有根据的决定。", "Uses website data to understand users and make evidence-based decisions.", "Menggunakan data laman web untuk memahami pengguna dan membuat keputusan berasaskan bukti.") },
+    'content-writing': { '8.3': name("好的内容帮助企业和创作者建立品牌、获得生意。", "Good content helps businesses and creators build a brand and win work.", "Kandungan yang baik membantu perniagaan dan pencipta membina jenama dan mendapat kerja.") },
+    'quantity-surveying': { '9.1': name("准确计算工程量，让建设项目不超支。", "Accurate quantities keep construction projects on budget.", "Kuantiti yang tepat memastikan projek pembinaan tidak melebihi bajet.") },
+    'cost-estimation': { '9.1': name("合理估算成本，让基础设施项目可行。", "Sound cost estimates make infrastructure projects feasible.", "Anggaran kos yang munasabah menjadikan projek infrastruktur boleh dilaksanakan.") },
+    'contract-administration': { '16.5': name("透明的合同管理减少贿赂和舞弊。", "Transparent contract management reduces bribery and fraud.", "Pengurusan kontrak yang telus mengurangkan sogokan dan penipuan.") },
+    'employee-relations': { '8.5': name("处理好劳资关系，保障员工的体面工作。", "Good employee relations protect decent work for staff.", "Hubungan pekerja yang baik melindungi pekerjaan wajar untuk kakitangan.") },
+    'recruitment': { '10.3': name("公平招聘，让每个人都有平等的机会。", "Fair recruitment gives everyone an equal chance.", "Pengambilan yang adil memberi semua orang peluang yang sama.") },
+    'payroll': { '8.5': name("准时准确发薪，保障员工的基本权益。", "Paying staff correctly and on time protects their basic rights.", "Membayar gaji dengan betul dan tepat pada masanya melindungi hak asas pekerja.") },
+    'sales-prospecting': { '8.3': name("开发新客户帮助企业成长、创造工作。", "Finding new customers helps businesses grow and create jobs.", "Mencari pelanggan baharu membantu perniagaan berkembang dan mencipta pekerjaan.") },
+    'customer-support': { '8.2': name("高效解决顾客问题，提高服务的生产力。", "Solving customer problems efficiently raises service productivity.", "Menyelesaikan masalah pelanggan dengan cekap meningkatkan produktiviti perkhidmatan.") },
+    'crm-systems': { '8.2': name("用 CRM 系统管理客户，让团队工作更有效率。", "Managing customers in a CRM makes teams more efficient.", "Mengurus pelanggan dalam CRM menjadikan pasukan lebih cekap.") },
+    'workplace-languages': { '4.4': name("掌握工作语言是就业所需的重要技能。", "Workplace languages are a key skill for getting decent jobs.", "Bahasa tempat kerja ialah kemahiran penting untuk mendapat pekerjaan wajar.") },
+}
+
+/**
+ * SDG links of a skill made from a job posting (careers.useCustom): those of the closest catalog skill
+ * (skill-details.relatedSkillId), each reason saying which skill it is close to; else 4.4, the skills employers ask for
+ */
+export function postingSkillSdgs(relatedId, relatedName)
+{
+    if(!relatedId || !SKILL_TARGETS[relatedId] || !relatedName)
+        return { targets: [ '4.4' ], reasons: { '4.4': name('这是雇主在招聘中要求的技能，学会它能提高就业能力。', 'An employer asks for this skill; learning it builds skills for decent jobs.', 'Majikan memerlukan kemahiran ini; mempelajarinya membina kemahiran untuk pekerjaan wajar.') } }
+    const reasons = SKILL_SDG_REASONS[relatedId]
+    return {
+        targets: [ ...SKILL_TARGETS[relatedId] ],
+        reasons: Object.fromEntries(SKILL_TARGETS[relatedId].map((target) => [ target, name(
+            `与「${relatedName.zh}」相近：${reasons[target].zh}`,
+            `Close to ${relatedName.en}: ${reasons[target].en}`,
+            `Hampir sama dengan ${relatedName.ms}: ${reasons[target].ms}`) ])),
+    }
+}
+
 // Targets of a career: its authored tags, the ones an AI-generated career picked from TARGETS, or its skills' main targets
 export function careerSdgs(career)
 {

@@ -4863,6 +4863,45 @@ button.career-trend-row:hover {
     opacity: 0.75;
 }
 
+/* Skills moving a goal, with the reason of each link (CareerUI.renderSdg) */
+.career-sdg-reasons {
+    display: grid;
+    gap: 2px;
+    margin: 2px 0 0;
+    padding-left: 18px;
+    font-size: 0.9em;
+    line-height: 1.45;
+}
+
+/* Plain list items, not the bordered goal rows they sit in */
+.career-sdg-progress .career-sdg-reasons li {
+    display: list-item;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+}
+
+/* A skill's SDG targets and why (CareerUI.skillSdgs), on skill and posting requirement cards */
+.career-skill-sdgs {
+    display: grid;
+    gap: 4px;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.86em;
+    line-height: 1.45;
+
+    li {
+        display: flex;
+        gap: 6px;
+        align-items: flex-start;
+    }
+
+    .career-sdg {
+        flex: none;
+    }
+}
+
 .career-sdg-bar {
     display: flex;
     gap: 8px;
